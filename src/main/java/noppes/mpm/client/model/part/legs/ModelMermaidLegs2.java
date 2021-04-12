@@ -93,7 +93,7 @@ public class ModelMermaidLegs2 extends ModelRenderer {
       this.Tail2.rotateAngleX = 0.56F - ani * 0.24F * par2;
       this.Tail3.rotateAngleX = -0.4F + ani * 0.24F * par2;
       this.Tail4.rotateAngleX = -0.1F + ani * 0.1F * par2;
-      if (entity.func_70093_af())
+      if (entity.isSneaking())
         this.Tail1.func_78793_a(-4.0F, 10.0F, 3.0F);
     }
   }

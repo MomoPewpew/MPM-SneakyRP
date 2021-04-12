@@ -73,7 +73,7 @@ public class ModelMermaidLegs extends ModelRenderer {
       this.middle.rotateAngleX = 0.86F - ani * 0.24F * par2;
       this.bottom.rotateAngleX = 0.15F - ani * 0.28F * par2;
       this.fin1.rotateAngleX = 0.05F - ani * 0.35F * par2;
-      if (entity.func_70093_af())
+      if (entity.isSneaking())
         this.top.func_78793_a(-2.0F, 12.0F, 6.0F);
     }
   }

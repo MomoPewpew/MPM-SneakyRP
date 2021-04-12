@@ -135,7 +135,7 @@ public class ModelSpiderLegs extends ModelRenderer {
       this.spiderBody.field_78798_e = 10.0F;
       this.spiderNeck.rotateAngleX = -0.3926991F;
     }
-    if (((EntityPlayer)entity).func_70608_bn() || data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
+    if (((EntityPlayer)entity).isPlayerSleeping() || data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
       this.field_78797_d = 12.0F * (data.getPartConfig(EnumParts.LEG_LEFT)).scaleY;
       this.field_78798_e = 15.0F * (data.getPartConfig(EnumParts.LEG_LEFT)).scaleY;
       this.rotateAngleX = -1.5707964F;

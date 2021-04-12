@@ -99,12 +99,12 @@ public class PacketHandlerClient extends PacketHandlerServer {
           return;
         ModelData data = ModelData.get(pl);
         for (int i = 0; i < 5; i++) {
-          double d0 = player.func_70681_au().nextGaussian() * 0.02D;
-          double d1 = player.func_70681_au().nextGaussian() * 0.02D;
-          double d2 = player.func_70681_au().nextGaussian() * 0.02D;
-          double x = player.field_70165_t + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
-          double z = player.field_70161_v + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
-          player.worldObj.func_175688_a(EnumParticleTypes.VILLAGER_ANGRY, x, player.field_70163_u + 0.800000011920929D + (player.func_70681_au().nextFloat() * player.height / 2.0F) - player.func_70033_W() - data.getBodyY(), z, d0, d1, d2, new int[0]);
+          double d0 = player.getRNG().nextGaussian() * 0.02D;
+          double d1 = player.getRNG().nextGaussian() * 0.02D;
+          double d2 = player.getRNG().nextGaussian() * 0.02D;
+          double x = player.posX + ((player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
+          double z = player.posZ + ((player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
+          player.worldObj.func_175688_a(EnumParticleTypes.VILLAGER_ANGRY, x, player.posY + 0.800000011920929D + (player.getRNG().nextFloat() * player.height / 2.0F) - player.func_70033_W() - data.getBodyY(), z, d0, d1, d2, new int[0]);
         }
       }
     } else if (type == EnumPackets.ANIMATION) {

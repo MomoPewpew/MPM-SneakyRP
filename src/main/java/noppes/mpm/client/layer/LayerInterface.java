@@ -60,7 +60,7 @@ public abstract class LayerInterface implements LayerRenderer {
     ModelPlayer model = this.render.func_177087_b();
     rotate(par2, par3, par4, par5, par6, par7);
     GlStateManager.pushMatrix();
-    if (this.player.func_70093_af())
+    if (this.player.isSneaking())
       GlStateManager.translate(0.0F, 0.2F, 0.0F);
     GlStateManager.enableRescaleNormal();
     render(par2, par3, par4, par5, par6, par7);

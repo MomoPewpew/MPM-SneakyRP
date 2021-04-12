@@ -119,7 +119,7 @@ public class ModelHalo extends ModelBase {
     if (this.field_78091_s) {
       GlStateManager.translate(0.75F, 0.75F, 0.75F);
       GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
       GlStateManager.disableLighting();
       this.head.render(f5);
@@ -129,10 +129,10 @@ public class ModelHalo extends ModelBase {
       GlStateManager.pushMatrix();
       GlStateManager.translate(0.5F, 0.5F, 0.5F);
       GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
     } else {
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
       GlStateManager.disableLighting();
       this.head.render(f5);

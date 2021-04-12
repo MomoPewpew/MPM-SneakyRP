@@ -29,16 +29,16 @@ public class EntityEnderFX extends ParticlePortal {
   public EntityEnderFX(AbstractClientPlayer player, double partialTicks, double rotationY, double rotationXY, double par8, double par10, double par12, ModelPartData data) {
     super(player.worldObj, partialTicks, rotationY, rotationXY, par8, par10, par12);
     this.player = player;
-    this.particleNumber = player.func_70681_au().nextInt(2);
+    this.particleNumber = player.getRNG().nextInt(2);
     this.portalParticleScale = this.field_70544_f = this.field_187136_p.nextFloat() * 0.2F + 0.5F;
     this.field_70552_h = (data.color >> 16 & 0xFF) / 255.0F;
     this.field_70553_i = (data.color >> 8 & 0xFF) / 255.0F;
     this.field_70551_j = (data.color & 0xFF) / 255.0F;
-    if (player.func_70681_au().nextInt(3) == 1) {
+    if (player.getRNG().nextInt(3) == 1) {
       this.move = false;
-      this.startX = (float)player.field_70165_t;
-      this.startY = (float)player.field_70163_u;
-      this.startZ = (float)player.field_70161_v;
+      this.startX = (float)player.posX;
+      this.startY = (float)player.posY;
+      this.startZ = (float)player.posZ;
     }
     if (data.playerTexture) {
       this.location = player.getLocationSkin();
@@ -49,9 +49,9 @@ public class EntityEnderFX extends ParticlePortal {
 
   public void func_180434_a(BufferBuilder renderer, Entity entity, float partialTicks, float rotationX, float rotationY, float rotationZ, float rotationXY, float rotationXZ) {
     if (this.move) {
-      this.startX = (float)(this.player.field_70169_q + (this.player.field_70165_t - this.player.field_70169_q) * partialTicks);
-      this.startY = (float)(this.player.field_70167_r + (this.player.field_70163_u - this.player.field_70167_r) * partialTicks);
-      this.startZ = (float)(this.player.field_70166_s + (this.player.field_70161_v - this.player.field_70166_s) * partialTicks);
+      this.startX = (float)(this.player.field_70169_q + (this.player.posX - this.player.field_70169_q) * partialTicks);
+      this.startY = (float)(this.player.field_70167_r + (this.player.posY - this.player.field_70167_r) * partialTicks);
+      this.startZ = (float)(this.player.field_70166_s + (this.player.posZ - this.player.field_70166_s) * partialTicks);
     }
     Tessellator tessellator = Tessellator.func_178181_a();
     tessellator.func_78381_a();

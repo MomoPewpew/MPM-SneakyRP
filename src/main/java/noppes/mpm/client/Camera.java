@@ -30,10 +30,10 @@ public class Camera {
       return;
     updateCamera();
     if (start) {
-      view.field_70177_z = view.field_70126_B = this.cameraYaw;
+      view.rotationYaw = view.field_70126_B = this.cameraYaw;
       view.field_70125_A = view.field_70127_C = this.cameraPitch;
     } else {
-      view.field_70177_z = mc.thePlayer.field_70177_z - this.cameraYaw + this.playerYaw;
+      view.rotationYaw = mc.thePlayer.rotationYaw - this.cameraYaw + this.playerYaw;
       view.field_70126_B = mc.thePlayer.field_70126_B - this.cameraYaw + this.playerYaw;
       view.field_70125_A = -this.playerPitch;
       view.field_70127_C = -this.playerPitch;
@@ -71,7 +71,7 @@ public class Camera {
   public void enabled() {
     Minecraft mc = Minecraft.getMinecraft();
     if (!this.enabled) {
-      this.cameraYaw = this.playerYaw = mc.thePlayer.field_70177_z;
+      this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
       this.cameraPitch = mc.thePlayer.field_70125_A;
       this.playerPitch = -this.cameraPitch;
     }

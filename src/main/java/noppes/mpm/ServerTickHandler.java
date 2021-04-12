@@ -22,12 +22,12 @@ public class ServerTickHandler {
       return;
     EntityPlayerMP player = (EntityPlayerMP)event.player;
     ModelData data = ModelData.get((EntityPlayer)player);
-    ItemStack item = (ItemStack)player.inventory.field_70462_a.get(0);
+    ItemStack item = (ItemStack)player.inventory.mainInventory.get(0);
     if (data.backItem != item) {
       if (item.func_190926_b()) {
         Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_REMOVE, new Object[] { player.getUniqueID() });
       } else {
-        NBTTagCompound tag = item.func_77955_b(new NBTTagCompound());
+        NBTTagCompound tag = item.writeToNBT(new NBTTagCompound());
         Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), tag });
       }
       data.backItem = item;
@@ -35,32 +35,32 @@ public class ServerTickHandler {
     data.eyes.update((EntityPlayer)player);
     if (data.animation != EnumAnimation.NONE)
       checkAnimation((EntityPlayer)player, data);
-    data.prevPosX = player.field_70165_t;
-    data.prevPosY = player.field_70163_u;
-    data.prevPosZ = player.field_70161_v;
+    data.prevPosX = player.posX;
+    data.prevPosY = player.posY;
+    data.prevPosZ = player.posZ;
   }
 
   public static void checkAnimation(EntityPlayer player, ModelData data) {
     if (data.prevPosY <= 0.0D || player.ticksExisted < 40)
       return;
-    double motionX = data.prevPosX - player.field_70165_t;
-    double motionY = data.prevPosY - player.field_70163_u;
-    double motionZ = data.prevPosZ - player.field_70161_v;
+    double motionX = data.prevPosX - player.posX;
+    double motionY = data.prevPosY - player.posY;
+    double motionZ = data.prevPosZ - player.posZ;
     double speed = motionX * motionX + motionZ * motionZ;
     boolean isJumping = (motionY * motionY > 0.08D);
     if (data.animationTime > 0)
       data.animationTime--;
-    if (player.func_70608_bn() || player.func_184218_aH() || data.animationTime == 0 || (data.animation == EnumAnimation.BOW && player.func_70093_af()))
+    if (player.isPlayerSleeping() || player.isRiding() || data.animationTime == 0 || (data.animation == EnumAnimation.BOW && player.isSneaking()))
       data.setAnimation(EnumAnimation.NONE);
-    if (!isJumping && player.func_70093_af() && (data.animation == EnumAnimation.HUG || data.animation == EnumAnimation.CRAWLING || data.animation == EnumAnimation.SITTING || data.animation == EnumAnimation.DANCING))
+    if (!isJumping && player.isSneaking() && (data.animation == EnumAnimation.HUG || data.animation == EnumAnimation.CRAWLING || data.animation == EnumAnimation.SITTING || data.animation == EnumAnimation.DANCING))
       return;
-    if (speed > 0.01D || isJumping || player.func_70608_bn() || player.func_184218_aH() || (data.isSleeping() && speed > 0.001D))
+    if (speed > 0.01D || isJumping || player.isPlayerSleeping() || player.isRiding() || (data.isSleeping() && speed > 0.001D))
       data.setAnimation(EnumAnimation.NONE);
   }
 
   @SubscribeEvent
   public void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-    MinecraftServer server = event.player.func_184102_h();
+    MinecraftServer server = event.player.getServer();
     if (!server.func_70002_Q())
       return;
     String serverName = null;

@@ -200,7 +200,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
       this.horseLegs.setRotationAngles(this.playerdata, par1, par2, par3, par4, par5, par6, (Entity)this.player);
     } else if (part.type == 1) {
       this.naga.isRiding = this.model.field_78093_q;
-      this.naga.isSleeping = (this.player.func_70608_bn() || this.playerdata.isSleeping());
+      this.naga.isSleeping = (this.player.isPlayerSleeping() || this.playerdata.isSleeping());
       this.naga.isCrawling = (this.playerdata.animation == EnumAnimation.CRAWLING);
       this.naga.isSneaking = this.model.field_78117_n;
       this.naga.setRotationAngles(par1, par2, par3, par4, par5, par6, (Entity)this.player);
@@ -225,7 +225,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     if (part.type == 2) {
       this.rotationPointY = 12.0F + (config.scaleY - 1.0F) * 3.0F;
       this.rotationPointZ = 15.0F + (config.scaleZ - 1.0F) * 10.0F;
-      if (this.playerdata.isSleeping() || this.player.func_70608_bn() || this.playerdata.animation == EnumAnimation.CRAWLING) {
+      if (this.playerdata.isSleeping() || this.player.isPlayerSleeping() || this.playerdata.animation == EnumAnimation.CRAWLING) {
         this.rotationPointY = 12.0F + 16.0F * config.scaleZ;
         this.rotationPointZ = 1.0F * config.scaleY;
         rotateAngleX = -0.7853982F;

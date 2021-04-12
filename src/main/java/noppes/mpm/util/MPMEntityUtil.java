@@ -13,23 +13,23 @@ public class MPMEntityUtil {
     entity.field_82151_R = copied.field_82151_R;
     entity.field_191988_bg = copied.field_191988_bg;
     entity.field_70702_br = copied.field_70702_br;
-    entity.field_70122_E = copied.field_70122_E;
-    entity.field_70143_R = copied.field_70143_R;
+    entity.isOnLadder = copied.isOnLadder;
+    entity.fallDistance  = copied.fallDistance ;
     entity.field_70703_bu = copied.field_70703_bu;
-    entity.func_70095_a(copied.func_70093_af());
+    entity.func_70095_a(copied.isSneaking());
     entity.field_70169_q = copied.field_70169_q;
     entity.field_70167_r = copied.field_70167_r;
     entity.field_70166_s = copied.field_70166_s;
-    entity.field_70165_t = copied.field_70165_t;
-    entity.field_70163_u = copied.field_70163_u;
-    entity.field_70161_v = copied.field_70161_v;
+    entity.posX = copied.posX;
+    entity.posY = copied.posY;
+    entity.posZ = copied.posZ;
     entity.field_70142_S = copied.field_70142_S;
     entity.field_70137_T = copied.field_70137_T;
     entity.field_70136_U = copied.field_70136_U;
     entity.field_70159_w = copied.field_70159_w;
     entity.field_70181_x = copied.field_70181_x;
     entity.field_70179_y = copied.field_70179_y;
-    entity.field_70177_z = copied.field_70177_z;
+    entity.rotationYaw = copied.rotationYaw;
     entity.field_70125_A = copied.field_70125_A;
     entity.field_70126_B = copied.field_70126_B;
     entity.field_70127_C = copied.field_70127_C;
@@ -47,9 +47,9 @@ public class MPMEntityUtil {
     entity.field_82175_bq = copied.field_82175_bq;
     entity.field_110158_av = copied.field_110158_av;
     entity.ticksExisted = copied.ticksExisted;
-    entity.func_70606_j(Math.min(copied.func_110143_aJ(), entity.func_110138_aP()));
+    entity.func_70606_j(Math.min(copied.getHealth(), entity.func_110138_aP()));
     entity.getEntityData().func_179237_a(copied.getEntityData());
-    if (entity.func_184187_bx() != copied.func_184187_bx())
+    if (entity.getRidingEntity() != copied.getRidingEntity())
       entity.field_184239_as = copied.field_184239_as;
     if (entity instanceof EntityPlayer && copied instanceof EntityPlayer) {
       EntityPlayer ePlayer = (EntityPlayer)entity;
@@ -66,6 +66,6 @@ public class MPMEntityUtil {
     for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
       entity.setItemStackToSlot(slot, copied.func_184582_a(slot));
     if (entity instanceof net.minecraft.entity.boss.EntityDragon)
-      entity.field_70177_z += 180.0F;
+      entity.rotationYaw += 180.0F;
   }
 }

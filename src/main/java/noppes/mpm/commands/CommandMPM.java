@@ -221,7 +221,7 @@ public class CommandMPM extends MpmCommandInterface {
       String type = args[0].toLowerCase();
       List<String> list = new ArrayList<>();
       if (args.length == 2)
-        list.addAll(Arrays.asList(server.func_184103_al().func_72369_d()));
+        list.addAll(Arrays.asList(server.getPlayerList().func_72369_d()));
       if (type.equals("model"))
         list.addAll(this.entities.keySet());
       if (type.equals("animation"))

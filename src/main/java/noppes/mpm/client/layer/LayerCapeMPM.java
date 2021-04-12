@@ -25,13 +25,13 @@ public class LayerCapeMPM extends LayerCape {
     ModelData data = ModelData.get((EntityPlayer)player);
     ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
     GlStateManager.pushMatrix();
-    if (player.func_70093_af() && !data.animationEquals(EnumAnimation.CRAWLING))
+    if (player.isSneaking() && !data.animationEquals(EnumAnimation.CRAWLING))
       GlStateManager.translate(0.0F, 0.0F, (-2.0F + config.scaleZ) * scale);
     GlStateManager.translate(config.transX, config.transY, config.transZ + (-1.0F + config.scaleZ) * scale);
     GlStateManager.translate(config.scaleX, config.scaleY, 1.0F);
     if (data.animationEquals(EnumAnimation.CRAWLING)) {
       int rotation = 78;
-      if (player.func_70093_af())
+      if (player.isSneaking())
         GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
     }
     if (player.field_70737_aN > 0 || player.field_70725_aQ > 0)

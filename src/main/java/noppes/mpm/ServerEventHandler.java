@@ -42,7 +42,7 @@ public class ServerEventHandler {
 
   @SubscribeEvent
   public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
-    if (!(event.getEntity() instanceof EntityPlayer) || event.getSound() == null || event.getSound() != SoundEvents.field_187800_eb)
+    if (!(event.getEntity() instanceof EntityPlayer) || event.getSound() == null || event.getSound() != SoundEvents.ENTITY_PLAYER_HURT)
       return;
     EntityPlayer player = (EntityPlayer)event.getEntity();
     ModelData data = ModelData.get(player);
@@ -51,7 +51,7 @@ public class ServerEventHandler {
     if (data.soundType == 0)
       return;
     ResourceLocation sound = null;
-    if (player.func_110143_aJ() <= 1.0F || player.field_70128_L) {
+    if (player.getHealth() <= 1.0F || player.isDead) {
       if (data.soundType == 1) {
         sound = female_death;
       } else if (data.soundType == 2) {
@@ -72,17 +72,17 @@ public class ServerEventHandler {
 
   @SubscribeEvent
   public void chat(ServerChatEvent event) {
-    Server.sendToAll(event.getPlayer().func_184102_h(), EnumPackets.CHAT_EVENT, new Object[] { event.getPlayer().getUniqueID(), event.getMessage() });
+    Server.sendToAll(event.getPlayer().getServer(), EnumPackets.CHAT_EVENT, new Object[] { event.getPlayer().getUniqueID(), event.getMessage() });
     ModelData data = ModelData.get((EntityPlayer)event.getPlayer());
     if (!data.displayFormat.isEmpty() && event.getComponent() instanceof TextComponentTranslation) {
-      Object[] obs = ((TextComponentTranslation)event.getComponent()).func_150271_j();
+      Object[] obs = ((TextComponentTranslation)event.getComponent()).getFormatArgs();
       if (obs.length > 0) {
         ITextComponent comp = (ITextComponent)obs[0];
-        if (comp.func_150253_a().size() > 0 && comp.func_150253_a().get(0) instanceof TextComponentString) {
-          TextComponentString com = comp.func_150253_a().get(0);
-          if (com.func_150260_c().equals(event.getPlayer().func_145748_c_().func_150260_c())) {
-            comp.func_150253_a().remove(0);
-            comp.func_150253_a().add(0, new TextComponentString(data.displayFormat + event.getPlayer().func_145748_c_().func_150260_c()));
+        if (comp.getSiblings().size() > 0 && comp.getSiblings().get(0) instanceof TextComponentString) {
+          TextComponentString com = comp.getSiblings().get(0);
+          if (com.getUnformattedText().equals(event.getPlayer().getDisplayName().getUnformattedText())) {
+            comp.getSiblings().remove(0);
+            comp.getSiblings().add(0, new TextComponentString(data.displayFormat + event.getPlayer().getDisplayName().getUnformattedText()));
           }
         }
       }
@@ -91,11 +91,11 @@ public class ServerEventHandler {
 
   @SubscribeEvent
   public void onAttack(LivingAttackEvent event) {
-    if ((event.getEntityLiving()).worldObj.isRemote || event.getAmount() < 1.0F || !(event.getSource()).field_76373_n.equals("player") || !(event.getSource().func_76346_g() instanceof EntityPlayer))
+    if ((event.getEntityLiving()).worldObj.isRemote || event.getAmount() < 1.0F || !(event.getSource()).damageType.equals("player") || !(event.getSource().getSourceOfDamage() instanceof EntityPlayer))
       return;
-    EntityPlayer player = (EntityPlayer)event.getSource().func_76346_g();
-    boolean flag = (player.field_70143_R > 0.0F && !player.field_70122_E && !player.func_70617_f_() && !player.func_70090_H() && !player.func_70644_a(MobEffects.field_76440_q) && player.func_184187_bx() == null);
-    if (!flag || event.getEntityLiving().func_110143_aJ() < 0.0F || player.field_70172_ad > player.field_70771_an / 2.0F)
+    EntityPlayer player = (EntityPlayer)event.getSource().getSourceOfDamage();
+    boolean flag = (player.fallDistance  > 0.0F && !player.onGround  && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(MobEffects.BLINDNESS) && player.getRidingEntity() == null);
+    if (!flag || event.getEntityLiving().getHealth() < 0.0F || player.hurtResistantTime  > player.maxHurtResistantTime  / 2.0F)
       return;
     ModelData data = ModelData.get(player);
     if (data == null)
@@ -110,8 +110,8 @@ public class ServerEventHandler {
     } else {
       return;
     }
-    float pitch = (player.func_70681_au().nextFloat() - player.func_70681_au().nextFloat()) * 0.2F + 1.0F;
-    player.worldObj.func_184133_a(player, player.func_180425_c(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
+    float pitch = (player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.2F + 1.0F;
+    player.worldObj.playSound(player, player.getPosition(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
   }
 
   @SubscribeEvent
@@ -122,9 +122,9 @@ public class ServerEventHandler {
     EntityPlayerMP player = (EntityPlayerMP)event.getEntityPlayer();
     ModelData data = ModelData.get(target);
     Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, new Object[] { target.getUniqueID(), data.writeToNBT() });
-    ItemStack back = (ItemStack)player.inventory.field_70462_a.get(0);
+    ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
     if (!back.func_190926_b()) {
-      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.getUniqueID(), back.func_77955_b(new NBTTagCompound()) });
+      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.getUniqueID(), back.writeToNBT(new NBTTagCompound()) });
     } else {
       Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, new Object[] { target.getUniqueID() });
     }

@@ -15,9 +15,9 @@ import noppes.mpm.constants.EnumPackets;
 public class PacketHandlerServer {
   @SubscribeEvent
   public void onPacketData(FMLNetworkEvent.ServerCustomPacketEvent event) {
-    EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).field_147369_b;
+    EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).playerEntity;
     ByteBuf buf = event.getPacket().payload();
-    player.func_184102_h().addScheduledTask(() -> {
+    player.getServer().addScheduledTask(() -> {
           EnumPackets type = null;
           try {
             type = EnumPackets.values()[buf.readInt()];
@@ -34,26 +34,26 @@ public class PacketHandlerServer {
       if (version == MorePlayerModels.Version) {
         ModelData data = ModelData.get((EntityPlayer)player);
         data.readFromNBT(Server.readNBT(buffer));
-        if (!player.worldObj.func_82736_K().func_82766_b("mpmAllowEntityModels"))
+        if (!player.worldObj.getGameRules().getBoolean("mpmAllowEntityModels"))
           data.entityClass = null;
         data.save();
         Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
       }
-      ItemStack back = (ItemStack)player.inventory.field_70462_a.get(0);
+      ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
       if (!back.func_190926_b())
-        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), back.func_77955_b(new NBTTagCompound()) });
+        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), back.writeToNBT(new NBTTagCompound()) });
       Server.sendData(player, EnumPackets.PING, new Object[] { Integer.valueOf(MorePlayerModels.Version) });
     } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {
       ModelData data = ModelData.get((EntityPlayer)player);
       data.readFromNBT(Server.readNBT(buffer));
-      if (!player.worldObj.func_82736_K().func_82766_b("mpmAllowEntityModels"))
+      if (!player.worldObj.getGameRules().getBoolean("mpmAllowEntityModels"))
         data.entityClass = null;
       data.save();
       Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
     } else if (type == EnumPackets.ANIMATION) {
       EnumAnimation animation = EnumAnimation.values()[buffer.readInt()];
       if (animation == EnumAnimation.SLEEPING_SOUTH) {
-        float rotation = player.field_70177_z;
+        float rotation = player.rotationYaw;
         while (rotation < 0.0F)
           rotation += 360.0F;
         while (rotation > 360.0F)

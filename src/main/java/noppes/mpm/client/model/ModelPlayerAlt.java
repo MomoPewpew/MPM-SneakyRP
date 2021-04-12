@@ -115,7 +115,7 @@ public class ModelPlayerAlt extends ModelPlayer {
     this.field_178723_h.field_78797_d = 2.0F;
     this.field_178723_h.field_78798_e = 0.0F;
     super.func_78087_a(par1, par2, par3, par4, par5, par6, entity);
-    if (this.playerdata.isSleeping() || player.func_70608_bn()) {
+    if (this.playerdata.isSleeping() || player.isPlayerSleeping()) {
       if (this.bipedHead.rotateAngleX < 0.0F) {
         this.bipedHead.rotateAngleX = 0.0F;
         this.bipedHeadwear.rotateAngleX = 0.0F;

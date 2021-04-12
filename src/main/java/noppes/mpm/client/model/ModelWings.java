@@ -97,17 +97,17 @@ public class ModelWings extends ModelBase {
     if (this.field_78091_s) {
       GlStateManager.translate(0.75F, 0.75F, 0.75F);
       GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
       GlStateManager.popMatrix();
       GlStateManager.pushMatrix();
       GlStateManager.translate(0.5F, 0.5F, 0.5F);
       GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
       renderWings(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5);
     } else {
-      if (entityIn.func_70093_af())
+      if (entityIn.isSneaking())
         GlStateManager.translate(0.0F, 0.2F, 0.0F);
       renderWings(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5);
     }
@@ -116,7 +116,7 @@ public class ModelWings extends ModelBase {
 
   public void renderWings(Entity player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
     float motion = Math.abs(MathHelper.func_76126_a(limbSwing * 0.033F + 3.1415927F) * 0.4F) * limbSwingAmount;
-    boolean flapWings = player.worldObj.isAirBlock(player.func_180425_c().func_177977_b());
+    boolean flapWings = player.worldObj.isAirBlock(player.getPosition().func_177977_b());
     float speed = 0.55F + 0.5F * motion;
     float y = MathHelper.func_76126_a(ageInTicks * 0.35F);
     float flap = y * 0.5F * speed;

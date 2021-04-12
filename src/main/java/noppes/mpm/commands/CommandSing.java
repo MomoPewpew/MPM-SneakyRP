@@ -18,7 +18,7 @@ public class CommandSing extends MpmCommandInterface {
     if (!(sender instanceof EntityPlayerMP))
       return;
     EntityPlayerMP player = (EntityPlayerMP)sender;
-    int note = player.func_70681_au().nextInt(25);
+    int note = player.getRNG().nextInt(25);
     if (args.length > 0)
       try {
         int n = Integer.parseInt(args[0]);
@@ -26,8 +26,8 @@ public class CommandSing extends MpmCommandInterface {
           note = n;
       } catch (NumberFormatException numberFormatException) {}
     float pitch = (float)Math.pow(2.0D, (note - 12) / 12.0D);
-    player.worldObj.func_184148_a(null, player.field_70165_t, player.field_70163_u, player.field_70161_v, SoundEvents.field_187682_dG, SoundCategory.PLAYERS, 3.0F, pitch);
-    Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.field_70165_t), Double.valueOf(player.field_70163_u + 2.0D), Double.valueOf(player.field_70161_v), Double.valueOf(note / 24.0D) });
+    player.worldObj.func_184148_a(null, player.posX, player.posY, player.posZ, SoundEvents.field_187682_dG, SoundCategory.PLAYERS, 3.0F, pitch);
+    Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.posX), Double.valueOf(player.posY + 2.0D), Double.valueOf(player.posZ), Double.valueOf(note / 24.0D) });
   }
 
   public String func_71518_a(ICommandSender sender) {

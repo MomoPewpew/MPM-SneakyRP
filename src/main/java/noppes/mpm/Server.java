@@ -51,7 +51,7 @@ public class Server {
   }
 
   public static void sendAssociatedData(Entity entity, EnumPackets enu, Object... obs) {
-    List<EntityPlayerMP> list = entity.worldObj.func_72872_a(EntityPlayerMP.class, entity.func_174813_aQ().func_72314_b(160.0D, 160.0D, 160.0D));
+    List<EntityPlayerMP> list = entity.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D));
     if (list.isEmpty())
       return;
     MPMScheduler.runTack(() -> {
@@ -68,7 +68,7 @@ public class Server {
   }
 
   public static void sendToAll(MinecraftServer server, EnumPackets enu, Object... obs) {
-    List<EntityPlayerMP> list = new ArrayList<>(server.func_184103_al().func_181057_v());
+    List<EntityPlayerMP> list = new ArrayList<>(server.getPlayerList().getPlayerList());
     if (list.isEmpty())
       return;
     MPMScheduler.runTack(() -> {
@@ -97,7 +97,7 @@ public class Server {
             writeString(buffer, key);
           }
         } else if (ob instanceof MerchantRecipeList) {
-          ((MerchantRecipeList)ob).func_151391_a(new PacketBuffer(buffer));
+          ((MerchantRecipeList)ob).writeToBuf(new PacketBuffer(buffer));
         } else if (ob instanceof List) {
           List<String> list = (List<String>)ob;
           buffer.writeInt(list.size());
@@ -130,7 +130,7 @@ public class Server {
     ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
     DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream));
     try {
-      CompressedStreamTools.func_74800_a(compound, dataoutputstream);
+      CompressedStreamTools.write(compound, dataoutputstream);
     } finally {
       dataoutputstream.close();
     }
@@ -144,7 +144,7 @@ public class Server {
     buffer.readBytes(bytes);
     DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
     try {
-      return CompressedStreamTools.func_152456_a(datainputstream, new NBTSizeTracker(2097152L));
+      return CompressedStreamTools.read(datainputstream, new NBTSizeTracker(2097152L));
     } finally {
       datainputstream.close();
     }

@@ -143,8 +143,8 @@ public class MorePlayerModels {
     event.registerServerCommand((ICommand)new CommandSing());
     event.registerServerCommand((ICommand)new CommandAngry());
     event.registerServerCommand((ICommand)new CommandMPM());
-    GameRules rules = event.getServer().func_71218_a(0).func_82736_K();
-    if (!rules.func_82765_e("mpmAllowEntityModels"))
-      rules.func_180262_a("mpmAllowEntityModels", "true", GameRules.ValueType.BOOLEAN_VALUE);
+    GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
+    if (!rules.hasRule("mpmAllowEntityModels"))
+      rules.addGameRule("mpmAllowEntityModels", "true", GameRules.ValueType.BOOLEAN_VALUE);
   }
 }

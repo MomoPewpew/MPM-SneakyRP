@@ -112,7 +112,7 @@ public class ClientEventHandler {
 
   @SubscribeEvent
   public void onCommand(CommandEvent event) {
-    if (!(event.getCommand() instanceof noppes.mpm.commands.MpmCommandInterface) || event.getSender().func_184102_h() != null || this.slashPressed)
+    if (!(event.getCommand() instanceof noppes.mpm.commands.MpmCommandInterface) || event.getSender().getServer() != null || this.slashPressed)
       return;
     event.setCanceled(true);
   }
@@ -140,7 +140,7 @@ public class ClientEventHandler {
       EntityPlayerSP entityPlayerSP = (Minecraft.getMinecraft()).thePlayer;
       EnumAnimation animation = EnumAnimation.values()[type];
       if (animation == EnumAnimation.SLEEPING_SOUTH) {
-        float rotation = ((EntityPlayer)entityPlayerSP).field_70177_z;
+        float rotation = ((EntityPlayer)entityPlayerSP).rotationYaw;
         while (rotation < 0.0F)
           rotation += 360.0F;
         while (rotation > 360.0F)
@@ -193,15 +193,15 @@ public class ClientEventHandler {
   public void onCamera(EntityViewRenderEvent.CameraSetup event) {
     Minecraft mc = Minecraft.getMinecraft();
     Entity entity = event.getEntity();
-    if ((entity instanceof EntityLivingBase && ((EntityLivingBase)entity).func_70608_bn()) || mc.field_71474_y.field_74320_O != 1)
+    if ((entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPlayerSleeping()) || mc.field_71474_y.field_74320_O != 1)
       return;
     float f = entity.func_70047_e();
     double partialTicks = event.getRenderPartialTicks();
-    double d0 = entity.field_70169_q + (entity.field_70165_t - entity.field_70169_q) * partialTicks;
-    double d1 = entity.field_70167_r + (entity.field_70163_u - entity.field_70167_r) * partialTicks + f;
-    double d2 = entity.field_70166_s + (entity.field_70161_v - entity.field_70166_s) * partialTicks;
+    double d0 = entity.field_70169_q + (entity.posX - entity.field_70169_q) * partialTicks;
+    double d1 = entity.field_70167_r + (entity.posY - entity.field_70167_r) * partialTicks + f;
+    double d2 = entity.field_70166_s + (entity.posZ - entity.field_70166_s) * partialTicks;
     double d3 = (camera.cameraDistance - 4.0F);
-    float f1 = entity.field_70177_z;
+    float f1 = entity.rotationYaw;
     float f2 = entity.field_70125_A;
     double d4 = (-MathHelper.func_76126_a(f1 * 0.017453292F) * MathHelper.func_76134_b(f2 * 0.017453292F)) * d3;
     double d5 = (MathHelper.func_76134_b(f1 * 0.017453292F) * MathHelper.func_76134_b(f2 * 0.017453292F)) * d3;
@@ -221,9 +221,9 @@ public class ClientEventHandler {
       }
     }
     GlStateManager.rotate(entity.field_70125_A - f2, 1.0F, 0.0F, 0.0F);
-    GlStateManager.rotate(entity.field_70177_z - f1, 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotate(entity.rotationYaw - f1, 0.0F, 1.0F, 0.0F);
     GlStateManager.translate(0.0F, 0.0F, (float)-d3);
-    GlStateManager.rotate(f1 - entity.field_70177_z, 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotate(f1 - entity.rotationYaw, 0.0F, 1.0F, 0.0F);
     GlStateManager.rotate(f2 - entity.field_70125_A, 1.0F, 0.0F, 0.0F);
   }
 
@@ -244,21 +244,21 @@ public class ClientEventHandler {
       data.eyes.update(player);
     if (data.inLove > 0) {
       data.inLove--;
-      if (player.func_70681_au().nextBoolean()) {
-        double d0 = player.func_70681_au().nextGaussian() * 0.02D;
-        double d1 = player.func_70681_au().nextGaussian() * 0.02D;
-        double d2 = player.func_70681_au().nextGaussian() * 0.02D;
-        player.worldObj.func_175688_a(EnumParticleTypes.HEART, player.field_70165_t + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, player.field_70163_u + 0.5D + (player.func_70681_au().nextFloat() * player.height), player.field_70161_v + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, d0, d1, d2, new int[0]);
+      if (player.getRNG().nextBoolean()) {
+        double d0 = player.getRNG().nextGaussian() * 0.02D;
+        double d1 = player.getRNG().nextGaussian() * 0.02D;
+        double d2 = player.getRNG().nextGaussian() * 0.02D;
+        player.worldObj.func_175688_a(EnumParticleTypes.HEART, player.posX + (player.getRNG().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, player.posY + 0.5D + (player.getRNG().nextFloat() * player.height), player.posZ + (player.getRNG().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, d0, d1, d2, new int[0]);
       }
     }
     if (data.animation == EnumAnimation.CRY) {
-      float f1 = player.field_70177_z * 3.1415927F / 180.0F;
+      float f1 = player.rotationYaw * 3.1415927F / 180.0F;
       float dx = -MathHelper.func_76126_a(f1);
       float dz = MathHelper.func_76134_b(f1);
       for (int i = 0; i < 10.0F; i++) {
-        float f2 = (player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dx * 0.15F;
-        float f3 = (player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dz * 0.15F;
-        player.worldObj.func_175688_a(EnumParticleTypes.WATER_SPLASH, player.field_70165_t + f2, player.field_70163_u - data.getBodyY() + 1.100000023841858D - player.func_70033_W(), player.field_70161_v + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
+        float f2 = (player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dx * 0.15F;
+        float f3 = (player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dz * 0.15F;
+        player.worldObj.func_175688_a(EnumParticleTypes.WATER_SPLASH, player.posX + f2, player.posY - data.getBodyY() + 1.100000023841858D - player.func_70033_W(), player.posZ + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
       }
     }
     if (data.animation != EnumAnimation.NONE)
@@ -270,12 +270,12 @@ public class ClientEventHandler {
         player.field_70725_aQ++;
     }
     if (data.prevAnimation != data.animation && data.prevAnimation == EnumAnimation.DEATH &&
-      !player.field_70128_L)
+      !player.isDead)
       player.field_70725_aQ = 0;
     data.prevAnimation = data.animation;
-    data.prevPosX = player.field_70165_t;
-    data.prevPosY = player.field_70163_u;
-    data.prevPosZ = player.field_70161_v;
+    data.prevPosX = player.posX;
+    data.prevPosY = player.posY;
+    data.prevPosZ = player.posZ;
     ModelPartData particles = data.getPartData(EnumParts.PARTICLES);
     if (particles != null)
       spawnParticles(player, data, particles);
@@ -286,7 +286,7 @@ public class ClientEventHandler {
       return;
     Minecraft minecraft = Minecraft.getMinecraft();
     double height = player.func_70033_W() + data.getBodyY();
-    Random rand = player.func_70681_au();
+    Random rand = player.getRNG();
     for (int i = 0; i < 2; i++) {
       EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.field_70130_N, rand.nextDouble() * player.height - height - 0.25D, (rand.nextDouble() - 0.5D) * player.field_70130_N, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
       minecraft.field_71452_i.func_78873_a((Particle)fx);

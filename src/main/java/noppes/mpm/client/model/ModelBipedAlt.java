@@ -86,7 +86,7 @@ public class ModelBipedAlt extends ModelBiped {
     this.field_178723_h.field_78797_d = 2.0F;
     this.field_178723_h.field_78798_e = 0.0F;
     super.func_78087_a(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
-    if (data.isSleeping() || player.func_70608_bn()) {
+    if (data.isSleeping() || player.isPlayerSleeping()) {
       if (this.bipedHead.rotateAngleX < 0.0F) {
         this.bipedHead.rotateAngleX = 0.0F;
         this.bipedHeadwear.rotateAngleX = 0.0F;

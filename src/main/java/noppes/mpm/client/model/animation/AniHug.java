@@ -6,8 +6,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class AniHug {
   public static void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity, ModelBiped base) {
-    float f6 = MathHelper.sin(base.field_78095_p * 3.141593F);
-    float f7 = MathHelper.sin((1.0F - (1.0F - base.field_78095_p) * (1.0F - base.field_78095_p)) * 3.141593F);
+    float f6 = MathHelper.sin(base.swingProgress * 3.141593F);
+    float f7 = MathHelper.sin((1.0F - (1.0F - base.swingProgress) * (1.0F - base.swingProgress)) * 3.141593F);
     base.bipedRightArm.rotateAngleZ = 0.0F;
     base.bipedLeftArm.rotateAngleZ = 0.0F;
     base.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);

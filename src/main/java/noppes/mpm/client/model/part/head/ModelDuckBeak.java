@@ -55,6 +55,7 @@ public class ModelDuckBeak extends ModelRenderer {
     addChild(this.Top);
   }
 
+  @Override
   public void render(float scale) {
     GlStateManager.pushMatrix();
     GlStateManager.translate(0.0F, 0.0F, -1.0F * scale);

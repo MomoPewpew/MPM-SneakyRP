@@ -47,6 +47,7 @@ public class ModelHeadwear extends ModelScaleRenderer {
     addChild((ModelRenderer)bottom);
   }
 
+  @Override
   public void setRotation(ModelRenderer model, float x, float y, float z) {
     model.rotateAngleX = x;
     model.rotateAngleY = y;

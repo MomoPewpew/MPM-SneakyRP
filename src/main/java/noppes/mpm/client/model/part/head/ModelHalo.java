@@ -106,6 +106,7 @@ public class ModelHalo extends ModelBase {
     this.halo_1.addChild(this.halo_2);
   }
 
+  @Override
   public void render(float f5, EntityPlayer entityIn) {
     this.field_78091_s = false;
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);

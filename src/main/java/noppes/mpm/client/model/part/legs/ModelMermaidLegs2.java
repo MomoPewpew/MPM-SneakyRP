@@ -69,6 +69,7 @@ public class ModelMermaidLegs2 extends ModelRenderer {
     this.Tail4.addChild(this.Tail8);
   }
 
+  @Override
   public void render(float f5) {
     if (this.isHidden || !this.showModel)
       return;

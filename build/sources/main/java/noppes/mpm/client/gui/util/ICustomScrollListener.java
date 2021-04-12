@@ -1,9 +1,7 @@
 package noppes.mpm.client.gui.util;
 
-
-
 public interface ICustomScrollListener {
+  void scrollClicked(int paramInt1, int paramInt2, int paramInt3, GuiCustomScroll paramGuiCustomScroll);
 
-	void customScrollClicked(int i, int j, int k, GuiCustomScroll guiCustomScroll);
-
+  void scrollDoubleClicked(String paramString, GuiCustomScroll paramGuiCustomScroll);
 }

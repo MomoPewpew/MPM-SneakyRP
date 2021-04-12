@@ -1,7 +1,6 @@
 package noppes.mpm;
 
 import java.io.File;
-
 import net.minecraft.command.ICommand;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -27,121 +26,125 @@ import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.util.PixelmonHelper;
 
-@Mod(modid = "moreplayermodels", name = "MorePlayerModels", version = "1.10.2"
-	, dependencies = "required-after:Forge@[12.16.0.1811,);"
-	)
+@Mod(modid = "moreplayermodels", name = "MorePlayerModels", version = "1.12.2", acceptedMinecraftVersions = "1.12, 1.12.1, 1.12.2")
 public class MorePlayerModels {
+  public static final String MODID = "moreplayermodels";
 
-    @ConfigProp
-    public static boolean InventoryGuiEnabled = true;
+  public static final String VERSION = "1.12.2";
 
-	@ConfigProp
-	public static int Tooltips = 2;
+  @ConfigProp
+  public static boolean InventoryGuiEnabled = true;
 
-	@SidedProxy(clientSide = "noppes.mpm.client.ClientProxy", serverSide = "noppes.mpm.CommonProxy")
-	public static CommonProxy proxy;
+  @ConfigProp
+  public static int Tooltips = 2;
 
-	public static FMLEventChannel Channel;
+  @SidedProxy(clientSide = "noppes.mpm.client.ClientProxy", serverSide = "noppes.mpm.CommonProxy")
+  public static CommonProxy proxy;
 
-	public static MorePlayerModels instance;
+  public static FMLEventChannel Channel;
 
-	public static int Version = 8;
+  public static MorePlayerModels instance;
 
-	public static File dir;
+  public static int Version = 8;
 
-	public static boolean HasServerSide = false;
+  public static File dir;
 
-	@ConfigProp(info="Enable different perspective heights for different model sizes")
-	public static boolean EnablePOV = true;
+  public static boolean HasServerSide = false;
 
-	@ConfigProp(info="Enables the item on your back")
-	public static boolean EnableBackItem = true;
+  @ConfigProp(info = "Enable different perspective heights for different model sizes")
+  public static boolean EnablePOV = true;
 
-	@ConfigProp(info="Enables chat bubbles")
-	public static boolean EnableChatBubbles = true;
+  @ConfigProp(info = "Enables the item on your back")
+  public static boolean EnableBackItem = true;
 
-	@ConfigProp(info="Enables MorePlayerModels startup update message")
-	public static boolean EnableUpdateChecker = true;
+  @ConfigProp(info = "Enables chat bubbles")
+  public static boolean EnableChatBubbles = true;
 
-	@ConfigProp(info="Set to false if you dont want to see player particles")
-	public static boolean EnableParticles = true;
+  @ConfigProp(info = "Enables MorePlayerModels startup update message")
+  public static boolean EnableUpdateChecker = true;
 
-	@ConfigProp(info="Set to true if you dont want to see hide player names")
-	public static boolean HidePlayerNames = false;
+  @ConfigProp(info = "Set to false if you dont want to see player particles")
+  public static boolean EnableParticles = true;
 
-	@ConfigProp(info="Set to true if you dont want to see hide selection boxes when pointing to blocks")
-	public static boolean HideSelectionBox = false;
+  @ConfigProp(info = "Set to true if you dont want to see hide player names")
+  public static boolean HidePlayerNames = false;
 
-	@ConfigProp(info="Type 0 = Normal, Type 1 = Solid")
-	public static int HeadWearType = 1;
+  @ConfigProp(info = "Set to true if you dont want to see hide selection boxes when pointing to blocks")
+  public static boolean HideSelectionBox = false;
 
-	@ConfigProp(info="Disables scaling and animations from more compatibilty with other mods")
-	public static boolean Compatibility = false;
+  @ConfigProp(info = "Set to true if you want no flying animation")
+  public static boolean DisableFlyingAnimation = false;
 
-	@ConfigProp(info="Used to register buttons to animations")
-	public static int button1 = EnumAnimation.SLEEPING_SOUTH.ordinal();
-	@ConfigProp(info="Used to register buttons to animations")
-	public static int button2 = EnumAnimation.SITTING.ordinal();
-	@ConfigProp(info="Used to register buttons to animations")
-	public static int button3 = EnumAnimation.CRAWLING.ordinal();
-	@ConfigProp(info="Used to register buttons to animations")
-	public static int button4 = EnumAnimation.HUG.ordinal();
-	@ConfigProp(info="Used to register buttons to animations")
-	public static int button5 = EnumAnimation.DANCING.ordinal();
-	public static String MODID;
+  @ConfigProp(info = "Type 0 = Normal, Type 1 = Solid")
+  public static int HeadWearType = 1;
 
-	public ConfigLoader configLoader;
+  @ConfigProp(info = "Disables scaling and animations from more compatibilty with other mods")
+  public static boolean Compatibility = false;
 
-	public MorePlayerModels(){
-		instance = this;
-	}
+  @ConfigProp(info = "Used to register buttons to animations")
+  public static int button1 = EnumAnimation.SLEEPING_SOUTH.ordinal();
 
-	@EventHandler
-	public void load(FMLPreInitializationEvent ev) {
-		LogWriter.info("Loading");
-		Channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("MorePlayerModels");
+  @ConfigProp(info = "Used to register buttons to animations")
+  public static int button2 = EnumAnimation.SITTING.ordinal();
 
-		File dir = new File(ev.getModConfigurationDirectory(), "..");
+  @ConfigProp(info = "Used to register buttons to animations")
+  public static int button3 = EnumAnimation.CRAWLING.ordinal();
 
-		this.dir = new File(dir,"moreplayermodels");
-		if(!this.dir.exists())
-			this.dir.mkdir();
+  @ConfigProp(info = "Used to register buttons to animations")
+  public static int button4 = EnumAnimation.HUG.ordinal();
 
-		configLoader = new ConfigLoader(this.getClass(), new File(dir, "config"), "MorePlayerModels");
-		configLoader.loadConfig();
+  @ConfigProp(info = "Used to register buttons to animations")
+  public static int button5 = EnumAnimation.DANCING.ordinal();
 
-		if(Loader.isModLoaded("Morph"))
-			EnablePOV = false;
+  public ConfigLoader configLoader;
 
-        PixelmonHelper.load();
+  public MorePlayerModels() {
+    instance = this;
+  }
 
-		proxy.load();
-	    NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-	    MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
-	    MinecraftForge.EVENT_BUS.register(new ServerTickHandler());
-	    CapabilityManager.INSTANCE.register(ModelData.class, new Capability.IStorage() {
-	          public NBTBase writeNBT(Capability capability, Object instance, EnumFacing side) {
-	            return null;
-	          }
+  @EventHandler
+  public void load(FMLPreInitializationEvent ev) {
+    LogWriter.info("Loading");
+    Channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("MorePlayerModels");
+    File dir = new File(ev.getModConfigurationDirectory(), "..");
+    this;
+    MorePlayerModels.dir = new File(dir, "moreplayermodels");
+    this;
+    if (!MorePlayerModels.dir.exists()) {
+      this;
+      MorePlayerModels.dir.mkdir();
+    }
+    this.configLoader = new ConfigLoader(getClass(), new File(dir, "config"), "MorePlayerModels");
+    this.configLoader.loadConfig();
+    if (Loader.isModLoaded("Morph"))
+      EnablePOV = false;
+    PixelmonHelper.load();
+    proxy.load();
+    NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+    MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
+    MinecraftForge.EVENT_BUS.register(new ServerTickHandler());
+    CapabilityManager.INSTANCE.register(ModelData.class, new Capability.IStorage() {
+          public NBTBase writeNBT(Capability capability, Object instance, EnumFacing side) {
+            return null;
+          }
 
-	          public void readNBT(Capability capability, Object instance, EnumFacing side, NBTBase nbt) {}
-	        },  ModelData.class);
-	}
+          public void readNBT(Capability capability, Object instance, EnumFacing side, NBTBase nbt) {}
+        },  ModelData.class);
+  }
 
-	@EventHandler
-	public void load(FMLPostInitializationEvent ev) {
-		proxy.postload();
-	}
+  @EventHandler
+  public void load(FMLPostInitializationEvent ev) {
+    proxy.postLoad();
+  }
 
-	@EventHandler
-	public void serverstart(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandLove());
-		event.registerServerCommand(new CommandSing());
-		event.registerServerCommand(new CommandAngry());
-		event.registerServerCommand(new CommandMPM());
-
-		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
-		if(!rules.hasRule("mpmAllowEntityModels"))
-			rules.addGameRule("mpmAllowEntityModels", "true", GameRules.ValueType.BOOLEAN_VALUE);
-	}
+  @EventHandler
+  public void serverstart(FMLServerStartingEvent event) {
+    event.registerServerCommand((ICommand)new CommandLove());
+    event.registerServerCommand((ICommand)new CommandSing());
+    event.registerServerCommand((ICommand)new CommandAngry());
+    event.registerServerCommand((ICommand)new CommandMPM());
+    GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
+    if (!rules.hasRule("mpmAllowEntityModels"))
+      rules.addGameRule("mpmAllowEntityModels", "true", GameRules.ValueType.BOOLEAN_VALUE);
+  }
 }

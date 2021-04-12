@@ -1,8 +1,10 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -10,212 +12,200 @@ import net.minecraft.util.math.MathHelper;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.client.model.ModelPlaneRenderer;
+import noppes.mpm.client.model.ModelWings;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerBody extends LayerInterface{
-	private Model2DRenderer wing;
-	private Model2DRenderer wing2;
+public class LayerBody extends LayerInterface {
+  private Model2DRenderer wing;
 
-	private Model2DRenderer breasts;
-	private ModelRenderer breasts2;
-	private ModelRenderer breasts3;
+  private Model2DRenderer wing2;
 
-	private ModelPlaneRenderer skirt;
+  private ModelWings wing3 = new ModelWings();
 
-	private Model2DRenderer fin;
-	
-	public LayerBody(RenderPlayer render) {
-		super(render);
-	}
+  private Model2DRenderer breasts;
 
-	@Override
-	protected void createParts(){		
-        wing = new Model2DRenderer(model, 56, 16, 8, 16);
-        wing.setRotationPoint(-2F, 2.5f, 1F);
-        wing.setRotationOffset(-8, 14, 0);
-        setRotation(wing, 0.7141593F, 0.5235988F, 0.5090659F);
+  private ModelRenderer breasts2;
 
-        wing2 = new Model2DRenderer(model, 56, 16, 8, 16);
-        wing2.setRotationPoint(-1F, 2.5f, 2F);
-        wing2.setRotationOffset(-8, 11, -0.5f);
+  private ModelRenderer breasts3;
 
-		breasts = new Model2DRenderer(model, 20f, 22, 8, 3);
-		breasts.setRotationPoint(-3.6F, 5.2f, -3f);
-		breasts.setScale(0.17f, 0.19f);
-		breasts.setThickness(1);
+  private ModelPlaneRenderer skirt;
 
-		breasts2 = new ModelRenderer(model);
-		Model2DRenderer bottom = new Model2DRenderer(model, 20f, 22, 8, 4);
-		bottom.setRotationPoint(-3.6F, 5f, -3.1f);
-		bottom.setScale(0.225f, 0.20f);
-		bottom.setThickness(2f);
-		bottom.rotateAngleX = -(float) (Math.PI / 10);
-		breasts2.addChild(bottom);
+  private Model2DRenderer fin;
 
-		breasts3 = new ModelRenderer(model);
+  public LayerBody(RenderPlayer render) {
+    super(render);
+  }
 
-		Model2DRenderer right = new Model2DRenderer(model, 20f, 23, 3, 2);
-		right.setRotationPoint(-3.8F, 5.3f, -3.6f);
-		right.setScale(0.12f, 0.14f);
-		right.setThickness(1.75f);
-		breasts3.addChild(right);
-		
-		Model2DRenderer right2 = new Model2DRenderer(model, 20f, 22, 3, 1);
-		right2.setRotationPoint(-3.79F, 4.1f, -3.14f);
-		right2.setScale(0.06f, 0.07f);
-		right2.setThickness(1.75f);
-		right2.rotateAngleX = (float) (Math.PI / 9);
-		breasts3.addChild(right2);
-		
-		Model2DRenderer right3 = new Model2DRenderer(model, 20f, 24, 3, 1);
-		right3.setRotationPoint(-3.79F, 5.3f, -3.6f);
-		right3.setScale(0.06f, 0.07f);
-		right3.setThickness(1.75f);
-		right3.rotateAngleX = (float) (-Math.PI / 9);
-		breasts3.addChild(right3);
-		
-		Model2DRenderer right4 = new Model2DRenderer(model, 21f, 23, 1, 2);
-		right4.setRotationPoint(-1.8f, 5.3f, -3.14f);
-		right4.setScale(0.12f, 0.14f);
-		right4.setThickness(1.75f);
-		right4.rotateAngleY = (float) (Math.PI / 9);
-		breasts3.addChild(right4);
+  @Override
+  protected void createParts() {
+    this.wing = new Model2DRenderer((ModelBase)this.model, 56.0F, 16.0F, 8, 16);
+    this.wing.setRotationPoint(-2.0F, 2.5F, 1.0F);
+    this.wing.setRotationOffset(-8.0F, 14.0F, 0.0F);
+    setRotation((ModelRenderer)this.wing, 0.7141593F, 0.5235988F, 0.5090659F);
+    this.wing2 = new Model2DRenderer((ModelBase)this.model, 56.0F, 16.0F, 8, 16);
+    this.wing2.setRotationPoint(-1.0F, 2.5F, 2.0F);
+    this.wing2.setRotationOffset(-8.0F, 11.0F, -0.5F);
+    this.breasts = new Model2DRenderer((ModelBase)this.model, 20.0F, 22.0F, 8, 3);
+    this.breasts.setRotationPoint(-3.6F, 5.2F, -3.0F);
+    this.breasts.setScale(0.17F, 0.19F);
+    this.breasts.setThickness(1.0F);
+    this.breasts2 = new ModelRenderer((ModelBase)this.model);
+    Model2DRenderer bottom = new Model2DRenderer((ModelBase)this.model, 20.0F, 22.0F, 8, 4);
+    bottom.setRotationPoint(-3.6F, 5.0F, -3.1F);
+    bottom.setScale(0.225F, 0.2F);
+    bottom.setThickness(2.0F);
+    bottom.rotateAngleX = -0.31415927F;
+    this.breasts2.addChild((ModelRenderer)bottom);
+    this.breasts3 = new ModelRenderer((ModelBase)this.model);
+    Model2DRenderer right = new Model2DRenderer((ModelBase)this.model, 20.0F, 23.0F, 3, 2);
+    right.setRotationPoint(-3.8F, 5.3F, -3.6F);
+    right.setScale(0.12F, 0.14F);
+    right.setThickness(1.75F);
+    this.breasts3.addChild((ModelRenderer)right);
+    Model2DRenderer right2 = new Model2DRenderer((ModelBase)this.model, 20.0F, 22.0F, 3, 1);
+    right2.setRotationPoint(-3.79F, 4.1F, -3.14F);
+    right2.setScale(0.06F, 0.07F);
+    right2.setThickness(1.75F);
+    right2.rotateAngleX = 0.34906584F;
+    this.breasts3.addChild((ModelRenderer)right2);
+    Model2DRenderer right3 = new Model2DRenderer((ModelBase)this.model, 20.0F, 24.0F, 3, 1);
+    right3.setRotationPoint(-3.79F, 5.3F, -3.6F);
+    right3.setScale(0.06F, 0.07F);
+    right3.setThickness(1.75F);
+    right3.rotateAngleX = -0.34906584F;
+    this.breasts3.addChild((ModelRenderer)right3);
+    Model2DRenderer right4 = new Model2DRenderer((ModelBase)this.model, 21.0F, 23.0F, 1, 2);
+    right4.setRotationPoint(-1.8F, 5.3F, -3.14F);
+    right4.setScale(0.12F, 0.14F);
+    right4.setThickness(1.75F);
+    right4.rotateAngleY = 0.34906584F;
+    this.breasts3.addChild((ModelRenderer)right4);
+    Model2DRenderer left = new Model2DRenderer((ModelBase)this.model, 25.0F, 23.0F, 3, 2);
+    left.setRotationPoint(0.8F, 5.3F, -3.6F);
+    left.setScale(0.12F, 0.14F);
+    left.setThickness(1.75F);
+    this.breasts3.addChild((ModelRenderer)left);
+    Model2DRenderer left2 = new Model2DRenderer((ModelBase)this.model, 25.0F, 22.0F, 3, 1);
+    left2.setRotationPoint(0.81F, 4.1F, -3.18F);
+    left2.setScale(0.06F, 0.07F);
+    left2.setThickness(1.75F);
+    left2.rotateAngleX = 0.34906584F;
+    this.breasts3.addChild((ModelRenderer)left2);
+    Model2DRenderer left3 = new Model2DRenderer((ModelBase)this.model, 25.0F, 24.0F, 3, 1);
+    left3.setRotationPoint(0.81F, 5.3F, -3.6F);
+    left3.setScale(0.06F, 0.07F);
+    left3.setThickness(1.75F);
+    left3.rotateAngleX = -0.34906584F;
+    this.breasts3.addChild((ModelRenderer)left3);
+    Model2DRenderer left4 = new Model2DRenderer((ModelBase)this.model, 24.0F, 23.0F, 1, 2);
+    left4.setRotationPoint(0.8F, 5.3F, -3.6F);
+    left4.setScale(0.12F, 0.14F);
+    left4.setThickness(1.75F);
+    left4.rotateAngleY = -0.34906584F;
+    this.breasts3.addChild((ModelRenderer)left4);
+    this.skirt = new ModelPlaneRenderer((ModelBase)this.model, 58, 18);
+    this.skirt.addSidePlane(0.0F, 0.0F, 0.0F, 9, 2);
+    ModelPlaneRenderer part1 = new ModelPlaneRenderer((ModelBase)this.model, 58, 18);
+    part1.addSidePlane(2.0F, 0.0F, 0.0F, 9, 2);
+    part1.rotateAngleY = -1.5707964F;
+    this.skirt.addChild((ModelRenderer)part1);
+    this.skirt.setRotationPoint(2.4F, 8.8F, 0.0F);
+    setRotation((ModelRenderer)this.skirt, 0.3F, -0.2F, -0.2F);
+    this.fin = new Model2DRenderer((ModelBase)this.model, 56.0F, 20.0F, 8, 12);
+    this.fin.setRotationPoint(-0.5F, 12.0F, 10.0F);
+    this.fin.setScale(0.74F);
+    this.fin.rotateAngleY = 1.5707964F;
+  }
 
-		Model2DRenderer left = new Model2DRenderer(model, 25f, 23, 3, 2);
-		left.setRotationPoint(0.8F, 5.3f, -3.6f);
-		left.setScale(0.12f, 0.14f);
-		left.setThickness(1.75f);
-		breasts3.addChild(left);
-		
-		Model2DRenderer left2 = new Model2DRenderer(model, 25f, 22, 3, 1);
-		left2.setRotationPoint(0.81F, 4.1f, -3.18f);
-		left2.setScale(0.06f, 0.07f);
-		left2.setThickness(1.75f);
-		left2.rotateAngleX = (float) (Math.PI / 9);
-		breasts3.addChild(left2);
-		
-		Model2DRenderer left3 = new Model2DRenderer(model, 25f, 24, 3, 1);
-		left3.setRotationPoint(0.81F, 5.3f, -3.6f);
-		left3.setScale(0.06f, 0.07f);
-		left3.setThickness(1.75f);
-		left3.rotateAngleX = (float) (-Math.PI / 9);
-		breasts3.addChild(left3);
-		
-		Model2DRenderer left4 = new Model2DRenderer(model, 24f, 23, 1, 2);
-		left4.setRotationPoint(0.8f, 5.3f, -3.6f);
-		left4.setScale(0.12f, 0.14f);
-		left4.setThickness(1.75f);
-		left4.rotateAngleY = (float) (-Math.PI / 9);
-		breasts3.addChild(left4);
-		
-		skirt = new ModelPlaneRenderer(model, 58, 18);
-		skirt.addSidePlane(0, 0, 0, 9, 2);
-		
-		ModelPlaneRenderer part1 = new ModelPlaneRenderer(model, 58, 18);
-		part1.addSidePlane(2, 0, 0, 9, 2);
-		part1.rotateAngleY = -(float) (Math.PI/2);
-		skirt.addChild(part1);
+  @Override
+  public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
+    this.model.bipedBody.postRender(0.0625F);
+    renderSkirt(par7);
+    renderWings(par7);
+    renderFin(par7);
+    renderBreasts(par7);
+  }
 
-		skirt.setRotationPoint(2.4F, 8.8F, 0F);
-		setRotation(skirt, 0.3F, -0.2f, -0.2F);
+  private void renderWings(float par7) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.WINGS);
+    if (data == null)
+      return;
+    ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+    if (!itemstack.func_190926_b() && itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
+      return;
+    preRender(data);
+    GlStateManager.pushMatrix();
+    if (data.type >= 0 && data.type <= 2) {
+      this.wing.render(par7);
+      GlStateManager.translate(-1.0F, 1.0F, 1.0F);
+      this.wing.render(par7);
+    }
+    if (data.type == 3) {
+      this.wing2.render(par7);
+      GlStateManager.translate(-1.0F, 1.0F, 1.0F);
+      this.wing2.render(par7);
+    }
+    if (data.type == 4)
+      this.wing3.func_78088_a((Entity)this.player, this.player.field_184619_aG, this.player.field_70721_aZ, this.player.ticksExisted, 0.0F, 0.0F, par7);
+    GlStateManager.popMatrix();
+  }
 
-		fin = new Model2DRenderer(model, 56, 20, 8, 12);
-		fin.setRotationPoint(-0.5F, 12, 10);
-		fin.setScale(0.74f);
-		fin.rotateAngleY = (float)Math.PI / 2;
-	}
-	@Override
-	public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-		model.bipedBody.postRender(0.0625F);
-		renderSkirt(par7);
-		renderWings(par7);
-		renderFin(par7);
-		renderBreasts(par7);
-	}
-	private void renderWings(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.WINGS);
-		if(data == null)
-			return;        
-		ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (itemstack != null && itemstack.getItem() == Items.ELYTRA && playerdata.wingMode == 2)
-        	return;
-		preRender(data);     
-		GlStateManager.pushMatrix();   
-		if(data.type >= 0 && data.type <= 2){
-			wing.render(par7);
-			GlStateManager.scale(-1, 1, 1);
-			wing.render(par7);
-		}  
-		if(data.type >= 3){
-			wing2.render(par7);
-			GlStateManager.scale(-1, 1, 1);
-			wing2.render(par7);
-		}
-		GlStateManager.popMatrix();
-	}
-	
-	private void renderSkirt(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.SKIRT);
-		if(data == null)
-			return;
-		preRender(data);
-		GlStateManager.pushMatrix();
-		GlStateManager.scale(1.7f, 1.04f, 1.6f);
-		for(int i = 0; i < 10; i++){
-			GlStateManager.rotate(36, 0, 1, 0);
-			skirt.render(par7);
-		}
-		GlStateManager.popMatrix();
-	}
-	
-	private void renderFin(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.FIN);
-		if(data == null)
-			return;
-		preRender(data);
-		fin.render(par7);
-	}
-	
-	private void renderBreasts(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.BREASTS);
-		if(data == null)
-			return;
-		data.playerTexture = true;
-		preRender(data);
-		if(data.type == 0)
-			breasts.render(par7);
-		if(data.type == 1)
-			breasts2.render(par7);
-		if(data.type == 2)
-			breasts3.render(par7);
-	}
+  private void renderSkirt(float par7) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.SKIRT);
+    if (data == null)
+      return;
+    preRender(data);
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(1.7F, 1.04F, 1.6F);
+    for (int i = 0; i < 10; i++) {
+      GlStateManager.rotate(36.0F, 0.0F, 1.0F, 0.0F);
+      this.skirt.render(par7);
+    }
+    GlStateManager.popMatrix();
+  }
 
-	@Override
-	public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {        
-		wing.rotateAngleX = 0.7141593F;
-		wing.rotateAngleZ = 0.5090659F;
-		wing2.rotateAngleY = 0.8f;
+  private void renderFin(float par7) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.FIN);
+    if (data == null)
+      return;
+    preRender(data);
+    this.fin.render(par7);
+  }
 
-		float motion = Math.abs(MathHelper.sin(par1 * 0.033F + (float)Math.PI) * 0.4F) * par2;
-		if(player.worldObj.isAirBlock(player.getPosition())){	
-			float speed = (float) (0.55f + 0.5f * motion);
-            float y = MathHelper.sin(par3 * 0.35F);
-            wing.rotateAngleZ += y * 0.5f * speed;
-            wing.rotateAngleX += y * 0.5f * speed;
-    		wing2.rotateAngleY +=  y * 0.5f * speed;
-    		
-		}
-		else{
-	        wing.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-	        wing.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+  private void renderBreasts(float par7) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.BREASTS);
+    if (data == null)
+      return;
+    data.playerTexture = true;
+    preRender(data);
+    if (data.type == 0)
+      this.breasts.render(par7);
+    if (data.type == 1)
+      this.breasts2.render(par7);
+    if (data.type == 2)
+      this.breasts3.render(par7);
+  }
 
-    		wing2.rotateAngleY += MathHelper.sin(par3 * 0.07F) * 0.44F;
-		}
-		
-		setRotation(skirt, 0.3F, -0.2f, -0.2F);
-    	skirt.rotateAngleX += model.bipedLeftArm.rotateAngleX * 0.04f;
-    	skirt.rotateAngleZ += model.bipedLeftArm.rotateAngleX * 0.06f;
-        skirt.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.04F - 0.05F;
-	}
-
+  @Override
+  public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
+    this.wing.rotateAngleX = 0.7141593F;
+    this.wing.rotateAngleZ = 0.5090659F;
+    this.wing2.rotateAngleY = 0.8F;
+    float motion = Math.abs(MathHelper.sin(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
+    if (this.player.worldObj.isAirBlock(this.player.getPosition())) {
+      float speed = 0.55F + 0.5F * motion;
+      float y = MathHelper.sin(par3 * 0.35F);
+      this.wing.rotateAngleZ += y * 0.5F * speed;
+      this.wing.rotateAngleX += y * 0.5F * speed;
+      this.wing2.rotateAngleY += y * 0.5F * speed;
+    } else {
+      this.wing.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+      this.wing.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+      this.wing2.rotateAngleY += MathHelper.sin(par3 * 0.07F) * 0.44F;
+    }
+    setRotation((ModelRenderer)this.skirt, 0.3F, -0.2F, -0.2F);
+    this.skirt.rotateAngleX += this.model.bipedLeftArm.rotateAngleX * 0.04F;
+    this.skirt.rotateAngleZ += this.model.bipedLeftArm.rotateAngleX * 0.06F;
+    this.skirt.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.04F - 0.05F;
+  }
 }

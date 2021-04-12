@@ -1,50 +1,42 @@
 package noppes.mpm.client.layer;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerCapeMPM extends LayerCape{
-	private RenderPlayer render;
-	public LayerCapeMPM(RenderPlayer render) {
-		super(render);
-		this.render = render;
-	}
+public class LayerCapeMPM extends LayerCape {
+  private RenderPlayer render;
 
-//	@Override
-//	public void preRender(EntityPlayer player) {
-//		if(!player.func_175148_a(EnumPlayerModelParts.CAPE))
-//			return;
-//		player.getDataWatcher().updateObject(10, player.getDataWatcher().getWatchableObjectByte(10) - 1);
-//	}
-	
-    public void doRenderLayer(AbstractClientPlayer player, float p_177166_2_, float p_177166_3_, float p_177166_4_, float p_177166_5_, float p_177166_6_, float p_177166_7_, float p_177166_8_){
-    	ModelBiped model = render.getMainModel();
-		ModelData data = ModelData.get(player);
-    	ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
-    	GlStateManager.pushMatrix();
-    	if(player.isSneaking())
-    		GlStateManager.translate(0, 0, -2 * p_177166_8_);
-    	GlStateManager.translate(config.transX, config.transY, config.transZ);
-    	GlStateManager.scale(config.scaleX, config.scaleY, config.scaleZ);
-    	if(data.animationEquals(EnumAnimation.CRAWLING)){
-        	int rotation = 78;
-        	if(player.isSneaking()){
-        		rotation -= 25;
-        	}
-        	GlStateManager.translate(0, 22 * p_177166_8_, 0);
-    		GlStateManager.rotate(rotation, 1, 0, 0);
-    	}
-    	if(player.hurtTime > 0 || player.deathTime > 0){
-        	GlStateManager.color(1, 0, 0, 0.3f);
-    	}
-    	super.doRenderLayer(player, p_177166_2_, p_177166_3_, p_177166_4_, p_177166_5_, p_177166_6_, p_177166_7_, p_177166_8_);
-    	GlStateManager.popMatrix();
+  public LayerCapeMPM(RenderPlayer render) {
+    super(render);
+    this.render = render;
+  }
+
+  public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    ModelPlayer modelPlayer = this.render.getMainModel();
+    ModelData data = ModelData.get((EntityPlayer)player);
+    ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
+    GlStateManager.pushMatrix();
+    if (player.isSneaking() && !data.animationEquals(EnumAnimation.CRAWLING))
+      GlStateManager.translate(0.0F, 0.0F, (-2.0F + config.scaleZ) * scale);
+    GlStateManager.translate(config.transX, config.transY, config.transZ + (-1.0F + config.scaleZ) * scale);
+    GlStateManager.translate(config.scaleX, config.scaleY, 1.0F);
+    if (data.animationEquals(EnumAnimation.CRAWLING)) {
+      int rotation = 78;
+      if (player.isSneaking())
+        GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
     }
+    if (player.hurtTime > 0 || player.deathTime > 0)
+      GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);
+    super.doRenderLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+    GlStateManager.popMatrix();
+  }
 }

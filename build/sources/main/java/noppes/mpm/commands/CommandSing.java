@@ -1,6 +1,7 @@
 package noppes.mpm.commands;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
@@ -9,36 +10,29 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandSing extends MpmCommandInterface {
+  public String getCommandName() {
+    return "sing";
+  }
 
-	@Override
-	public String getCommandName() {
-		return "sing";
-	}
+  @Override
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+    if (!(sender instanceof EntityPlayerMP))
+      return;
+    EntityPlayerMP player = (EntityPlayerMP)sender;
+    int note = player.getRNG().nextInt(25);
+    if (args.length > 0)
+      try {
+        int n = Integer.parseInt(args[0]);
+        if (n >= 0 && n < 25)
+          note = n;
+      } catch (NumberFormatException numberFormatException) {}
+    float pitch = (float)Math.pow(2.0D, (note - 12) / 12.0D);
+    player.worldObj.func_184148_a(null, player.posX, player.posY, player.posZ, SoundEvents.field_187682_dG, SoundCategory.PLAYERS, 3.0F, pitch);
+    Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.posX), Double.valueOf(player.posY + 2.0D), Double.valueOf(player.posZ), Double.valueOf(note / 24.0D) });
+  }
 
-	@Override
-	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
-		if(icommandsender instanceof EntityPlayerMP == false)
-			return;
-		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
-		
-		int note = player.getRNG().nextInt(25);
-		if(var2.length > 0){
-			try{
-				int n = Integer.parseInt(var2[0]);
-				if(n >= 0 && n < 25)
-					note = n;
-			}
-			catch(NumberFormatException ex){}
-		}
-        float var7 = (float)Math.pow(2.0D, (double)(note - 12) / 12.0D);
-        player.worldObj.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.PLAYERS, 3.0F, var7);
-
-		Server.sendAssociatedData(player, EnumPackets.PARTICLE, 1, player.posX, player.posY + 2, player.posZ, note / 24d);
-	}
-	
-	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/sing [0-24] to sing";
-	}
-
+  @Override
+  public String getCommandUsage(ICommandSender sender) {
+    return "/sing [0-24] to sing";
+  }
 }

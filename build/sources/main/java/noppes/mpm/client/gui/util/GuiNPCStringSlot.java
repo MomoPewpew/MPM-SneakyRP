@@ -7,93 +7,82 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 
 public class GuiNPCStringSlot extends GuiSlot {
-	private Vector<String> list; /* synthetic field */
-    public String selected;
-    public HashSet<String> selectedList;
-    private boolean multiSelect;
-    private GuiScreen parent;
-    private GuiListActionListener listener;
-    public int size;
-    public GuiNPCStringSlot(Vector<String> list,GuiScreen parent,boolean multiSelect, int size)
-    {
-        super(Minecraft.getMinecraft(), parent.width, parent.height, 32, parent.height - 64, size);
-        selectedList = new HashSet<String>();
-        this.parent = parent;
-        this.list = list;
-        this.multiSelect = multiSelect;
-        this.size = size;
-        if(parent instanceof GuiListActionListener)
-        	listener = (GuiListActionListener) parent;
+  private Vector<String> list;
+
+  public String selected;
+
+  public HashSet<String> selectedList;
+
+  private boolean multiSelect;
+
+  private GuiScreen parent;
+
+  private GuiListActionListener listener;
+
+  public int size;
+
+  private long prevTime;
+
+  public GuiNPCStringSlot(Vector<String> list, GuiScreen parent, boolean multiSelect, int size) {
+    super(Minecraft.getMinecraft(), parent.width, parent.height, 32, parent.height - 64, size);
+    this.prevTime = 0L;
+    this.selectedList = new HashSet<>();
+    this.parent = parent;
+    this.list = list;
+    this.multiSelect = multiSelect;
+    this.size = size;
+    if (parent instanceof GuiListActionListener)
+      this.listener = (GuiListActionListener)parent;
+  }
+
+  protected int func_148127_b() {
+    return this.list.size();
+  }
+
+  protected void func_148144_a(int i, boolean flag, int var3, int var4) {
+    long time = System.currentTimeMillis();
+    if (this.listener != null && this.selected != null && this.selected.equals(this.list.get(i)) && time - this.prevTime < 400L)
+      this.listener.doubleClicked();
+    this.selected = this.list.get(i);
+    if (this.selectedList.contains(this.selected)) {
+      this.selectedList.remove(this.selected);
+    } else {
+      this.selectedList.add(this.selected);
     }
-    protected int getSize()
-    {
-        return list.size();
+    if (this.listener != null)
+      this.listener.elementClicked();
+    this.prevTime = time;
+  }
+
+  protected boolean func_148131_a(int i) {
+    if (!this.multiSelect) {
+      if (this.selected == null)
+        return false;
+      return this.selected.equals(this.list.get(i));
     }
-    private long prevTime = 0;
-    @Override
-    protected void elementClicked(int i, boolean flag, int var3, int var4)
-    {
-//        GuiSelectWorld.onElementSelected(parentWorldGui, i);
-//        boolean flag1 = GuiSelectWorld.getSelectedWorld(parentWorldGui) >= 0 && GuiSelectWorld.getSelectedWorld(parentWorldGui) < getSize();
-//        GuiSelectWorld.getSelectButton(parentWorldGui).enabled = flag1;
-//        GuiSelectWorld.getRenameButton(parentWorldGui).enabled = flag1;
-//        GuiSelectWorld.getDeleteButton(parentWorldGui).enabled = flag1;
-//        if(flag && flag1)
-//        {
-//            parentWorldGui.selectWorld(i);
-//        }
-    	long time = System.currentTimeMillis();
-    	if(listener != null && selected != null && selected.equals(list.get(i)) && time - prevTime < 400 )
-    		listener.doubleClicked();
-		selected = list.get(i);
-		if(selectedList.contains(selected))
-			selectedList.remove(selected);
-		else
-			selectedList.add(selected);
-		if(listener != null)
-			listener.elementClicked();
-		prevTime = time;
-    }
+    return this.selectedList.contains(this.list.get(i));
+  }
 
-    protected boolean isSelected(int i)
-    {
-    	if(!multiSelect){
-	    	if(selected == null)
-	    		return false;
-	        return selected.equals(list.get(i));
-    	}
-    	else{
-	        return selectedList.contains(list.get(i));
-    	}
-    }
+  protected int func_148138_e() {
+    return this.list.size() * this.size;
+  }
 
-    protected int getContentHeight()
-    {
-        return list.size() * size;
-    }
+  protected void func_148123_a() {
+    this.parent.drawDefaultBackground();
+  }
 
-    @Override
-    protected void drawBackground(){
-        parent.drawDefaultBackground();
-    }
+  public void clear() {
+    this.list.clear();
+  }
 
-	public void clear() {
-		list.clear();
-	}
-	public void setList(Vector<String> list) {
-		this.list = list;
-	}
+  public void setList(Vector<String> list) {
+    this.list = list;
+  }
 
-	protected void drawSlot(int i, int j, int k, int p_180791_4_, int p_180791_5_, int p_180791_6_) {
-    	if(i >= list.size())
-    		return;
-    	String s = list.get(i);
-    	parent.drawString(Minecraft.getMinecraft().fontRendererObj, s, j + 50, k + 3, 0xFFFFFF);
-
-	}
-	@Override
-	protected void func_192637_a(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, float arg6) {
-		// TODO Auto-generated method stub
-
-	}
+  protected void func_192637_a(int i, int j, int k, int p_180791_4_, int p_180791_5_, int p_180791_6_, float partialTicks) {
+    if (i >= this.list.size())
+      return;
+    String s = this.list.get(i);
+    this.parent.func_73731_b((Minecraft.getMinecraft()).fontRendererObj, s, j + 50, k + 3, 16777215);
+  }
 }

@@ -1,231 +1,230 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.client.model.part.head.ModelDuckBeak;
+import noppes.mpm.client.model.part.head.ModelHalo;
 import noppes.mpm.client.model.part.horns.ModelAntennasBack;
 import noppes.mpm.client.model.part.horns.ModelAntennasFront;
 import noppes.mpm.client.model.part.horns.ModelAntlerHorns;
 import noppes.mpm.client.model.part.horns.ModelBullHorns;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerHead extends LayerInterface{
+public class LayerHead extends LayerInterface {
+  private ModelRenderer small;
 
-	private ModelRenderer small;
-	private ModelRenderer medium;
-	private ModelRenderer large;
-	private ModelRenderer bunnySnout;
-	private ModelRenderer beak;
+  private ModelRenderer medium;
 
-	private Model2DRenderer beard;
-	private Model2DRenderer hair;
-	private Model2DRenderer mohawk;
+  private ModelRenderer large;
 
-	private ModelRenderer bull;
-	private ModelRenderer antlers;
-	private ModelRenderer antennasBack;
-	private ModelRenderer antennasFront;
+  private ModelRenderer bunnySnout;
 
-	private ModelRenderer ears;
-	private ModelRenderer bunnyEars;
-	
-	public LayerHead(RenderPlayer render) {
-		super(render);
-	}
+  private ModelRenderer beak;
 
+  private Model2DRenderer beard;
 
-	@Override
-	protected void createParts(){
-		small = new ModelRenderer(model, 24, 0);
-		small.addBox(0F, 0F, 0F, 4, 3, 1);
-		small.setRotationPoint(-2F, -3F, -5F);
+  private Model2DRenderer hair;
 
-		medium = new ModelRenderer(model, 24, 0);
-		medium.addBox(0F, 0F, 0F, 4, 3, 2);
-		medium.setRotationPoint(-2F, -3F, -6F);
+  private Model2DRenderer mohawk;
 
-		large = new ModelRenderer(model, 24, 0);
-		large.addBox(0F, 0F, 0F, 4, 3, 3);
-		large.setRotationPoint(-2F, -3F, -7F);
-		
-		bunnySnout = new ModelRenderer(model, 24, 0);
-		bunnySnout.addBox(1F, 1F, 0F, 4, 2, 1);
-		bunnySnout.setRotationPoint(-3F, -4F, -5F);
-		
-		ModelRenderer tooth = new ModelRenderer(model, 24, 3);
-		tooth.addBox(2F, 3f, 0F, 2, 1, 1);
-		tooth.setRotationPoint(0F, 0F, 0F);
-		bunnySnout.addChild(tooth);
+  private ModelRenderer bull;
 
-		beak = new ModelDuckBeak(model);
-		beak.setRotationPoint(0, 0, -4F);
+  private ModelRenderer antlers;
 
-		beard = new Model2DRenderer(model, 56, 20, 8, 12);
-		beard.setRotationOffset(-3.99f, 11.8f, -4);
-		beard.setScale(0.74f);
+  private ModelRenderer antennasBack;
 
-		hair = new Model2DRenderer(model, 56, 20, 8, 12);
-		hair.setRotationOffset(-3.99f, 11.8f, 3);
-		hair.setScale(0.75f);
+  private ModelRenderer antennasFront;
 
-		mohawk = new Model2DRenderer(model, 0, 0, 64 , 64);
-		mohawk.setTextureSize(64, 64);
-		mohawk.setRotationOffset(-9F, 0.1f, -0.5F);
-        setRotation(mohawk, 0, (float)(Math.PI/2f), 0);
-        mohawk.setScale(0.825f);
+  private ModelRenderer ears;
 
-		bull = new ModelBullHorns(model);
-		antlers = new ModelAntlerHorns(model);
-		antennasBack = new ModelAntennasBack(model);
-		antennasFront = new ModelAntennasFront(model);
+  private ModelRenderer bunnyEars;
 
-		ears = new ModelRenderer(model);
-		Model2DRenderer right = new Model2DRenderer(model, 56, 0, 8, 4);
-		right.setRotationPoint(-7.44f, -7.3f, -0.0f);
-		right.setScale(0.234f, 0.234f);
-		right.setThickness(1.16f);
-		ears.addChild(right);
+  private ModelHalo halo;
 
-		Model2DRenderer left = new Model2DRenderer(model, 56, 0, 8, 4);
-		left.setRotationPoint(7.44f, -7.3f, 1.15f);
-		left.setScale(0.234f, 0.234f);
-        setRotation(left, 0, (float)(Math.PI), 0);
-        left.setThickness(1.16f);
-        ears.addChild(left);
+  public LayerHead(RenderPlayer render) {
+    super(render);
+  }
 
-		Model2DRenderer right2 = new Model2DRenderer(model, 56, 4, 8, 4);
-		right2.setRotationPoint(-7.44f, -7.3f, 1.14f);
-		right2.setScale(0.234f, 0.234f);
-		right2.setThickness(1.16f);
-		ears.addChild(right2);
+  @Override
+  protected void createParts() {
+    this.small = new ModelRenderer((ModelBase)this.model, 24, 0);
+    this.small.addBox(0.0F, 0.0F, 0.0F, 4, 3, 1);
+    this.small.setRotationPoint(-2.0F, -3.0F, -5.0F);
+    this.medium = new ModelRenderer((ModelBase)this.model, 24, 0);
+    this.medium.addBox(0.0F, 0.0F, 0.0F, 4, 3, 2);
+    this.medium.setRotationPoint(-2.0F, -3.0F, -6.0F);
+    this.large = new ModelRenderer((ModelBase)this.model, 24, 0);
+    this.large.addBox(0.0F, 0.0F, 0.0F, 4, 3, 3);
+    this.large.setRotationPoint(-2.0F, -3.0F, -7.0F);
+    this.bunnySnout = new ModelRenderer((ModelBase)this.model, 24, 0);
+    this.bunnySnout.addBox(1.0F, 1.0F, 0.0F, 4, 2, 1);
+    this.bunnySnout.setRotationPoint(-3.0F, -4.0F, -5.0F);
+    ModelRenderer tooth = new ModelRenderer((ModelBase)this.model, 24, 3);
+    tooth.addBox(2.0F, 3.0F, 0.0F, 2, 1, 1);
+    tooth.setRotationPoint(0.0F, 0.0F, 0.0F);
+    this.bunnySnout.addChild(tooth);
+    this.beak = (ModelRenderer)new ModelDuckBeak((ModelBiped)this.model);
+    this.beak.setRotationPoint(0.0F, 0.0F, -4.0F);
+    this.beard = new Model2DRenderer((ModelBase)this.model, 56.0F, 20.0F, 8, 12);
+    this.beard.setRotationOffset(-3.99F, 11.8F, -4.0F);
+    this.beard.setScale(0.74F);
+    this.hair = new Model2DRenderer((ModelBase)this.model, 56.0F, 20.0F, 8, 12);
+    this.hair.setRotationOffset(-3.99F, 11.8F, 3.0F);
+    this.hair.setScale(0.75F);
+    this.mohawk = new Model2DRenderer((ModelBase)this.model, 0.0F, 0.0F, 64, 64);
+    this.mohawk.setTextureSize(64, 64);
+    this.mohawk.setRotationOffset(-9.0F, 0.1F, -0.5F);
+    setRotation((ModelRenderer)this.mohawk, 0.0F, 1.5707964F, 0.0F);
+    this.mohawk.setScale(0.825F);
+    this.bull = (ModelRenderer)new ModelBullHorns((ModelBiped)this.model);
+    this.antlers = (ModelRenderer)new ModelAntlerHorns((ModelBiped)this.model);
+    this.antennasBack = (ModelRenderer)new ModelAntennasBack((ModelBiped)this.model);
+    this.antennasFront = (ModelRenderer)new ModelAntennasFront((ModelBiped)this.model);
+    this.ears = new ModelRenderer((ModelBase)this.model);
+    Model2DRenderer right = new Model2DRenderer((ModelBase)this.model, 56.0F, 0.0F, 8, 4);
+    right.setRotationPoint(-7.44F, -7.3F, -0.0F);
+    right.setScale(0.234F, 0.234F);
+    right.setThickness(1.16F);
+    this.ears.addChild((ModelRenderer)right);
+    Model2DRenderer left = new Model2DRenderer((ModelBase)this.model, 56.0F, 0.0F, 8, 4);
+    left.setRotationPoint(7.44F, -7.3F, 1.15F);
+    left.setScale(0.234F, 0.234F);
+    setRotation((ModelRenderer)left, 0.0F, 3.1415927F, 0.0F);
+    left.setThickness(1.16F);
+    this.ears.addChild((ModelRenderer)left);
+    Model2DRenderer right2 = new Model2DRenderer((ModelBase)this.model, 56.0F, 4.0F, 8, 4);
+    right2.setRotationPoint(-7.44F, -7.3F, 1.14F);
+    right2.setScale(0.234F, 0.234F);
+    right2.setThickness(1.16F);
+    this.ears.addChild((ModelRenderer)right2);
+    Model2DRenderer left2 = new Model2DRenderer((ModelBase)this.model, 56.0F, 4.0F, 8, 4);
+    left2.setRotationPoint(7.44F, -7.3F, 2.31F);
+    left2.setScale(0.234F, 0.234F);
+    setRotation((ModelRenderer)left2, 0.0F, 3.1415927F, 0.0F);
+    left2.setThickness(1.16F);
+    this.ears.addChild((ModelRenderer)left2);
+    this.bunnyEars = new ModelRenderer((ModelBase)this.model);
+    ModelRenderer earleft = new ModelRenderer((ModelBase)this.model, 56, 0);
+    earleft.mirror = true;
+    earleft.addBox(-1.466667F, -4.0F, 0.0F, 3, 7, 1);
+    earleft.setRotationPoint(2.533333F, -11.0F, 0.0F);
+    this.bunnyEars.addChild(earleft);
+    ModelRenderer earright = new ModelRenderer((ModelBase)this.model, 56, 0);
+    earright.addBox(-1.5F, -4.0F, 0.0F, 3, 7, 1);
+    earright.setRotationPoint(-2.466667F, -11.0F, 0.0F);
+    this.bunnyEars.addChild(earright);
+    this.halo = new ModelHalo();
+  }
 
-		Model2DRenderer left2 = new Model2DRenderer(model, 56, 4, 8, 4);
-		left2.setRotationPoint(7.44f, -7.3f, 2.31f);
-		left2.setScale(0.234f, 0.234f);
-        setRotation(left2, 0, (float)(Math.PI), 0);
-        left2.setThickness(1.16f);
-        ears.addChild(left2);
+  @Override
+  public void render(float par2, float par3, float par4, float par5, float par6, float scale) {
+    this.model.bipedHead.postRender(0.0625F);
+    renderSnout(scale);
+    renderBeard(scale);
+    renderHair(scale);
+    renderMohawk(scale);
+    renderHorns(scale);
+    renderEars(scale);
+    renderHalo(scale);
+  }
 
-		
-		bunnyEars = new ModelRenderer(model);		
-		ModelRenderer earleft = new ModelRenderer(model, 56, 0);
-		earleft.mirror = true;
-		earleft.addBox(-1.466667F, -4F, 0F, 3, 7, 1);
-		earleft.setRotationPoint(2.533333F, -11F, 0F);
-		bunnyEars.addChild(earleft);
+  private void renderHalo(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.HALO);
+    if (data == null)
+      return;
+    preRender(data);
+    this.halo.render(scale, (EntityPlayer)this.player);
+  }
 
-		ModelRenderer earright = new ModelRenderer(model, 56, 0);
-		earright.addBox(-1.5F, -4F, 0F, 3, 7, 1);
-		earright.setRotationPoint(-2.466667F, -11F, 0F);
-		bunnyEars.addChild(earright);
-	}
+  private void renderSnout(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.SNOUT);
+    if (data == null)
+      return;
+    preRender(data);
+    if (data.type == 0) {
+      this.small.render(scale);
+    } else if (data.type == 1) {
+      this.medium.render(scale);
+    } else if (data.type == 2) {
+      this.large.render(scale);
+    } else if (data.type == 3) {
+      this.bunnySnout.render(scale);
+    } else if (data.type == 4) {
+      this.beak.render(scale);
+    }
+  }
 
-	@Override
-	public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-		model.bipedHead.postRender(0.0625F);
-		renderSnout(par7);
-		renderBeard(par7);
-		renderHair(par7);
-		renderMohawk(par7);
-		renderHorns(par7);
-		renderEars(par7);
-	}
-	
-	private void renderSnout(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.SNOUT);
-		if(data == null)
-			return;
-		preRender(data);
-		if(data.type == 0){
-			small.render(par7);
-		}
-		else if(data.type == 1){
-			medium.render(par7);
-		}
-		else if(data.type == 2){
-			large.render(par7);
-		}
-		else if(data.type == 3){
-			bunnySnout.render(par7);
-		}
-		else if(data.type == 4){
-			beak.render(par7);
-		}
-	}
+  private void renderBeard(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.BEARD);
+    if (data == null)
+      return;
+    preRender(data);
+    this.beard.render(scale);
+  }
 
-	private void renderBeard(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.BEARD);
-		if(data == null)
-			return;
-		preRender(data);
-		beard.render(par7);
-	}
+  private void renderHair(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.HAIR);
+    if (data == null)
+      return;
+    preRender(data);
+    this.hair.render(scale);
+  }
 
-	private void renderHair(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.HAIR);
-		if(data == null)
-			return;
-		preRender(data);
-		hair.render(par7);
-	}
-	
-	private void renderMohawk(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.MOHAWK);
-		if(data == null)
-			return;
-		preRender(data);
-		mohawk.render(par7);
-	}
-	private void renderHorns(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.HORNS);
-		if(data == null)
-			return;
-		preRender(data);
-		if(data.type == 0){
-			bull.render(par7);
-		}
-		else if(data.type == 1){
-			antlers.render(par7);
-		}
-		else if(data.type == 2 && data.pattern == 0){
-			antennasBack.render(par7);
-		}
-		else if(data.type == 2 && data.pattern == 1){
-			antennasFront.render(par7);
-		}
-	}
-	
-	private void renderEars(float par7){
-		ModelPartData data = playerdata.getPartData(EnumParts.EARS);
-		if(data == null)
-			return;
-		preRender(data);
-		if(data.type == 0){
-			ears.render(par7);
-		}
-		else if(data.type == 1){
-			bunnyEars.render(par7);
-		}
-	}
+  private void renderMohawk(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.MOHAWK);
+    if (data == null)
+      return;
+    preRender(data);
+    this.mohawk.render(scale);
+  }
 
-	public void rotate(float par2, float par3, float par4, float par5, float par6, float par7) {
-		ModelRenderer head = model.bipedHead;
-		if(head.rotateAngleX < 0){
-			beard.rotateAngleX = 0;
-			hair.rotateAngleX = -head.rotateAngleX * 1.2f;
-			if(head.rotateAngleX > -1){
-				hair.rotationPointY = -head.rotateAngleX * 1.5f;
-				hair.rotationPointZ = -head.rotateAngleX * 1.5f;
-			}
-		}
-		else{
-			hair.rotateAngleX = 0;
-			hair.rotationPointY = 0;
-			hair.rotationPointZ = 0;
-			beard.rotateAngleX = -head.rotateAngleX;
-		}
-		
-	}
+  private void renderHorns(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.HORNS);
+    if (data == null)
+      return;
+    preRender(data);
+    if (data.type == 0) {
+      this.bull.render(scale);
+    } else if (data.type == 1) {
+      this.antlers.render(scale);
+    } else if (data.type == 2 && data.pattern == 0) {
+      this.antennasBack.render(scale);
+    } else if (data.type == 2 && data.pattern == 1) {
+      this.antennasFront.render(scale);
+    }
+  }
+
+  private void renderEars(float scale) {
+    ModelPartData data = this.playerdata.getPartData(EnumParts.EARS);
+    if (data == null)
+      return;
+    preRender(data);
+    if (data.type == 0) {
+      this.ears.render(scale);
+    } else if (data.type == 1) {
+      this.bunnyEars.render(scale);
+    }
+  }
+
+  public void rotate(float par2, float par3, float par4, float par5, float par6, float scale) {
+    ModelRenderer head = this.model.bipedHead;
+    if (head.rotateAngleX < 0.0F) {
+      this.beard.rotateAngleX = 0.0F;
+      this.hair.rotateAngleX = -head.rotateAngleX * 1.2F;
+      if (head.rotateAngleX > -1.0F) {
+        this.hair.rotationPointY = -head.rotateAngleX * 1.5F;
+        this.hair.rotationPointZ = -head.rotateAngleX * 1.5F;
+      }
+    } else {
+      this.hair.rotateAngleX = 0.0F;
+      this.hair.rotationPointY = 0.0F;
+      this.hair.rotationPointZ = 0.0F;
+      this.beard.rotateAngleX = -head.rotateAngleX;
+    }
+  }
 }

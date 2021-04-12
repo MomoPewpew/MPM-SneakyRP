@@ -1,115 +1,101 @@
 package noppes.mpm.util;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
+import noppes.mpm.LogWriter;
+import org.apache.logging.log4j.LogManager;
 
 public class PixelmonHelper {
+  public static boolean Enabled = false;
 
-    public static boolean Enabled = false;
+  private static Method getPixelmonModel = null;
 
-    private static Method getPixelmonModel = null;
-	
-	public static void load(){
-		Enabled = Loader.isModLoaded("pixelmon");
-        if(!Enabled)
-        	return;
+  private static Class modelSetupClass;
 
-        try{
-        	Class c = Class.forName("com.pixelmonmod.pixelmon.entities.pixelmon.Entity2HasModel");
-			getPixelmonModel = c.getMethod("getModel");
-        }
-        catch(Exception e){
-        	
-        }
-        
-	}
-	
-	
-	public static List<String> getPixelmonList(){
-		List<String> list = new ArrayList<String>();
-		if(!Enabled)
-			return list;
-		try {
-			Class c = Class.forName("com.pixelmonmod.pixelmon.enums.EnumPokemon");
-			Object[] array = c.getEnumConstants();
-			for(Object ob : array)
-				list.add(ob.toString());
-			
-		} catch (Exception e) {
-			LogManager.getLogger().error("getNameList", e);
-		}
-		return list;
-	}
+  private static Method modelSetupMethod;
 
-	public static boolean isPixelmon(Entity entity) {
-		if(!Enabled)
-			return false;
-		return EntityList.getEntityString(entity).equals("pixelmon.Pixelmon");
-	}
+  public static void load() {
+    Enabled = Loader.isModLoaded("pixelmon");
+    if (!Enabled)
+      return;
+    try {
+      Class<?> c = Class.forName("com.pixelmonmod.pixelmon.entities.pixelmon.Entity2Client");
+      getPixelmonModel = c.getMethod("getModel", new Class[0]);
+      modelSetupClass = Class.forName("com.pixelmonmod.pixelmon.client.models.PixelmonModelSmd");
+      modelSetupMethod = modelSetupClass.getMethod("setupForRender", new Class[] { c });
+    } catch (Exception e) {
+      LogWriter.except(e);
+      Enabled = false;
+    }
+  }
 
-	public static void setName(EntityLivingBase entity, String name) {
-		if(!Enabled || !isPixelmon(entity))
-			return;
-		try {
-			Method m = entity.getClass().getMethod("init", String.class);
-			m.invoke(entity, name);
+  public static List<String> getPixelmonList() {
+    List<String> list = new ArrayList<>();
+    if (!Enabled)
+      return list;
+    try {
+      Class<?> c = Class.forName("com.pixelmonmod.pixelmon.enums.EnumPokemonModel");
+      Object[] array = c.getEnumConstants();
+      for (Object ob : array)
+        list.add(ob.toString());
+    } catch (Exception e) {
+      LogManager.getLogger().error("getPixelmonList", e);
+    }
+    return list;
+  }
 
-			Class c = Class.forName("com.pixelmonmod.pixelmon.entities.pixelmon.Entity2HasModel");
-			m = c.getDeclaredMethod("loadModel");
-			m.setAccessible(true);
-			m.invoke(entity);
-		} catch (Exception e) {
-			LogManager.getLogger().error("setName", e);
-		}
-	}
-	
-	public static Object getModel(EntityLivingBase entity){
-		try {
-			return getPixelmonModel.invoke(entity);
-		} catch (Exception e) {
-			LogManager.getLogger().error("getModel", e);
-		}
-		return null;
-	}
-	
-	public static String getName(EntityLivingBase entity) {
-		if(!Enabled || !isPixelmon(entity))
-			return "";
-		try {
-			Method m = entity.getClass().getMethod("getName");
-			return m.invoke(entity).toString();
-		} catch (Exception e) {
-			LogManager.getLogger().error("getName", e);
-		}
-		return "";
-	}
+  public static boolean isPixelmon(Entity entity) {
+    if (!Enabled)
+      return false;
+    return EntityList.getEntityString(entity).contains("Pixelmon");
+  }
 
+  public static Object getModel(EntityLivingBase entity) {
+    try {
+      return getPixelmonModel.invoke(entity, new Object[0]);
+    } catch (Exception e) {
+      LogManager.getLogger().error("getModel", e);
+      return null;
+    }
+  }
 
-	public static void debug(EntityLivingBase entity) {
-		if(!Enabled || !isPixelmon(entity))
-			return;
-		try {
-			Method m = entity.getClass().getMethod("getModel");
-			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString((String) m.invoke(entity)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  public static void setupModel(EntityLivingBase entity, Object model) {
+    try {
+      if (modelSetupClass.isAssignableFrom(model.getClass()))
+        modelSetupMethod.invoke(model, new Object[] { entity });
+    } catch (Exception e) {
+      LogManager.getLogger().error("setupModel", e);
+    }
+  }
+
+  public static String getName(EntityLivingBase entity) {
+    if (!Enabled || !isPixelmon((Entity)entity))
+      return "";
+    try {
+      Method m = entity.getClass().getMethod("getName", new Class[0]);
+      return m.invoke(entity, new Object[0]).toString();
+    } catch (Exception e) {
+      LogManager.getLogger().error("getName", e);
+      return "";
+    }
+  }
+
+  public static void debug(EntityLivingBase entity) {
+    if (!Enabled || !isPixelmon((Entity)entity))
+      return;
+    try {
+      Method m = entity.getClass().getMethod("getModel", new Class[0]);
+      (Minecraft.getMinecraft()).thePlayer.addChatMessage((ITextComponent)new TextComponentString((String)m.invoke(entity, new Object[0])));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

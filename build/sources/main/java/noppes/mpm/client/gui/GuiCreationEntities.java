@@ -1,114 +1,135 @@
 package noppes.mpm.client.gui;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import noppes.mpm.client.gui.util.GuiCustomScroll;
+import net.minecraft.entity.player.EntityPlayer;
+import noppes.mpm.ModelData;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.client.gui.util.GuiNpcButton;
-import noppes.mpm.client.gui.util.ICustomScrollListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import noppes.mpm.client.gui.util.GuiNpcLabel;
+import noppes.mpm.client.gui.util.GuiNpcSlider;
+import noppes.mpm.client.gui.util.ISliderListener;
+import noppes.mpm.client.gui.util.ISubGuiListener;
+import noppes.mpm.util.MPMEntityUtil;
+import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
-import noppes.mpm.client.gui.util.GuiCustomScroll;
-import noppes.mpm.client.gui.util.GuiNpcButton;
-import noppes.mpm.client.gui.util.ICustomScrollListener;
+public abstract class GuiCreationScreenInterface extends GuiNPCInterface implements ISubGuiListener, ISliderListener {
+  public static String Message = "";
 
-public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener{
+  public EntityLivingBase entity;
 
-	public HashMap<String,Class<? extends EntityLivingBase>> data = new HashMap<String, Class<? extends EntityLivingBase>>();
-	private List<String> list;
-	private GuiCustomScroll scroll;
-	private boolean resetToSelected = true;
+  public int active = 0;
 
-	public GuiCreationEntities(){
-		for (EntityEntry ent : ForgeRegistries.ENTITIES.getValues()) {
-		      String name = ent.getName();
-        	try {
-        		Class<? extends Entity> c = ent.getEntityClass();
-        		if(EntityLiving.class.isAssignableFrom(c) && c.getConstructor(new Class[] {World.class}) != null && !Modifier.isAbstract(c.getModifiers())){
-        			if(Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase<?>)
-        				data.put(name.toString(),c.asSubclass(EntityLivingBase.class));
-        		}
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-			}
-        }
-		list = new ArrayList<String>(data.keySet());
-		list.add("Player");
-		Collections.sort(list,String.CASE_INSENSITIVE_ORDER);
-		active = 1;
-		xOffset = 60;
-	}
+  private EntityPlayer player;
 
-    @Override
-    public void initGui() {
-    	super.initGui();
-    	addButton(new GuiNpcButton(10, guiLeft, guiTop + 46, 120, 20, "Reset To Player"));
-    	if(scroll == null){
-    		scroll = new GuiCustomScroll(this, 0);
-    		scroll.setUnsortedList(list);
-    	}
-    	scroll.guiLeft = guiLeft;
-    	scroll.guiTop = guiTop + 68;
-    	scroll.setSize(100, ySize - 70);
+  public int xOffset = 0;
 
-    	String selected = "Player";
-    	if(entity != null){
-	    	for(Entry<String, Class<? extends EntityLivingBase>> en : data.entrySet()){
-	    		if(en.getValue().toString().equals(entity.getClass().toString())){
-	    			selected = en.getKey();
-	    		}
-	    	}
-    	}
-    	scroll.setSelected(selected);
+  public ModelData playerdata;
 
-    	if(resetToSelected){
-    		scroll.scrollTo(scroll.getSelected());
-    		resetToSelected = false;
-    	}
-    	addScroll(scroll);
+  public static GuiCreationScreenInterface Gui = new GuiCreationParts();
+
+  private static float rotation = 0.5F;
+
+  public GuiCreationScreenInterface() {
+    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.getMinecraft()).thePlayer);
+    this.xSize = 400;
+    this.ySize = 240;
+    this.xOffset = 140;
+    this.player = (EntityPlayer)(Minecraft.getMinecraft()).thePlayer;
+    this.closeOnEsc = true;
+  }
+
+  @Override
+  public void initGui() {
+    super.initGui();
+    this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
+    Keyboard.enableRepeatEvents(true);
+    addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
+    addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
+    if (this.entity == null) {
+      addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
+    } else {
+      GuiCreationExtra gui = new GuiCreationExtra();
+      gui.playerdata = this.playerdata;
+      if (!gui.getData(this.entity).isEmpty()) {
+        addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.extra"));
+      } else if (this.active == 2) {
+        openGui(new GuiCreationEntities());
+        return;
+      }
     }
+    if (this.entity == null)
+      addButton(new GuiNpcButton(3, this.guiLeft + 62, this.guiTop + 23, 60, 20, "gui.scale"));
+    (getButton(this.active)).enabled = false;
+    addButton(new GuiNpcButton(66, this.guiLeft + this.xSize - 20, this.guiTop, 20, 20, "X"));
+    addLabel(new GuiNpcLabel(0, Message, this.guiLeft + 120, this.guiTop + this.ySize - 10, 16711680));
+    getLabel(0).center(this.xSize - 120);
+    addSlider(new GuiNpcSlider((GuiScreen)this, 500, this.guiLeft + this.xOffset + 142, this.guiTop + 210, 120, 20, rotation));
+  }
 
-    @Override
-    protected void actionPerformed(GuiButton btn) {
-    	super.actionPerformed(btn);
-    	if(btn.id == 10){
-    		playerdata.setEntityClass(null);
-    		resetToSelected = true;
-    		initGui();
-    	}
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
+    if (btn.id == 0)
+      openGui(new GuiCreationOptions());
+    if (btn.id == 1)
+      openGui(new GuiCreationEntities());
+    if (btn.id == 2)
+      if (this.entity == null) {
+        openGui(new GuiCreationParts());
+      } else {
+        openGui(new GuiCreationExtra());
+      }
+    if (btn.id == 3)
+      openGui(new GuiCreationScale());
+    if (btn.id == 66)
+      close();
+  }
+
+  public void drawScreen(int x, int y, float f) {
+    EntityPlayer entityPlayer;
+    super.drawScreen(x, y, f);
+    this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
+    EntityLivingBase entity = this.entity;
+    if (entity == null) {
+      entityPlayer = this.player;
+    } else {
+      MPMEntityUtil.Copy((EntityLivingBase)this.mc.thePlayer, (EntityLivingBase)this.player);
     }
+    drawNpc((EntityLivingBase)entityPlayer, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
+  }
 
-	@Override
-	public void customScrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-		playerdata.setEntityClass(data.get(scroll.getSelected()));
-		initGui();
-	}
+  public void onGuiClosed() {
+    super.onGuiClosed();
+    Keyboard.enableRepeatEvents(false);
+  }
 
+  public void save() {}
+
+  public boolean drawSubGuiBackground() {
+    return true;
+  }
+
+  public void openGui(GuiNPCInterface gui) {
+    this.parent.setSubGui(gui);
+    if (gui instanceof GuiCreationScreenInterface)
+      Gui = (GuiCreationScreenInterface)gui;
+  }
+
+  public void subGuiClosed(GuiNPCInterface subgui) {
+    initGui();
+  }
+
+  public void mouseDragged(GuiNpcSlider slider) {
+    if (slider.id == 500) {
+      rotation = slider.sliderValue;
+      slider.setString("" + (int)(rotation * 360.0F));
+    }
+  }
+
+  public void mousePressed(GuiNpcSlider slider) {}
+
+  public void mouseReleased(GuiNpcSlider slider) {}
 }

@@ -1,84 +1,80 @@
 package noppes.mpm.client;
 
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Mouse;
 
 public class Camera {
-	public boolean enabled = false;
+  public boolean enabled = false;
 
-	public float cameraYaw = 0;
-	public float cameraPitch = 0;
+  public float cameraYaw = 0.0F;
 
-	public float playerYaw = 0;
-	public float playerPitch = 0;
-	
-	public float cameraDistance = 4;
-	
+  public float cameraPitch = 0.0F;
 
-	public void update(boolean start){
-		Minecraft mc = Minecraft.getMinecraft();
-		Entity view = mc.getRenderViewEntity();
-		if(mc.gameSettings.thirdPersonView != 1){
-			if(enabled)
-				reset();
-			return;
-		}
-		if(!enabled || view == null)
-			return;
-		
-		updateCamera();
-		if(start){			
-			view.rotationYaw = view.prevRotationYaw = cameraYaw;
-			view.rotationPitch = view.prevRotationPitch = cameraPitch;
-		}
-		else{
-			view.rotationYaw = mc.thePlayer.rotationYaw - cameraYaw + playerYaw;
-			view.prevRotationYaw = mc.thePlayer.prevRotationYaw - cameraYaw + playerYaw;
-			view.rotationPitch = -playerPitch;
-			view.prevRotationPitch = -playerPitch;
-		}
-	}
-	
-	private void updateCamera(){
-		Minecraft mc = Minecraft.getMinecraft();
-		if(!mc.inGameHasFocus)
-			return;
-        float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
-        float f1 = f * f * f * 8.0F;
-        double dx = Mouse.getDX() * f1 * 0.15D;
-        double dy = Mouse.getDY() * f1 * 0.15D;
-        if(ClientProxy.Camera.isKeyDown()){
-        	cameraYaw += dx;
-        	cameraPitch += dy;
-        	cameraPitch = MathHelper.clamp_float(cameraPitch, -90.0F, 90.0F);
-        }
-        else{
-        	playerYaw += dx;
-        	playerPitch += dy;
-        	playerPitch = MathHelper.clamp_float(playerPitch, -90.0F, 90.0F);
-        }
-        
-	}
+  public float playerYaw = 0.0F;
 
-	public void reset() {
-		enabled = false;
-		cameraYaw = 0;
-		cameraPitch = 0;
-		playerYaw = 0;
-		playerPitch = 0;
-		cameraDistance = 4;
-	}
+  public float playerPitch = 0.0F;
 
-	public void enabled() {
-		Minecraft mc = Minecraft.getMinecraft();
-		if(!enabled){
-			cameraYaw = playerYaw = mc.thePlayer.rotationYaw;
-			cameraPitch = mc.thePlayer.rotationPitch;
-			playerPitch = -cameraPitch;
-		}
-		enabled = true;
-	}
+  public float cameraDistance = 4.0F;
+
+  public void update(boolean start) {
+    Minecraft mc = Minecraft.getMinecraft();
+    Entity view = mc.getRenderViewEntity();
+    if (mc.gameSettings.thirdPersonView  != 1) {
+      if (this.enabled)
+        reset();
+      return;
+    }
+    if (!this.enabled || view == null)
+      return;
+    updateCamera();
+    if (start) {
+      view.rotationYaw = view.prevRotationYaw  = this.cameraYaw;
+      view.rotationPitch = view.prevRotationPitch = this.cameraPitch;
+    } else {
+      view.rotationYaw = mc.thePlayer.rotationYaw - this.cameraYaw + this.playerYaw;
+      view.prevRotationYaw  = mc.thePlayer.prevRotationYaw  - this.cameraYaw + this.playerYaw;
+      view.rotationPitch = -this.playerPitch;
+      view.prevRotationPitch = -this.playerPitch;
+    }
+  }
+
+  private void updateCamera() {
+    Minecraft mc = Minecraft.getMinecraft();
+    if (!mc.inGameHasFocus)
+      return;
+    float f = mc.gameSettings.mouseSensitivity  * 0.6F + 0.2F;
+    float f1 = f * f * f * 8.0F;
+    double dx = (Mouse.getDX() * f1) * 0.15D;
+    double dy = (Mouse.getDY() * f1) * 0.15D;
+    if (ClientProxy.Camera.isKeyDown()) {
+      this.cameraYaw = (float)(this.cameraYaw + dx);
+      this.cameraPitch = (float)(this.cameraPitch + dy);
+      this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
+    } else {
+      this.playerYaw = (float)(this.playerYaw + dx);
+      this.playerPitch = (float)(this.playerPitch + dy);
+      this.playerPitch = MathHelper.clamp_float(this.playerPitch, -90.0F, 90.0F);
+    }
+  }
+
+  public void reset() {
+    this.enabled = false;
+    this.cameraYaw = 0.0F;
+    this.cameraPitch = 0.0F;
+    this.playerYaw = 0.0F;
+    this.playerPitch = 0.0F;
+    this.cameraDistance = 4.0F;
+  }
+
+  public void enabled() {
+    Minecraft mc = Minecraft.getMinecraft();
+    if (!this.enabled) {
+      this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
+      this.cameraPitch = mc.thePlayer.rotationPitch;
+      this.playerPitch = -this.cameraPitch;
+    }
+    this.enabled = true;
+  }
 }

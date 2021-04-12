@@ -1,7 +1,69 @@
 This mapping 'snapshot_20160518' was designed for MC 1.9.4! Use at your own peril.This mapping 'snapshot_20160518' was designed for MC 1.9.4! Use at your own peril.
 
 Found AccessTransformer: mpm_at.cfg
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:compileApiKotlin UP-TO-DATE
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:splitServerJar SKIPPED
+:mergeJars SKIPPED
+:applyBinaryPatches
+:extractDependencyATs SKIPPED
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
+:genSrgs SKIPPED
+:deobfMcMCP
+Applying SpecialSource...
+Applying Exceptor...
+:sourceApiJava
+:compileApiJava UP-TO-DATE
+:copyApiKotlinClasses
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:compileKotlin
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209.jar
+Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209.jar
+:sourceMainJava
+:compileJavaE:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\micdoodle8\mods\galacticraft\api\client\tabs\InventoryTabMPM.java:53: error: illegal start of expression
+        drawHoveringText(Arrays.asList(new String[] { this.displayString }, ), 0, 0, mc.fontRendererObj);
+                                                                            ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:110: error: not a statement
+    this;
+    ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:112: error: not a statement
+    this;
+    ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:114: error: not a statement
+      this;
+      ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ')' expected
+          }"", I18n.translateToLocal("message.delete"), 0);
+           ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: illegal start of expression
+          }"", I18n.translateToLocal("message.delete"), 0);
+             ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ';' expected
+          }"", I18n.translateToLocal("message.delete"), 0);
+                   ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ';' expected
+          }"", I18n.translateToLocal("message.delete"), 0);
+                                                      ^
+8 errors
+ FAILED
+:copyMainKotlinClasses SKIPPED
 
-BUILD SUCCESSFUL
+FAILURE: Build failed with an exception.
 
-Total time: 1.065 secs
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+
+Total time: 45.512 secs

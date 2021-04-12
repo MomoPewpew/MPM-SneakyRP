@@ -8,102 +8,94 @@ import noppes.mpm.ModelData;
 import noppes.mpm.constants.EnumAnimation;
 
 public class ModelMermaidLegs2 extends ModelRenderer {
+  ModelRenderer Tail1;
 
-	ModelRenderer Tail1;
-	ModelRenderer Tail2;
-	ModelRenderer Tail3;
-	ModelRenderer Tail4;
-	ModelRenderer Tail5;
-	ModelRenderer Tail6;
-	ModelRenderer Tail7;
-	ModelRenderer Tail8;
+  ModelRenderer Tail2;
 
-	public ModelMermaidLegs2(ModelBase base) {
-		super(base);
-		textureWidth = 64;
-		textureHeight = 32;
+  ModelRenderer Tail3;
 
-		Tail1 = new ModelRenderer(base, 0, 18);
-		Tail1.addBox(0F, 0F, 0F, 8, 6, 4);
-		Tail1.setRotationPoint(-4F, 12F, -2F);
-		setRotation(Tail1, 0.075F, 0F, 0F);
+  ModelRenderer Tail4;
 
-		Tail2 = new ModelRenderer(base, 0, 18);
-		Tail2.addBox(0F, 0F, 0F, 6, 5, 3);
-		Tail2.setRotationPoint(1F, 5.5F, 0.3F);
-		setRotation(Tail2, 0.56F, 0F, 0F);
-		Tail1.addChild(Tail2);
+  ModelRenderer Tail5;
 
-		Tail3 = new ModelRenderer(base, 0, 18);
-		Tail3.addBox(0F, 0F, 0F, 5, 5, 2);
-		Tail3.setRotationPoint(5.5F, 4F, 2.5F);
-		setRotation(Tail3, -0.37818F, 3.141593F, 0F);
-		Tail2.addChild(Tail3);
+  ModelRenderer Tail6;
 
-		Tail4 = new ModelRenderer(base, 0, 20);
-		Tail4.addBox(0F, 0F, 0F, 4, 3, 1);
-		Tail4.setRotationPoint(0.5F, 4.5F, 0.5F);
-		setRotation(Tail4, -0.1f, 0, 0F);
-		Tail3.addChild(Tail4);
+  ModelRenderer Tail7;
 
-		Tail5 = new ModelRenderer(base, 0, 20);
-		Tail5.addBox(0F, 0F, 0F, 1, 3, 1);
-		Tail5.setRotationPoint(-1F, 1.5F, 0F);
-		setRotation(Tail5, 0, 0, 0F);
-		Tail4.addChild(Tail5);
+  ModelRenderer Tail8;
 
-		Tail6 = new ModelRenderer(base, 0, 20);
-		Tail6.addBox(0F, 0F, 0F, 1, 3, 1);
-		Tail6.setRotationPoint(-2F, 3F, 0F);
-		setRotation(Tail6, 0, 0, 0F);
-		Tail4.addChild(Tail6);
+  public ModelMermaidLegs2(ModelBase base) {
+    super(base);
+    this.textureWidth = 64.0F;
+    this.textureHeight = 32.0F;
+    this.Tail1 = new ModelRenderer(base, 0, 18);
+    this.Tail1.addBox(0.0F, 0.0F, 0.0F, 8, 6, 4);
+    this.Tail1.setRotationPoint(-4.0F, 12.0F, -2.0F);
+    setRotation(this.Tail1, 0.075F, 0.0F, 0.0F);
+    this.Tail2 = new ModelRenderer(base, 0, 18);
+    this.Tail2.addBox(0.0F, 0.0F, 0.0F, 6, 5, 3);
+    this.Tail2.setRotationPoint(1.0F, 5.5F, 0.3F);
+    setRotation(this.Tail2, 0.56F, 0.0F, 0.0F);
+    this.Tail1.addChild(this.Tail2);
+    this.Tail3 = new ModelRenderer(base, 0, 18);
+    this.Tail3.addBox(0.0F, 0.0F, 0.0F, 5, 5, 2);
+    this.Tail3.setRotationPoint(5.5F, 4.0F, 2.5F);
+    setRotation(this.Tail3, -0.37818F, 3.141593F, 0.0F);
+    this.Tail2.addChild(this.Tail3);
+    this.Tail4 = new ModelRenderer(base, 0, 20);
+    this.Tail4.addBox(0.0F, 0.0F, 0.0F, 4, 3, 1);
+    this.Tail4.setRotationPoint(0.5F, 4.5F, 0.5F);
+    setRotation(this.Tail4, -0.1F, 0.0F, 0.0F);
+    this.Tail3.addChild(this.Tail4);
+    this.Tail5 = new ModelRenderer(base, 0, 20);
+    this.Tail5.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1);
+    this.Tail5.setRotationPoint(-1.0F, 1.5F, 0.0F);
+    setRotation(this.Tail5, 0.0F, 0.0F, 0.0F);
+    this.Tail4.addChild(this.Tail5);
+    this.Tail6 = new ModelRenderer(base, 0, 20);
+    this.Tail6.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1);
+    this.Tail6.setRotationPoint(-2.0F, 3.0F, 0.0F);
+    setRotation(this.Tail6, 0.0F, 0.0F, 0.0F);
+    this.Tail4.addChild(this.Tail6);
+    this.Tail7 = new ModelRenderer(base, 0, 20);
+    this.Tail7.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1);
+    this.Tail7.setRotationPoint(4.0F, 1.5F, 0.0F);
+    setRotation(this.Tail7, 0.0F, 0.0F, 0.0F);
+    this.Tail4.addChild(this.Tail7);
+    this.Tail8 = new ModelRenderer(base, 0, 20);
+    this.Tail8.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1);
+    this.Tail8.setRotationPoint(5.0F, 3.0F, 0.0F);
+    setRotation(this.Tail8, 0.0F, 0.0F, 0.0F);
+    this.Tail4.addChild(this.Tail8);
+  }
 
-		Tail7 = new ModelRenderer(base, 0, 20);
-		Tail7.addBox(0F, 0F, 0F, 1, 3, 1);
-		Tail7.setRotationPoint(4F, 1.5F, 0F);
-		setRotation(Tail7, 0, 0, 0F);
-		Tail4.addChild(Tail7);
+  @Override
+  public void render(float f5) {
+    if (this.isHidden || !this.showModel)
+      return;
+    this.Tail1.render(f5);
+  }
 
-		Tail8 = new ModelRenderer(base, 0, 20);
-		Tail8.addBox(0F, 0F, 0F, 1, 3, 1);
-		Tail8.setRotationPoint(5F, 3F, 0F);
-		setRotation(Tail8, 0, 0, 0F);
-		Tail4.addChild(Tail8);
+  private void setRotation(ModelRenderer model, float x, float y, float z) {
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
+  }
 
-	}
-
-	@Override
-	public void render(float f5) {
-		if (isHidden || !showModel)
-			return;
-		Tail1.render(f5);
-	}
-
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
-	}
-
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6,
-			Entity entity, ModelData data) {
-		Tail1.setRotationPoint(-4F, 12F, -2F);
-		float ani = MathHelper.sin(par1 * 0.6662F);
-		if (ani > 0.2)
-			ani /= 3f;
-		if(data.isSleeping() || data.animation == EnumAnimation.CRAWLING){
-			Tail1.rotateAngleX = Tail2.rotateAngleX = Tail3.rotateAngleX = Tail4.rotateAngleX = 0;
-		}
-		else{
-			Tail1.rotateAngleX = 0.2F - ani * 0.2F * par2;
-			Tail2.rotateAngleX = 0.56F - ani * 0.24F * par2;
-			Tail3.rotateAngleX = -0.4F + ani * 0.24F * par2;
-			Tail4.rotateAngleX = -0.1f + ani * 0.10F * par2;
-
-			if(entity.isSneaking()){
-				Tail1.setRotationPoint(-4F, 10F, 3F);
-			}
-		}
-
-	}
+  public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity, ModelData data) {
+    this.Tail1.setRotationPoint(-4.0F, 12.0F, -2.0F);
+    float ani = MathHelper.sin(par1 * 0.6662F);
+    if (ani > 0.2D)
+      ani /= 3.0F;
+    if (data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
+      this.Tail4.rotateAngleX = 0.0F;
+    } else {
+      this.Tail1.rotateAngleX = 0.2F - ani * 0.2F * par2;
+      this.Tail2.rotateAngleX = 0.56F - ani * 0.24F * par2;
+      this.Tail3.rotateAngleX = -0.4F + ani * 0.24F * par2;
+      this.Tail4.rotateAngleX = -0.1F + ani * 0.1F * par2;
+      if (entity.isSneaking())
+        this.Tail1.setRotationPoint(-4.0F, 10.0F, 3.0F);
+    }
+  }
 }

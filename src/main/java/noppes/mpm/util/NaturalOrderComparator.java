@@ -28,6 +28,7 @@ public class NaturalOrderComparator implements Comparator {
     }
   }
 
+  @Override
   public int compare(Object o1, Object o2) {
     String a = o1.toString().toLowerCase();
     String b = o2.toString().toLowerCase();

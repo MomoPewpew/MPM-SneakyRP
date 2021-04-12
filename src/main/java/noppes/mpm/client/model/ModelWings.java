@@ -32,52 +32,52 @@ public class ModelWings extends ModelBase {
   public ModelRenderer right_wing_4;
 
   public ModelWings() {
-    this.field_78090_t = 81;
-    this.field_78089_u = 34;
+    this.textureWidth = 81;
+    this.textureHeight = 34;
     this.right_wing_2 = new ModelRenderer(this, 42, 0);
     this.right_wing_2.setRotationPoint(0.0F, 4.0F, -1.0F);
-    this.right_wing_2.func_78790_a(-1.0F, 0.0F, 0.0F, 2, 7, 2, 0.0F);
+    this.right_wing_2.addBox(-1.0F, 0.0F, 0.0F, 2, 7, 2, 0.0F);
     setRotateAngle(this.right_wing_2, 1.2292354F, 0.0F, 0.0F);
     this.left_wing_3 = new ModelRenderer(this, 26, 0);
     this.left_wing_3.setRotationPoint(0.0F, 7.0F, 2.0F);
-    this.left_wing_3.func_78790_a(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
+    this.left_wing_3.addBox(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
     setRotateAngle(this.left_wing_3, -1.2292354F, 0.0F, 0.0F);
     this.right_wing_1 = new ModelRenderer(this, 8, 0);
     this.right_wing_1.setRotationPoint(-2.4F, 2.0F, 1.5F);
-    this.right_wing_1.func_78790_a(-1.0F, 0.0F, -1.0F, 2, 4, 2, 0.0F);
+    this.right_wing_1.addBox(-1.0F, 0.0F, -1.0F, 2, 4, 2, 0.0F);
     setRotateAngle(this.right_wing_1, 1.5358897F, -0.9424778F, 0.0F);
     this.left_wing_0 = new ModelRenderer(this, 6, 0);
     this.left_wing_0.setRotationPoint(2.4F, 2.0F, 1.5F);
-    this.left_wing_0.func_78790_a(-3.4F, -2.0F, -15.0F, 1, 11, 18, 0.0F);
+    this.left_wing_0.addBox(-3.4F, -2.0F, -15.0F, 1, 11, 18, 0.0F);
     this.right_wing_3 = new ModelRenderer(this, 50, 0);
     this.right_wing_3.setRotationPoint(0.0F, 7.0F, 2.0F);
-    this.right_wing_3.func_78790_a(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
+    this.right_wing_3.addBox(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
     setRotateAngle(this.right_wing_3, -1.2292354F, 0.0F, 0.0F);
     this.left_wing_2 = new ModelRenderer(this, 16, 0);
     this.left_wing_2.setRotationPoint(0.0F, 4.0F, -1.0F);
-    this.left_wing_2.func_78790_a(-1.0F, 0.0F, 0.0F, 2, 7, 2, 0.0F);
+    this.left_wing_2.addBox(-1.0F, 0.0F, 0.0F, 2, 7, 2, 0.0F);
     setRotateAngle(this.left_wing_2, 1.2292354F, 0.0F, 0.0F);
     this.body = new ModelRenderer(this, 0, 0);
     this.body.setRotationPoint(0.0F, 0.0F, 0.0F);
-    this.body.func_78790_a(0.0F, 0.0F, 0.0F, 0, 0, 0, 0.0F);
+    this.body.addBox(0.0F, 0.0F, 0.0F, 0, 0, 0, 0.0F);
     this.head = new ModelRenderer(this, 0, 34);
     this.head.setRotationPoint(0.0F, 0.0F, 0.0F);
-    this.head.func_78790_a(-4.0F, -8.0F, -4.0F, 0, 0, 0, 0.0F);
+    this.head.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0, 0.0F);
     this.left_wing_1 = new ModelRenderer(this, 0, 0);
     this.left_wing_1.setRotationPoint(2.4F, 2.0F, 1.5F);
-    this.left_wing_1.func_78790_a(-1.0F, 0.0F, -1.0F, 2, 4, 2, 0.0F);
+    this.left_wing_1.addBox(-1.0F, 0.0F, -1.0F, 2, 4, 2, 0.0F);
     setRotateAngle(this.left_wing_1, 1.5358897F, 0.9424778F, 0.0F);
     this.right_wing_4 = new ModelRenderer(this, 64, 0);
     this.right_wing_4.setRotationPoint(0.0F, 5.0F, 0.0F);
-    this.right_wing_4.func_78790_a(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
+    this.right_wing_4.addBox(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
     setRotateAngle(this.right_wing_4, -1.1383038F, 0.0F, 0.0F);
     this.left_wing_4 = new ModelRenderer(this, 34, 0);
     this.left_wing_4.setRotationPoint(0.0F, 5.0F, 0.0F);
-    this.left_wing_4.func_78790_a(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
+    this.left_wing_4.addBox(-1.0F, 0.0F, -2.0F, 2, 5, 2, 0.0F);
     setRotateAngle(this.left_wing_4, -1.1383038F, 0.0F, 0.0F);
     this.right_wing_0 = new ModelRenderer(this, 44, 0);
     this.right_wing_0.setRotationPoint(-2.4F, 2.0F, 1.5F);
-    this.right_wing_0.func_78790_a(2.4F, -2.0F, -15.0F, 1, 11, 18, 0.0F);
+    this.right_wing_0.addBox(2.4F, -2.0F, -15.0F, 1, 11, 18, 0.0F);
     this.right_wing_1.addChild(this.right_wing_2);
     this.left_wing_2.addChild(this.left_wing_3);
     this.body.addChild(this.right_wing_1);
@@ -91,7 +91,7 @@ public class ModelWings extends ModelBase {
   }
 
   public void func_78088_a(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
-    func_78087_a(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5, entityIn);
+    setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5, entityIn);
     this.field_78091_s = false;
     GlStateManager.pushMatrix();
     if (this.field_78091_s) {

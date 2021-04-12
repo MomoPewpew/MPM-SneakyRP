@@ -20,8 +20,8 @@ public class ModelMermaidLegs extends ModelRenderer {
 
   public ModelMermaidLegs(ModelBase base) {
     super(base);
-    this.field_78801_a = 64.0F;
-    this.field_78799_b = 32.0F;
+    this.textureWidth = 64.0F;
+    this.textureHeight = 32.0F;
     this.top = new ModelRenderer(base, 0, 16);
     this.top.addBox(-2.0F, -2.5F, -2.0F, 8, 9, 4);
     this.top.setRotationPoint(-2.0F, 14.0F, 1.0F);
@@ -50,7 +50,7 @@ public class ModelMermaidLegs extends ModelRenderer {
   }
 
   public void render(float f5) {
-    if (this.isHidden || !this.field_78806_j)
+    if (this.isHidden || !this.showModel)
       return;
     this.top.render(f5);
   }

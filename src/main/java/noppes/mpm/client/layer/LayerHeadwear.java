@@ -22,7 +22,7 @@ public class LayerHeadwear extends LayerInterface implements LayerPreRender {
 
   @Override
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-    if (MorePlayerModels.HeadWearType != 1 || this.model.bipedHead.isHidden || !this.model.bipedHead.field_78806_j)
+    if (MorePlayerModels.HeadWearType != 1 || this.model.bipedHead.isHidden || !this.model.bipedHead.showModel)
       return;
     GlStateManager.color(1.0F, 1.0F, 1.0F);
     ClientProxy.bindTexture(this.player.getLocationSkin());

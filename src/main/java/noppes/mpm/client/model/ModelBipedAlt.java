@@ -30,7 +30,7 @@ public class ModelBipedAlt extends ModelBiped {
     super(scale);
     this.bipedLeftArm = createScale(this.bipedLeftArm, EnumParts.ARM_LEFT);
     this.bipedRightArm = createScale(this.bipedRightArm, EnumParts.ARM_RIGHT);
-    this.field_178722_k = createScale(this.field_178722_k, EnumParts.LEG_LEFT);
+    this.bipedLeftLeg = createScale(this.bipedLeftLeg, EnumParts.LEG_LEFT);
     this.bipedRightLeg = createScale(this.bipedRightLeg, EnumParts.LEG_RIGHT);
     this.bipedHead = createScale(this.bipedHead, EnumParts.HEAD);
     this.bipedHeadwear = createScale(this.bipedHeadwear, EnumParts.HEAD);
@@ -41,11 +41,11 @@ public class ModelBipedAlt extends ModelBiped {
     int textureX = ((Integer)ObfuscationReflectionHelper.getPrivateValue(ModelRenderer.class, renderer, 2)).intValue();
     int textureY = ((Integer)ObfuscationReflectionHelper.getPrivateValue(ModelRenderer.class, renderer, 3)).intValue();
     ModelScaleRenderer model = new ModelScaleRenderer((ModelBase)this, textureX, textureY, part);
-    model.field_78799_b = renderer.field_78799_b;
-    model.field_78801_a = renderer.field_78801_a;
-    model.field_78805_m = renderer.field_78805_m;
-    model.field_78804_l = renderer.field_78804_l;
-    func_178685_a(renderer, model);
+    model.textureHeight = renderer.textureHeight;
+    model.textureWidth = renderer.textureWidth;
+    model.childModels = renderer.childModels;
+    model.cubeList = renderer.cubeList;
+    copyModelAngles(renderer, model);
     List<ModelScaleRenderer> list = this.map.get(part);
     if (list == null)
       this.map.put(part, list = new ArrayList<>());
@@ -53,7 +53,8 @@ public class ModelBipedAlt extends ModelBiped {
     return model;
   }
 
-  public void func_78087_a(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+  @Override
+  public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
     EntityPlayer player = (EntityPlayer)entity;
     ModelData data = ModelData.get(player);
     for (EnumParts part : this.map.keySet()) {
@@ -73,9 +74,9 @@ public class ModelBipedAlt extends ModelBiped {
     this.bipedHead.rotationPointX = 0.0F;
     this.bipedHead.rotationPointY = 0.0F;
     this.bipedHead.rotationPointZ = 0.0F;
-    this.field_178722_k.rotateAngleX = 0.0F;
-    this.field_178722_k.rotateAngleY = 0.0F;
-    this.field_178722_k.rotateAngleZ = 0.0F;
+    this.bipedLeftLeg.rotateAngleX = 0.0F;
+    this.bipedLeftLeg.rotateAngleY = 0.0F;
+    this.bipedLeftLeg.rotateAngleZ = 0.0F;
     this.bipedRightLeg.rotateAngleX = 0.0F;
     this.bipedRightLeg.rotateAngleY = 0.0F;
     this.bipedRightLeg.rotateAngleZ = 0.0F;
@@ -85,7 +86,7 @@ public class ModelBipedAlt extends ModelBiped {
     this.bipedRightArm.rotationPointX = 0.0F;
     this.bipedRightArm.rotationPointY = 2.0F;
     this.bipedRightArm.rotationPointZ = 0.0F;
-    super.func_78087_a(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+    super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
     if (data.isSleeping() || player.isPlayerSleeping()) {
       if (this.bipedHead.rotateAngleX < 0.0F) {
         this.bipedHead.rotateAngleX = 0.0F;

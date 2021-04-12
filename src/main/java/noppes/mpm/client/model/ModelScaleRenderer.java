@@ -27,7 +27,7 @@ public class ModelScaleRenderer extends ModelRenderer {
 
   public ModelScaleRenderer(ModelBase modelBase, int par2, int par3, EnumParts part) {
     this(modelBase, part);
-    func_78784_a(par2, par3);
+    setTextureOffset(par2, par3);
   }
 
   public void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -36,20 +36,22 @@ public class ModelScaleRenderer extends ModelRenderer {
     model.rotateAngleZ = z;
   }
 
+  @Override
   public void render(float par1) {
-    if (!this.field_78806_j || this.isHidden)
+    if (!this.showModel || this.isHidden)
       return;
     if (!this.isCompiled)
       compile(par1);
     GlStateManager.pushMatrix();
     postRender(par1);
-    GlStateManager.func_179148_o(this.field_78811_r);
-    if (this.field_78805_m != null)
-      for (int i = 0; i < this.field_78805_m.size(); i++)
-        ((ModelRenderer)this.field_78805_m.get(i)).render(par1);
+    GlStateManager.callList(this.field_78811_r);
+    if (this.childModels != null)
+      for (int i = 0; i < this.childModels.size(); i++)
+        ((ModelRenderer)this.childModels.get(i)).render(par1);
     GlStateManager.popMatrix();
   }
 
+  @Override
   public void postRender(float par1) {
     if (this.config != null)
       GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
@@ -68,11 +70,11 @@ public class ModelScaleRenderer extends ModelRenderer {
   }
 
   public void compile(float par1) {
-    this.field_78811_r = GLAllocation.func_74526_a(1);
+    this.field_78811_r = GLAllocation.generateDisplayLists(1);
     GL11.glNewList(this.field_78811_r, 4864);
     BufferBuilder worldrenderer = Tessellator.getInstance().getBuffer();
-    for (int i = 0; i < this.field_78804_l.size(); i++)
-      ((ModelBox)this.field_78804_l.get(i)).func_178780_a(worldrenderer, par1);
+    for (int i = 0; i < this.cubeList.size(); i++)
+      ((ModelBox)this.cubeList.get(i)).render(worldrenderer, par1);
     GL11.glEndList();
     this.isCompiled = true;
   }

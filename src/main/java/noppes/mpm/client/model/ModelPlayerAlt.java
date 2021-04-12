@@ -38,35 +38,35 @@ public class ModelPlayerAlt extends ModelPlayer {
   public ModelPlayerAlt(float scale, boolean bo) {
     super(scale, bo);
     this.dmhead = new ModelScaleRenderer((ModelBase)this, 24, 0, EnumParts.HEAD);
-    this.dmhead.func_78790_a(-3.0F, -6.0F, -1.0F, 6, 6, 1, scale);
+    this.dmhead.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, scale);
     this.cape = new ModelScaleRenderer((ModelBase)this, 0, 0, EnumParts.BODY);
     this.cape.setTextureSize(64, 32);
-    this.cape.func_78790_a(-5.0F, 0.0F, -1.0F, 10, 16, 1, scale);
+    this.cape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, scale);
     ObfuscationReflectionHelper.setPrivateValue(ModelPlayer.class, this, this.dmhead, 6);
     ObfuscationReflectionHelper.setPrivateValue(ModelPlayer.class, this, this.cape, 5);
     this.bipedLeftArm = createScale(this.bipedLeftArm, EnumParts.ARM_LEFT);
     this.bipedRightArm = createScale(this.bipedRightArm, EnumParts.ARM_RIGHT);
-    this.field_178734_a = createScale(this.field_178734_a, EnumParts.ARM_LEFT);
-    this.field_178732_b = createScale(this.field_178732_b, EnumParts.ARM_RIGHT);
-    this.field_178722_k = createScale(this.field_178722_k, EnumParts.LEG_LEFT);
+    this.bipedLeftArmwear = createScale(this.bipedLeftArmwear, EnumParts.ARM_LEFT);
+    this.bipedRightArmwear = createScale(this.bipedRightArmwear, EnumParts.ARM_RIGHT);
+    this.bipedLeftLeg = createScale(this.bipedLeftLeg, EnumParts.LEG_LEFT);
     this.bipedRightLeg = createScale(this.bipedRightLeg, EnumParts.LEG_RIGHT);
-    this.field_178733_c = createScale(this.field_178733_c, EnumParts.LEG_LEFT);
-    this.bipedLeftLeg = createScale(this.bipedLeftLeg, EnumParts.LEG_RIGHT);
+    this.bipedLeftLegwear = createScale(this.bipedLeftLegwear, EnumParts.LEG_LEFT);
+    this.bipedRightLegwear = createScale(this.bipedRightLegwear, EnumParts.LEG_RIGHT);
     this.bipedHead = createScale(this.bipedHead, EnumParts.HEAD);
     this.bipedHeadwear = createScale(this.bipedHeadwear, EnumParts.HEAD);
     this.bipedBody = createScale(this.bipedBody, EnumParts.BODY);
-    this.field_178730_v = createScale(this.field_178730_v, EnumParts.BODY);
+    this.bipedBodyWear = createScale(this.bipedBodyWear, EnumParts.BODY);
   }
 
   private ModelScaleRenderer createScale(ModelRenderer renderer, EnumParts part) {
     int textureX = ((Integer)ObfuscationReflectionHelper.getPrivateValue(ModelRenderer.class, renderer, 2)).intValue();
     int textureY = ((Integer)ObfuscationReflectionHelper.getPrivateValue(ModelRenderer.class, renderer, 3)).intValue();
     ModelScaleRenderer model = new ModelScaleRenderer((ModelBase)this, textureX, textureY, part);
-    model.field_78799_b = renderer.field_78799_b;
-    model.field_78801_a = renderer.field_78801_a;
-    model.field_78805_m = renderer.field_78805_m;
-    model.field_78804_l = renderer.field_78804_l;
-    func_178685_a(renderer, model);
+    model.textureHeight = renderer.textureHeight;
+    model.textureWidth = renderer.textureWidth;
+    model.childModels = renderer.childModels;
+    model.cubeList = renderer.cubeList;
+    copyModelAngles(renderer, model);
     List<ModelScaleRenderer> list = this.map.get(part);
     if (list == null)
       this.map.put(part, list = new ArrayList<>());
@@ -74,7 +74,8 @@ public class ModelPlayerAlt extends ModelPlayer {
     return model;
   }
 
-  public void func_78087_a(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
+  @Override
+  public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
     EntityPlayer player = (EntityPlayer)entity;
     this.playerdata = ModelData.get(player);
     if (this.playerdata.isSleeping()) {
@@ -102,9 +103,9 @@ public class ModelPlayerAlt extends ModelPlayer {
     this.bipedHead.rotationPointX = 0.0F;
     this.bipedHead.rotationPointY = 0.0F;
     this.bipedHead.rotationPointZ = 0.0F;
-    this.field_178722_k.rotateAngleX = 0.0F;
-    this.field_178722_k.rotateAngleY = 0.0F;
-    this.field_178722_k.rotateAngleZ = 0.0F;
+    this.bipedLeftLeg.rotateAngleX = 0.0F;
+    this.bipedLeftLeg.rotateAngleY = 0.0F;
+    this.bipedLeftLeg.rotateAngleZ = 0.0F;
     this.bipedRightLeg.rotateAngleX = 0.0F;
     this.bipedRightLeg.rotateAngleY = 0.0F;
     this.bipedRightLeg.rotateAngleZ = 0.0F;
@@ -114,7 +115,7 @@ public class ModelPlayerAlt extends ModelPlayer {
     this.bipedRightArm.rotationPointX = 0.0F;
     this.bipedRightArm.rotationPointY = 2.0F;
     this.bipedRightArm.rotationPointZ = 0.0F;
-    super.func_78087_a(par1, par2, par3, par4, par5, par6, entity);
+    super.setRotationAngles(par1, par2, par3, par4, par5, par6, entity);
     if (this.playerdata.isSleeping() || player.isPlayerSleeping()) {
       if (this.bipedHead.rotateAngleX < 0.0F) {
         this.bipedHead.rotateAngleX = 0.0F;
@@ -141,15 +142,16 @@ public class ModelPlayerAlt extends ModelPlayer {
     } else if (this.isSneak) {
       this.bipedBody.rotateAngleX = 0.5F / (this.playerdata.getPartConfig(EnumParts.BODY)).scaleY;
     }
-    func_178685_a(this.field_178722_k, this.field_178733_c);
-    func_178685_a(this.bipedRightLeg, this.bipedLeftLeg);
-    func_178685_a(this.bipedLeftArm, this.field_178734_a);
-    func_178685_a(this.bipedRightArm, this.field_178732_b);
-    func_178685_a(this.bipedBody, this.field_178730_v);
-    func_178685_a(this.bipedHead, this.bipedHeadwear);
+    copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
+    copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
+    copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
+    copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
+    copyModelAngles(this.bipedBody, this.bipedBodyWear);
+    copyModelAngles(this.bipedHead, this.bipedHeadwear);
   }
 
-  public ModelRenderer func_85181_a(Random random) {
+  @Override
+  public ModelRenderer getRandomModelBox(Random random) {
     switch (random.nextInt(5)) {
       case 0:
         return this.bipedHead;
@@ -160,7 +162,7 @@ public class ModelPlayerAlt extends ModelPlayer {
       case 3:
         return this.bipedRightArm;
       case 4:
-        return this.field_178722_k;
+        return this.bipedLeftLeg;
       case 5:
         return this.bipedRightLeg;
     }

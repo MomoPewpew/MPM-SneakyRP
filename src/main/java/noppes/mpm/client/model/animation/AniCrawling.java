@@ -26,11 +26,11 @@ public class AniCrawling {
     model.bipedBody.rotateAngleY = movement * 0.1F;
     model.bipedBody.rotateAngleX = 0.0F;
     model.bipedBody.rotateAngleZ = movement * 0.1F;
-    model.field_178722_k.rotateAngleX = movement * 0.1F;
-    model.field_178722_k.rotateAngleY = movement * 0.1F;
-    model.field_178722_k.rotateAngleZ = -0.122173056F - movement * 0.25F;
-    model.field_178722_k.rotationPointY = 10.4F + movement * 9.0F;
-    model.field_178722_k.rotationPointZ = movement * 0.6F;
+    model.bipedLeftLeg.rotateAngleX = movement * 0.1F;
+    model.bipedLeftLeg.rotateAngleY = movement * 0.1F;
+    model.bipedLeftLeg.rotateAngleZ = -0.122173056F - movement * 0.25F;
+    model.bipedLeftLeg.rotationPointY = 10.4F + movement * 9.0F;
+    model.bipedLeftLeg.rotationPointZ = movement * 0.6F;
     model.bipedRightLeg.rotateAngleX = movement * -0.1F;
     model.bipedRightLeg.rotateAngleY = movement * 0.1F;
     model.bipedRightLeg.rotateAngleZ = 0.122173056F - movement * 0.25F;

@@ -38,7 +38,7 @@ public class ModelNagaLegs extends ModelRenderer {
     legPart.addBox(0.0F, -2.0F, -2.0F, 4, 4, 4);
     this.nagaPart1.addChild(legPart);
     this.nagaPart2 = new ModelRenderer(base, 0, 0);
-    this.nagaPart2.field_78805_m = this.nagaPart1.field_78805_m;
+    this.nagaPart2.childModels = this.nagaPart1.childModels;
     this.nagaPart3 = new ModelRenderer(base, 0, 0);
     ModelPlaneRenderer plane = new ModelPlaneRenderer(base, 4, 24);
     plane.addBackPlane(0.0F, -2.0F, 0.0F, 4, 4);
@@ -84,7 +84,7 @@ public class ModelNagaLegs extends ModelRenderer {
     plane.addSidePlane(4.0F, 0.0F, -2.0F, 6, 4);
     this.nagaPart3.addChild((ModelRenderer)plane);
     this.nagaPart4 = new ModelRenderer(base, 0, 0);
-    this.nagaPart4.field_78805_m = this.nagaPart3.field_78805_m;
+    this.nagaPart4.childModels = this.nagaPart3.childModels;
     this.nagaPart5 = new ModelRenderer(base, 0, 0);
     legPart = new ModelRenderer(base, 56, 20);
     legPart.addBox(0.0F, 0.0F, -2.0F, 2, 5, 2);
@@ -170,7 +170,7 @@ public class ModelNagaLegs extends ModelRenderer {
   }
 
   public void render(float par7) {
-    if (this.isHidden || !this.field_78806_j)
+    if (this.isHidden || !this.showModel)
       return;
     this.nagaPart1.render(par7);
     this.nagaPart3.render(par7);

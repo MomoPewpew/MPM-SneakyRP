@@ -40,8 +40,8 @@ public class Model2DRenderer extends ModelRenderer {
     super(modelBase);
     this.width = width;
     this.height = height;
-    this.field_78801_a = textureWidth;
-    this.field_78799_b = textureHeight;
+    this.textureWidth = textureWidth;
+    this.textureHeight = textureHeight;
     this.x1 = x / textureWidth;
     this.y1 = y / textureHeight;
     this.x2 = (x + width) / textureWidth;
@@ -49,17 +49,17 @@ public class Model2DRenderer extends ModelRenderer {
   }
 
   public Model2DRenderer(ModelBase modelBase, float x, float y, int width, int height) {
-    this(modelBase, x, y, width, height, modelBase.field_78090_t, modelBase.field_78089_u);
+    this(modelBase, x, y, width, height, modelBase.textureWidth, modelBase.textureHeight);
   }
 
   public void render(float par1) {
-    if (!this.field_78806_j || this.isHidden)
+    if (!this.showModel || this.isHidden)
       return;
     if (!this.isCompiled)
       compile(par1);
     GlStateManager.pushMatrix();
     postRender(par1);
-    GlStateManager.func_179148_o(this.displayList);
+    GlStateManager.callList(this.displayList);
     GlStateManager.popMatrix();
   }
 
@@ -85,7 +85,7 @@ public class Model2DRenderer extends ModelRenderer {
 
   @SideOnly(Side.CLIENT)
   private void compile(float par1) {
-    this.displayList = GLAllocation.func_74526_a(1);
+    this.displayList = GLAllocation.generateDisplayLists(1);
     GL11.glNewList(this.displayList, 4864);
     GlStateManager.translate(this.rotationOffsetX * par1, this.rotationOffsetY * par1, this.rotationOffsetZ * par1);
     GlStateManager.translate(this.scaleX * this.width / this.height, this.scaleY, this.thickness);
@@ -101,61 +101,61 @@ public class Model2DRenderer extends ModelRenderer {
 
   public static void renderItemIn2D(BufferBuilder worldrenderer, float p_78439_1_, float p_78439_2_, float p_78439_3_, float p_78439_4_, int p_78439_5_, int p_78439_6_, float p_78439_7_) {
     Tessellator tessellator = Tessellator.getInstance();
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
-    worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(1.0D, 0.0D, 0.0D).tex(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(1.0D, 1.0D, 0.0D).tex(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(0.0D, 1.0D, 0.0D).tex(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+    worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(p_78439_1_, p_78439_4_).normal(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(1.0D, 0.0D, 0.0D).tex(p_78439_3_, p_78439_4_).normal(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(1.0D, 1.0D, 0.0D).tex(p_78439_3_, p_78439_2_).normal(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(0.0D, 1.0D, 0.0D).tex(p_78439_1_, p_78439_2_).normal(0.0F, 0.0F, 1.0F).endVertex();
     tessellator.draw();
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
-    worldrenderer.pos(0.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(1.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(1.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(0.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
+    worldrenderer.pos(0.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_2_).normal(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(1.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_2_).normal(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(1.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_4_).normal(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(0.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_4_).normal(0.0F, 0.0F, -1.0F).endVertex();
     tessellator.draw();
     float f5 = 0.5F * (p_78439_1_ - p_78439_3_) / p_78439_5_;
     float f6 = 0.5F * (p_78439_4_ - p_78439_2_) / p_78439_6_;
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
     int k;
     for (k = 0; k < p_78439_5_; k++) {
       float f7 = k / p_78439_5_;
       float f8 = p_78439_1_ + (p_78439_3_ - p_78439_1_) * f7 - f5;
-      worldrenderer.pos(f7, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 0.0D, 0.0D).tex(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 1.0D, 0.0D).tex(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).normal(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 0.0D, 0.0D).tex(f8, p_78439_4_).normal(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 1.0D, 0.0D).tex(f8, p_78439_2_).normal(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).normal(-1.0F, 0.0F, 0.0F).endVertex();
     }
     tessellator.draw();
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
     for (k = 0; k < p_78439_5_; k++) {
       float f7 = k / p_78439_5_;
       float f8 = p_78439_1_ + (p_78439_3_ - p_78439_1_) * f7 - f5;
       float f9 = f7 + 1.0F / p_78439_5_;
-      worldrenderer.pos(f9, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 1.0D, 0.0D).tex(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 0.0D, 0.0D).tex(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).normal(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 1.0D, 0.0D).tex(f8, p_78439_2_).normal(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 0.0D, 0.0D).tex(f8, p_78439_4_).normal(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).normal(1.0F, 0.0F, 0.0F).endVertex();
     }
     tessellator.draw();
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
     for (k = 0; k < p_78439_6_; k++) {
       float f7 = k / p_78439_6_;
       float f8 = p_78439_4_ + (p_78439_2_ - p_78439_4_) * f7 - f6;
       float f9 = f7 + 1.0F / p_78439_6_;
-      worldrenderer.pos(0.0D, f9, 0.0D).tex(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f9, 0.0D).tex(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f9, 0.0D).tex(p_78439_1_, f8).normal(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f9, 0.0D).tex(p_78439_3_, f8).normal(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).normal(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).normal(0.0F, 1.0F, 0.0F).endVertex();
     }
     tessellator.draw();
-    worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
+    worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
     for (k = 0; k < p_78439_6_; k++) {
       float f7 = k / p_78439_6_;
       float f8 = p_78439_4_ + (p_78439_2_ - p_78439_4_) * f7 - f6;
-      worldrenderer.pos(1.0D, f7, 0.0D).tex(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f7, 0.0D).tex(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f7, 0.0D).tex(p_78439_3_, f8).normal(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f7, 0.0D).tex(p_78439_1_, f8).normal(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).normal(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).normal(0.0F, -1.0F, 0.0F).endVertex();
     }
     tessellator.draw();
   }

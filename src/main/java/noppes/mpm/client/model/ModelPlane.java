@@ -46,16 +46,17 @@ public class ModelPlane extends ModelBox {
     this.vertexPositions[6] = var20;
     this.vertexPositions[7] = var21;
     if (position == EnumPlanePosition.LEFT)
-      this.quad = new TexturedQuad(new PositionTextureVertex[] { var19, var15, var16, var20 }, textureOffsetX, textureOffsetY, textureOffsetX + par9, textureOffsetY + par8, par1ModelRenderer.field_78801_a, par1ModelRenderer.field_78799_b);
+      this.quad = new TexturedQuad(new PositionTextureVertex[] { var19, var15, var16, var20 }, textureOffsetX, textureOffsetY, textureOffsetX + par9, textureOffsetY + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
     if (position == EnumPlanePosition.TOP)
-      this.quad = new TexturedQuad(new PositionTextureVertex[] { var19, var18, var23, var15 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par9, par1ModelRenderer.field_78801_a, par1ModelRenderer.field_78799_b);
+      this.quad = new TexturedQuad(new PositionTextureVertex[] { var19, var18, var23, var15 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par9, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
     if (position == EnumPlanePosition.BACK)
-      this.quad = new TexturedQuad(new PositionTextureVertex[] { var15, var23, var17, var16 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par8, par1ModelRenderer.field_78801_a, par1ModelRenderer.field_78799_b);
+      this.quad = new TexturedQuad(new PositionTextureVertex[] { var15, var23, var17, var16 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
     if (par1ModelRenderer.mirror)
-      this.quad.func_78235_a();
+      this.quad.flipFace();
   }
 
-  public void func_178780_a(BufferBuilder par1Tessellator, float par2) {
-    this.quad.func_178765_a(par1Tessellator, par2);
+  @Override
+  public void render(BufferBuilder par1Tessellator, float par2) {
+    this.quad.draw(par1Tessellator, par2);
   }
 }

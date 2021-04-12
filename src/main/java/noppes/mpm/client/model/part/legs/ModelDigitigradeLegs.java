@@ -75,11 +75,11 @@ public class ModelDigitigradeLegs extends ModelRenderer {
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
     this.base.bipedRightLeg.rotateAngleX -= 0.3F;
-    this.base.field_178722_k.rotateAngleX -= 0.3F;
+    this.base.bipedLeftLeg.rotateAngleX -= 0.3F;
     this.rightleg.rotationPointY = this.base.bipedRightLeg.rotationPointY;
-    this.leftleg.rotationPointY = this.base.field_178722_k.rotationPointY;
+    this.leftleg.rotationPointY = this.base.bipedLeftLeg.rotationPointY;
     this.rightleg.rotationPointZ = this.base.bipedRightLeg.rotationPointZ;
-    this.leftleg.rotationPointZ = this.base.field_178722_k.rotationPointZ;
+    this.leftleg.rotationPointZ = this.base.bipedLeftLeg.rotationPointZ;
     if (!this.base.isSneak) {
       this.leftleg.rotationPointY--;
       this.rightleg.rotationPointY--;

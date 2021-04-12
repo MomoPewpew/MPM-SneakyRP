@@ -102,17 +102,17 @@ public class Model2DRenderer extends ModelRenderer {
   public static void renderItemIn2D(BufferBuilder worldrenderer, float p_78439_1_, float p_78439_2_, float p_78439_3_, float p_78439_4_, int p_78439_5_, int p_78439_6_, float p_78439_7_) {
     Tessellator tessellator = Tessellator.getInstance();
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
-    worldrenderer.pos(0.0D, 0.0D, 0.0D).func_187315_a(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(1.0D, 0.0D, 0.0D).func_187315_a(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(1.0D, 1.0D, 0.0D).func_187315_a(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    worldrenderer.pos(0.0D, 1.0D, 0.0D).func_187315_a(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
-    tessellator.func_78381_a();
+    worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(1.0D, 0.0D, 0.0D).tex(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(1.0D, 1.0D, 0.0D).tex(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+    worldrenderer.pos(0.0D, 1.0D, 0.0D).tex(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, 1.0F).endVertex();
+    tessellator.draw();
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
-    worldrenderer.pos(0.0D, 1.0D, (0.0F - p_78439_7_)).func_187315_a(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(1.0D, 1.0D, (0.0F - p_78439_7_)).func_187315_a(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(1.0D, 0.0D, (0.0F - p_78439_7_)).func_187315_a(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    worldrenderer.pos(0.0D, 0.0D, (0.0F - p_78439_7_)).func_187315_a(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
-    tessellator.func_78381_a();
+    worldrenderer.pos(0.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(1.0D, 1.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_2_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(1.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_3_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+    worldrenderer.pos(0.0D, 0.0D, (0.0F - p_78439_7_)).tex(p_78439_1_, p_78439_4_).func_181663_c(0.0F, 0.0F, -1.0F).endVertex();
+    tessellator.draw();
     float f5 = 0.5F * (p_78439_1_ - p_78439_3_) / p_78439_5_;
     float f6 = 0.5F * (p_78439_4_ - p_78439_2_) / p_78439_6_;
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
@@ -120,43 +120,43 @@ public class Model2DRenderer extends ModelRenderer {
     for (k = 0; k < p_78439_5_; k++) {
       float f7 = k / p_78439_5_;
       float f8 = p_78439_1_ + (p_78439_3_ - p_78439_1_) * f7 - f5;
-      worldrenderer.pos(f7, 0.0D, (0.0F - p_78439_7_)).func_187315_a(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 0.0D, 0.0D).func_187315_a(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 1.0D, 0.0D).func_187315_a(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f7, 1.0D, (0.0F - p_78439_7_)).func_187315_a(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 0.0D, 0.0D).tex(f8, p_78439_4_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 1.0D, 0.0D).tex(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f7, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).func_181663_c(-1.0F, 0.0F, 0.0F).endVertex();
     }
-    tessellator.func_78381_a();
+    tessellator.draw();
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
     for (k = 0; k < p_78439_5_; k++) {
       float f7 = k / p_78439_5_;
       float f8 = p_78439_1_ + (p_78439_3_ - p_78439_1_) * f7 - f5;
       float f9 = f7 + 1.0F / p_78439_5_;
-      worldrenderer.pos(f9, 1.0D, (0.0F - p_78439_7_)).func_187315_a(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 1.0D, 0.0D).func_187315_a(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 0.0D, 0.0D).func_187315_a(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
-      worldrenderer.pos(f9, 0.0D, (0.0F - p_78439_7_)).func_187315_a(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 1.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 1.0D, 0.0D).tex(f8, p_78439_2_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 0.0D, 0.0D).tex(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
+      worldrenderer.pos(f9, 0.0D, (0.0F - p_78439_7_)).tex(f8, p_78439_4_).func_181663_c(1.0F, 0.0F, 0.0F).endVertex();
     }
-    tessellator.func_78381_a();
+    tessellator.draw();
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
     for (k = 0; k < p_78439_6_; k++) {
       float f7 = k / p_78439_6_;
       float f8 = p_78439_4_ + (p_78439_2_ - p_78439_4_) * f7 - f6;
       float f9 = f7 + 1.0F / p_78439_6_;
-      worldrenderer.pos(0.0D, f9, 0.0D).func_187315_a(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f9, 0.0D).func_187315_a(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f9, (0.0F - p_78439_7_)).func_187315_a(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f9, (0.0F - p_78439_7_)).func_187315_a(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f9, 0.0D).tex(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f9, 0.0D).tex(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f9, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).func_181663_c(0.0F, 1.0F, 0.0F).endVertex();
     }
-    tessellator.func_78381_a();
+    tessellator.draw();
     worldrenderer.begin(7, DefaultVertexFormats.field_181710_j);
     for (k = 0; k < p_78439_6_; k++) {
       float f7 = k / p_78439_6_;
       float f8 = p_78439_4_ + (p_78439_2_ - p_78439_4_) * f7 - f6;
-      worldrenderer.pos(1.0D, f7, 0.0D).func_187315_a(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f7, 0.0D).func_187315_a(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(0.0D, f7, (0.0F - p_78439_7_)).func_187315_a(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
-      worldrenderer.pos(1.0D, f7, (0.0F - p_78439_7_)).func_187315_a(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f7, 0.0D).tex(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f7, 0.0D).tex(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(0.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_1_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
+      worldrenderer.pos(1.0D, f7, (0.0F - p_78439_7_)).tex(p_78439_3_, f8).func_181663_c(0.0F, -1.0F, 0.0F).endVertex();
     }
-    tessellator.func_78381_a();
+    tessellator.draw();
   }
 }

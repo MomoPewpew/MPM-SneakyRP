@@ -122,7 +122,7 @@ public class ChatMessages {
     drawRect(tessellator, 1.0D, (textYSize + 4), 2.0D, (textYSize + 5), black, 0.1D);
     drawRect(tessellator, -2.0D, (textYSize + 4), -1.0D, (textYSize + 5), black, 0.1D);
     drawRect(tessellator, -2.0D, (textYSize + 5), 1.0D, (textYSize + 6), black, 0.1D);
-    Tessellator.getInstance().func_78381_a();
+    Tessellator.getInstance().draw();
     GlStateManager.enableTexture2D();
     GlStateManager.depthMask(true);
     GlStateManager.translate(this.scale, this.scale, this.scale);

@@ -119,7 +119,7 @@ public class LayerEyes extends LayerInterface {
     tessellator.pos(x, y2, z).color(f1, f2, f3, 1.0F).endVertex();
     tessellator.pos(x2, y2, z).color(f1, f2, f3, 1.0F).endVertex();
     tessellator.pos(x2, y, z).color(f1, f2, f3, 1.0F).endVertex();
-    Tessellator.getInstance().func_78381_a();
+    Tessellator.getInstance().draw();
   }
 
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {}

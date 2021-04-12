@@ -1,0 +1,119 @@
+package noppes.mpm.client;
+
+import io.netty.buffer.ByteBuf;
+import java.util.UUID;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import noppes.mpm.LogWriter;
+import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
+import noppes.mpm.PacketHandlerServer;
+import noppes.mpm.Server;
+import noppes.mpm.client.gui.GuiCreationScreenInterface;
+import noppes.mpm.constants.EnumPackets;
+
+public class PacketHandlerClient extends PacketHandlerServer {
+  @SubscribeEvent
+  public void onPacketData(FMLNetworkEvent.ClientCustomPacketEvent event) {
+    EntityPlayerSP entityPlayerSP = (Minecraft.func_71410_x()).field_71439_g;
+    ByteBuf buf = event.getPacket().payload();
+    Minecraft.func_71410_x().func_152344_a(() -> {
+          EnumPackets en = null;
+          try {
+            en = EnumPackets.values()[buf.readInt()];
+            handlePacket(buf, player, en);
+          } catch (Exception e) {
+            LogWriter.error("Packet error: " + en, e);
+          }
+        });
+  }
+
+  private void handlePacket(ByteBuf buffer, EntityPlayer player, EnumPackets type) throws Exception {
+    if (type == EnumPackets.PING) {
+      int version = buffer.readInt();
+      if (version == MorePlayerModels.Version) {
+        MorePlayerModels.HasServerSide = true;
+        GuiCreationScreenInterface.Message = "";
+      } else if (version < MorePlayerModels.Version) {
+        MorePlayerModels.HasServerSide = false;
+        GuiCreationScreenInterface.Message = "message.lowerversion";
+      } else if (version > MorePlayerModels.Version) {
+        MorePlayerModels.HasServerSide = false;
+        GuiCreationScreenInterface.Message = "message.higherversion";
+      }
+    } else if (type == EnumPackets.EYE_BLINK) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      ModelData data = ModelData.get(pl);
+      data.eyes.blinkStart = System.currentTimeMillis();
+    } else if (type == EnumPackets.SEND_PLAYER_DATA) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      ModelData data = ModelData.get(pl);
+      NBTTagCompound compound = Server.readNBT(buffer);
+      data.readFromNBT(compound);
+      data.save();
+      if (pl == (Minecraft.func_71410_x()).field_71439_g)
+        data.lastEdited = System.currentTimeMillis();
+    } else if (type == EnumPackets.CHAT_EVENT) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      String message = Server.readString(buffer);
+      ChatMessages.getChatMessages(pl.func_70005_c_()).addMessage(message);
+    } else if (type == EnumPackets.BACK_ITEM_REMOVE) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      ModelData data = ModelData.get(pl);
+      data.backItem = ItemStack.field_190927_a;
+    } else if (type == EnumPackets.BACK_ITEM_UPDATE) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      NBTTagCompound compound = Server.readNBT(buffer);
+      ItemStack item = new ItemStack(compound);
+      ModelData data = ModelData.get(pl);
+      data.backItem = item;
+    } else if (type == EnumPackets.PARTICLE) {
+      int animation = buffer.readInt();
+      if (animation == 0) {
+        EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+        if (pl == null)
+          return;
+        ModelData data = ModelData.get(pl);
+        data.inLove = 40;
+      } else if (animation == 1) {
+        player.field_70170_p.func_175688_a(EnumParticleTypes.NOTE, buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), 0.0D, 0.0D, new int[0]);
+      } else if (animation == 2) {
+        EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+        if (pl == null)
+          return;
+        ModelData data = ModelData.get(pl);
+        for (int i = 0; i < 5; i++) {
+          double d0 = player.func_70681_au().nextGaussian() * 0.02D;
+          double d1 = player.func_70681_au().nextGaussian() * 0.02D;
+          double d2 = player.func_70681_au().nextGaussian() * 0.02D;
+          double x = player.field_70165_t + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
+          double z = player.field_70161_v + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
+          player.field_70170_p.func_175688_a(EnumParticleTypes.VILLAGER_ANGRY, x, player.field_70163_u + 0.800000011920929D + (player.func_70681_au().nextFloat() * player.field_70131_O / 2.0F) - player.func_70033_W() - data.getBodyY(), z, d0, d1, d2, new int[0]);
+        }
+      }
+    } else if (type == EnumPackets.ANIMATION) {
+      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      if (pl == null)
+        return;
+      ModelData data = ModelData.get(pl);
+      data.setAnimation(buffer.readInt());
+      data.animationStart = pl.field_70173_aa;
+    }
+  }
+}

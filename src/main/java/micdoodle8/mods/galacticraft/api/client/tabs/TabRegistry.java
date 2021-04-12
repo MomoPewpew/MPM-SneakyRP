@@ -1,0 +1,124 @@
+package micdoodle8.mods.galacticraft.api.client.tabs;
+
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.CPacketCloseWindow;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class TabRegistry {
+  private static ArrayList<AbstractTab> tabList = new ArrayList<>();
+
+  private static Class<?> clazzJEIConfig = null;
+
+  public static Class<?> clazzNEIConfig = null;
+
+  static {
+    try {
+      clazzJEIConfig = Class.forName("mezz.jei.config.Config");
+    } catch (Exception exception) {}
+    if (clazzJEIConfig == null)
+      try {
+        clazzNEIConfig = Class.forName("codechicken.nei.NEIClientConfig");
+      } catch (Exception exception) {}
+  }
+
+  public static void registerTab(AbstractTab tab) {
+    tabList.add(tab);
+  }
+
+  public static ArrayList<AbstractTab> getTabList() {
+    return tabList;
+  }
+
+  public static void addTabsToInventory(GuiContainer gui) {}
+
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void guiPostInit(GuiScreenEvent.InitGuiEvent.Post event) {
+    if (event.getGui() instanceof GuiInventory) {
+      int guiLeft = ((event.getGui()).field_146294_l - 176) / 2;
+      int guiTop = ((event.getGui()).field_146295_m - 166) / 2;
+      guiLeft += getPotionOffset();
+      updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
+      addTabsToList(event.getButtonList());
+    }
+  }
+
+  private static Minecraft mc = FMLClientHandler.instance().getClient();
+
+  private static boolean initWithPotion;
+
+  public static void openInventoryGui() {
+    mc.field_71439_g.field_71174_a.func_147297_a((Packet)new CPacketCloseWindow(mc.field_71439_g.field_71070_bA.field_75152_c));
+    GuiInventory inventory = new GuiInventory((EntityPlayer)mc.field_71439_g);
+    mc.func_147108_a((GuiScreen)inventory);
+  }
+
+  public static void updateTabValues(int cornerX, int cornerY, Class<?> selectedButton) {
+    int count = 2;
+    for (int i = 0; i < tabList.size(); i++) {
+      AbstractTab t = tabList.get(i);
+      if (t.shouldAddToList()) {
+        t.field_146127_k = count;
+        t.field_146128_h = cornerX + (count - 2) * 28;
+        t.field_146129_i = cornerY - 28;
+        t.field_146124_l = !t.getClass().equals(selectedButton);
+        t.potionOffsetLast = getPotionOffsetNEI();
+        count++;
+      }
+    }
+  }
+
+  public static void addTabsToList(List<AbstractTab> buttonList) {
+    for (AbstractTab tab : tabList) {
+      if (tab.shouldAddToList())
+        buttonList.add(tab);
+    }
+  }
+
+  public static int getPotionOffset() {
+    if (!mc.field_71439_g.func_70651_bq().isEmpty()) {
+      initWithPotion = true;
+      return 60 + getPotionOffsetJEI() + getPotionOffsetNEI();
+    }
+    initWithPotion = false;
+    return 0;
+  }
+
+  public static int getPotionOffsetJEI() {
+    if (clazzJEIConfig != null)
+      try {
+        Object enabled = clazzJEIConfig.getMethod("isOverlayEnabled", new Class[0]).invoke(null, new Object[0]);
+        if (enabled instanceof Boolean) {
+          if (!((Boolean)enabled).booleanValue())
+            return 0;
+          return -60;
+        }
+      } catch (Exception exception) {}
+    return 0;
+  }
+
+  public static int getPotionOffsetNEI() {
+    if (initWithPotion && clazzNEIConfig != null)
+      try {
+        Object hidden = clazzNEIConfig.getMethod("isHidden", new Class[0]).invoke(null, new Object[0]);
+        Object enabled = clazzNEIConfig.getMethod("isEnabled", new Class[0]).invoke(null, new Object[0]);
+        if (hidden instanceof Boolean && enabled instanceof Boolean) {
+          if (((Boolean)hidden).booleanValue() || !((Boolean)enabled).booleanValue())
+            return 0;
+          return -60;
+        }
+      } catch (Exception exception) {}
+    return 0;
+  }
+}

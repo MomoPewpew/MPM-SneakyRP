@@ -1,0 +1,509 @@
+{
+  "micdoodle8/mods/galacticraft/api/client/tabs/TabRegistry": {
+    "name": "micdoodle8/mods/galacticraft/api/client/tabs/TabRegistry",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "guiPostInit(Lnet/minecraftforge/client/event/GuiScreenEvent$InitGuiEvent$Post;)V"
+      }
+    ]
+  },
+  "noppes/mpm/CommonProxy": {
+    "name": "noppes/mpm/CommonProxy",
+    "interfaces": [
+      "net/minecraftforge/fml/common/network/IGuiHandler"
+    ]
+  },
+  "noppes/mpm/ModelData": {
+    "name": "noppes/mpm/ModelData",
+    "interfaces": [
+      "net/minecraftforge/common/capabilities/ICapabilityProvider"
+    ],
+    "annotations": [
+      {
+        "type": "FIELD",
+        "name": "Lnet/minecraftforge/common/capabilities/CapabilityInject;",
+        "target": "MODELDATA_CAPABILITY",
+        "value": {
+          "type": "CLASS",
+          "value": "Lnoppes/mpm/ModelData;"
+        }
+      }
+    ]
+  },
+  "noppes/mpm/MorePlayerModels": {
+    "name": "noppes/mpm/MorePlayerModels",
+    "annotations": [
+      {
+        "type": "CLASS",
+        "name": "Lnet/minecraftforge/fml/common/Mod;",
+        "target": "noppes/mpm/MorePlayerModels",
+        "values": {
+          "acceptedMinecraftVersions": {
+            "value": "1.12, 1.12.1, 1.12.2"
+          },
+          "modid": {
+            "value": "moreplayermodels"
+          },
+          "name": {
+            "value": "MorePlayerModels"
+          },
+          "version": {
+            "value": "1.12.2"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "InventoryGuiEnabled"
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "Tooltips"
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnet/minecraftforge/fml/common/SidedProxy;",
+        "target": "proxy",
+        "values": {
+          "clientSide": {
+            "value": "noppes.mpm.client.ClientProxy"
+          },
+          "serverSide": {
+            "value": "noppes.mpm.CommonProxy"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "EnablePOV",
+        "values": {
+          "info": {
+            "value": "Enable different perspective heights for different model sizes"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "EnableBackItem",
+        "values": {
+          "info": {
+            "value": "Enables the item on your back"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "EnableChatBubbles",
+        "values": {
+          "info": {
+            "value": "Enables chat bubbles"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "EnableUpdateChecker",
+        "values": {
+          "info": {
+            "value": "Enables MorePlayerModels startup update message"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "EnableParticles",
+        "values": {
+          "info": {
+            "value": "Set to false if you dont want to see player particles"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "HidePlayerNames",
+        "values": {
+          "info": {
+            "value": "Set to true if you dont want to see hide player names"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "HideSelectionBox",
+        "values": {
+          "info": {
+            "value": "Set to true if you dont want to see hide selection boxes when pointing to blocks"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "DisableFlyingAnimation",
+        "values": {
+          "info": {
+            "value": "Set to true if you want no flying animation"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "HeadWearType",
+        "values": {
+          "info": {
+            "value": "Type 0 \u003d Normal, Type 1 \u003d Solid"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "Compatibility",
+        "values": {
+          "info": {
+            "value": "Disables scaling and animations from more compatibilty with other mods"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "button1",
+        "values": {
+          "info": {
+            "value": "Used to register buttons to animations"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "button2",
+        "values": {
+          "info": {
+            "value": "Used to register buttons to animations"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "button3",
+        "values": {
+          "info": {
+            "value": "Used to register buttons to animations"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "button4",
+        "values": {
+          "info": {
+            "value": "Used to register buttons to animations"
+          }
+        }
+      },
+      {
+        "type": "FIELD",
+        "name": "Lnoppes/mpm/config/ConfigProp;",
+        "target": "button5",
+        "values": {
+          "info": {
+            "value": "Used to register buttons to animations"
+          }
+        }
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/Mod$EventHandler;",
+        "target": "load(Lnet/minecraftforge/fml/common/event/FMLPreInitializationEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/Mod$EventHandler;",
+        "target": "load(Lnet/minecraftforge/fml/common/event/FMLPostInitializationEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/Mod$EventHandler;",
+        "target": "serverstart(Lnet/minecraftforge/fml/common/event/FMLServerStartingEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/MorePlayerModels$1": {
+    "name": "noppes/mpm/MorePlayerModels$1",
+    "interfaces": [
+      "net/minecraftforge/common/capabilities/Capability$IStorage"
+    ]
+  },
+  "noppes/mpm/PacketHandlerServer": {
+    "name": "noppes/mpm/PacketHandlerServer",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onPacketData(Lnet/minecraftforge/fml/common/network/FMLNetworkEvent$ServerCustomPacketEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/ServerEventHandler": {
+    "name": "noppes/mpm/ServerEventHandler",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onPlaySoundAtEntity(Lnet/minecraftforge/event/entity/PlaySoundAtEntityEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "chat(Lnet/minecraftforge/event/ServerChatEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onAttack(Lnet/minecraftforge/event/entity/living/LivingAttackEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "playerTracking(Lnet/minecraftforge/event/entity/player/PlayerEvent$StartTracking;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onNameSet(Lnet/minecraftforge/event/entity/player/PlayerEvent$NameFormat;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "attach(Lnet/minecraftforge/event/AttachCapabilitiesEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/ServerTickHandler": {
+    "name": "noppes/mpm/ServerTickHandler",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onPlayerTick(Lnet/minecraftforge/fml/common/gameevent/TickEvent$PlayerTickEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "playerLogin(Lnet/minecraftforge/fml/common/gameevent/PlayerEvent$PlayerLoggedInEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/client/ClientEventHandler": {
+    "name": "noppes/mpm/client/ClientEventHandler",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onKey(Lnet/minecraftforge/fml/common/gameevent/InputEvent$KeyInputEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "keyEvent(Lnet/minecraftforge/client/event/GuiScreenEvent$KeyboardInputEvent$Pre;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onCommand(Lnet/minecraftforge/event/CommandEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onMouse(Lnet/minecraftforge/client/event/MouseEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onRenderTick(Lnet/minecraftforge/fml/common/gameevent/TickEvent$RenderTickEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onClientTick(Lnet/minecraftforge/fml/common/gameevent/TickEvent$ClientTickEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onCamera(Lnet/minecraftforge/client/event/EntityViewRenderEvent$CameraSetup;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onPlayerTick(Lnet/minecraftforge/fml/common/gameevent/TickEvent$PlayerTickEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/client/ClientEventHandler$1": {
+    "name": "noppes/mpm/client/ClientEventHandler$1",
+    "interfaces": [
+      "com/google/common/base/Predicate"
+    ]
+  },
+  "noppes/mpm/client/PacketHandlerClient": {
+    "name": "noppes/mpm/client/PacketHandlerClient",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "onPacketData(Lnet/minecraftforge/fml/common/network/FMLNetworkEvent$ClientCustomPacketEvent;)V"
+      }
+    ]
+  },
+  "noppes/mpm/client/RenderEvent": {
+    "name": "noppes/mpm/client/RenderEvent",
+    "annotations": [
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "post(Lnet/minecraftforge/client/event/RenderLivingEvent$Post;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "pre(Lnet/minecraftforge/client/event/RenderLivingEvent$Pre;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "hand(Lnet/minecraftforge/client/event/RenderHandEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "chat(Lnet/minecraftforge/client/event/ClientChatReceivedEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "selectionBox(Lnet/minecraftforge/client/event/DrawBlockHighlightEvent;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/eventhandler/SubscribeEvent;",
+        "target": "overlay(Lnet/minecraftforge/client/event/RenderGameOverlayEvent$Post;)V"
+      }
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationEntities": {
+    "name": "noppes/mpm/client/gui/GuiCreationEntities",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationExtra": {
+    "name": "noppes/mpm/client/gui/GuiCreationExtra",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationLoad": {
+    "name": "noppes/mpm/client/gui/GuiCreationLoad",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationOptions": {
+    "name": "noppes/mpm/client/gui/GuiCreationOptions",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ITextfieldListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationParts": {
+    "name": "noppes/mpm/client/gui/GuiCreationParts",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ITextfieldListener",
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationScale": {
+    "name": "noppes/mpm/client/gui/GuiCreationScale",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ISliderListener",
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiCreationScreenInterface": {
+    "name": "noppes/mpm/client/gui/GuiCreationScreenInterface",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ISubGuiListener",
+      "noppes/mpm/client/gui/util/ISliderListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiMPM": {
+    "name": "noppes/mpm/client/gui/GuiMPM",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ICustomScrollListener",
+      "noppes/mpm/client/gui/util/ISubGuiListener"
+    ]
+  },
+  "noppes/mpm/client/gui/GuiModelColor": {
+    "name": "noppes/mpm/client/gui/GuiModelColor",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ITextfieldListener"
+    ]
+  },
+  "noppes/mpm/client/gui/select/GuiTextureSelection": {
+    "name": "noppes/mpm/client/gui/select/GuiTextureSelection",
+    "interfaces": [
+      "noppes/mpm/client/gui/util/ICustomScrollListener"
+    ]
+  },
+  "noppes/mpm/client/layer/LayerChatbubble": {
+    "name": "noppes/mpm/client/layer/LayerChatbubble",
+    "interfaces": [
+      "noppes/mpm/client/layer/LayerPreRender"
+    ]
+  },
+  "noppes/mpm/client/layer/LayerHeadwear": {
+    "name": "noppes/mpm/client/layer/LayerHeadwear",
+    "interfaces": [
+      "noppes/mpm/client/layer/LayerPreRender"
+    ]
+  },
+  "noppes/mpm/client/layer/LayerInterface": {
+    "name": "noppes/mpm/client/layer/LayerInterface",
+    "interfaces": [
+      "net/minecraft/client/renderer/entity/layers/LayerRenderer"
+    ]
+  },
+  "noppes/mpm/client/layer/LayerLegs": {
+    "name": "noppes/mpm/client/layer/LayerLegs",
+    "interfaces": [
+      "noppes/mpm/client/layer/LayerPreRender"
+    ]
+  },
+  "noppes/mpm/config/ConfigProp": {
+    "name": "noppes/mpm/config/ConfigProp",
+    "interfaces": [
+      "java/lang/annotation/Annotation"
+    ]
+  },
+  "noppes/mpm/util/NaturalOrderComparator": {
+    "name": "noppes/mpm/util/NaturalOrderComparator",
+    "interfaces": [
+      "java/util/Comparator"
+    ]
+  }
+}

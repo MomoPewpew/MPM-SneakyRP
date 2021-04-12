@@ -45,13 +45,15 @@ public class CommandMPM extends MpmCommandInterface {
     this.entities.put("clear", null);
   }
 
+  @Override
   public String getCommandName() {
     return "mpm";
   }
 
+  @Override
   public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
-    EntityPlayerMP entityPlayerMP;
-    EntityPlayer entityPlayer1;
+    EntityPlayerMP entityPlayerMP = null;
+    EntityPlayer entityPlayer1 = null;
     if (args.length < 1)
       throw new CommandException("Not enough arguments given", new Object[0]);
     String type = args[0].toLowerCase();
@@ -61,7 +63,7 @@ public class CommandMPM extends MpmCommandInterface {
     EntityPlayer player = null;
     if (args.length > 1 && isPlayerOp(icommandsender))
       try {
-        entityPlayerMP = func_184888_a(server, icommandsender, args[0]);
+        entityPlayerMP = getPlayer(server, icommandsender, args[0]);
         args = Arrays.<String>copyOfRange(args, 1, args.length);
       } catch (PlayerNotFoundException playerNotFoundException) {}
     if (entityPlayerMP == null && icommandsender instanceof EntityPlayer)
@@ -152,13 +154,13 @@ public class CommandMPM extends MpmCommandInterface {
   }
 
   private void sendmodel(MinecraftServer server, EntityPlayer fromPlayer, String[] args, ModelData fromData) throws WrongUsageException {
-    EntityPlayerMP entityPlayerMP;
+    EntityPlayerMP entityPlayerMP = null;
     if (args.length < 1)
       throw new WrongUsageException("/mpm sendmodel [@from_player] <@to_player> (to go back to default /mpm sendmodel [@p] clear)", new Object[0]);
     EntityPlayer toPlayer = null;
     ModelData toData = null;
     try {
-      entityPlayerMP = func_184888_a(server, (ICommandSender)fromPlayer, args[0]);
+      entityPlayerMP = getPlayer(server, (ICommandSender)fromPlayer, args[0]);
     } catch (CommandException commandException) {}
     if (entityPlayerMP == null || entityPlayerMP == fromPlayer) {
       if (args[0].equalsIgnoreCase("clear")) {
@@ -206,30 +208,33 @@ public class CommandMPM extends MpmCommandInterface {
     }
   }
 
+  @Override
   public String getCommandUsage(ICommandSender sender) {
     return "/mpm <url/model/scale/name/animation> [@p]";
   }
 
-  public int func_82362_a() {
+  @Override
+  public int getRequiredPermissionLevel() {
     return 2;
   }
 
-  public List func_184883_a(MinecraftServer server, ICommandSender par1, String[] args, BlockPos pos) {
+  @Override
+  public List getTabCompletionOptions(MinecraftServer server, ICommandSender par1, String[] args, BlockPos pos) {
     if (args.length == 1)
-      return CommandBase.func_175762_a(args, this.sub);
+      return CommandBase.getListOfStringsMatchingLastWord(args, this.sub);
     if (args.length >= 2) {
       String type = args[0].toLowerCase();
       List<String> list = new ArrayList<>();
       if (args.length == 2)
-        list.addAll(Arrays.asList(server.getPlayerList().func_72369_d()));
+        list.addAll(Arrays.asList(server.getPlayerList().getAllUsernames()));
       if (type.equals("model"))
         list.addAll(this.entities.keySet());
       if (type.equals("animation"))
         for (EnumAnimation ani : EnumAnimation.values())
           list.add(ani.name().toLowerCase());
-      return CommandBase.func_175762_a(args, list);
+      return CommandBase.getListOfStringsMatchingLastWord(args, list);
     }
-    return super.func_184883_a(server, par1, args, pos);
+    return super.getTabCompletionOptions(server, par1, args, pos);
   }
 
   static class Scale {

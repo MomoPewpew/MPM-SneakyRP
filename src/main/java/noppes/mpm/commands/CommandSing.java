@@ -14,6 +14,7 @@ public class CommandSing extends MpmCommandInterface {
     return "sing";
   }
 
+  @Override
   public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
     if (!(sender instanceof EntityPlayerMP))
       return;
@@ -30,6 +31,7 @@ public class CommandSing extends MpmCommandInterface {
     Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.posX), Double.valueOf(player.posY + 2.0D), Double.valueOf(player.posZ), Double.valueOf(note / 24.0D) });
   }
 
+  @Override
   public String getCommandUsage(ICommandSender sender) {
     return "/sing [0-24] to sing";
   }

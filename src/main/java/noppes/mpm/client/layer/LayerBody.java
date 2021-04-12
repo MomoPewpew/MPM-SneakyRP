@@ -53,7 +53,7 @@ public class LayerBody extends LayerInterface {
     bottom.func_78793_a(-3.6F, 5.0F, -3.1F);
     bottom.setScale(0.225F, 0.2F);
     bottom.setThickness(2.0F);
-    bottom.field_78795_f = -0.31415927F;
+    bottom.rotateAngleX = -0.31415927F;
     this.breasts2.func_78792_a((ModelRenderer)bottom);
     this.breasts3 = new ModelRenderer((ModelBase)this.model);
     Model2DRenderer right = new Model2DRenderer((ModelBase)this.model, 20.0F, 23.0F, 3, 2);
@@ -65,19 +65,19 @@ public class LayerBody extends LayerInterface {
     right2.func_78793_a(-3.79F, 4.1F, -3.14F);
     right2.setScale(0.06F, 0.07F);
     right2.setThickness(1.75F);
-    right2.field_78795_f = 0.34906584F;
+    right2.rotateAngleX = 0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)right2);
     Model2DRenderer right3 = new Model2DRenderer((ModelBase)this.model, 20.0F, 24.0F, 3, 1);
     right3.func_78793_a(-3.79F, 5.3F, -3.6F);
     right3.setScale(0.06F, 0.07F);
     right3.setThickness(1.75F);
-    right3.field_78795_f = -0.34906584F;
+    right3.rotateAngleX = -0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)right3);
     Model2DRenderer right4 = new Model2DRenderer((ModelBase)this.model, 21.0F, 23.0F, 1, 2);
     right4.func_78793_a(-1.8F, 5.3F, -3.14F);
     right4.setScale(0.12F, 0.14F);
     right4.setThickness(1.75F);
-    right4.field_78796_g = 0.34906584F;
+    right4.rotateAngleY = 0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)right4);
     Model2DRenderer left = new Model2DRenderer((ModelBase)this.model, 25.0F, 23.0F, 3, 2);
     left.func_78793_a(0.8F, 5.3F, -3.6F);
@@ -88,32 +88,32 @@ public class LayerBody extends LayerInterface {
     left2.func_78793_a(0.81F, 4.1F, -3.18F);
     left2.setScale(0.06F, 0.07F);
     left2.setThickness(1.75F);
-    left2.field_78795_f = 0.34906584F;
+    left2.rotateAngleX = 0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)left2);
     Model2DRenderer left3 = new Model2DRenderer((ModelBase)this.model, 25.0F, 24.0F, 3, 1);
     left3.func_78793_a(0.81F, 5.3F, -3.6F);
     left3.setScale(0.06F, 0.07F);
     left3.setThickness(1.75F);
-    left3.field_78795_f = -0.34906584F;
+    left3.rotateAngleX = -0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)left3);
     Model2DRenderer left4 = new Model2DRenderer((ModelBase)this.model, 24.0F, 23.0F, 1, 2);
     left4.func_78793_a(0.8F, 5.3F, -3.6F);
     left4.setScale(0.12F, 0.14F);
     left4.setThickness(1.75F);
-    left4.field_78796_g = -0.34906584F;
+    left4.rotateAngleY = -0.34906584F;
     this.breasts3.func_78792_a((ModelRenderer)left4);
     this.skirt = new ModelPlaneRenderer((ModelBase)this.model, 58, 18);
     this.skirt.addSidePlane(0.0F, 0.0F, 0.0F, 9, 2);
     ModelPlaneRenderer part1 = new ModelPlaneRenderer((ModelBase)this.model, 58, 18);
     part1.addSidePlane(2.0F, 0.0F, 0.0F, 9, 2);
-    part1.field_78796_g = -1.5707964F;
+    part1.rotateAngleY = -1.5707964F;
     this.skirt.func_78792_a((ModelRenderer)part1);
     this.skirt.func_78793_a(2.4F, 8.8F, 0.0F);
     setRotation((ModelRenderer)this.skirt, 0.3F, -0.2F, -0.2F);
     this.fin = new Model2DRenderer((ModelBase)this.model, 56.0F, 20.0F, 8, 12);
     this.fin.func_78793_a(-0.5F, 12.0F, 10.0F);
     this.fin.setScale(0.74F);
-    this.fin.field_78796_g = 1.5707964F;
+    this.fin.rotateAngleY = 1.5707964F;
   }
 
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
@@ -132,20 +132,20 @@ public class LayerBody extends LayerInterface {
     if (!itemstack.func_190926_b() && itemstack.func_77973_b() == Items.field_185160_cR && this.playerdata.wingMode == 2)
       return;
     preRender(data);
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     if (data.type >= 0 && data.type <= 2) {
-      this.wing.func_78785_a(par7);
-      GlStateManager.func_179152_a(-1.0F, 1.0F, 1.0F);
-      this.wing.func_78785_a(par7);
+      this.wing.render(par7);
+      GlStateManager.translate(-1.0F, 1.0F, 1.0F);
+      this.wing.render(par7);
     }
     if (data.type == 3) {
-      this.wing2.func_78785_a(par7);
-      GlStateManager.func_179152_a(-1.0F, 1.0F, 1.0F);
-      this.wing2.func_78785_a(par7);
+      this.wing2.render(par7);
+      GlStateManager.translate(-1.0F, 1.0F, 1.0F);
+      this.wing2.render(par7);
     }
     if (data.type == 4)
       this.wing3.func_78088_a((Entity)this.player, this.player.field_184619_aG, this.player.field_70721_aZ, this.player.field_70173_aa, 0.0F, 0.0F, par7);
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   private void renderSkirt(float par7) {
@@ -153,13 +153,13 @@ public class LayerBody extends LayerInterface {
     if (data == null)
       return;
     preRender(data);
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179152_a(1.7F, 1.04F, 1.6F);
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(1.7F, 1.04F, 1.6F);
     for (int i = 0; i < 10; i++) {
-      GlStateManager.func_179114_b(36.0F, 0.0F, 1.0F, 0.0F);
-      this.skirt.func_78785_a(par7);
+      GlStateManager.rotate(36.0F, 0.0F, 1.0F, 0.0F);
+      this.skirt.render(par7);
     }
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   private void renderFin(float par7) {
@@ -167,7 +167,7 @@ public class LayerBody extends LayerInterface {
     if (data == null)
       return;
     preRender(data);
-    this.fin.func_78785_a(par7);
+    this.fin.render(par7);
   }
 
   private void renderBreasts(float par7) {
@@ -177,32 +177,32 @@ public class LayerBody extends LayerInterface {
     data.playerTexture = true;
     preRender(data);
     if (data.type == 0)
-      this.breasts.func_78785_a(par7);
+      this.breasts.render(par7);
     if (data.type == 1)
-      this.breasts2.func_78785_a(par7);
+      this.breasts2.render(par7);
     if (data.type == 2)
-      this.breasts3.func_78785_a(par7);
+      this.breasts3.render(par7);
   }
 
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
-    this.wing.field_78795_f = 0.7141593F;
-    this.wing.field_78808_h = 0.5090659F;
-    this.wing2.field_78796_g = 0.8F;
+    this.wing.rotateAngleX = 0.7141593F;
+    this.wing.rotateAngleZ = 0.5090659F;
+    this.wing2.rotateAngleY = 0.8F;
     float motion = Math.abs(MathHelper.func_76126_a(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
     if (this.player.field_70170_p.func_175623_d(this.player.func_180425_c())) {
       float speed = 0.55F + 0.5F * motion;
       float y = MathHelper.func_76126_a(par3 * 0.35F);
-      this.wing.field_78808_h += y * 0.5F * speed;
-      this.wing.field_78795_f += y * 0.5F * speed;
-      this.wing2.field_78796_g += y * 0.5F * speed;
+      this.wing.rotateAngleZ += y * 0.5F * speed;
+      this.wing.rotateAngleX += y * 0.5F * speed;
+      this.wing2.rotateAngleY += y * 0.5F * speed;
     } else {
-      this.wing.field_78808_h -= MathHelper.func_76134_b(par3 * 0.09F) * 0.05F + 0.05F;
-      this.wing.field_78795_f += MathHelper.func_76126_a(par3 * 0.067F) * 0.05F;
-      this.wing2.field_78796_g += MathHelper.func_76126_a(par3 * 0.07F) * 0.44F;
+      this.wing.rotateAngleZ -= MathHelper.func_76134_b(par3 * 0.09F) * 0.05F + 0.05F;
+      this.wing.rotateAngleX += MathHelper.func_76126_a(par3 * 0.067F) * 0.05F;
+      this.wing2.rotateAngleY += MathHelper.func_76126_a(par3 * 0.07F) * 0.44F;
     }
     setRotation((ModelRenderer)this.skirt, 0.3F, -0.2F, -0.2F);
-    this.skirt.field_78795_f += this.model.field_178724_i.field_78795_f * 0.04F;
-    this.skirt.field_78808_h += this.model.field_178724_i.field_78795_f * 0.06F;
-    this.skirt.field_78808_h -= MathHelper.func_76134_b(par3 * 0.09F) * 0.04F - 0.05F;
+    this.skirt.rotateAngleX += this.model.field_178724_i.rotateAngleX * 0.04F;
+    this.skirt.rotateAngleZ += this.model.field_178724_i.rotateAngleX * 0.06F;
+    this.skirt.rotateAngleZ -= MathHelper.func_76134_b(par3 * 0.09F) * 0.04F - 0.05F;
   }
 }

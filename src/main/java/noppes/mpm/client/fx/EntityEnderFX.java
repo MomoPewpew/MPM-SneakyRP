@@ -41,7 +41,7 @@ public class EntityEnderFX extends ParticlePortal {
       this.startZ = (float)player.field_70161_v;
     }
     if (data.playerTexture) {
-      this.location = player.func_110306_p();
+      this.location = player.getLocationSkin();
     } else {
       this.location = data.getResource();
     }
@@ -72,7 +72,7 @@ public class EntityEnderFX extends ParticlePortal {
     int i = func_189214_a(partialTicks);
     int j = i >> 16 & 0xFFFF;
     int k = i & 0xFFFF;
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     renderer.func_181668_a(7, DefaultVertexFormats.field_181704_d);
     renderer.func_181662_b((f5 - rotationX * f4 - rotationXY * f4), (f6 - rotationY * f4), (f7 - rotationZ * f4 - rotationXZ * f4)).func_187315_a(f1, f3).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();
     renderer.func_181662_b((f5 - rotationX * f4 + rotationXY * f4), (f6 + rotationY * f4), (f7 - rotationZ * f4 + rotationXZ * f4)).func_187315_a(f1, f2).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();

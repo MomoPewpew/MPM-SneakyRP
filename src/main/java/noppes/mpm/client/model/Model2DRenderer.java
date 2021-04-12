@@ -52,15 +52,15 @@ public class Model2DRenderer extends ModelRenderer {
     this(modelBase, x, y, width, height, modelBase.field_78090_t, modelBase.field_78089_u);
   }
 
-  public void func_78785_a(float par1) {
+  public void render(float par1) {
     if (!this.field_78806_j || this.field_78807_k)
       return;
     if (!this.isCompiled)
       compile(par1);
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     func_78794_c(par1);
     GlStateManager.func_179148_o(this.displayList);
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   public void setRotationOffset(float x, float y, float z) {
@@ -87,12 +87,12 @@ public class Model2DRenderer extends ModelRenderer {
   private void compile(float par1) {
     this.displayList = GLAllocation.func_74526_a(1);
     GL11.glNewList(this.displayList, 4864);
-    GlStateManager.func_179109_b(this.rotationOffsetX * par1, this.rotationOffsetY * par1, this.rotationOffsetZ * par1);
-    GlStateManager.func_179152_a(this.scaleX * this.width / this.height, this.scaleY, this.thickness);
-    GlStateManager.func_179114_b(180.0F, 1.0F, 0.0F, 0.0F);
+    GlStateManager.translate(this.rotationOffsetX * par1, this.rotationOffsetY * par1, this.rotationOffsetZ * par1);
+    GlStateManager.translate(this.scaleX * this.width / this.height, this.scaleY, this.thickness);
+    GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
     if (this.field_78809_i) {
-      GlStateManager.func_179109_b(0.0F, 0.0F, -1.0F * par1);
-      GlStateManager.func_179114_b(180.0F, 0.0F, 1.0F, 0.0F);
+      GlStateManager.translate(0.0F, 0.0F, -1.0F * par1);
+      GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
     }
     renderItemIn2D(Tessellator.func_178181_a().func_178180_c(), this.x1, this.y1, this.x2, this.y2, this.width, this.height, par1);
     GL11.glEndList();

@@ -36,7 +36,7 @@ public class GuiEditButtons extends GuiNPCInterface {
   }
 
   private void addButton(int id, int y, String title, int value) {
-    for (KeyBinding key : (Minecraft.func_71410_x()).field_71474_y.field_74324_K) {
+    for (KeyBinding key : (Minecraft.getMinecraft()).field_71474_y.field_74324_K) {
       if (key.func_151464_g().equals(title)) {
         title = title + " (" + Keyboard.getKeyName(key.func_151463_i()) + ")";
         break;
@@ -58,27 +58,27 @@ public class GuiEditButtons extends GuiNPCInterface {
   protected void func_146284_a(GuiButton btn) {
     super.func_146284_a(btn);
     GuiNpcButton button = (GuiNpcButton)btn;
-    if (button.field_146127_k == 1) {
+    if (button.id == 1) {
       MorePlayerModels.button1 = getValue(button);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 2) {
+    if (button.id == 2) {
       MorePlayerModels.button2 = getValue(button);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 3) {
+    if (button.id == 3) {
       MorePlayerModels.button3 = getValue(button);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 4) {
+    if (button.id == 4) {
       MorePlayerModels.button4 = getValue(button);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 5) {
+    if (button.id == 5) {
       MorePlayerModels.button5 = getValue(button);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 66)
+    if (button.id == 66)
       close();
   }
 

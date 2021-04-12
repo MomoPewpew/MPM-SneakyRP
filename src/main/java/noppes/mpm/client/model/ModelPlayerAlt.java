@@ -52,8 +52,8 @@ public class ModelPlayerAlt extends ModelPlayer {
     this.field_178721_j = createScale(this.field_178721_j, EnumParts.LEG_RIGHT);
     this.field_178733_c = createScale(this.field_178733_c, EnumParts.LEG_LEFT);
     this.field_178731_d = createScale(this.field_178731_d, EnumParts.LEG_RIGHT);
-    this.field_78116_c = createScale(this.field_78116_c, EnumParts.HEAD);
-    this.field_178720_f = createScale(this.field_178720_f, EnumParts.HEAD);
+    this.bipedHead = createScale(this.bipedHead, EnumParts.HEAD);
+    this.bipedHeadwear = createScale(this.bipedHeadwear, EnumParts.HEAD);
     this.field_78115_e = createScale(this.field_78115_e, EnumParts.BODY);
     this.field_178730_v = createScale(this.field_178730_v, EnumParts.BODY);
   }
@@ -78,13 +78,13 @@ public class ModelPlayerAlt extends ModelPlayer {
     EntityPlayer player = (EntityPlayer)entity;
     this.playerdata = ModelData.get(player);
     if (this.playerdata.isSleeping()) {
-      GlStateManager.func_179109_b(0.0F, 1.14F, 0.0F);
-      GlStateManager.func_179114_b(45.0F, -1.0F, 0.0F, 0.0F);
-      GlStateManager.func_179109_b(0.0F, -0.8F, 0.0F);
+      GlStateManager.translate(0.0F, 1.14F, 0.0F);
+      GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
+      GlStateManager.translate(0.0F, -0.8F, 0.0F);
     } else if (this.playerdata.animation == EnumAnimation.CRAWLING) {
-      GlStateManager.func_179109_b(0.0F, (12.0F - this.playerdata.getBodyY() * 4.0F) * par6, 0.0F);
-      GlStateManager.func_179109_b(0.0F, 0.0F, ((this.field_78117_n ? -6.0F : -3.0F) - this.playerdata.getBodyY() * 10.0F) * par6);
-      GlStateManager.func_179114_b(45.0F, 1.0F, 0.0F, 0.0F);
+      GlStateManager.translate(0.0F, (12.0F - this.playerdata.getBodyY() * 4.0F) * par6, 0.0F);
+      GlStateManager.translate(0.0F, 0.0F, ((this.field_78117_n ? -6.0F : -3.0F) - this.playerdata.getBodyY() * 10.0F) * par6);
+      GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
     }
     for (EnumParts part : this.map.keySet()) {
       ModelPartConfig config = this.playerdata.getPartConfig(part);
@@ -96,18 +96,18 @@ public class ModelPlayerAlt extends ModelPlayer {
     if (this.field_78117_n && (this.playerdata.animation == EnumAnimation.CRAWLING || this.playerdata.isSleeping()))
       this.field_78117_n = false;
     this.field_78115_e.field_78800_c = this.field_78115_e.field_78797_d = this.field_78115_e.field_78798_e = 0.0F;
-    this.field_78115_e.field_78795_f = this.field_78115_e.field_78796_g = this.field_78115_e.field_78808_h = 0.0F;
-    this.field_78116_c.field_78795_f = 0.0F;
-    this.field_78116_c.field_78808_h = 0.0F;
-    this.field_78116_c.field_78800_c = 0.0F;
-    this.field_78116_c.field_78797_d = 0.0F;
-    this.field_78116_c.field_78798_e = 0.0F;
-    this.field_178722_k.field_78795_f = 0.0F;
-    this.field_178722_k.field_78796_g = 0.0F;
-    this.field_178722_k.field_78808_h = 0.0F;
-    this.field_178721_j.field_78795_f = 0.0F;
-    this.field_178721_j.field_78796_g = 0.0F;
-    this.field_178721_j.field_78808_h = 0.0F;
+    this.field_78115_e.rotateAngleX = this.field_78115_e.rotateAngleY = this.field_78115_e.rotateAngleZ = 0.0F;
+    this.bipedHead.rotateAngleX = 0.0F;
+    this.bipedHead.rotateAngleZ = 0.0F;
+    this.bipedHead.field_78800_c = 0.0F;
+    this.bipedHead.field_78797_d = 0.0F;
+    this.bipedHead.field_78798_e = 0.0F;
+    this.field_178722_k.rotateAngleX = 0.0F;
+    this.field_178722_k.rotateAngleY = 0.0F;
+    this.field_178722_k.rotateAngleZ = 0.0F;
+    this.field_178721_j.rotateAngleX = 0.0F;
+    this.field_178721_j.rotateAngleY = 0.0F;
+    this.field_178721_j.rotateAngleZ = 0.0F;
     this.field_178724_i.field_78800_c = 0.0F;
     this.field_178724_i.field_78797_d = 2.0F;
     this.field_178724_i.field_78798_e = 0.0F;
@@ -116,12 +116,12 @@ public class ModelPlayerAlt extends ModelPlayer {
     this.field_178723_h.field_78798_e = 0.0F;
     super.func_78087_a(par1, par2, par3, par4, par5, par6, entity);
     if (this.playerdata.isSleeping() || player.func_70608_bn()) {
-      if (this.field_78116_c.field_78795_f < 0.0F) {
-        this.field_78116_c.field_78795_f = 0.0F;
-        this.field_178720_f.field_78795_f = 0.0F;
+      if (this.bipedHead.rotateAngleX < 0.0F) {
+        this.bipedHead.rotateAngleX = 0.0F;
+        this.bipedHeadwear.rotateAngleX = 0.0F;
       }
     } else if (this.playerdata.animation == EnumAnimation.CRY) {
-      this.field_78116_c.field_78795_f = 0.7F;
+      this.bipedHead.rotateAngleX = 0.7F;
     } else if (this.playerdata.animation == EnumAnimation.HUG) {
       AniHug.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, (ModelBiped)this);
     } else if (this.playerdata.animation == EnumAnimation.CRAWLING) {
@@ -139,20 +139,20 @@ public class ModelPlayerAlt extends ModelPlayer {
     } else if (this.playerdata.animation == EnumAnimation.POINT) {
       AniPoint.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, (ModelBiped)this);
     } else if (this.field_78117_n) {
-      this.field_78115_e.field_78795_f = 0.5F / (this.playerdata.getPartConfig(EnumParts.BODY)).scaleY;
+      this.field_78115_e.rotateAngleX = 0.5F / (this.playerdata.getPartConfig(EnumParts.BODY)).scaleY;
     }
     func_178685_a(this.field_178722_k, this.field_178733_c);
     func_178685_a(this.field_178721_j, this.field_178731_d);
     func_178685_a(this.field_178724_i, this.field_178734_a);
     func_178685_a(this.field_178723_h, this.field_178732_b);
     func_178685_a(this.field_78115_e, this.field_178730_v);
-    func_178685_a(this.field_78116_c, this.field_178720_f);
+    func_178685_a(this.bipedHead, this.bipedHeadwear);
   }
 
   public ModelRenderer func_85181_a(Random random) {
     switch (random.nextInt(5)) {
       case 0:
-        return this.field_78116_c;
+        return this.bipedHead;
       case 1:
         return this.field_78115_e;
       case 2:
@@ -164,6 +164,6 @@ public class ModelPlayerAlt extends ModelPlayer {
       case 5:
         return this.field_178721_j;
     }
-    return this.field_78116_c;
+    return this.bipedHead;
   }
 }

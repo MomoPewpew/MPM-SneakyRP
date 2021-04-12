@@ -16,13 +16,13 @@ public class LayerEyes extends LayerInterface {
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
     if (!this.playerdata.eyes.isEnabled())
       return;
-    GlStateManager.func_179094_E();
-    this.model.field_78116_c.func_78794_c(0.0625F);
-    GlStateManager.func_179152_a(par7, par7, -par7);
-    GlStateManager.func_179109_b(0.0F, (((this.playerdata.eyes.type == 1) ? 1 : 2) - this.playerdata.eyes.eyePos), 0.0F);
-    GlStateManager.func_179091_B();
+    GlStateManager.pushMatrix();
+    this.model.bipedHead.func_78794_c(0.0625F);
+    GlStateManager.translate(par7, par7, -par7);
+    GlStateManager.translate(0.0F, (((this.playerdata.eyes.type == 1) ? 1 : 2) - this.playerdata.eyes.eyePos), 0.0F);
+    GlStateManager.enableRescaleNormal();
     GlStateManager.func_179103_j(7425);
-    GlStateManager.func_179090_x();
+    GlStateManager.disableTexture2D();
     GlStateManager.func_179147_l();
     GlStateManager.func_179089_o();
     GlStateManager.func_179118_c();
@@ -30,19 +30,19 @@ public class LayerEyes extends LayerInterface {
     int i = this.player.func_70070_b();
     int j = i % 65536;
     int k = i / 65536;
-    OpenGlHelper.func_77475_a(OpenGlHelper.field_77476_b, j, k);
-    (Minecraft.func_71410_x()).field_71460_t.func_191514_d(true);
+    OpenGlHelper.func_77475_a(OpenGlHelper.lightmapTexUnit, j, k);
+    (Minecraft.getMinecraft()).field_71460_t.func_191514_d(true);
     drawBrows();
     drawLeft();
     drawRight();
-    (Minecraft.func_71410_x()).field_71460_t.func_191514_d(false);
+    (Minecraft.getMinecraft()).field_71460_t.func_191514_d(false);
     GlStateManager.func_179132_a(true);
     GlStateManager.func_179084_k();
     GlStateManager.func_179103_j(7424);
     GlStateManager.func_179141_d();
     GlStateManager.func_179129_p();
-    GlStateManager.func_179101_C();
-    GlStateManager.func_179121_F();
+    GlStateManager.disableRescaleNormal();
+    GlStateManager.popMatrix();
     GlStateManager.func_179098_w();
   }
 
@@ -113,7 +113,7 @@ public class LayerEyes extends LayerInterface {
       f3 *= 0.96F;
     }
     BufferBuilder tessellator = Tessellator.func_178181_a().func_178180_c();
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     tessellator.func_181668_a(7, DefaultVertexFormats.field_181706_f);
     tessellator.func_181662_b(x, y, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();
     tessellator.func_181662_b(x, y2, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();

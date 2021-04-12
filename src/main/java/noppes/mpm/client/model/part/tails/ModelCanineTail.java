@@ -50,15 +50,15 @@ public class ModelCanineTail extends ModelRenderer {
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 
   public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-    this.Base_1.field_78795_f = -0.5490659F - f1 * 0.7F;
-    this.Base_1.field_78796_g = 3.141593F + this.field_78796_g * 0.1F;
-    this.Mid_1.field_78796_g = this.field_78796_g * 0.2F;
-    this.Mid_2.field_78796_g = this.field_78796_g * 0.2F;
+    this.Base_1.rotateAngleX = -0.5490659F - f1 * 0.7F;
+    this.Base_1.rotateAngleY = 3.141593F + this.rotateAngleY * 0.1F;
+    this.Mid_1.rotateAngleY = this.rotateAngleY * 0.2F;
+    this.Mid_2.rotateAngleY = this.rotateAngleY * 0.2F;
   }
 }

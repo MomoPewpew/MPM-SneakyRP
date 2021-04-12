@@ -10,9 +10,9 @@ public class GuiColorButton extends GuiNpcButton {
     this.color = color;
   }
 
-  public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-    if (!this.field_146125_m)
+  public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+    if (!this.visible)
       return;
-    func_73734_a(this.field_146128_h, this.field_146129_i, this.field_146128_h + 50, this.field_146129_i + 20, -16777216 + this.color);
+    func_73734_a(this.xPosition, this.yPosition, this.xPosition + 50, this.yPosition + 20, -16777216 + this.color);
   }
 }

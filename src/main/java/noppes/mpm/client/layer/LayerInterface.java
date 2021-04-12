@@ -37,19 +37,19 @@ public abstract class LayerInterface implements LayerRenderer {
 
   public void preRender(ModelPartData data) {
     if (data.playerTexture) {
-      ClientProxy.bindTexture(this.player.func_110306_p());
+      ClientProxy.bindTexture(this.player.getLocationSkin());
     } else {
       ClientProxy.bindTexture(data.getResource());
     }
     if (this.player.field_70737_aN > 0 || this.player.field_70725_aQ > 0) {
-      GlStateManager.func_179131_c(1.0F, 0.0F, 0.0F, 0.3F);
+      GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);
       return;
     }
     int color = data.color;
     float red = (color >> 16 & 0xFF) / 255.0F;
     float green = (color >> 8 & 0xFF) / 255.0F;
     float blue = (color & 0xFF) / 255.0F;
-    GlStateManager.func_179131_c(red, green, blue, 0.99F);
+    GlStateManager.color(red, green, blue, 0.99F);
   }
 
   public void func_177141_a(EntityLivingBase entity, float par2, float par3, float par8, float par4, float par5, float par6, float par7) {
@@ -59,19 +59,19 @@ public abstract class LayerInterface implements LayerRenderer {
     this.playerdata = ModelData.get((EntityPlayer)this.player);
     ModelPlayer model = this.render.func_177087_b();
     rotate(par2, par3, par4, par5, par6, par7);
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     if (this.player.func_70093_af())
-      GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
-    GlStateManager.func_179091_B();
+      GlStateManager.translate(0.0F, 0.2F, 0.0F);
+    GlStateManager.enableRescaleNormal();
     render(par2, par3, par4, par5, par6, par7);
-    GlStateManager.func_179101_C();
-    GlStateManager.func_179121_F();
+    GlStateManager.disableRescaleNormal();
+    GlStateManager.popMatrix();
   }
 
   public void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 
   public boolean func_177142_b() {

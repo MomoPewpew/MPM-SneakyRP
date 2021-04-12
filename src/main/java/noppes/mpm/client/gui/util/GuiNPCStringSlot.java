@@ -24,7 +24,7 @@ public class GuiNPCStringSlot extends GuiSlot {
   private long prevTime;
 
   public GuiNPCStringSlot(Vector<String> list, GuiScreen parent, boolean multiSelect, int size) {
-    super(Minecraft.func_71410_x(), parent.field_146294_l, parent.field_146295_m, 32, parent.field_146295_m - 64, size);
+    super(Minecraft.getMinecraft(), parent.width, parent.height, 32, parent.height - 64, size);
     this.prevTime = 0L;
     this.selectedList = new HashSet<>();
     this.parent = parent;
@@ -83,6 +83,6 @@ public class GuiNPCStringSlot extends GuiSlot {
     if (i >= this.list.size())
       return;
     String s = this.list.get(i);
-    this.parent.func_73731_b((Minecraft.func_71410_x()).field_71466_p, s, j + 50, k + 3, 16777215);
+    this.parent.func_73731_b((Minecraft.getMinecraft()).fontRendererObj, s, j + 50, k + 3, 16777215);
   }
 }

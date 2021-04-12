@@ -36,7 +36,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
   private GuiCustomScroll scroll = null;
 
   public GuiMPM() {
-    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.func_71410_x()).field_71439_g);
+    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.getMinecraft()).thePlayer);
     this.original = this.playerdata.writeToNBT();
     this.xSize = 182;
     this.ySize = 185;
@@ -68,18 +68,18 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
     addScroll(this.scroll);
     addButton(new GuiNpcButton(0, this.guiLeft + 4, this.guiTop + 176, 20, 20, "+"));
     addButton(new GuiNpcButton(1, this.guiLeft + 26, this.guiTop + 176, 20, 20, "-"));
-    (getButton(1)).field_146124_l = (this.scroll.getList().size() > 1);
+    (getButton(1)).enabled = (this.scroll.getList().size() > 1);
     addButton(new GuiNpcButton(2, this.guiLeft + 48, this.guiTop + 176, 60, 20, "selectServer.edit"));
     addButton(new GuiNpcButton(3, this.guiLeft + 110, this.guiTop + 176, 68, 20, "gui.config"));
   }
 
   public void func_73863_a(int i, int j, float f) {
     func_146276_q_();
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
-    this.field_146297_k.field_71446_o.func_110577_a(resource);
-    func_73729_b(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    this.field_146297_k.renderEngine.bindTexture(resource);
+    drawTexturedModalRect(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
     super.func_73863_a(i, j, f);
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GuiInventory.func_147046_a(this.guiLeft + 130, this.guiTop + 130, 40, (this.guiLeft + 130 - i), (this.guiTop + 60 - j), (EntityLivingBase)this.player);
   }
 
@@ -94,9 +94,9 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
   protected void func_146284_a(GuiButton button) {
     if (!(button instanceof GuiNpcButton))
       return;
-    if (button.field_146127_k == 0)
+    if (button.id == 0)
       setSubGui(new GuiCreationLoad());
-    if (button.field_146127_k == 1) {
+    if (button.id == 1) {
       GuiYesNo gui = new GuiYesNo((result, id) -> {
             if (result) {
               PresetController.instance.removePreset(this.scroll.getSelected());
@@ -105,17 +105,17 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
               this.playerdata.readFromNBT(preset.data.writeToNBT());
               PresetController.instance.selected = preset.name;
             }
-            Minecraft.func_71410_x().func_147108_a((GuiScreen)this);
-          }"", I18n.func_74838_a("message.delete"), 0);
-      this.field_146297_k.func_147108_a((GuiScreen)gui);
+            Minecraft.getMinecraft().displayGuiScreen((GuiScreen)this);
+          }"", I18n.translateToLocal("message.delete"), 0);
+      this.field_146297_k.displayGuiScreen((GuiScreen)gui);
     }
-    if (button.field_146127_k == 2)
+    if (button.id == 2)
       try {
         setSubGui((GuiNPCInterface)GuiCreationScreenInterface.Gui.getClass().newInstance());
       } catch (InstantiationException instantiationException) {
 
       } catch (IllegalAccessException illegalAccessException) {}
-    if (button.field_146127_k == 3)
+    if (button.id == 3)
       setSubGui(new GuiConfig());
   }
 

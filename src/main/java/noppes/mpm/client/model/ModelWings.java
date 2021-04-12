@@ -93,25 +93,25 @@ public class ModelWings extends ModelBase {
   public void func_78088_a(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
     func_78087_a(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5, entityIn);
     this.field_78091_s = false;
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     if (this.field_78091_s) {
-      GlStateManager.func_179152_a(0.75F, 0.75F, 0.75F);
-      GlStateManager.func_179109_b(0.0F, 16.0F * f5, 0.0F);
+      GlStateManager.translate(0.75F, 0.75F, 0.75F);
+      GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
-      GlStateManager.func_179121_F();
-      GlStateManager.func_179094_E();
-      GlStateManager.func_179152_a(0.5F, 0.5F, 0.5F);
-      GlStateManager.func_179109_b(0.0F, 24.0F * f5, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
+      GlStateManager.popMatrix();
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(0.5F, 0.5F, 0.5F);
+      GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
       renderWings(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5);
     } else {
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
       renderWings(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5);
     }
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   public void renderWings(Entity player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
@@ -120,21 +120,21 @@ public class ModelWings extends ModelBase {
     float speed = 0.55F + 0.5F * motion;
     float y = MathHelper.func_76126_a(ageInTicks * 0.35F);
     float flap = y * 0.5F * speed;
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     if (flapWings)
-      GlStateManager.func_179114_b(flap * 20.0F, 0.0F, 1.0F, 0.0F);
-    this.left_wing_1.func_78785_a(f5);
-    GlStateManager.func_179121_F();
-    GlStateManager.func_179094_E();
+      GlStateManager.rotate(flap * 20.0F, 0.0F, 1.0F, 0.0F);
+    this.left_wing_1.render(f5);
+    GlStateManager.popMatrix();
+    GlStateManager.pushMatrix();
     if (flapWings)
-      GlStateManager.func_179114_b(-flap * 20.0F, 0.0F, 1.0F, 0.0F);
-    this.right_wing_1.func_78785_a(f5);
-    GlStateManager.func_179121_F();
+      GlStateManager.rotate(-flap * 20.0F, 0.0F, 1.0F, 0.0F);
+    this.right_wing_1.render(f5);
+    GlStateManager.popMatrix();
   }
 
   public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-    modelRenderer.field_78795_f = x;
-    modelRenderer.field_78796_g = y;
-    modelRenderer.field_78808_h = z;
+    modelRenderer.rotateAngleX = x;
+    modelRenderer.rotateAngleY = y;
+    modelRenderer.rotateAngleZ = z;
   }
 }

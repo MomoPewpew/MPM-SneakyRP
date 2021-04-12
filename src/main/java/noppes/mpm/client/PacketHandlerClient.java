@@ -21,9 +21,9 @@ import noppes.mpm.constants.EnumPackets;
 public class PacketHandlerClient extends PacketHandlerServer {
   @SubscribeEvent
   public void onPacketData(FMLNetworkEvent.ClientCustomPacketEvent event) {
-    EntityPlayerSP entityPlayerSP = (Minecraft.func_71410_x()).field_71439_g;
+    EntityPlayerSP entityPlayerSP = (Minecraft.getMinecraft()).thePlayer;
     ByteBuf buf = event.getPacket().payload();
-    Minecraft.func_71410_x().func_152344_a(() -> {
+    Minecraft.getMinecraft().addScheduledTask(() -> {
           EnumPackets en = null;
           try {
             en = EnumPackets.values()[buf.readInt()];
@@ -61,7 +61,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
       NBTTagCompound compound = Server.readNBT(buffer);
       data.readFromNBT(compound);
       data.save();
-      if (pl == (Minecraft.func_71410_x()).field_71439_g)
+      if (pl == (Minecraft.getMinecraft()).thePlayer)
         data.lastEdited = System.currentTimeMillis();
     } else if (type == EnumPackets.CHAT_EVENT) {
       EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));

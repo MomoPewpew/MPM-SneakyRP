@@ -19,7 +19,7 @@ public class TextBlockClient {
   public String name;
 
   public TextBlockClient(String name, String text, int lineWidth) {
-    this(text, lineWidth, (EntityPlayer)(Minecraft.func_71410_x()).field_71439_g);
+    this(text, lineWidth, (EntityPlayer)(Minecraft.getMinecraft()).thePlayer);
     this.name = name;
   }
 
@@ -29,7 +29,7 @@ public class TextBlockClient {
   }
 
   public TextBlockClient(String text, int lineWidth) {
-    this(text, lineWidth, (EntityPlayer)(Minecraft.func_71410_x()).field_71439_g);
+    this(text, lineWidth, (EntityPlayer)(Minecraft.getMinecraft()).thePlayer);
   }
 
   public TextBlockClient(String text, int lineWidth, EntityPlayer player) {
@@ -38,7 +38,7 @@ public class TextBlockClient {
     text = text.replaceAll("\n", " \n ");
     text = text.replaceAll("\r", " \r ");
     String[] words = text.split(" ");
-    FontRenderer font = (Minecraft.func_71410_x()).field_71466_p;
+    FontRenderer font = (Minecraft.getMinecraft()).fontRendererObj;
     for (String word : words) {
       String newLine;
       if (word.isEmpty())
@@ -56,7 +56,7 @@ public class TextBlockClient {
       } else {
         newLine = line + " " + word;
       }
-      if (font.func_78256_a(newLine) > lineWidth) {
+      if (font.getStringWidth(newLine) > lineWidth) {
         addLine(line);
         line = word.trim();
       } else {

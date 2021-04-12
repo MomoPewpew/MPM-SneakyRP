@@ -108,43 +108,43 @@ public class ModelHalo extends ModelBase {
 
   public void render(float f5, EntityPlayer entityIn) {
     this.field_78091_s = false;
-    OpenGlHelper.func_77475_a(OpenGlHelper.field_77476_b, 0.0F, 240.0F);
-    (Minecraft.func_71410_x()).field_71446_o.func_110577_a(wingTexture);
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179114_b((float)entityIn.field_70170_p.func_82737_E(), 0.0F, 1.0F, 0.0F);
-    float f = entityIn.field_70173_aa + Minecraft.func_71410_x().func_184121_ak();
+    OpenGlHelper.func_77475_a(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);
+    (Minecraft.getMinecraft()).renderEngine.bindTexture(wingTexture);
+    GlStateManager.pushMatrix();
+    GlStateManager.rotate((float)entityIn.field_70170_p.func_82737_E(), 0.0F, 1.0F, 0.0F);
+    float f = entityIn.field_70173_aa + Minecraft.getMinecraft().func_184121_ak();
     float f1 = MathHelper.func_76126_a(f * 0.2F) / 2.0F + 0.5F;
     f1 = f1 * f1 + f1;
-    GlStateManager.func_179109_b(0.0F, -0.2F + f1 * 0.05F, 0.0F);
+    GlStateManager.translate(0.0F, -0.2F + f1 * 0.05F, 0.0F);
     if (this.field_78091_s) {
-      GlStateManager.func_179152_a(0.75F, 0.75F, 0.75F);
-      GlStateManager.func_179109_b(0.0F, 16.0F * f5, 0.0F);
+      GlStateManager.translate(0.75F, 0.75F, 0.75F);
+      GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
-      GlStateManager.func_179140_f();
-      this.head.func_78785_a(f5);
-      GlStateManager.func_179145_e();
-      OpenGlHelper.func_77475_a(OpenGlHelper.field_77476_b, 0.0F, 240.0F);
-      GlStateManager.func_179121_F();
-      GlStateManager.func_179094_E();
-      GlStateManager.func_179152_a(0.5F, 0.5F, 0.5F);
-      GlStateManager.func_179109_b(0.0F, 24.0F * f5, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
+      GlStateManager.disableLighting();
+      this.head.render(f5);
+      GlStateManager.enableLighting();
+      OpenGlHelper.func_77475_a(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);
+      GlStateManager.popMatrix();
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(0.5F, 0.5F, 0.5F);
+      GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
     } else {
       if (entityIn.func_70093_af())
-        GlStateManager.func_179109_b(0.0F, 0.2F, 0.0F);
-      GlStateManager.func_179140_f();
-      this.head.func_78785_a(f5);
-      GlStateManager.func_179145_e();
-      OpenGlHelper.func_77475_a(OpenGlHelper.field_77476_b, 0.0F, 240.0F);
+        GlStateManager.translate(0.0F, 0.2F, 0.0F);
+      GlStateManager.disableLighting();
+      this.head.render(f5);
+      GlStateManager.enableLighting();
+      OpenGlHelper.func_77475_a(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);
     }
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   private void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-    modelRenderer.field_78795_f = x;
-    modelRenderer.field_78796_g = y;
-    modelRenderer.field_78808_h = z;
+    modelRenderer.rotateAngleX = x;
+    modelRenderer.rotateAngleY = y;
+    modelRenderer.rotateAngleZ = z;
   }
 }

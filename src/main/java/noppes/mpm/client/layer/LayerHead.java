@@ -121,7 +121,7 @@ public class LayerHead extends LayerInterface {
   }
 
   public void render(float par2, float par3, float par4, float par5, float par6, float scale) {
-    this.model.field_78116_c.func_78794_c(0.0625F);
+    this.model.bipedHead.func_78794_c(0.0625F);
     renderSnout(scale);
     renderBeard(scale);
     renderHair(scale);
@@ -145,15 +145,15 @@ public class LayerHead extends LayerInterface {
       return;
     preRender(data);
     if (data.type == 0) {
-      this.small.func_78785_a(scale);
+      this.small.render(scale);
     } else if (data.type == 1) {
-      this.medium.func_78785_a(scale);
+      this.medium.render(scale);
     } else if (data.type == 2) {
-      this.large.func_78785_a(scale);
+      this.large.render(scale);
     } else if (data.type == 3) {
-      this.bunnySnout.func_78785_a(scale);
+      this.bunnySnout.render(scale);
     } else if (data.type == 4) {
-      this.beak.func_78785_a(scale);
+      this.beak.render(scale);
     }
   }
 
@@ -162,7 +162,7 @@ public class LayerHead extends LayerInterface {
     if (data == null)
       return;
     preRender(data);
-    this.beard.func_78785_a(scale);
+    this.beard.render(scale);
   }
 
   private void renderHair(float scale) {
@@ -170,7 +170,7 @@ public class LayerHead extends LayerInterface {
     if (data == null)
       return;
     preRender(data);
-    this.hair.func_78785_a(scale);
+    this.hair.render(scale);
   }
 
   private void renderMohawk(float scale) {
@@ -178,7 +178,7 @@ public class LayerHead extends LayerInterface {
     if (data == null)
       return;
     preRender(data);
-    this.mohawk.func_78785_a(scale);
+    this.mohawk.render(scale);
   }
 
   private void renderHorns(float scale) {
@@ -187,13 +187,13 @@ public class LayerHead extends LayerInterface {
       return;
     preRender(data);
     if (data.type == 0) {
-      this.bull.func_78785_a(scale);
+      this.bull.render(scale);
     } else if (data.type == 1) {
-      this.antlers.func_78785_a(scale);
+      this.antlers.render(scale);
     } else if (data.type == 2 && data.pattern == 0) {
-      this.antennasBack.func_78785_a(scale);
+      this.antennasBack.render(scale);
     } else if (data.type == 2 && data.pattern == 1) {
-      this.antennasFront.func_78785_a(scale);
+      this.antennasFront.render(scale);
     }
   }
 
@@ -203,26 +203,26 @@ public class LayerHead extends LayerInterface {
       return;
     preRender(data);
     if (data.type == 0) {
-      this.ears.func_78785_a(scale);
+      this.ears.render(scale);
     } else if (data.type == 1) {
-      this.bunnyEars.func_78785_a(scale);
+      this.bunnyEars.render(scale);
     }
   }
 
   public void rotate(float par2, float par3, float par4, float par5, float par6, float scale) {
-    ModelRenderer head = this.model.field_78116_c;
-    if (head.field_78795_f < 0.0F) {
-      this.beard.field_78795_f = 0.0F;
-      this.hair.field_78795_f = -head.field_78795_f * 1.2F;
-      if (head.field_78795_f > -1.0F) {
-        this.hair.field_78797_d = -head.field_78795_f * 1.5F;
-        this.hair.field_78798_e = -head.field_78795_f * 1.5F;
+    ModelRenderer head = this.model.bipedHead;
+    if (head.rotateAngleX < 0.0F) {
+      this.beard.rotateAngleX = 0.0F;
+      this.hair.rotateAngleX = -head.rotateAngleX * 1.2F;
+      if (head.rotateAngleX > -1.0F) {
+        this.hair.field_78797_d = -head.rotateAngleX * 1.5F;
+        this.hair.field_78798_e = -head.rotateAngleX * 1.5F;
       }
     } else {
-      this.hair.field_78795_f = 0.0F;
+      this.hair.rotateAngleX = 0.0F;
       this.hair.field_78797_d = 0.0F;
       this.hair.field_78798_e = 0.0F;
-      this.beard.field_78795_f = -head.field_78795_f;
+      this.beard.rotateAngleX = -head.rotateAngleX;
     }
   }
 }

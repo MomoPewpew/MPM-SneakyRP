@@ -48,7 +48,7 @@ public class GuiConfig extends GuiNPCInterface {
     if (!(btn instanceof GuiNpcButton))
       return;
     GuiNpcButton button = (GuiNpcButton)btn;
-    if (button.field_146127_k == 46) {
+    if (button.id == 46) {
       List<EntityPlayer> players = this.field_146297_k.field_71441_e.field_73010_i;
       for (EntityPlayer player : players) {
         ModelData data = ModelData.get(player);
@@ -57,42 +57,42 @@ public class GuiConfig extends GuiNPCInterface {
         data.webapiInit = false;
       }
     }
-    if (button.field_146127_k == 47) {
+    if (button.id == 47) {
       MorePlayerModels.EnablePOV = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 48) {
+    if (button.id == 48) {
       MorePlayerModels.EnableChatBubbles = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 49) {
+    if (button.id == 49) {
       MorePlayerModels.EnableBackItem = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 50) {
+    if (button.id == 50) {
       MorePlayerModels.Tooltips = button.getValue();
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 51)
-      this.field_146297_k.func_147108_a((GuiScreen)new GuiEditButtons());
-    if (button.field_146127_k == 53) {
+    if (button.id == 51)
+      this.field_146297_k.displayGuiScreen((GuiScreen)new GuiEditButtons());
+    if (button.id == 53) {
       MorePlayerModels.EnableParticles = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 54) {
+    if (button.id == 54) {
       MorePlayerModels.HeadWearType = button.getValue();
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 55) {
+    if (button.id == 55) {
       MorePlayerModels.Compatibility = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
       ClientProxy.fixModels(false);
     }
-    if (button.field_146127_k == 56) {
+    if (button.id == 56) {
       MorePlayerModels.HideSelectionBox = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }
-    if (button.field_146127_k == 57) {
+    if (button.id == 57) {
       MorePlayerModels.HidePlayerNames = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
     }

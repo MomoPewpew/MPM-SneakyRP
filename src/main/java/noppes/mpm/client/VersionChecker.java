@@ -12,12 +12,12 @@ public class VersionChecker extends Thread {
     String link = "here";
     String text = name + " installed. More info at " + link;
     try {
-      EntityPlayerSP entityPlayerSP1 = (Minecraft.func_71410_x()).field_71439_g;
+      EntityPlayerSP entityPlayerSP1 = (Minecraft.getMinecraft()).thePlayer;
     } catch (NoSuchMethodError e) {
       return;
     }
     EntityPlayerSP entityPlayerSP;
-    while ((entityPlayerSP = (Minecraft.func_71410_x()).field_71439_g) == null) {
+    while ((entityPlayerSP = (Minecraft.getMinecraft()).thePlayer) == null) {
       try {
         Thread.sleep(2000L);
       } catch (InterruptedException e) {

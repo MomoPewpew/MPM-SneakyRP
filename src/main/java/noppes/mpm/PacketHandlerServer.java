@@ -17,7 +17,7 @@ public class PacketHandlerServer {
   public void onPacketData(FMLNetworkEvent.ServerCustomPacketEvent event) {
     EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).field_147369_b;
     ByteBuf buf = event.getPacket().payload();
-    player.func_184102_h().func_152344_a(() -> {
+    player.func_184102_h().addScheduledTask(() -> {
           EnumPackets type = null;
           try {
             type = EnumPackets.values()[buf.readInt()];

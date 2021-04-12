@@ -94,7 +94,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     tailTip.func_78789_a(-1.5F, -4.5F, 9.0F, 3, 4, 7);
     setRotation(tailTip, -1.40215F, 0.0F, 0.0F);
     this.horse.func_78792_a(tailTip);
-    this.horse.field_78795_f = 0.5F;
+    this.horse.rotateAngleX = 0.5F;
     this.dragon = (ModelRenderer)new ModelDragonTail((ModelBiped)this.model);
     this.squirrel = (ModelRenderer)new ModelSquirrelTail((ModelBiped)this.model);
     this.fin = (ModelRenderer)new ModelTailFin((ModelBiped)this.model);
@@ -103,12 +103,12 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
   }
 
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     renderLegs(par7);
-    GlStateManager.func_179121_F();
-    GlStateManager.func_179094_E();
+    GlStateManager.popMatrix();
+    GlStateManager.pushMatrix();
     renderTails(par7);
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 
   private void renderTails(float par7) {
@@ -116,35 +116,35 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     if (data == null)
       return;
     ModelPartConfig config = this.playerdata.getPartConfig(EnumParts.LEG_LEFT);
-    GlStateManager.func_179109_b(config.transX * par7, config.transY + this.rotationPointY * par7, config.transZ * par7 + this.rotationPointZ * par7);
-    GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
+    GlStateManager.translate(config.transX * par7, config.transY + this.rotationPointY * par7, config.transZ * par7 + this.rotationPointZ * par7);
+    GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
     preRender(data);
     if (data.type == 0) {
       if (data.pattern == 1) {
         this.tail.field_78800_c = -0.5F;
-        this.tail.field_78796_g = (float)(this.tail.field_78796_g - 0.2D);
-        this.tail.func_78785_a(par7);
+        this.tail.rotateAngleY = (float)(this.tail.rotateAngleY - 0.2D);
+        this.tail.render(par7);
         this.tail.field_78800_c++;
-        this.tail.field_78796_g = (float)(this.tail.field_78796_g + 0.4D);
-        this.tail.func_78785_a(par7);
+        this.tail.rotateAngleY = (float)(this.tail.rotateAngleY + 0.4D);
+        this.tail.render(par7);
         this.tail.field_78800_c = 0.0F;
       } else {
-        this.tail.func_78785_a(par7);
+        this.tail.render(par7);
       }
     } else if (data.type == 1) {
-      this.dragon.func_78785_a(par7);
+      this.dragon.render(par7);
     } else if (data.type == 2) {
-      this.horse.func_78785_a(par7);
+      this.horse.render(par7);
     } else if (data.type == 3) {
-      this.squirrel.func_78785_a(par7);
+      this.squirrel.render(par7);
     } else if (data.type == 4) {
-      this.fin.func_78785_a(par7);
+      this.fin.render(par7);
     } else if (data.type == 5) {
-      this.rodent.func_78785_a(par7);
+      this.rodent.render(par7);
     } else if (data.type == 6) {
-      this.feathers.func_78785_a(par7);
+      this.feathers.render(par7);
     } else if (data.type == 7) {
-      this.fox.func_78785_a(par7);
+      this.fox.render(par7);
     }
   }
 
@@ -155,35 +155,35 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     ModelPartConfig config = this.playerdata.getPartConfig(EnumParts.LEG_LEFT);
     preRender(data);
     if (data.type == 1) {
-      GlStateManager.func_179109_b(0.0F, config.transY * 2.0F, config.transZ * par7 + 0.04F);
-      GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
-      this.naga.func_78785_a(par7);
+      GlStateManager.translate(0.0F, config.transY * 2.0F, config.transZ * par7 + 0.04F);
+      GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
+      this.naga.render(par7);
     } else if (data.type == 2) {
       GlStateManager.func_179137_b(0.0D, (config.transY * 1.76F) - 0.1D * config.scaleY, (config.transZ * par7));
-      GlStateManager.func_179152_a(1.06F, 1.06F, 1.06F);
-      GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
-      this.spiderLegs.func_78785_a(par7);
+      GlStateManager.translate(1.06F, 1.06F, 1.06F);
+      GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
+      this.spiderLegs.render(par7);
     } else if (data.type == 3) {
       if (config.scaleY >= 1.0F) {
-        GlStateManager.func_179109_b(0.0F, config.transY * 1.76F, config.transZ * par7);
+        GlStateManager.translate(0.0F, config.transY * 1.76F, config.transZ * par7);
       } else {
-        GlStateManager.func_179109_b(0.0F, config.transY * 1.86F, config.transZ * par7);
+        GlStateManager.translate(0.0F, config.transY * 1.86F, config.transZ * par7);
       }
-      GlStateManager.func_179152_a(0.79F, 0.9F - config.scaleY / 10.0F, 0.79F);
-      GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
-      this.horseLegs.func_78785_a(par7);
+      GlStateManager.translate(0.79F, 0.9F - config.scaleY / 10.0F, 0.79F);
+      GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
+      this.horseLegs.render(par7);
     } else if (data.type == 4) {
-      GlStateManager.func_179109_b(0.0F, config.transY * 1.86F, config.transZ * par7);
-      GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
+      GlStateManager.translate(0.0F, config.transY * 1.86F, config.transZ * par7);
+      GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
       if (data.pattern == 1) {
-        this.mermaid2.func_78785_a(par7);
+        this.mermaid2.render(par7);
       } else {
-        this.mermaid.func_78785_a(par7);
+        this.mermaid.render(par7);
       }
     } else if (data.type == 5) {
-      GlStateManager.func_179109_b(0.0F, config.transY * 1.86F, config.transZ * par7);
-      GlStateManager.func_179152_a(config.scaleX, config.scaleY, config.scaleZ);
-      this.digitigrade.func_78785_a(par7);
+      GlStateManager.translate(0.0F, config.transY * 1.86F, config.transZ * par7);
+      GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
+      this.digitigrade.render(par7);
     }
   }
 
@@ -245,8 +245,8 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
         this.fox.setRotationAngles(par1, par2, par3, par4, par5, par6, (Entity)this.player);
     }
     this.rotationPointZ += this.model.field_178721_j.field_78798_e + 0.5F;
-    this.fox.field_78795_f = this.rodent.field_78795_f = rotateAngleX;
-    this.fox.field_78796_g = this.rodent.field_78796_g = rotateAngleY;
+    this.fox.rotateAngleX = this.rodent.rotateAngleX = rotateAngleX;
+    this.fox.rotateAngleY = this.rodent.rotateAngleY = rotateAngleY;
   }
 
   public void preRender(AbstractClientPlayer player) {

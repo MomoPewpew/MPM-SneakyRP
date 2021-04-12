@@ -49,16 +49,16 @@ public class ModelMermaidLegs extends ModelRenderer {
     this.bottom.func_78792_a(this.fin2);
   }
 
-  public void func_78785_a(float f5) {
+  public void render(float f5) {
     if (this.field_78807_k || !this.field_78806_j)
       return;
-    this.top.func_78785_a(f5);
+    this.top.render(f5);
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity, ModelData data) {
@@ -67,12 +67,12 @@ public class ModelMermaidLegs extends ModelRenderer {
     if (ani > 0.2D)
       ani /= 3.0F;
     if (data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
-      this.fin2.field_78795_f = 0.0F;
+      this.fin2.rotateAngleX = 0.0F;
     } else {
-      this.top.field_78795_f = 0.26F - ani * 0.2F * par2;
-      this.middle.field_78795_f = 0.86F - ani * 0.24F * par2;
-      this.bottom.field_78795_f = 0.15F - ani * 0.28F * par2;
-      this.fin1.field_78795_f = 0.05F - ani * 0.35F * par2;
+      this.top.rotateAngleX = 0.26F - ani * 0.2F * par2;
+      this.middle.rotateAngleX = 0.86F - ani * 0.24F * par2;
+      this.bottom.rotateAngleX = 0.15F - ani * 0.28F * par2;
+      this.fin1.rotateAngleX = 0.05F - ani * 0.35F * par2;
       if (entity.func_70093_af())
         this.top.func_78793_a(-2.0F, 12.0F, 6.0F);
     }

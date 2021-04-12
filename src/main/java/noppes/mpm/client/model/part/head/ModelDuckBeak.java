@@ -55,17 +55,17 @@ public class ModelDuckBeak extends ModelRenderer {
     func_78792_a(this.Top);
   }
 
-  public void func_78785_a(float scale) {
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179109_b(0.0F, 0.0F, -1.0F * scale);
-    GlStateManager.func_179152_a(0.82F, 0.82F, 0.7F);
-    super.func_78785_a(scale);
-    GlStateManager.func_179121_F();
+  public void render(float scale) {
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(0.0F, 0.0F, -1.0F * scale);
+    GlStateManager.translate(0.82F, 0.82F, 0.7F);
+    super.render(scale);
+    GlStateManager.popMatrix();
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 }

@@ -74,34 +74,34 @@ public class ChatMessages {
   }
 
   public void render(double x, double y, double z, boolean depth) {
-    FontRenderer font = (Minecraft.func_71410_x()).field_71466_p;
+    FontRenderer font = (Minecraft.getMinecraft()).fontRendererObj;
     float var13 = 1.6F;
     float var14 = 0.016666668F * var13;
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     int size = 0;
     for (TextBlockClient block : this.messages.values())
       size += block.lines.size();
-    Minecraft mc = Minecraft.func_71410_x();
+    Minecraft mc = Minecraft.getMinecraft();
     int textYSize = (int)((size * font.field_78288_b) * this.scale);
-    GlStateManager.func_179109_b((float)x + 0.0F, (float)y + textYSize * var14, (float)z);
+    GlStateManager.translate((float)x + 0.0F, (float)y + textYSize * var14, (float)z);
     GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-    GlStateManager.func_179114_b(-(mc.func_175598_ae()).field_78735_i, 0.0F, 1.0F, 0.0F);
-    GlStateManager.func_179114_b((mc.func_175598_ae()).field_78732_j, 1.0F, 0.0F, 0.0F);
-    GlStateManager.func_179152_a(-var14, -var14, var14);
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.rotate(-(mc.getRenderManager()).field_78735_i, 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotate((mc.getRenderManager()).field_78732_j, 1.0F, 0.0F, 0.0F);
+    GlStateManager.translate(-var14, -var14, var14);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GlStateManager.func_179132_a(true);
-    GlStateManager.func_179140_f();
+    GlStateManager.disableLighting();
     GlStateManager.func_179147_l();
     if (depth) {
-      GlStateManager.func_179126_j();
+      GlStateManager.enableDepth();
     } else {
-      GlStateManager.func_179097_i();
+      GlStateManager.disableDepth();
     }
     int black = depth ? -16777216 : 1426063360;
     int white = depth ? -1140850689 : 1157627903;
     GlStateManager.func_179120_a(770, 771, 1, 0);
-    GlStateManager.func_179090_x();
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.disableTexture2D();
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     BufferBuilder tessellator = Tessellator.func_178181_a().func_178180_c();
     tessellator.func_181668_a(7, DefaultVertexFormats.field_181706_f);
     drawRect(tessellator, (-this.boxLength - 2), -2.0D, (this.boxLength + 2), (textYSize + 1), white, 0.11D);
@@ -125,20 +125,20 @@ public class ChatMessages {
     Tessellator.func_178181_a().func_78381_a();
     GlStateManager.func_179098_w();
     GlStateManager.func_179132_a(true);
-    GlStateManager.func_179152_a(this.scale, this.scale, this.scale);
+    GlStateManager.translate(this.scale, this.scale, this.scale);
     int index = 0;
     for (TextBlockClient block : this.messages.values()) {
       for (ITextComponent chat : block.lines) {
         String message = chat.func_150254_d();
-        font.func_78276_b(message, -font.func_78256_a(message) / 2, index * font.field_78288_b, black);
+        font.func_78276_b(message, -font.getStringWidth(message) / 2, index * font.field_78288_b, black);
         index++;
       }
     }
-    GlStateManager.func_179145_e();
+    GlStateManager.enableLighting();
     GlStateManager.func_179084_k();
-    GlStateManager.func_179126_j();
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
-    GlStateManager.func_179121_F();
+    GlStateManager.enableDepth();
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.popMatrix();
   }
 
   public static ChatMessages getChatMessages(String username) {
@@ -212,7 +212,7 @@ public class ChatMessages {
   }
 
   private static boolean validPlayer(String username) {
-    return ((Minecraft.func_71410_x()).field_71441_e.func_72924_a(username) != null);
+    return ((Minecraft.getMinecraft()).field_71441_e.func_72924_a(username) != null);
   }
 
   private Map<Long, TextBlockClient> getMessages() {

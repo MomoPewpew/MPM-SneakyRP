@@ -59,12 +59,12 @@ public class ModelNagaLegs extends ModelRenderer {
     plane = new ModelPlaneRenderer(base, 4, 26);
     plane.addTopPlane(0.0F, -2.0F, -6.0F, 4, 6);
     plane.func_78793_a(-4.0F, 0.0F, 0.0F);
-    plane.field_78795_f = 3.1415927F;
+    plane.rotateAngleX = 3.1415927F;
     this.nagaPart3.func_78792_a((ModelRenderer)plane);
     plane = new ModelPlaneRenderer(base, 4, 26);
     plane.field_78809_i = true;
     plane.addTopPlane(0.0F, -2.0F, -6.0F, 4, 6);
-    plane.field_78795_f = 3.1415927F;
+    plane.rotateAngleX = 3.1415927F;
     this.nagaPart3.func_78792_a((ModelRenderer)plane);
     plane = new ModelPlaneRenderer(base, 8, 26);
     plane.addTopPlane(0.0F, -2.0F, 0.0F, 4, 6);
@@ -75,12 +75,12 @@ public class ModelNagaLegs extends ModelRenderer {
     plane.addTopPlane(0.0F, -2.0F, 0.0F, 4, 6);
     this.nagaPart3.func_78792_a((ModelRenderer)plane);
     plane = new ModelPlaneRenderer(base, 0, 26);
-    plane.field_78795_f = 1.5707964F;
+    plane.rotateAngleX = 1.5707964F;
     plane.addSidePlane(0.0F, 0.0F, -2.0F, 6, 4);
     plane.func_78793_a(-4.0F, 0.0F, 0.0F);
     this.nagaPart3.func_78792_a((ModelRenderer)plane);
     plane = new ModelPlaneRenderer(base, 0, 26);
-    plane.field_78795_f = 1.5707964F;
+    plane.rotateAngleX = 1.5707964F;
     plane.addSidePlane(4.0F, 0.0F, -2.0F, 6, 4);
     this.nagaPart3.func_78792_a((ModelRenderer)plane);
     this.nagaPart4 = new ModelRenderer(base, 0, 0);
@@ -89,12 +89,12 @@ public class ModelNagaLegs extends ModelRenderer {
     legPart = new ModelRenderer(base, 56, 20);
     legPart.func_78789_a(0.0F, 0.0F, -2.0F, 2, 5, 2);
     legPart.func_78793_a(-2.0F, 0.0F, 0.0F);
-    legPart.field_78795_f = 1.5707964F;
+    legPart.rotateAngleX = 1.5707964F;
     this.nagaPart5.func_78792_a(legPart);
     legPart = new ModelRenderer(base, 56, 20);
     legPart.field_78809_i = true;
     legPart.func_78789_a(0.0F, 0.0F, -2.0F, 2, 5, 2);
-    legPart.field_78795_f = 1.5707964F;
+    legPart.rotateAngleX = 1.5707964F;
     this.nagaPart5.func_78792_a(legPart);
     func_78792_a(this.nagaPart1);
     func_78792_a(this.nagaPart2);
@@ -109,25 +109,25 @@ public class ModelNagaLegs extends ModelRenderer {
   }
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-    this.nagaPart1.field_78796_g = MathHelper.func_76134_b(par1 * 0.6662F) * 0.26F * par2;
-    this.nagaPart2.field_78796_g = MathHelper.func_76134_b(par1 * 0.6662F) * 0.5F * par2;
-    this.nagaPart3.field_78796_g = MathHelper.func_76134_b(par1 * 0.6662F) * 0.26F * par2;
-    this.nagaPart4.field_78796_g = -MathHelper.func_76134_b(par1 * 0.6662F) * 0.16F * par2;
-    this.nagaPart5.field_78796_g = -MathHelper.func_76134_b(par1 * 0.6662F) * 0.3F * par2;
+    this.nagaPart1.rotateAngleY = MathHelper.func_76134_b(par1 * 0.6662F) * 0.26F * par2;
+    this.nagaPart2.rotateAngleY = MathHelper.func_76134_b(par1 * 0.6662F) * 0.5F * par2;
+    this.nagaPart3.rotateAngleY = MathHelper.func_76134_b(par1 * 0.6662F) * 0.26F * par2;
+    this.nagaPart4.rotateAngleY = -MathHelper.func_76134_b(par1 * 0.6662F) * 0.16F * par2;
+    this.nagaPart5.rotateAngleY = -MathHelper.func_76134_b(par1 * 0.6662F) * 0.3F * par2;
     this.nagaPart1.func_78793_a(0.0F, 14.0F, 0.0F);
     this.nagaPart2.func_78793_a(0.0F, 18.0F, 0.6F);
     this.nagaPart3.func_78793_a(0.0F, 22.0F, -0.3F);
     this.nagaPart4.func_78793_a(0.0F, 22.0F, 5.0F);
     this.nagaPart5.func_78793_a(0.0F, 22.0F, 10.0F);
-    this.nagaPart1.field_78795_f = 0.0F;
-    this.nagaPart2.field_78795_f = 0.0F;
-    this.nagaPart3.field_78795_f = 0.0F;
-    this.nagaPart4.field_78795_f = 0.0F;
-    this.nagaPart5.field_78795_f = 0.0F;
+    this.nagaPart1.rotateAngleX = 0.0F;
+    this.nagaPart2.rotateAngleX = 0.0F;
+    this.nagaPart3.rotateAngleX = 0.0F;
+    this.nagaPart4.rotateAngleX = 0.0F;
+    this.nagaPart5.rotateAngleX = 0.0F;
     if (this.isSleeping || this.isCrawling) {
-      this.nagaPart3.field_78795_f = -1.5707964F;
-      this.nagaPart4.field_78795_f = -1.5707964F;
-      this.nagaPart5.field_78795_f = -1.5707964F;
+      this.nagaPart3.rotateAngleX = -1.5707964F;
+      this.nagaPart4.rotateAngleX = -1.5707964F;
+      this.nagaPart5.rotateAngleX = -1.5707964F;
       this.nagaPart3.field_78797_d -= 2.0F;
       this.nagaPart3.field_78798_e = 0.9F;
       this.nagaPart4.field_78797_d += 4.0F;
@@ -137,7 +137,7 @@ public class ModelNagaLegs extends ModelRenderer {
     }
     if (this.isRiding) {
       this.nagaPart1.field_78797_d--;
-      this.nagaPart1.field_78795_f = -0.19634955F;
+      this.nagaPart1.rotateAngleX = -0.19634955F;
       this.nagaPart1.field_78798_e = -1.0F;
       this.nagaPart2.field_78797_d -= 4.0F;
       this.nagaPart2.field_78798_e = -1.0F;
@@ -169,21 +169,21 @@ public class ModelNagaLegs extends ModelRenderer {
     }
   }
 
-  public void func_78785_a(float par7) {
+  public void render(float par7) {
     if (this.field_78807_k || !this.field_78806_j)
       return;
-    this.nagaPart1.func_78785_a(par7);
-    this.nagaPart3.func_78785_a(par7);
+    this.nagaPart1.render(par7);
+    this.nagaPart3.render(par7);
     if (!this.isRiding)
-      this.nagaPart2.func_78785_a(par7);
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179152_a(0.74F, 0.7F, 0.85F);
-    GlStateManager.func_179109_b(this.nagaPart3.field_78796_g, 0.66F, 0.06F);
-    this.nagaPart4.func_78785_a(par7);
-    GlStateManager.func_179121_F();
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179109_b(this.nagaPart3.field_78796_g + this.nagaPart4.field_78796_g, 0.0F, 0.0F);
-    this.nagaPart5.func_78785_a(par7);
-    GlStateManager.func_179121_F();
+      this.nagaPart2.render(par7);
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(0.74F, 0.7F, 0.85F);
+    GlStateManager.translate(this.nagaPart3.rotateAngleY, 0.66F, 0.06F);
+    this.nagaPart4.render(par7);
+    GlStateManager.popMatrix();
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(this.nagaPart3.rotateAngleY + this.nagaPart4.rotateAngleY, 0.0F, 0.0F);
+    this.nagaPart5.render(par7);
+    GlStateManager.popMatrix();
   }
 }

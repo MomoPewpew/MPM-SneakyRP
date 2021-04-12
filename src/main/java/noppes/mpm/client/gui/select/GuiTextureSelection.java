@@ -41,7 +41,7 @@ import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.util.MPMEntityUtil;
 
 public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrollListener {
-  private String up = "..<" + I18n.func_74838_a("gui.up") + ">..";
+  private String up = "..<" + I18n.translateToLocal("gui.up") + ">..";
 
   private GuiCustomScroll scrollCategories;
 
@@ -67,7 +67,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     setBackground("menubg.png");
     this.xSize = 366;
     this.ySize = 226;
-    SimpleReloadableResourceManager simplemanager = (SimpleReloadableResourceManager)Minecraft.func_71410_x().func_110442_L();
+    SimpleReloadableResourceManager simplemanager = (SimpleReloadableResourceManager)Minecraft.getMinecraft().func_110442_L();
     Map<String, FallbackResourceManager> map = (Map<String, FallbackResourceManager>)ObfuscationReflectionHelper.getPrivateValue(SimpleReloadableResourceManager.class, simplemanager, 2);
     HashSet<String> set = new HashSet<>();
     for (String name : map.keySet()) {
@@ -96,7 +96,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       if (mod.getSource().exists())
         progressFile(mod.getSource());
     }
-    ResourcePackRepository repos = Minecraft.func_71410_x().func_110438_M();
+    ResourcePackRepository repos = Minecraft.getMinecraft().func_110438_M();
     repos.func_110611_a();
     List<ResourcePackRepository.Entry> list = repos.func_110613_c();
     if (repos.func_148530_e() != null) {
@@ -204,7 +204,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
 
   protected void func_146284_a(GuiButton guibutton) {
     super.func_146284_a(guibutton);
-    if (guibutton.field_146127_k == 2) {
+    if (guibutton.id == 2) {
       this.playerdata.url = this.selectedResource.toString();
       this.playerdata.resourceInit = false;
       this.playerdata.resourceLoaded = false;
@@ -217,12 +217,12 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     EntityPlayerSP entityPlayerSP;
     func_146276_q_();
     super.func_73863_a(i, j, f);
-    func_73732_a(this.field_146289_q, this.title, this.field_146294_l / 2, 8, 16777215);
-    EntityLivingBase entity = this.playerdata.getEntity((EntityPlayer)this.field_146297_k.field_71439_g);
+    func_73732_a(this.field_146289_q, this.title, this.width / 2, 8, 16777215);
+    EntityLivingBase entity = this.playerdata.getEntity((EntityPlayer)this.field_146297_k.thePlayer);
     if (entity == null) {
       entityPlayerSP = this.player;
     } else {
-      MPMEntityUtil.Copy((EntityLivingBase)this.field_146297_k.field_71439_g, (EntityLivingBase)this.player);
+      MPMEntityUtil.Copy((EntityLivingBase)this.field_146297_k.thePlayer, (EntityLivingBase)this.player);
     }
     drawNpc((EntityLivingBase)entityPlayerSP, this.guiLeft + 276, this.guiTop + 140, 1.0F, 0);
   }

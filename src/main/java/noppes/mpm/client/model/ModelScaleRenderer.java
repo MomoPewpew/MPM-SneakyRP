@@ -31,40 +31,40 @@ public class ModelScaleRenderer extends ModelRenderer {
   }
 
   public void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 
-  public void func_78785_a(float par1) {
+  public void render(float par1) {
     if (!this.field_78806_j || this.field_78807_k)
       return;
     if (!this.isCompiled)
       compile(par1);
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     func_78794_c(par1);
     GlStateManager.func_179148_o(this.field_78811_r);
     if (this.field_78805_m != null)
       for (int i = 0; i < this.field_78805_m.size(); i++)
-        ((ModelRenderer)this.field_78805_m.get(i)).func_78785_a(par1);
-    GlStateManager.func_179121_F();
+        ((ModelRenderer)this.field_78805_m.get(i)).render(par1);
+    GlStateManager.popMatrix();
   }
 
   public void func_78794_c(float par1) {
     if (this.config != null)
-      GlStateManager.func_179109_b(this.config.transX, this.config.transY, this.config.transZ);
+      GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
     super.func_78794_c(par1);
     if (this.config != null)
-      GlStateManager.func_179152_a(this.config.scaleX, this.config.scaleY, this.config.scaleZ);
+      GlStateManager.translate(this.config.scaleX, this.config.scaleY, this.config.scaleZ);
   }
 
   public void postRenderNoScale(float par1) {
-    GlStateManager.func_179109_b(this.config.transX, this.config.transY, this.config.transZ);
+    GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
     super.func_78794_c(par1);
   }
 
   public void parentRender(float par1) {
-    super.func_78785_a(par1);
+    super.render(par1);
   }
 
   public void compile(float par1) {

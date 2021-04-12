@@ -93,7 +93,7 @@ public class ImageDownloadAlt extends SimpleTexture {
           ImageDownloadAlt.logger.debug("Downloading http texture from {} to {}", new Object[] { ImageDownloadAlt.access$000(this.this$0), ImageDownloadAlt.access$100(this.this$0) });
           try {
             BufferedImage bufferedimage;
-            connection = (HttpURLConnection)(new URL(ImageDownloadAlt.this.imageUrl)).openConnection(Minecraft.func_71410_x().func_110437_J());
+            connection = (HttpURLConnection)(new URL(ImageDownloadAlt.this.imageUrl)).openConnection(Minecraft.getMinecraft().func_110437_J());
             connection.setDoInput(true);
             connection.setDoOutput(false);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");

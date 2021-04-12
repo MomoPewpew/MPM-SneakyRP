@@ -74,8 +74,8 @@ public class ModelDigitigradeLegs extends ModelRenderer {
   }
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-    this.base.field_178721_j.field_78795_f -= 0.3F;
-    this.base.field_178722_k.field_78795_f -= 0.3F;
+    this.base.field_178721_j.rotateAngleX -= 0.3F;
+    this.base.field_178722_k.rotateAngleX -= 0.3F;
     this.rightleg.field_78797_d = this.base.field_178721_j.field_78797_d;
     this.leftleg.field_78797_d = this.base.field_178722_k.field_78797_d;
     this.rightleg.field_78798_e = this.base.field_178721_j.field_78798_e;
@@ -87,8 +87,8 @@ public class ModelDigitigradeLegs extends ModelRenderer {
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 }

@@ -81,29 +81,29 @@ public class ModelSpiderLegs extends ModelRenderer {
   }
 
   public void setRotationAngles(ModelData data, float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-    this.field_78795_f = 0.0F;
+    this.rotateAngleX = 0.0F;
     this.spiderBody.field_78797_d = 15.0F;
     this.spiderBody.field_78798_e = 11.0F;
-    this.spiderNeck.field_78795_f = 0.0F;
+    this.spiderNeck.rotateAngleX = 0.0F;
     float var8 = 0.7853982F;
-    this.spiderLeg1.field_78808_h = -var8;
-    this.spiderLeg2.field_78808_h = var8;
-    this.spiderLeg3.field_78808_h = -var8 * 0.74F;
-    this.spiderLeg4.field_78808_h = var8 * 0.74F;
-    this.spiderLeg5.field_78808_h = -var8 * 0.74F;
-    this.spiderLeg6.field_78808_h = var8 * 0.74F;
-    this.spiderLeg7.field_78808_h = -var8;
-    this.spiderLeg8.field_78808_h = var8;
+    this.spiderLeg1.rotateAngleZ = -var8;
+    this.spiderLeg2.rotateAngleZ = var8;
+    this.spiderLeg3.rotateAngleZ = -var8 * 0.74F;
+    this.spiderLeg4.rotateAngleZ = var8 * 0.74F;
+    this.spiderLeg5.rotateAngleZ = -var8 * 0.74F;
+    this.spiderLeg6.rotateAngleZ = var8 * 0.74F;
+    this.spiderLeg7.rotateAngleZ = -var8;
+    this.spiderLeg8.rotateAngleZ = var8;
     float var9 = -0.0F;
     float var10 = 0.3926991F;
-    this.spiderLeg1.field_78796_g = var10 * 2.0F + var9;
-    this.spiderLeg2.field_78796_g = -var10 * 2.0F - var9;
-    this.spiderLeg3.field_78796_g = var10 * 1.0F + var9;
-    this.spiderLeg4.field_78796_g = -var10 * 1.0F - var9;
-    this.spiderLeg5.field_78796_g = -var10 * 1.0F + var9;
-    this.spiderLeg6.field_78796_g = var10 * 1.0F - var9;
-    this.spiderLeg7.field_78796_g = -var10 * 2.0F + var9;
-    this.spiderLeg8.field_78796_g = var10 * 2.0F - var9;
+    this.spiderLeg1.rotateAngleY = var10 * 2.0F + var9;
+    this.spiderLeg2.rotateAngleY = -var10 * 2.0F - var9;
+    this.spiderLeg3.rotateAngleY = var10 * 1.0F + var9;
+    this.spiderLeg4.rotateAngleY = -var10 * 1.0F - var9;
+    this.spiderLeg5.rotateAngleY = -var10 * 1.0F + var9;
+    this.spiderLeg6.rotateAngleY = var10 * 1.0F - var9;
+    this.spiderLeg7.rotateAngleY = -var10 * 2.0F + var9;
+    this.spiderLeg8.rotateAngleY = var10 * 2.0F - var9;
     float var11 = -(MathHelper.func_76134_b(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
     float var12 = -(MathHelper.func_76134_b(par1 * 0.6662F * 2.0F + 3.1415927F) * 0.4F) * par2;
     float var13 = -(MathHelper.func_76134_b(par1 * 0.6662F * 2.0F + 1.5707964F) * 0.4F) * par2;
@@ -112,39 +112,39 @@ public class ModelSpiderLegs extends ModelRenderer {
     float var16 = Math.abs(MathHelper.func_76126_a(par1 * 0.6662F + 3.1415927F) * 0.4F) * par2;
     float var17 = Math.abs(MathHelper.func_76126_a(par1 * 0.6662F + 1.5707964F) * 0.4F) * par2;
     float var18 = Math.abs(MathHelper.func_76126_a(par1 * 0.6662F + 4.712389F) * 0.4F) * par2;
-    this.spiderLeg1.field_78796_g += var11;
-    this.spiderLeg2.field_78796_g += -var11;
-    this.spiderLeg3.field_78796_g += var12;
-    this.spiderLeg4.field_78796_g += -var12;
-    this.spiderLeg5.field_78796_g += var13;
-    this.spiderLeg6.field_78796_g += -var13;
-    this.spiderLeg7.field_78796_g += var14;
-    this.spiderLeg8.field_78796_g += -var14;
-    this.spiderLeg1.field_78808_h += var15;
-    this.spiderLeg2.field_78808_h += -var15;
-    this.spiderLeg3.field_78808_h += var16;
-    this.spiderLeg4.field_78808_h += -var16;
-    this.spiderLeg5.field_78808_h += var17;
-    this.spiderLeg6.field_78808_h += -var17;
-    this.spiderLeg7.field_78808_h += var18;
-    this.spiderLeg8.field_78808_h += -var18;
+    this.spiderLeg1.rotateAngleY += var11;
+    this.spiderLeg2.rotateAngleY += -var11;
+    this.spiderLeg3.rotateAngleY += var12;
+    this.spiderLeg4.rotateAngleY += -var12;
+    this.spiderLeg5.rotateAngleY += var13;
+    this.spiderLeg6.rotateAngleY += -var13;
+    this.spiderLeg7.rotateAngleY += var14;
+    this.spiderLeg8.rotateAngleY += -var14;
+    this.spiderLeg1.rotateAngleZ += var15;
+    this.spiderLeg2.rotateAngleZ += -var15;
+    this.spiderLeg3.rotateAngleZ += var16;
+    this.spiderLeg4.rotateAngleZ += -var16;
+    this.spiderLeg5.rotateAngleZ += var17;
+    this.spiderLeg6.rotateAngleZ += -var17;
+    this.spiderLeg7.rotateAngleZ += var18;
+    this.spiderLeg8.rotateAngleZ += -var18;
     if (this.base.field_78117_n) {
       this.field_78798_e = 5.0F;
       this.field_78797_d = -1.0F;
       this.spiderBody.field_78797_d = 16.0F;
       this.spiderBody.field_78798_e = 10.0F;
-      this.spiderNeck.field_78795_f = -0.3926991F;
+      this.spiderNeck.rotateAngleX = -0.3926991F;
     }
     if (((EntityPlayer)entity).func_70608_bn() || data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
       this.field_78797_d = 12.0F * (data.getPartConfig(EnumParts.LEG_LEFT)).scaleY;
       this.field_78798_e = 15.0F * (data.getPartConfig(EnumParts.LEG_LEFT)).scaleY;
-      this.field_78795_f = -1.5707964F;
+      this.rotateAngleX = -1.5707964F;
     }
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.field_78795_f = x;
-    model.field_78796_g = y;
-    model.field_78808_h = z;
+    model.rotateAngleX = x;
+    model.rotateAngleY = y;
+    model.rotateAngleZ = z;
   }
 }

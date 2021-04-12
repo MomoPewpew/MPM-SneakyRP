@@ -20,7 +20,7 @@ public class GuiNpcLabel {
 
   public GuiNpcLabel(int id, String label, int x, int y, int color) {
     this.id = id;
-    this.label = I18n.func_74838_a(label);
+    this.label = I18n.translateToLocal(label);
     this.x = x;
     this.y = y;
     this.color = color;
@@ -32,7 +32,7 @@ public class GuiNpcLabel {
   }
 
   public void center(int width) {
-    int size = (Minecraft.func_71410_x()).field_71466_p.func_78256_a(this.label);
+    int size = (Minecraft.getMinecraft()).fontRendererObj.getStringWidth(this.label);
     this.x += (width - size) / 2;
   }
 }

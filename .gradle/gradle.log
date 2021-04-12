@@ -1,16 +1,7 @@
 This mapping 'snapshot_20160518' was designed for MC 1.9.4! Use at your own peril.This mapping 'snapshot_20160518' was designed for MC 1.9.4! Use at your own peril.
 
-#################################################
-         ForgeGradle 2.3-SNAPSHOT-6084129e        
-  https://github.com/MinecraftForge/ForgeGradle  
-#################################################
-                 Powered by MCP                  
-             http://modcoderpack.com             
-     by: Searge, ProfMobius, R4wk, ZeuX          
-     Fesh0r, IngisKahn, bspkrs, LexManos         
-#################################################
 Found AccessTransformer: mpm_at.cfg
 
 BUILD SUCCESSFUL
 
-Total time: 13.068 secs
+Total time: 1.065 secs

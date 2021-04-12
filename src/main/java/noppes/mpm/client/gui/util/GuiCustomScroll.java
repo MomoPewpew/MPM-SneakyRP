@@ -58,8 +58,8 @@ public class GuiCustomScroll extends GuiScreen {
   private long lastClickedTime = 0L;
 
   public GuiCustomScroll(GuiScreen parent, int id) {
-    this.field_146294_l = 176;
-    this.field_146295_m = 166;
+    this.width = 176;
+    this.height = 166;
     this.xSize = 176;
     this.ySize = 159;
     this.selected = -1;
@@ -95,21 +95,21 @@ public class GuiCustomScroll extends GuiScreen {
   public void drawScreen(int i, int j, float f, int mouseScrolled) {
     if (!this.visible)
       return;
-    func_73733_a(this.guiLeft, this.guiTop, this.xSize + this.guiLeft, this.ySize + this.guiTop, -1072689136, -804253680);
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
-    this.field_146297_k.field_71446_o.func_110577_a(resource);
+    drawGradientRect(this.guiLeft, this.guiTop, this.xSize + this.guiLeft, this.ySize + this.guiTop, -1072689136, -804253680);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    this.field_146297_k.renderEngine.bindTexture(resource);
     if (this.scrollHeight < this.ySize - 8)
       drawScrollBar();
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179114_b(180.0F, 1.0F, 0.0F, 0.0F);
-    GlStateManager.func_179121_F();
-    GlStateManager.func_179094_E();
-    GlStateManager.func_179109_b(this.guiLeft, this.guiTop, 0.0F);
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.pushMatrix();
+    GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+    GlStateManager.popMatrix();
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(this.guiLeft, this.guiTop, 0.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     if (this.selectable)
       this.hover = getMouseOver(i, j);
     drawItems();
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
     if (this.scrollHeight < this.ySize - 8) {
       i -= this.guiLeft;
       j -= this.guiTop;
@@ -148,14 +148,14 @@ public class GuiCustomScroll extends GuiScreen {
       int k = 14 * i + 4 - this.scrollY;
       if (k >= 4 && k + 12 < this.ySize) {
         int xOffset = (this.scrollHeight < this.ySize - 8) ? 0 : 10;
-        String displayString = I18n.func_74838_a(this.list.get(i));
+        String displayString = I18n.translateToLocal(this.list.get(i));
         String text = "";
         float maxWidth = (this.xSize + xOffset - 8) * 0.8F;
-        if (this.field_146289_q.func_78256_a(displayString) > maxWidth) {
+        if (this.field_146289_q.getStringWidth(displayString) > maxWidth) {
           for (int h = 0; h < displayString.length(); h++) {
             char c = displayString.charAt(h);
             text = text + c;
-            if (this.field_146289_q.func_78256_a(text) > maxWidth)
+            if (this.field_146289_q.getStringWidth(text) > maxWidth)
               break;
           }
           if (displayString.length() > text.length())
@@ -226,10 +226,10 @@ public class GuiCustomScroll extends GuiScreen {
     int i = this.guiLeft + this.xSize - 9;
     int j = this.guiTop + (int)(this.scrollY / this.listHeight * (this.ySize - 8)) + 4;
     int k = j;
-    func_73729_b(i, k, this.xSize, 9, 5, 1);
+    drawTexturedModalRect(i, k, this.xSize, 9, 5, 1);
     for (; ++k < j + this.scrollHeight - 1; k++)
-      func_73729_b(i, k, this.xSize, 10, 5, 1);
-    func_73729_b(i, k, this.xSize, 11, 5, 1);
+      drawTexturedModalRect(i, k, this.xSize, 10, 5, 1);
+    drawTexturedModalRect(i, k, this.xSize, 11, 5, 1);
   }
 
   public boolean hasSelected() {

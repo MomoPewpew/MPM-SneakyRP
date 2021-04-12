@@ -119,7 +119,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   public static void fixModels(boolean init) {
-    Map<String, RenderPlayer> map = Minecraft.func_71410_x().func_175598_ae().getSkinMap();
+    Map<String, RenderPlayer> map = Minecraft.getMinecraft().getRenderManager().getSkinMap();
     for (String type : map.keySet()) {
       RenderPlayer render = map.get(type);
       fixModels(render, type.equals("slim"), !init);
@@ -156,7 +156,7 @@ public class ClientProxy extends CommonProxy {
         }
       }
       if (layer instanceof LayerCustomHead)
-        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.func_177087_b()).field_78116_c, 0);
+        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.func_177087_b()).bipedHead, 0);
       if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
         ita.remove();
     }
@@ -182,16 +182,16 @@ public class ClientProxy extends CommonProxy {
     SimpleTexture simpleTexture;
     if (location == null)
       return;
-    TextureManager manager = Minecraft.func_71410_x().func_110434_K();
+    TextureManager manager = Minecraft.getMinecraft().func_110434_K();
     ITextureObject textureObject = manager.func_110581_b(location);
     if (textureObject == null) {
       simpleTexture = new SimpleTexture(location);
       manager.func_110579_a(location, (ITextureObject)simpleTexture);
     }
     GlStateManager.func_187401_a(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    GlStateManager.func_179094_E();
+    GlStateManager.pushMatrix();
     GlStateManager.func_179147_l();
     GlStateManager.func_179144_i(simpleTexture.func_110552_b());
-    GlStateManager.func_179121_F();
+    GlStateManager.popMatrix();
   }
 }

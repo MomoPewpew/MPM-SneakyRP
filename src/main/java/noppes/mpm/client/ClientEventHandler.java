@@ -52,7 +52,7 @@ public class ClientEventHandler {
           final double range = 6400.0D;
 
           public boolean apply(EntityPlayer entity) {
-            return (entity != (Minecraft.func_71410_x()).field_71439_g && entity.func_70068_e((Entity)(Minecraft.func_71410_x()).field_71439_g) <= 6400.0D);
+            return (entity != (Minecraft.getMinecraft()).thePlayer && entity.func_70068_e((Entity)(Minecraft.getMinecraft()).thePlayer) <= 6400.0D);
           }
         } });
 
@@ -60,14 +60,14 @@ public class ClientEventHandler {
 
   @SubscribeEvent
   public void onKey(InputEvent.KeyInputEvent event) {
-    Minecraft mc = Minecraft.func_71410_x();
-    if (mc == null || mc.field_71439_g == null)
+    Minecraft mc = Minecraft.getMinecraft();
+    if (mc == null || mc.thePlayer == null)
       return;
     if (ClientProxy.Screen.func_151468_f()) {
-      ModelData data = ModelData.get((EntityPlayer)mc.field_71439_g);
+      ModelData data = ModelData.get((EntityPlayer)mc.thePlayer);
       data.setAnimation(EnumAnimation.NONE);
       if (mc.field_71462_r == null)
-        mc.func_147108_a((GuiScreen)new GuiMPM());
+        mc.displayGuiScreen((GuiScreen)new GuiMPM());
     }
     if (mc.field_71462_r == null)
       this.slashPressed = (Keyboard.getEventCharacter() == '/');
@@ -119,7 +119,7 @@ public class ClientEventHandler {
 
   @SubscribeEvent
   public void onMouse(MouseEvent event) {
-    Minecraft mc = Minecraft.func_71410_x();
+    Minecraft mc = Minecraft.getMinecraft();
     if (event.getDwheel() == 0 || !mc.field_71415_G || mc.field_71474_y.field_74320_O != 1 || !camera.enabled || !this.altIsPressed)
       return;
     camera.cameraDistance -= event.getDwheel() / 100.0F;
@@ -137,7 +137,7 @@ public class ClientEventHandler {
     if (MorePlayerModels.HasServerSide) {
       Client.sendData(EnumPackets.ANIMATION, new Object[] { Integer.valueOf(type) });
     } else {
-      EntityPlayerSP entityPlayerSP = (Minecraft.func_71410_x()).field_71439_g;
+      EntityPlayerSP entityPlayerSP = (Minecraft.getMinecraft()).thePlayer;
       EnumAnimation animation = EnumAnimation.values()[type];
       if (animation == EnumAnimation.SLEEPING_SOUTH) {
         float rotation = ((EntityPlayer)entityPlayerSP).field_70177_z;
@@ -171,13 +171,13 @@ public class ClientEventHandler {
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.side == Side.SERVER || event.phase == TickEvent.Phase.START)
       return;
-    Minecraft mc = Minecraft.func_71410_x();
+    Minecraft mc = Minecraft.getMinecraft();
     if (mc.field_71441_e == null)
       return;
     if (this.prevWorld != mc.field_71441_e) {
       MorePlayerModels.HasServerSide = false;
       GuiCreationScreenInterface.Message = "message.noserver";
-      ModelData data = ModelData.get((EntityPlayer)mc.field_71439_g);
+      ModelData data = ModelData.get((EntityPlayer)mc.thePlayer);
       Client.sendData(EnumPackets.PING, new Object[] { Integer.valueOf(MorePlayerModels.Version), data.writeToNBT() });
       this.prevWorld = (World)mc.field_71441_e;
       ClientProxy.fixModels(false);
@@ -191,7 +191,7 @@ public class ClientEventHandler {
 
   @SubscribeEvent
   public void onCamera(EntityViewRenderEvent.CameraSetup event) {
-    Minecraft mc = Minecraft.func_71410_x();
+    Minecraft mc = Minecraft.getMinecraft();
     Entity entity = event.getEntity();
     if ((entity instanceof EntityLivingBase && ((EntityLivingBase)entity).func_70608_bn()) || mc.field_71474_y.field_74320_O != 1)
       return;
@@ -220,11 +220,11 @@ public class ClientEventHandler {
           d3 = d7;
       }
     }
-    GlStateManager.func_179114_b(entity.field_70125_A - f2, 1.0F, 0.0F, 0.0F);
-    GlStateManager.func_179114_b(entity.field_70177_z - f1, 0.0F, 1.0F, 0.0F);
-    GlStateManager.func_179109_b(0.0F, 0.0F, (float)-d3);
-    GlStateManager.func_179114_b(f1 - entity.field_70177_z, 0.0F, 1.0F, 0.0F);
-    GlStateManager.func_179114_b(f2 - entity.field_70125_A, 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotate(entity.field_70125_A - f2, 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotate(entity.field_70177_z - f1, 0.0F, 1.0F, 0.0F);
+    GlStateManager.translate(0.0F, 0.0F, (float)-d3);
+    GlStateManager.rotate(f1 - entity.field_70177_z, 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotate(f2 - entity.field_70125_A, 1.0F, 0.0F, 0.0F);
   }
 
   @SubscribeEvent
@@ -234,7 +234,7 @@ public class ClientEventHandler {
     EntityPlayer player = event.player;
     ModelData data = ModelData.get(player);
     EntityLivingBase entity = data.getEntity(player);
-    Minecraft mc = Minecraft.func_71410_x();
+    Minecraft mc = Minecraft.getMinecraft();
     if (entity != null) {
       entity.func_70071_h_();
       MPMEntityUtil.Copy((EntityLivingBase)player, entity);
@@ -284,7 +284,7 @@ public class ClientEventHandler {
   private void spawnParticles(EntityPlayer player, ModelData data, ModelPartData particles) {
     if (!MorePlayerModels.EnableParticles)
       return;
-    Minecraft minecraft = Minecraft.func_71410_x();
+    Minecraft minecraft = Minecraft.getMinecraft();
     double height = player.func_70033_W() + data.getBodyY();
     Random rand = player.func_70681_au();
     for (int i = 0; i < 2; i++) {

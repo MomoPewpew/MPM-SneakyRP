@@ -5,13 +5,15 @@ import net.minecraft.item.ItemStack;
 
 public class InventoryTabVanilla extends AbstractTab {
   public InventoryTabVanilla() {
-    super(0, 0, 0, new ItemStack(Blocks.field_150462_ai));
+    super(0, 0, 0, new ItemStack(Blocks.CRAFTING_TABLE));
   }
 
+  @Override
   public void onTabClicked() {
     TabRegistry.openInventoryGui();
   }
 
+  @Override
   public boolean shouldAddToList() {
     return true;
   }

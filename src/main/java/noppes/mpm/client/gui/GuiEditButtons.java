@@ -16,6 +16,7 @@ public class GuiEditButtons extends GuiNPCInterface {
     this.closeOnEsc = true;
   }
 
+  @Override
   public void initGui() {
     super.initGui();
     int y = this.guiTop + 20;
@@ -36,9 +37,9 @@ public class GuiEditButtons extends GuiNPCInterface {
   }
 
   private void addButton(int id, int y, String title, int value) {
-    for (KeyBinding key : (Minecraft.getMinecraft()).gameSettings.field_74324_K) {
-      if (key.func_151464_g().equals(title)) {
-        title = title + " (" + Keyboard.getKeyName(key.func_151463_i()) + ")";
+    for (KeyBinding key : (Minecraft.getMinecraft()).gameSettings.keyBindings) {
+      if (key.getKeyDescription().equals(title)) {
+        title = title + " (" + Keyboard.getKeyName(key.getKeyCode()) + ")";
         break;
       }
     }
@@ -55,6 +56,7 @@ public class GuiEditButtons extends GuiNPCInterface {
     return i - 3;
   }
 
+  @Override
   protected void actionPerformed(GuiButton btn) {
     super.actionPerformed(btn);
     GuiNpcButton button = (GuiNpcButton)btn;
@@ -89,5 +91,6 @@ public class GuiEditButtons extends GuiNPCInterface {
     return value + 3;
   }
 
+  @Override
   public void save() {}
 }

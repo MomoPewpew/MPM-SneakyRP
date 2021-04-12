@@ -21,18 +21,20 @@ public class GuiPresetSave extends GuiNPCInterface {
     this.drawDefaultBackground = true;
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  @Override
+  public void initGui() {
+    super.initGui();
     addTextField(new GuiNpcTextField(0, (GuiScreen)this, this.guiLeft, this.guiTop + 70, 200, 20, ""));
     addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop + 100, 98, 20, "Save"));
     addButton(new GuiNpcButton(1, this.guiLeft + 100, this.guiTop + 100, 98, 20, "Cancel"));
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
     GuiNpcButton button = (GuiNpcButton)btn;
-    if (button.field_146127_k == 0) {
-      String name = getTextField(0).func_146179_b().trim();
+    if (button.id == 0) {
+      String name = getTextField(0).getText().trim();
       if (name.isEmpty())
         return;
       Preset preset = new Preset();
@@ -43,5 +45,6 @@ public class GuiPresetSave extends GuiNPCInterface {
     close();
   }
 
+  @Override
   public void save() {}
 }

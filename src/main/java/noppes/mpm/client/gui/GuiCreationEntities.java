@@ -88,9 +88,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
       close();
   }
 
-  public void func_73863_a(int x, int y, float f) {
+  public void drawScreen(int x, int y, float f) {
     EntityPlayer entityPlayer;
-    super.func_73863_a(x, y, f);
+    super.drawScreen(x, y, f);
     this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     EntityLivingBase entity = this.entity;
     if (entity == null) {
@@ -101,8 +101,8 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
     drawNpc((EntityLivingBase)entityPlayer, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
   }
 
-  public void func_146281_b() {
-    super.func_146281_b();
+  public void onGuiClosed() {
+    super.onGuiClosed();
     Keyboard.enableRepeatEvents(false);
   }
 

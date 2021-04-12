@@ -55,16 +55,16 @@ public class GuiNpcTextField extends GuiTextField {
   }
 
   public boolean isEmpty() {
-    return (func_146179_b().trim().length() == 0);
+    return (getText().trim().length() == 0);
   }
 
   public int getInteger() {
-    return Integer.parseInt(func_146179_b());
+    return Integer.parseInt(getText());
   }
 
   public boolean isInteger() {
     try {
-      Integer.parseInt(func_146179_b());
+      Integer.parseInt(getText());
       return true;
     } catch (NumberFormatException e) {
       return false;

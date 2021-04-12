@@ -10,8 +10,10 @@ import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
 public class GuiCreationOptions extends GuiCreationScreenInterface implements ITextfieldListener {
-  public void func_73866_w_() {
-    super.func_73866_w_();
+
+	@Override
+	public void initGui() {
+    super.initGui();
     int y = this.guiTop + 50;
     addButton(new GuiNpcButton(9, this.guiLeft + 58, y, 80, 20, new String[] { "gui.default", "config.humanfemale", "config.humanmale", "config.goblinmale" }, this.playerdata.soundType));
     addLabel(new GuiNpcLabel(5, "config.sounds", this.guiLeft, y + 5, 16777215));
@@ -21,19 +23,21 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
     addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
     if (!(btn instanceof GuiNpcButton))
       return;
     GuiNpcButton button = (GuiNpcButton)btn;
-    if (button.field_146127_k == 9)
+    if (button.id == 9)
       this.playerdata.soundType = (short)button.getValue();
-    if (button.field_146127_k == 10)
+    if (button.id == 10)
       setSubGui((GuiNPCInterface)new GuiTextureSelection(this.playerdata));
   }
 
+  @Override
   public void unFocused(GuiNpcTextField guiNpcTextField) {
-    this.playerdata.url = guiNpcTextField.func_146179_b();
+    this.playerdata.url = guiNpcTextField.getText();
     this.playerdata.resourceInit = false;
     this.playerdata.resourceLoaded = false;
   }

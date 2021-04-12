@@ -68,7 +68,7 @@ public class GuiNPCStringSlot extends GuiSlot {
   }
 
   protected void func_148123_a() {
-    this.parent.func_146276_q_();
+    this.parent.drawDefaultBackground();
   }
 
   public void clear() {

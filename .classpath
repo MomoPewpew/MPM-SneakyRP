@@ -31,5 +31,10 @@
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/moreplayermodels/.gradle/minecraft/forge-1.12.2-14.23.5.2847-PROJECT(moreplayermodels)-binpatched.jar"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/moreplayermodels/.gradle/minecraft/forgeBin-1.12.2-14.23.5.2836-PROJECT(Quark).jar"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/moreplayermodels/.gradle/minecraft/forgeBin-1.12.2-14.23.5.2847-PROJECT(moreplayermodels).jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marijn/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.1/f58c5aabcef0e41718a564be9f8e412fff8db847/lwjgl-2.9.1.jar" sourcepath="C:/Users/Marijn/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.1/ccedb5b6f96913c6f78bc10249e747ded90baa51/lwjgl-2.9.1-sources.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -26,8 +26,9 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
     this.xOffset = 140;
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  @Override
+  public void initGui() {
+    super.initGui();
     if (this.scroll == null)
       this.scroll = new GuiCustomScroll((GuiScreen)this, 0);
     ArrayList<String> list = new ArrayList();
@@ -45,11 +46,11 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
           continue;
       }
       this.data.add(part);
-      list.add(I18n.func_74838_a("part." + part.name));
+      list.add(I18n.translateToLocal("part." + part.name));
       continue;
     }
     this.scroll.setUnsortedList(list);
-    this.scroll.setSelected(I18n.func_74838_a("part." + selected.name));
+    this.scroll.setSelected(I18n.translateToLocal("part." + selected.name));
     this.scroll.guiLeft = this.guiLeft;
     this.scroll.guiTop = this.guiTop + 46;
     this.scroll.setSize(100, this.ySize - 74);
@@ -71,26 +72,28 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
     }
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
-    if (btn.field_146127_k == 13) {
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
+    if (btn.id == 13) {
       boolean bo = (((GuiNpcButton)btn).getValue() == 0);
       (this.playerdata.getPartConfig(selected)).notShared = bo;
-      func_73866_w_();
+      initGui();
     }
   }
 
+  @Override
   public void mouseDragged(GuiNpcSlider slider) {
     super.mouseDragged(slider);
-    if (slider.field_146127_k >= 10 && slider.field_146127_k <= 12) {
+    if (slider.id >= 10 && slider.id <= 12) {
       int percent = (int)(50.0F + slider.sliderValue * 100.0F);
       slider.setString(percent + "%");
       ModelPartConfig config = this.playerdata.getPartConfig(selected);
-      if (slider.field_146127_k == 10)
+      if (slider.id == 10)
         config.scaleX = slider.sliderValue + 0.5F;
-      if (slider.field_146127_k == 11)
+      if (slider.id == 11)
         config.scaleY = slider.sliderValue + 0.5F;
-      if (slider.field_146127_k == 12)
+      if (slider.id == 12)
         config.scaleZ = slider.sliderValue + 0.5F;
       updateTransate();
     }
@@ -130,12 +133,14 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
     }
   }
 
+  @Override
   public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
     if (scroll.selected >= 0) {
       selected = this.data.get(scroll.selected);
-      func_73866_w_();
+      initGui();
     }
   }
 
+  @Override
   public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {}
 }

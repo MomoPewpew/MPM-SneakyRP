@@ -38,15 +38,16 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
   private HashMap<String, Preset> presets = Preset.GetDefault();
 
   public GuiCreationLoad() {
-    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.func_71410_x()).field_71439_g);
+    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.getMinecraft()).thePlayer);
     this.original = this.playerdata.writeToNBT();
     this.drawDefaultBackground = false;
     this.closeOnEsc = true;
     this.presets.putAll(PresetController.instance.presets);
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  @Override
+  public void initGui() {
+    super.initGui();
     if (this.scroll == null) {
       this.scroll = new GuiCustomScroll((GuiScreen)this, 0);
       for (Preset preset : this.presets.values())
@@ -64,47 +65,52 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
     addButton(new GuiNpcButton(11, this.guiLeft + 92, this.guiTop + this.ySize - 46, 86, 20, "gui.cancel"));
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
-    if (btn.field_146127_k == 10) {
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
+    if (btn.id == 10) {
       this.original = this.playerdata.writeToNBT();
       Preset p = new Preset();
       p.menu = true;
-      String name = getTextField(0).func_146179_b();
+      String name = getTextField(0).getText();
       if (name.trim().isEmpty())
-        name = I18n.func_74838_a("gui.new");
+        name = I18n.translateToLocal("gui.new");
       p.name = name;
       p.data = this.playerdata.copy();
       PresetController.instance.selected = name;
       PresetController.instance.addPreset(p);
       close();
     }
-    if (btn.field_146127_k == 11)
+    if (btn.id == 11)
       close();
   }
 
-  public void func_73863_a(int i, int j, float f) {
-    func_146276_q_();
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
-    this.field_146297_k.field_71446_o.func_110577_a(resource);
-    func_73729_b(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
-    super.func_73863_a(i, j, f);
-    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
-    GuiInventory.func_147046_a(this.guiLeft + 144, this.guiTop + 140, 40, (this.guiLeft + 144 - i), (this.guiTop + 80 - j), (EntityLivingBase)this.player);
+  @Override
+  public void drawScreen(int i, int j, float f) {
+    drawDefaultBackground();
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    this.mc.renderEngine.bindTexture(resource);
+    drawTexturedModalRect(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
+    super.drawScreen(i, j, f);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiInventory.drawEntityOnScreen(this.guiLeft + 144, this.guiTop + 140, 40, (this.guiLeft + 144 - i), (this.guiTop + 80 - j), (EntityLivingBase)this.player);
   }
 
+  @Override
   public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
     this.selected = scroll.getSelected();
     Preset preset = this.presets.get(this.selected.toLowerCase());
     if (preset != null) {
       this.playerdata.readFromNBT(preset.data.writeToNBT());
-      func_73866_w_();
+      initGui();
     }
   }
 
+  @Override
   public void save() {
     this.playerdata.readFromNBT(this.original);
   }
 
+  @Override
   public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {}
 }

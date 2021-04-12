@@ -213,10 +213,10 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     this.parent.initGui();
   }
 
-  public void func_73863_a(int i, int j, float f) {
+  public void drawScreen(int i, int j, float f) {
     EntityPlayerSP entityPlayerSP;
-    func_146276_q_();
-    super.func_73863_a(i, j, f);
+    drawDefaultBackground();
+    super.drawScreen(i, j, f);
     func_73732_a(this.field_146289_q, this.title, this.width / 2, 8, 16777215);
     EntityLivingBase entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     if (entity == null) {

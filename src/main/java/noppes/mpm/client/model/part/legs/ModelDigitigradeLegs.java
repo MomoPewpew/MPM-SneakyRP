@@ -28,61 +28,61 @@ public class ModelDigitigradeLegs extends ModelRenderer {
     super((ModelBase)base);
     this.base = base;
     this.rightleg = new ModelRenderer((ModelBase)base, 0, 16);
-    this.rightleg.func_78789_a(-2.0F, 0.0F, -2.0F, 4, 6, 4);
-    this.rightleg.func_78793_a(-2.1F, 11.0F, 0.0F);
+    this.rightleg.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4);
+    this.rightleg.setRotationPoint(-2.1F, 11.0F, 0.0F);
     setRotation(this.rightleg, -0.3F, 0.0F, 0.0F);
-    func_78792_a(this.rightleg);
+    addChild(this.rightleg);
     this.rightleg2 = new ModelRenderer((ModelBase)base, 0, 20);
-    this.rightleg2.func_78789_a(-1.5F, -1.0F, -2.0F, 3, 7, 3);
-    this.rightleg2.func_78793_a(0.0F, 4.1F, 0.0F);
+    this.rightleg2.addBox(-1.5F, -1.0F, -2.0F, 3, 7, 3);
+    this.rightleg2.setRotationPoint(0.0F, 4.1F, 0.0F);
     setRotation(this.rightleg2, 1.1F, 0.0F, 0.0F);
-    this.rightleg.func_78792_a(this.rightleg2);
+    this.rightleg.addChild(this.rightleg2);
     this.rightleglow = new ModelRenderer((ModelBase)base, 0, 24);
-    this.rightleglow.func_78789_a(-1.5F, 0.0F, -1.0F, 3, 5, 2);
-    this.rightleglow.func_78793_a(0.0F, 5.0F, 0.0F);
+    this.rightleglow.addBox(-1.5F, 0.0F, -1.0F, 3, 5, 2);
+    this.rightleglow.setRotationPoint(0.0F, 5.0F, 0.0F);
     setRotation(this.rightleglow, -1.35F, 0.0F, 0.0F);
-    this.rightleg2.func_78792_a(this.rightleglow);
+    this.rightleg2.addChild(this.rightleglow);
     this.rightfoot = new ModelRenderer((ModelBase)base, 1, 26);
-    this.rightfoot.func_78789_a(-1.5F, 0.0F, -5.0F, 3, 2, 4);
-    this.rightfoot.func_78793_a(0.0F, 3.7F, 1.2F);
+    this.rightfoot.addBox(-1.5F, 0.0F, -5.0F, 3, 2, 4);
+    this.rightfoot.setRotationPoint(0.0F, 3.7F, 1.2F);
     setRotation(this.rightfoot, 0.55F, 0.0F, 0.0F);
-    this.rightleglow.func_78792_a(this.rightfoot);
+    this.rightleglow.addChild(this.rightfoot);
     this.leftleg = new ModelRenderer((ModelBase)base, 0, 16);
-    this.leftleg.field_78809_i = true;
-    this.leftleg.func_78789_a(-2.0F, 0.0F, -2.0F, 4, 6, 4);
-    this.leftleg.func_78793_a(2.1F, 11.0F, 0.0F);
+    this.leftleg.mirror = true;
+    this.leftleg.addBox(-2.0F, 0.0F, -2.0F, 4, 6, 4);
+    this.leftleg.setRotationPoint(2.1F, 11.0F, 0.0F);
     setRotation(this.leftleg, -0.3F, 0.0F, 0.0F);
-    func_78792_a(this.leftleg);
+    addChild(this.leftleg);
     this.leftleg2 = new ModelRenderer((ModelBase)base, 0, 20);
-    this.leftleg2.field_78809_i = true;
-    this.leftleg2.func_78789_a(-1.5F, -1.0F, -2.0F, 3, 7, 3);
-    this.leftleg2.func_78793_a(0.0F, 4.1F, 0.0F);
+    this.leftleg2.mirror = true;
+    this.leftleg2.addBox(-1.5F, -1.0F, -2.0F, 3, 7, 3);
+    this.leftleg2.setRotationPoint(0.0F, 4.1F, 0.0F);
     setRotation(this.leftleg2, 1.1F, 0.0F, 0.0F);
-    this.leftleg.func_78792_a(this.leftleg2);
+    this.leftleg.addChild(this.leftleg2);
     this.leftleglow = new ModelRenderer((ModelBase)base, 0, 24);
-    this.leftleglow.field_78809_i = true;
-    this.leftleglow.func_78789_a(-1.5F, 0.0F, -1.0F, 3, 5, 2);
-    this.leftleglow.func_78793_a(0.0F, 5.0F, 0.0F);
+    this.leftleglow.mirror = true;
+    this.leftleglow.addBox(-1.5F, 0.0F, -1.0F, 3, 5, 2);
+    this.leftleglow.setRotationPoint(0.0F, 5.0F, 0.0F);
     setRotation(this.leftleglow, -1.35F, 0.0F, 0.0F);
-    this.leftleg2.func_78792_a(this.leftleglow);
+    this.leftleg2.addChild(this.leftleglow);
     this.leftfoot = new ModelRenderer((ModelBase)base, 1, 26);
-    this.leftfoot.field_78809_i = true;
-    this.leftfoot.func_78789_a(-1.5F, 0.0F, -5.0F, 3, 2, 4);
-    this.leftfoot.func_78793_a(0.0F, 3.7F, 1.2F);
+    this.leftfoot.mirror = true;
+    this.leftfoot.addBox(-1.5F, 0.0F, -5.0F, 3, 2, 4);
+    this.leftfoot.setRotationPoint(0.0F, 3.7F, 1.2F);
     setRotation(this.leftfoot, 0.55F, 0.0F, 0.0F);
-    this.leftleglow.func_78792_a(this.leftfoot);
+    this.leftleglow.addChild(this.leftfoot);
   }
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-    this.base.field_178721_j.rotateAngleX -= 0.3F;
+    this.base.bipedRightLeg.rotateAngleX -= 0.3F;
     this.base.field_178722_k.rotateAngleX -= 0.3F;
-    this.rightleg.field_78797_d = this.base.field_178721_j.field_78797_d;
-    this.leftleg.field_78797_d = this.base.field_178722_k.field_78797_d;
-    this.rightleg.field_78798_e = this.base.field_178721_j.field_78798_e;
-    this.leftleg.field_78798_e = this.base.field_178722_k.field_78798_e;
-    if (!this.base.field_78117_n) {
-      this.leftleg.field_78797_d--;
-      this.rightleg.field_78797_d--;
+    this.rightleg.rotationPointY = this.base.bipedRightLeg.rotationPointY;
+    this.leftleg.rotationPointY = this.base.field_178722_k.rotationPointY;
+    this.rightleg.rotationPointZ = this.base.bipedRightLeg.rotationPointZ;
+    this.leftleg.rotationPointZ = this.base.field_178722_k.rotationPointZ;
+    if (!this.base.isSneak) {
+      this.leftleg.rotationPointY--;
+      this.rightleg.rotationPointY--;
     }
   }
 

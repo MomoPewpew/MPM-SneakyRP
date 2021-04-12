@@ -41,7 +41,7 @@ public abstract class LayerInterface implements LayerRenderer {
     } else {
       ClientProxy.bindTexture(data.getResource());
     }
-    if (this.player.field_70737_aN > 0 || this.player.field_70725_aQ > 0) {
+    if (this.player.hurtTime > 0 || this.player.deathTime > 0) {
       GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);
       return;
     }
@@ -52,8 +52,9 @@ public abstract class LayerInterface implements LayerRenderer {
     GlStateManager.color(red, green, blue, 0.99F);
   }
 
-  public void func_177141_a(EntityLivingBase entity, float par2, float par3, float par8, float par4, float par5, float par6, float par7) {
-    if (entity.func_82150_aj())
+  @Override
+  public void doRenderLayer(EntityLivingBase entity, float par2, float par3, float par8, float par4, float par5, float par6, float par7) {
+    if (entity.isInvisible())
       return;
     this.player = (AbstractClientPlayer)entity;
     this.playerdata = ModelData.get((EntityPlayer)this.player);
@@ -74,7 +75,8 @@ public abstract class LayerInterface implements LayerRenderer {
     model.rotateAngleZ = z;
   }
 
-  public boolean func_177142_b() {
+  @Override
+  public boolean shouldCombineTextures() {
     return true;
   }
 

@@ -7,7 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 public class MPMEntityUtil {
   public static void Copy(EntityLivingBase copied, EntityLivingBase entity) {
     entity.worldObj = copied.worldObj;
-    entity.field_70725_aQ = copied.field_70725_aQ;
+    entity.deathTime = copied.deathTime;
     entity.field_70140_Q = copied.field_70140_Q;
     entity.field_70141_P = copied.field_70140_Q;
     entity.field_82151_R = copied.field_82151_R;
@@ -64,7 +64,7 @@ public class MPMEntityUtil {
       ePlayer.field_71085_bR = cPlayer.field_71085_bR;
     }
     for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
-      entity.setItemStackToSlot(slot, copied.func_184582_a(slot));
+      entity.setItemStackToSlot(slot, copied.getItemStackFromSlot(slot));
     if (entity instanceof net.minecraft.entity.boss.EntityDragon)
       entity.rotationYaw += 180.0F;
   }

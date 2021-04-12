@@ -14,17 +14,17 @@ public class AniBow {
     if (ticks2 > 1.0F)
       ticks2 = 1.0F;
     ticks += (ticks2 - ticks) * Minecraft.getMinecraft().func_184121_ak();
-    model.field_78115_e.rotateAngleX = ticks;
+    model.bipedBody.rotateAngleX = ticks;
     model.bipedHead.rotateAngleX = ticks;
-    model.field_178724_i.rotateAngleX = ticks;
-    model.field_178723_h.rotateAngleX = ticks;
-    model.field_78115_e.field_78798_e = -ticks * 10.0F;
-    model.field_78115_e.field_78797_d = ticks * 6.0F;
-    model.bipedHead.field_78798_e = -ticks * 10.0F;
-    model.bipedHead.field_78797_d = ticks * 6.0F;
-    model.field_178724_i.field_78798_e = -ticks * 10.0F;
-    model.field_178724_i.field_78797_d += ticks * 6.0F;
-    model.field_178723_h.field_78798_e = -ticks * 10.0F;
-    model.field_178723_h.field_78797_d += ticks * 6.0F;
+    model.bipedLeftArm.rotateAngleX = ticks;
+    model.bipedRightArm.rotateAngleX = ticks;
+    model.bipedBody.rotationPointZ = -ticks * 10.0F;
+    model.bipedBody.rotationPointY = ticks * 6.0F;
+    model.bipedHead.rotationPointZ = -ticks * 10.0F;
+    model.bipedHead.rotationPointY = ticks * 6.0F;
+    model.bipedLeftArm.rotationPointZ = -ticks * 10.0F;
+    model.bipedLeftArm.rotationPointY += ticks * 6.0F;
+    model.bipedRightArm.rotationPointZ = -ticks * 10.0F;
+    model.bipedRightArm.rotationPointY += ticks * 6.0F;
   }
 }

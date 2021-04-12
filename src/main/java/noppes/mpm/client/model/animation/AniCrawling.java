@@ -15,26 +15,26 @@ public class AniCrawling {
     if (limbSwingAmount > 0.25D)
       limbSwingAmount = 0.25F;
     float movement = MathHelper.cos(limbSwing * 0.8F + 3.1415927F) * limbSwingAmount;
-    model.field_178724_i.rotateAngleX = 3.1415927F - movement * 0.25F;
-    model.field_178724_i.rotateAngleY = movement * -0.46F;
-    model.field_178724_i.rotateAngleZ = movement * -0.2F;
-    model.field_178724_i.field_78797_d = 2.0F - movement * 9.0F;
-    model.field_178723_h.rotateAngleX = 3.1415927F + movement * 0.25F;
-    model.field_178723_h.rotateAngleY = movement * -0.4F;
-    model.field_178723_h.rotateAngleZ = movement * -0.2F;
-    model.field_178723_h.field_78797_d = 2.0F + movement * 9.0F;
-    model.field_78115_e.rotateAngleY = movement * 0.1F;
-    model.field_78115_e.rotateAngleX = 0.0F;
-    model.field_78115_e.rotateAngleZ = movement * 0.1F;
+    model.bipedLeftArm.rotateAngleX = 3.1415927F - movement * 0.25F;
+    model.bipedLeftArm.rotateAngleY = movement * -0.46F;
+    model.bipedLeftArm.rotateAngleZ = movement * -0.2F;
+    model.bipedLeftArm.rotationPointY = 2.0F - movement * 9.0F;
+    model.bipedRightArm.rotateAngleX = 3.1415927F + movement * 0.25F;
+    model.bipedRightArm.rotateAngleY = movement * -0.4F;
+    model.bipedRightArm.rotateAngleZ = movement * -0.2F;
+    model.bipedRightArm.rotationPointY = 2.0F + movement * 9.0F;
+    model.bipedBody.rotateAngleY = movement * 0.1F;
+    model.bipedBody.rotateAngleX = 0.0F;
+    model.bipedBody.rotateAngleZ = movement * 0.1F;
     model.field_178722_k.rotateAngleX = movement * 0.1F;
     model.field_178722_k.rotateAngleY = movement * 0.1F;
     model.field_178722_k.rotateAngleZ = -0.122173056F - movement * 0.25F;
-    model.field_178722_k.field_78797_d = 10.4F + movement * 9.0F;
-    model.field_178722_k.field_78798_e = movement * 0.6F;
-    model.field_178721_j.rotateAngleX = movement * -0.1F;
-    model.field_178721_j.rotateAngleY = movement * 0.1F;
-    model.field_178721_j.rotateAngleZ = 0.122173056F - movement * 0.25F;
-    model.field_178721_j.field_78797_d = 10.4F - movement * 9.0F;
-    model.field_178721_j.field_78798_e = movement * -0.6F;
+    model.field_178722_k.rotationPointY = 10.4F + movement * 9.0F;
+    model.field_178722_k.rotationPointZ = movement * 0.6F;
+    model.bipedRightLeg.rotateAngleX = movement * -0.1F;
+    model.bipedRightLeg.rotateAngleY = movement * 0.1F;
+    model.bipedRightLeg.rotateAngleZ = 0.122173056F - movement * 0.25F;
+    model.bipedRightLeg.rotationPointY = 10.4F - movement * 9.0F;
+    model.bipedRightLeg.rotationPointZ = movement * -0.6F;
   }
 }

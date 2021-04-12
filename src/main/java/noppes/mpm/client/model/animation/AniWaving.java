@@ -10,8 +10,8 @@ public class AniWaving {
     float f = MathHelper.sin(entity.ticksExisted * 0.27F);
     float f2 = MathHelper.sin((entity.ticksExisted + 1) * 0.27F);
     f += (f2 - f) * Minecraft.getMinecraft().func_184121_ak();
-    base.field_178723_h.rotateAngleX = -0.1F;
-    base.field_178723_h.rotateAngleY = 0.0F;
-    base.field_178723_h.rotateAngleZ = (float)(2.141592653589793D - (f * 0.5F));
+    base.bipedRightArm.rotateAngleX = -0.1F;
+    base.bipedRightArm.rotateAngleY = 0.0F;
+    base.bipedRightArm.rotateAngleZ = (float)(2.141592653589793D - (f * 0.5F));
   }
 }

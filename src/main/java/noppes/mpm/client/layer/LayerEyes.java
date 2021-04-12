@@ -13,11 +13,12 @@ public class LayerEyes extends LayerInterface {
     super(render);
   }
 
+  @Override
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
     if (!this.playerdata.eyes.isEnabled())
       return;
     GlStateManager.pushMatrix();
-    this.model.bipedHead.func_78794_c(0.0625F);
+    this.model.bipedHead.postRender(0.0625F);
     GlStateManager.translate(par7, par7, -par7);
     GlStateManager.translate(0.0F, (((this.playerdata.eyes.type == 1) ? 1 : 2) - this.playerdata.eyes.eyePos), 0.0F);
     GlStateManager.enableRescaleNormal();
@@ -27,10 +28,10 @@ public class LayerEyes extends LayerInterface {
     GlStateManager.func_179089_o();
     GlStateManager.func_179118_c();
     GlStateManager.depthMask(false);
-    int i = this.player.func_70070_b();
+    int i = this.player.getBrightnessForRender();
     int j = i % 65536;
     int k = i / 65536;
-    OpenGlHelper.func_77475_a(OpenGlHelper.lightmapTexUnit, j, k);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
     (Minecraft.getMinecraft()).field_71460_t.func_191514_d(true);
     drawBrows();
     drawLeft();
@@ -122,5 +123,6 @@ public class LayerEyes extends LayerInterface {
     Tessellator.getInstance().draw();
   }
 
+  @Override
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {}
 }

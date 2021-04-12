@@ -10,10 +10,13 @@ public class LayerChatbubble extends LayerInterface implements LayerPreRender {
     super(render);
   }
 
+  @Override
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {}
 
+  @Override
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {}
 
+  @Override
   public void preRender(AbstractClientPlayer player) {
     Minecraft mc = Minecraft.getMinecraft();
     if (player == mc.thePlayer)

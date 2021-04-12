@@ -11,13 +11,13 @@ public class AniDancing {
     dancing += (dancing2 - dancing) * Minecraft.getMinecraft().func_184121_ak();
     float x = (float)Math.sin(dancing);
     float y = (float)Math.abs(Math.cos(dancing));
-    model.bipedHead.field_78800_c = x * 0.75F;
-    model.bipedHead.field_78797_d = y * 1.25F - 0.02F;
-    model.bipedHead.field_78798_e = -y * 0.75F;
-    model.field_178724_i.field_78800_c += x * 0.25F;
-    model.field_178724_i.field_78797_d += y * 1.25F;
-    model.field_178723_h.field_78800_c += x * 0.25F;
-    model.field_178723_h.field_78797_d += y * 1.25F;
-    model.field_78115_e.field_78800_c = x * 0.25F;
+    model.bipedHead.rotationPointX = x * 0.75F;
+    model.bipedHead.rotationPointY = y * 1.25F - 0.02F;
+    model.bipedHead.rotationPointZ = -y * 0.75F;
+    model.bipedLeftArm.rotationPointX += x * 0.25F;
+    model.bipedLeftArm.rotationPointY += y * 1.25F;
+    model.bipedRightArm.rotationPointX += x * 0.25F;
+    model.bipedRightArm.rotationPointY += y * 1.25F;
+    model.bipedBody.rotationPointX = x * 0.25F;
   }
 }

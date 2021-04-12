@@ -24,7 +24,7 @@ public class ModelPlane extends ModelBox {
     var11 += par10;
     var12 += par10;
     var13 += par10;
-    if (par1ModelRenderer.field_78809_i) {
+    if (par1ModelRenderer.mirror) {
       float var14 = var11;
       var11 = par4;
       par4 = var14;
@@ -51,7 +51,7 @@ public class ModelPlane extends ModelBox {
       this.quad = new TexturedQuad(new PositionTextureVertex[] { var19, var18, var23, var15 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par9, par1ModelRenderer.field_78801_a, par1ModelRenderer.field_78799_b);
     if (position == EnumPlanePosition.BACK)
       this.quad = new TexturedQuad(new PositionTextureVertex[] { var15, var23, var17, var16 }, textureOffsetX, textureOffsetY, textureOffsetX + par7, textureOffsetY + par8, par1ModelRenderer.field_78801_a, par1ModelRenderer.field_78799_b);
-    if (par1ModelRenderer.field_78809_i)
+    if (par1ModelRenderer.mirror)
       this.quad.func_78235_a();
   }
 

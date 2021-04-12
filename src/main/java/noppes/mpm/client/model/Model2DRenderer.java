@@ -53,12 +53,12 @@ public class Model2DRenderer extends ModelRenderer {
   }
 
   public void render(float par1) {
-    if (!this.field_78806_j || this.field_78807_k)
+    if (!this.field_78806_j || this.isHidden)
       return;
     if (!this.isCompiled)
       compile(par1);
     GlStateManager.pushMatrix();
-    func_78794_c(par1);
+    postRender(par1);
     GlStateManager.func_179148_o(this.displayList);
     GlStateManager.popMatrix();
   }
@@ -90,7 +90,7 @@ public class Model2DRenderer extends ModelRenderer {
     GlStateManager.translate(this.rotationOffsetX * par1, this.rotationOffsetY * par1, this.rotationOffsetZ * par1);
     GlStateManager.translate(this.scaleX * this.width / this.height, this.scaleY, this.thickness);
     GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-    if (this.field_78809_i) {
+    if (this.mirror) {
       GlStateManager.translate(0.0F, 0.0F, -1.0F * par1);
       GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
     }

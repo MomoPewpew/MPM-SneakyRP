@@ -23,34 +23,34 @@ public class ModelMermaidLegs extends ModelRenderer {
     this.field_78801_a = 64.0F;
     this.field_78799_b = 32.0F;
     this.top = new ModelRenderer(base, 0, 16);
-    this.top.func_78789_a(-2.0F, -2.5F, -2.0F, 8, 9, 4);
-    this.top.func_78793_a(-2.0F, 14.0F, 1.0F);
+    this.top.addBox(-2.0F, -2.5F, -2.0F, 8, 9, 4);
+    this.top.setRotationPoint(-2.0F, 14.0F, 1.0F);
     setRotation(this.top, 0.26F, 0.0F, 0.0F);
     this.middle = new ModelRenderer(base, 28, 0);
-    this.middle.func_78789_a(0.0F, 0.0F, 0.0F, 7, 6, 4);
-    this.middle.func_78793_a(-1.5F, 6.5F, -1.0F);
+    this.middle.addBox(0.0F, 0.0F, 0.0F, 7, 6, 4);
+    this.middle.setRotationPoint(-1.5F, 6.5F, -1.0F);
     setRotation(this.middle, 0.86F, 0.0F, 0.0F);
-    this.top.func_78792_a(this.middle);
+    this.top.addChild(this.middle);
     this.bottom = new ModelRenderer(base, 24, 16);
-    this.bottom.func_78789_a(0.0F, 0.0F, 0.0F, 6, 7, 3);
-    this.bottom.func_78793_a(0.5F, 6.0F, 0.5F);
+    this.bottom.addBox(0.0F, 0.0F, 0.0F, 6, 7, 3);
+    this.bottom.setRotationPoint(0.5F, 6.0F, 0.5F);
     setRotation(this.bottom, 0.15F, 0.0F, 0.0F);
-    this.middle.func_78792_a(this.bottom);
+    this.middle.addChild(this.bottom);
     this.fin1 = new ModelRenderer(base, 0, 0);
-    this.fin1.func_78789_a(0.0F, 0.0F, 0.0F, 5, 9, 1);
-    this.fin1.func_78793_a(0.0F, 4.5F, 1.0F);
+    this.fin1.addBox(0.0F, 0.0F, 0.0F, 5, 9, 1);
+    this.fin1.setRotationPoint(0.0F, 4.5F, 1.0F);
     setRotation(this.fin1, 0.05F, 0.0F, 0.5911399F);
-    this.bottom.func_78792_a(this.fin1);
+    this.bottom.addChild(this.fin1);
     this.fin2 = new ModelRenderer(base, 0, 0);
-    this.fin2.field_78809_i = true;
-    this.fin2.func_78789_a(-5.0F, 0.0F, 0.0F, 5, 9, 1);
-    this.fin2.func_78793_a(6.0F, 4.5F, 1.0F);
+    this.fin2.mirror = true;
+    this.fin2.addBox(-5.0F, 0.0F, 0.0F, 5, 9, 1);
+    this.fin2.setRotationPoint(6.0F, 4.5F, 1.0F);
     setRotation(this.fin2, 0.05F, 0.0F, -0.591143F);
-    this.bottom.func_78792_a(this.fin2);
+    this.bottom.addChild(this.fin2);
   }
 
   public void render(float f5) {
-    if (this.field_78807_k || !this.field_78806_j)
+    if (this.isHidden || !this.field_78806_j)
       return;
     this.top.render(f5);
   }
@@ -63,7 +63,7 @@ public class ModelMermaidLegs extends ModelRenderer {
 
   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity, ModelData data) {
     float ani = MathHelper.sin(par1 * 0.6662F);
-    this.top.func_78793_a(-2.0F, 14.0F, 1.0F);
+    this.top.setRotationPoint(-2.0F, 14.0F, 1.0F);
     if (ani > 0.2D)
       ani /= 3.0F;
     if (data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
@@ -74,7 +74,7 @@ public class ModelMermaidLegs extends ModelRenderer {
       this.bottom.rotateAngleX = 0.15F - ani * 0.28F * par2;
       this.fin1.rotateAngleX = 0.05F - ani * 0.35F * par2;
       if (entity.isSneaking())
-        this.top.func_78793_a(-2.0F, 12.0F, 6.0F);
+        this.top.setRotationPoint(-2.0F, 12.0F, 6.0F);
     }
   }
 }

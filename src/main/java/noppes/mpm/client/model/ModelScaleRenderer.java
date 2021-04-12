@@ -37,12 +37,12 @@ public class ModelScaleRenderer extends ModelRenderer {
   }
 
   public void render(float par1) {
-    if (!this.field_78806_j || this.field_78807_k)
+    if (!this.field_78806_j || this.isHidden)
       return;
     if (!this.isCompiled)
       compile(par1);
     GlStateManager.pushMatrix();
-    func_78794_c(par1);
+    postRender(par1);
     GlStateManager.func_179148_o(this.field_78811_r);
     if (this.field_78805_m != null)
       for (int i = 0; i < this.field_78805_m.size(); i++)
@@ -50,17 +50,17 @@ public class ModelScaleRenderer extends ModelRenderer {
     GlStateManager.popMatrix();
   }
 
-  public void func_78794_c(float par1) {
+  public void postRender(float par1) {
     if (this.config != null)
       GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
-    super.func_78794_c(par1);
+    super.postRender(par1);
     if (this.config != null)
       GlStateManager.translate(this.config.scaleX, this.config.scaleY, this.config.scaleZ);
   }
 
   public void postRenderNoScale(float par1) {
     GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
-    super.func_78794_c(par1);
+    super.postRender(par1);
   }
 
   public void parentRender(float par1) {

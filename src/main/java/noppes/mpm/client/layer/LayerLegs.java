@@ -64,6 +64,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     super(render);
   }
 
+  @Override
   protected void createParts() {
     this.spiderLegs = new ModelSpiderLegs((ModelBiped)this.model);
     this.horseLegs = new ModelHorseLegs((ModelBiped)this.model);
@@ -73,27 +74,27 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     this.digitigrade = new ModelDigitigradeLegs((ModelBiped)this.model);
     this.fox = new ModelCanineTail((ModelBiped)this.model);
     this.tail = new ModelRenderer((ModelBase)this.model, 56, 21);
-    this.tail.func_78789_a(-1.0F, 0.0F, 0.0F, 2, 9, 2);
-    this.tail.func_78793_a(0.0F, 0.0F, 1.0F);
+    this.tail.addBox(-1.0F, 0.0F, 0.0F, 2, 9, 2);
+    this.tail.setRotationPoint(0.0F, 0.0F, 1.0F);
     setRotation(this.tail, 0.87F, 0.0F, 0.0F);
     this.horse = new ModelRenderer((ModelBase)this.model);
-    this.horse.func_78787_b(32, 32);
-    this.horse.func_78793_a(0.0F, -1.0F, 1.0F);
+    this.horse.setTextureSize(32, 32);
+    this.horse.setRotationPoint(0.0F, -1.0F, 1.0F);
     ModelRenderer tailBase = new ModelRenderer((ModelBase)this.model, 0, 26);
-    tailBase.func_78787_b(32, 32);
-    tailBase.func_78789_a(-1.0F, -1.0F, 0.0F, 2, 2, 3);
+    tailBase.setTextureSize(32, 32);
+    tailBase.addBox(-1.0F, -1.0F, 0.0F, 2, 2, 3);
     setRotation(tailBase, -1.134464F, 0.0F, 0.0F);
-    this.horse.func_78792_a(tailBase);
+    this.horse.addChild(tailBase);
     ModelRenderer tailMiddle = new ModelRenderer((ModelBase)this.model, 0, 13);
-    tailMiddle.func_78787_b(32, 32);
-    tailMiddle.func_78789_a(-1.5F, -2.0F, 3.0F, 3, 4, 7);
+    tailMiddle.setTextureSize(32, 32);
+    tailMiddle.addBox(-1.5F, -2.0F, 3.0F, 3, 4, 7);
     setRotation(tailMiddle, -1.134464F, 0.0F, 0.0F);
-    this.horse.func_78792_a(tailMiddle);
+    this.horse.addChild(tailMiddle);
     ModelRenderer tailTip = new ModelRenderer((ModelBase)this.model, 0, 0);
-    tailTip.func_78787_b(32, 32);
-    tailTip.func_78789_a(-1.5F, -4.5F, 9.0F, 3, 4, 7);
+    tailTip.setTextureSize(32, 32);
+    tailTip.addBox(-1.5F, -4.5F, 9.0F, 3, 4, 7);
     setRotation(tailTip, -1.40215F, 0.0F, 0.0F);
-    this.horse.func_78792_a(tailTip);
+    this.horse.addChild(tailTip);
     this.horse.rotateAngleX = 0.5F;
     this.dragon = (ModelRenderer)new ModelDragonTail((ModelBiped)this.model);
     this.squirrel = (ModelRenderer)new ModelSquirrelTail((ModelBiped)this.model);
@@ -102,6 +103,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     this.feathers = (ModelRenderer)new ModelFeatherTail((ModelBiped)this.model);
   }
 
+  @Override
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
     GlStateManager.pushMatrix();
     renderLegs(par7);
@@ -121,13 +123,13 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     preRender(data);
     if (data.type == 0) {
       if (data.pattern == 1) {
-        this.tail.field_78800_c = -0.5F;
+        this.tail.rotationPointX = -0.5F;
         this.tail.rotateAngleY = (float)(this.tail.rotateAngleY - 0.2D);
         this.tail.render(par7);
-        this.tail.field_78800_c++;
+        this.tail.rotationPointX++;
         this.tail.rotateAngleY = (float)(this.tail.rotateAngleY + 0.4D);
         this.tail.render(par7);
-        this.tail.field_78800_c = 0.0F;
+        this.tail.rotationPointX = 0.0F;
       } else {
         this.tail.render(par7);
       }
@@ -159,7 +161,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
       GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
       this.naga.render(par7);
     } else if (data.type == 2) {
-      GlStateManager.func_179137_b(0.0D, (config.transY * 1.76F) - 0.1D * config.scaleY, (config.transZ * par7));
+      GlStateManager.translate(0.0D, (config.transY * 1.76F) - 0.1D * config.scaleY, (config.transZ * par7));
       GlStateManager.translate(1.06F, 1.06F, 1.06F);
       GlStateManager.translate(config.scaleX, config.scaleY, config.scaleZ);
       this.spiderLegs.render(par7);
@@ -187,6 +189,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     }
   }
 
+  @Override
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
     rotateLegs(par1, par2, par3, par4, par5, par6);
     rotateTail(par1, par2, par3, par4, par5, par6);
@@ -199,10 +202,10 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     } else if (part.type == 3) {
       this.horseLegs.setRotationAngles(this.playerdata, par1, par2, par3, par4, par5, par6, (Entity)this.player);
     } else if (part.type == 1) {
-      this.naga.isRiding = this.model.field_78093_q;
+      this.naga.isRiding = this.model.isRiding;
       this.naga.isSleeping = (this.player.isPlayerSleeping() || this.playerdata.isSleeping());
       this.naga.isCrawling = (this.playerdata.animation == EnumAnimation.CRAWLING);
-      this.naga.isSneaking = this.model.field_78117_n;
+      this.naga.isSneaking = this.model.isSneak;
       this.naga.setRotationAngles(par1, par2, par3, par4, par5, par6, (Entity)this.player);
     } else if (part.type == 4) {
       this.mermaid.setRotationAngles(par1, par2, par3, par4, par5, par6, (Entity)this.player, this.playerdata);
@@ -244,15 +247,16 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
       if (partTail.type == 7)
         this.fox.setRotationAngles(par1, par2, par3, par4, par5, par6, (Entity)this.player);
     }
-    this.rotationPointZ += this.model.field_178721_j.field_78798_e + 0.5F;
+    this.rotationPointZ += this.model.bipedRightLeg.rotationPointZ + 0.5F;
     this.fox.rotateAngleX = this.rodent.rotateAngleX = rotateAngleX;
     this.fox.rotateAngleY = this.rodent.rotateAngleY = rotateAngleY;
   }
 
+  @Override
   public void preRender(AbstractClientPlayer player) {
     this.player = player;
     this.playerdata = ModelData.get((EntityPlayer)player);
     ModelPartData data = this.playerdata.getPartData(EnumParts.LEGS);
-    this.model.field_178731_d.field_78807_k = (data == null || data.type != 0);
+    this.model.bipedLeftLeg.isHidden = (data == null || data.type != 0);
   }
 }

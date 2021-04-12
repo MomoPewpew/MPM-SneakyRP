@@ -13,12 +13,12 @@ public class LayerElytraAlt extends LayerElytra {
     super((RenderLivingBase)renderPlayerIn);
   }
 
-  public void func_177141_a(EntityLivingBase entityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+  public void doRenderLayer(EntityLivingBase entityLiving, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     if (entityLiving instanceof EntityPlayer) {
       ModelData data = ModelData.get((EntityPlayer)entityLiving);
       if (data.getPartData(EnumParts.WINGS) != null && data.wingMode == 1)
         return;
     }
-    super.func_177141_a(entityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+    super.doRenderLayer(entityLiving, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
   }
 }

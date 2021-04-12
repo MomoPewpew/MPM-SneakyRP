@@ -264,14 +264,14 @@ public class ClientEventHandler {
     if (data.animation != EnumAnimation.NONE)
       ServerTickHandler.checkAnimation(player, data);
     if (data.animation == EnumAnimation.DEATH) {
-      if (player.field_70725_aQ == 0)
+      if (player.deathTime == 0)
         player.func_184185_a(SoundEvents.field_187543_bD, 1.0F, 1.0F);
-      if (player.field_70725_aQ < 19)
-        player.field_70725_aQ++;
+      if (player.deathTime < 19)
+        player.deathTime++;
     }
     if (data.prevAnimation != data.animation && data.prevAnimation == EnumAnimation.DEATH &&
       !player.isDead)
-      player.field_70725_aQ = 0;
+      player.deathTime = 0;
     data.prevAnimation = data.animation;
     data.prevPosX = player.posX;
     data.prevPosY = player.posY;

@@ -20,7 +20,7 @@ public class LayerCapeMPM extends LayerCape {
     this.render = render;
   }
 
-  public void func_177141_a(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+  public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     ModelPlayer modelPlayer = this.render.getMainModel();
     ModelData data = ModelData.get((EntityPlayer)player);
     ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
@@ -34,9 +34,9 @@ public class LayerCapeMPM extends LayerCape {
       if (player.isSneaking())
         GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
     }
-    if (player.field_70737_aN > 0 || player.field_70725_aQ > 0)
+    if (player.hurtTime > 0 || player.deathTime > 0)
       GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);
-    super.func_177141_a(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+    super.doRenderLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
     GlStateManager.popMatrix();
   }
 }

@@ -5,8 +5,8 @@ import net.minecraft.entity.Entity;
 
 public class AniPoint {
   public static void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity, ModelBiped base) {
-    base.field_178723_h.rotateAngleX = -1.570796F;
-    base.field_178723_h.rotateAngleY = netHeadYaw / 57.295776F;
-    base.field_178723_h.rotateAngleZ = 0.0F;
+    base.bipedRightArm.rotateAngleX = -1.570796F;
+    base.bipedRightArm.rotateAngleY = netHeadYaw / 57.295776F;
+    base.bipedRightArm.rotateAngleZ = 0.0F;
   }
 }

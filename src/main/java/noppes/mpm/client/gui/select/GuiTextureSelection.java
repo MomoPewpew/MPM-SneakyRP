@@ -139,8 +139,8 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     }
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  public void initGui() {
+    super.initGui();
     if (this.selectedDomain != null) {
       this.title = this.selectedDomain + ":" + this.location;
     } else {
@@ -202,15 +202,15 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     addScroll(this.scrollQuests);
   }
 
-  protected void func_146284_a(GuiButton guibutton) {
-    super.func_146284_a(guibutton);
+  protected void actionPerformed(GuiButton guibutton) {
+    super.actionPerformed(guibutton);
     if (guibutton.id == 2) {
       this.playerdata.url = this.selectedResource.toString();
       this.playerdata.resourceInit = false;
       this.playerdata.resourceLoaded = false;
     }
     close();
-    this.parent.func_73866_w_();
+    this.parent.initGui();
   }
 
   public void func_73863_a(int i, int j, float f) {
@@ -218,11 +218,11 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     func_146276_q_();
     super.func_73863_a(i, j, f);
     func_73732_a(this.field_146289_q, this.title, this.width / 2, 8, 16777215);
-    EntityLivingBase entity = this.playerdata.getEntity((EntityPlayer)this.field_146297_k.thePlayer);
+    EntityLivingBase entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     if (entity == null) {
       entityPlayerSP = this.player;
     } else {
-      MPMEntityUtil.Copy((EntityLivingBase)this.field_146297_k.thePlayer, (EntityLivingBase)this.player);
+      MPMEntityUtil.Copy((EntityLivingBase)this.mc.thePlayer, (EntityLivingBase)this.player);
     }
     drawNpc((EntityLivingBase)entityPlayerSP, this.guiLeft + 276, this.guiTop + 140, 1.0F, 0);
   }
@@ -237,7 +237,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
         this.playerdata.resourceLoaded = false;
       }
     } else {
-      func_73866_w_();
+      initGui();
     }
   }
 
@@ -259,10 +259,10 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       }
       this.scrollCategories.selected = -1;
       this.scrollQuests.selected = -1;
-      func_73866_w_();
+      initGui();
     } else {
       close();
-      this.parent.func_73866_w_();
+      this.parent.initGui();
     }
   }
 

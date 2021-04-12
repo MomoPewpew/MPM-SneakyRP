@@ -97,7 +97,7 @@ public class GuiCustomScroll extends GuiScreen {
       return;
     drawGradientRect(this.guiLeft, this.guiTop, this.xSize + this.guiLeft, this.ySize + this.guiTop, -1072689136, -804253680);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.field_146297_k.renderEngine.bindTexture(resource);
+    this.mc.renderEngine.bindTexture(resource);
     if (this.scrollHeight < this.ySize - 8)
       drawScrollBar();
     GlStateManager.pushMatrix();

@@ -41,9 +41,10 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
     this.closeOnEsc = true;
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
-    this.entity = this.playerdata.getEntity((EntityPlayer)this.field_146297_k.thePlayer);
+  @Override
+  public void initGui() {
+    super.initGui();
+    this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     Keyboard.enableRepeatEvents(true);
     addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
     addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
@@ -68,8 +69,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
     addSlider(new GuiNpcSlider((GuiScreen)this, 500, this.guiLeft + this.xOffset + 142, this.guiTop + 210, 120, 20, rotation));
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
     if (btn.id == 0)
       openGui(new GuiCreationOptions());
     if (btn.id == 1)
@@ -89,12 +91,12 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
   public void func_73863_a(int x, int y, float f) {
     EntityPlayer entityPlayer;
     super.func_73863_a(x, y, f);
-    this.entity = this.playerdata.getEntity((EntityPlayer)this.field_146297_k.thePlayer);
+    this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     EntityLivingBase entity = this.entity;
     if (entity == null) {
       entityPlayer = this.player;
     } else {
-      MPMEntityUtil.Copy((EntityLivingBase)this.field_146297_k.thePlayer, (EntityLivingBase)this.player);
+      MPMEntityUtil.Copy((EntityLivingBase)this.mc.thePlayer, (EntityLivingBase)this.player);
     }
     drawNpc((EntityLivingBase)entityPlayer, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
   }
@@ -117,7 +119,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
   }
 
   public void subGuiClosed(GuiNPCInterface subgui) {
-    func_73866_w_();
+    initGui();
   }
 
   public void mouseDragged(GuiNpcSlider slider) {

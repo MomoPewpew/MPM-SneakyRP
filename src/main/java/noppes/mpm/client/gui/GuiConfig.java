@@ -12,8 +12,10 @@ import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
 
 public class GuiConfig extends GuiNPCInterface {
-  public void func_73866_w_() {
-    super.func_73866_w_();
+
+  @Override
+  public void initGui() {
+    super.initGui();
     int y = this.guiTop + 20;
     y += 32;
     addButton(new GuiNpcButton(46, this.guiLeft, y, 80, 20, "config.reloadskins"));
@@ -43,13 +45,14 @@ public class GuiConfig extends GuiNPCInterface {
     addLabel(new GuiNpcLabel(55, "config.compatibility", this.guiLeft, y + 5, 16777215));
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
+  @Override
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
     if (!(btn instanceof GuiNpcButton))
       return;
     GuiNpcButton button = (GuiNpcButton)btn;
     if (button.id == 46) {
-      List<EntityPlayer> players = this.field_146297_k.theWorld.field_73010_i;
+      List<EntityPlayer> players = this.mc.theWorld.playerEntities;
       for (EntityPlayer player : players) {
         ModelData data = ModelData.get(player);
         data.resourceLoaded = false;
@@ -74,7 +77,7 @@ public class GuiConfig extends GuiNPCInterface {
       MorePlayerModels.instance.configLoader.updateConfig();
     }
     if (button.id == 51)
-      this.field_146297_k.displayGuiScreen((GuiScreen)new GuiEditButtons());
+      this.mc.displayGuiScreen((GuiScreen)new GuiEditButtons());
     if (button.id == 53) {
       MorePlayerModels.EnableParticles = (button.getValue() == 1);
       MorePlayerModels.instance.configLoader.updateConfig();
@@ -98,5 +101,6 @@ public class GuiConfig extends GuiNPCInterface {
     }
   }
 
+  @Override
   public void save() {}
 }

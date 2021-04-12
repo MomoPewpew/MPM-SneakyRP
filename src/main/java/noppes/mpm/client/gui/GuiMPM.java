@@ -46,8 +46,8 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
       PresetController.instance.load();
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  public void initGui() {
+    super.initGui();
     TabRegistry.updateTabValues(this.guiLeft + 2, this.guiTop + 8, InventoryTabMPM.class);
     TabRegistry.addTabsToList(this.field_146292_n);
     if (this.scroll == null) {
@@ -76,7 +76,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
   public void func_73863_a(int i, int j, float f) {
     func_146276_q_();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    this.field_146297_k.renderEngine.bindTexture(resource);
+    this.mc.renderEngine.bindTexture(resource);
     drawTexturedModalRect(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
     super.func_73863_a(i, j, f);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -91,7 +91,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
     }
   }
 
-  protected void func_146284_a(GuiButton button) {
+  protected void actionPerformed(GuiButton button) {
     if (!(button instanceof GuiNpcButton))
       return;
     if (button.id == 0)
@@ -107,7 +107,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
             }
             Minecraft.getMinecraft().displayGuiScreen((GuiScreen)this);
           }"", I18n.translateToLocal("message.delete"), 0);
-      this.field_146297_k.displayGuiScreen((GuiScreen)gui);
+      this.mc.displayGuiScreen((GuiScreen)gui);
     }
     if (button.id == 2)
       try {

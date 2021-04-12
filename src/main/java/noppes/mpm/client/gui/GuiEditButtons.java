@@ -16,8 +16,8 @@ public class GuiEditButtons extends GuiNPCInterface {
     this.closeOnEsc = true;
   }
 
-  public void func_73866_w_() {
-    super.func_73866_w_();
+  public void initGui() {
+    super.initGui();
     int y = this.guiTop + 20;
     addLabel(new GuiNpcLabel(0, "message.animationmessage1", this.guiLeft, y, 16777215));
     addLabel(new GuiNpcLabel(6, "message.animationmessage2", this.guiLeft, y + 11, 16777215));
@@ -55,8 +55,8 @@ public class GuiEditButtons extends GuiNPCInterface {
     return i - 3;
   }
 
-  protected void func_146284_a(GuiButton btn) {
-    super.func_146284_a(btn);
+  protected void actionPerformed(GuiButton btn) {
+    super.actionPerformed(btn);
     GuiNpcButton button = (GuiNpcButton)btn;
     if (button.id == 1) {
       MorePlayerModels.button1 = getValue(button);

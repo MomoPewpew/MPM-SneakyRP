@@ -3,13 +3,16 @@ package noppes.mpm.client.gui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import noppes.mpm.ModelData;
 import noppes.mpm.client.Preset;
 import noppes.mpm.client.PresetController;
@@ -19,96 +22,89 @@ import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 
-public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollListener{
+public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollListener {
+  private List<String> list = new ArrayList<>();
 
-	private List<String> list = new ArrayList<String>();
-	private GuiCustomScroll scroll;
-	private static final ResourceLocation resource = new ResourceLocation("moreplayermodels", "textures/gui/smallbg.png");
+  private GuiCustomScroll scroll;
 
-	private ModelData playerdata;	
-	private NBTTagCompound original = new NBTTagCompound();
-	
-	private String selected = "Normal";
-	
-	private HashMap<String,Preset> presets = Preset.GetDefault();
-	
-	public GuiCreationLoad(){
-		playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
-		original = playerdata.writeToNBT();
-		drawDefaultBackground = false;
-		closeOnEsc = true;
-		presets.putAll(PresetController.instance.presets);
-	}
+  private static final ResourceLocation resource = new ResourceLocation("moreplayermodels", "textures/gui/smallbg.png");
 
-    @Override
-    public void initGui() {
-    	super.initGui();
-    	if(scroll == null){
-    		scroll = new GuiCustomScroll(this, 0);
-            for(Preset preset : presets.values())
-            	list.add(preset.name);
-            
-    		scroll.setList(list);
-        	scroll.setSelected(selected);
-        	scroll.scrollTo(selected);
-    	}
-    	scroll.guiLeft = guiLeft + 4;
-    	scroll.guiTop = guiTop + 33;
-    	scroll.setSize(100, 144);
-    	
-    	addScroll(scroll);
-    	addTextField(new GuiNpcTextField(0, this, guiLeft + 4, guiTop + 12, 172, 20, "New"));
-    	addButton(new GuiNpcButton(10, guiLeft + 4, guiTop + ySize - 46, 86, 20, "gui.done"));
-    	addButton(new GuiNpcButton(11, guiLeft + 92, guiTop + ySize - 46, 86, 20, "gui.cancel"));
+  private ModelData playerdata;
+
+  private NBTTagCompound original = new NBTTagCompound();
+
+  private String selected = "Normal";
+
+  private HashMap<String, Preset> presets = Preset.GetDefault();
+
+  public GuiCreationLoad() {
+    this.playerdata = ModelData.get((EntityPlayer)(Minecraft.func_71410_x()).field_71439_g);
+    this.original = this.playerdata.writeToNBT();
+    this.drawDefaultBackground = false;
+    this.closeOnEsc = true;
+    this.presets.putAll(PresetController.instance.presets);
+  }
+
+  public void func_73866_w_() {
+    super.func_73866_w_();
+    if (this.scroll == null) {
+      this.scroll = new GuiCustomScroll((GuiScreen)this, 0);
+      for (Preset preset : this.presets.values())
+        this.list.add(preset.name);
+      this.scroll.setList(this.list);
+      this.scroll.setSelected(this.selected);
+      this.scroll.scrollTo(this.selected);
     }
+    this.scroll.guiLeft = this.guiLeft + 4;
+    this.scroll.guiTop = this.guiTop + 33;
+    this.scroll.setSize(100, 144);
+    addScroll(this.scroll);
+    addTextField(new GuiNpcTextField(0, (GuiScreen)this, this.guiLeft + 4, this.guiTop + 12, 172, 20, "gui.new"));
+    addButton(new GuiNpcButton(10, this.guiLeft + 4, this.guiTop + this.ySize - 46, 86, 20, "gui.done"));
+    addButton(new GuiNpcButton(11, this.guiLeft + 92, this.guiTop + this.ySize - 46, 86, 20, "gui.cancel"));
+  }
 
-    @Override
-    protected void actionPerformed(GuiButton btn) {
-    	super.actionPerformed(btn);
-    	if(btn.id == 10){
-    		original = playerdata.writeToNBT();
-    		Preset p = new Preset();
-    		p.menu = true;
-    		String name = getTextField(0).getText(); 
-    		if(name.trim().isEmpty())
-    			name = "New";
-    		p.name = name;
-    		p.data = playerdata.copy();
-    		PresetController.instance.selected = name;
-    		PresetController.instance.addPreset(p);
-    		close();
-    	}
-    	if(btn.id == 11){
-    		close();
-    	}
+  protected void func_146284_a(GuiButton btn) {
+    super.func_146284_a(btn);
+    if (btn.field_146127_k == 10) {
+      this.original = this.playerdata.writeToNBT();
+      Preset p = new Preset();
+      p.menu = true;
+      String name = getTextField(0).func_146179_b();
+      if (name.trim().isEmpty())
+        name = I18n.func_74838_a("gui.new");
+      p.name = name;
+      p.data = this.playerdata.copy();
+      PresetController.instance.selected = name;
+      PresetController.instance.addPreset(p);
+      close();
     }
+    if (btn.field_146127_k == 11)
+      close();
+  }
 
-	@Override
-    public void drawScreen(int i, int j, float f){
-    	drawDefaultBackground();
-    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(resource);
-        drawTexturedModalRect(guiLeft, guiTop + 8, 0, 0, xSize, 192);
-        //drawTexturedModalRect(guiLeft + 4, guiTop + 8, 56, 0, 200, ySize);
-                
-        super.drawScreen(i, j, f);
-    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);  
-    	
-    	GuiInventory.drawEntityOnScreen(guiLeft + 144, guiTop + 140, 40, guiLeft + 144 - i, guiTop + 80 - j, player);
+  public void func_73863_a(int i, int j, float f) {
+    func_146276_q_();
+    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    this.field_146297_k.field_71446_o.func_110577_a(resource);
+    func_73729_b(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
+    super.func_73863_a(i, j, f);
+    GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiInventory.func_147046_a(this.guiLeft + 144, this.guiTop + 140, 40, (this.guiLeft + 144 - i), (this.guiTop + 80 - j), (EntityLivingBase)this.player);
+  }
+
+  public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
+    this.selected = scroll.getSelected();
+    Preset preset = this.presets.get(this.selected.toLowerCase());
+    if (preset != null) {
+      this.playerdata.readFromNBT(preset.data.writeToNBT());
+      func_73866_w_();
     }
+  }
 
-	@Override
-	public void customScrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-		selected = scroll.getSelected();
-    	Preset preset = presets.get(selected.toLowerCase());
-    	if(preset != null){
-    		playerdata.readFromNBT(preset.data.writeToNBT());
-    		initGui();
-    	}
-	}
+  public void save() {
+    this.playerdata.readFromNBT(this.original);
+  }
 
-	@Override
-	public void save() {
-		playerdata.readFromNBT(original);
-	}
+  public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {}
 }

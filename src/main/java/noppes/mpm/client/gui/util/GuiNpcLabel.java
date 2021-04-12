@@ -28,7 +28,7 @@ public class GuiNpcLabel {
 
   public void drawLabel(GuiScreen gui, FontRenderer fontRenderer) {
     if (this.enabled)
-      fontRenderer.func_78276_b(this.label, this.x, this.y, this.color);
+      fontRenderer.drawString(this.label, this.x, this.y, this.color);
   }
 
   public void center(int width) {

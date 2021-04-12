@@ -17,9 +17,9 @@ public class MPMEntityUtil {
     entity.fallDistance  = copied.fallDistance ;
     entity.field_70703_bu = copied.field_70703_bu;
     entity.func_70095_a(copied.isSneaking());
-    entity.field_70169_q = copied.field_70169_q;
-    entity.field_70167_r = copied.field_70167_r;
-    entity.field_70166_s = copied.field_70166_s;
+    entity.posX = copied.posX;
+    entity.posY = copied.posY;
+    entity.posZ  = copied.posZ ;
     entity.posX = copied.posX;
     entity.posY = copied.posY;
     entity.posZ = copied.posZ;
@@ -30,9 +30,9 @@ public class MPMEntityUtil {
     entity.field_70181_x = copied.field_70181_x;
     entity.field_70179_y = copied.field_70179_y;
     entity.rotationYaw = copied.rotationYaw;
-    entity.field_70125_A = copied.field_70125_A;
-    entity.field_70126_B = copied.field_70126_B;
-    entity.field_70127_C = copied.field_70127_C;
+    entity.rotationPitch = copied.rotationPitch;
+    entity.prevRotationYaw  = copied.prevRotationYaw ;
+    entity.prevRotationPitch = copied.prevRotationPitch;
     entity.field_70759_as = copied.field_70759_as;
     entity.field_70758_at = copied.field_70758_at;
     entity.field_70761_aq = copied.field_70761_aq;

@@ -188,21 +188,21 @@ public class LayerBody extends LayerInterface {
     this.wing.rotateAngleX = 0.7141593F;
     this.wing.rotateAngleZ = 0.5090659F;
     this.wing2.rotateAngleY = 0.8F;
-    float motion = Math.abs(MathHelper.func_76126_a(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
+    float motion = Math.abs(MathHelper.sin(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
     if (this.player.worldObj.isAirBlock(this.player.getPosition())) {
       float speed = 0.55F + 0.5F * motion;
-      float y = MathHelper.func_76126_a(par3 * 0.35F);
+      float y = MathHelper.sin(par3 * 0.35F);
       this.wing.rotateAngleZ += y * 0.5F * speed;
       this.wing.rotateAngleX += y * 0.5F * speed;
       this.wing2.rotateAngleY += y * 0.5F * speed;
     } else {
-      this.wing.rotateAngleZ -= MathHelper.func_76134_b(par3 * 0.09F) * 0.05F + 0.05F;
-      this.wing.rotateAngleX += MathHelper.func_76126_a(par3 * 0.067F) * 0.05F;
-      this.wing2.rotateAngleY += MathHelper.func_76126_a(par3 * 0.07F) * 0.44F;
+      this.wing.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+      this.wing.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+      this.wing2.rotateAngleY += MathHelper.sin(par3 * 0.07F) * 0.44F;
     }
     setRotation((ModelRenderer)this.skirt, 0.3F, -0.2F, -0.2F);
     this.skirt.rotateAngleX += this.model.field_178724_i.rotateAngleX * 0.04F;
     this.skirt.rotateAngleZ += this.model.field_178724_i.rotateAngleX * 0.06F;
-    this.skirt.rotateAngleZ -= MathHelper.func_76134_b(par3 * 0.09F) * 0.04F - 0.05F;
+    this.skirt.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.04F - 0.05F;
   }
 }

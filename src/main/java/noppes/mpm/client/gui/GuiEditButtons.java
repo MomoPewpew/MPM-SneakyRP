@@ -36,7 +36,7 @@ public class GuiEditButtons extends GuiNPCInterface {
   }
 
   private void addButton(int id, int y, String title, int value) {
-    for (KeyBinding key : (Minecraft.getMinecraft()).field_71474_y.field_74324_K) {
+    for (KeyBinding key : (Minecraft.getMinecraft()).gameSettings.field_74324_K) {
       if (key.func_151464_g().equals(title)) {
         title = title + " (" + Keyboard.getKeyName(key.func_151463_i()) + ")";
         break;

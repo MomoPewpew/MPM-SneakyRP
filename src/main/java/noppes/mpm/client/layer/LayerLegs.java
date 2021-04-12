@@ -216,8 +216,8 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     ModelPartData part = this.playerdata.getPartData(EnumParts.LEGS);
     ModelPartData partTail = this.playerdata.getPartData(EnumParts.TAIL);
     ModelPartConfig config = this.playerdata.getPartConfig(EnumParts.LEG_LEFT);
-    float rotateAngleY = MathHelper.func_76134_b(par1 * 0.6662F) * 0.2F * par2;
-    float rotateAngleX = MathHelper.func_76126_a(par3 * 0.067F) * 0.05F;
+    float rotateAngleY = MathHelper.cos(par1 * 0.6662F) * 0.2F * par2;
+    float rotateAngleX = MathHelper.sin(par3 * 0.067F) * 0.05F;
     this.rotationPointZ = 0.0F;
     this.rotationPointY = 11.0F;
     if (this.playerdata.animation == EnumAnimation.WAG)

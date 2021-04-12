@@ -67,10 +67,10 @@ public class ChatMessages {
     float f1 = (color >> 16 & 0xFF) / 255.0F;
     float f2 = (color >> 8 & 0xFF) / 255.0F;
     float f3 = (color & 0xFF) / 255.0F;
-    tessellator.func_181662_b(x, y, z).func_181666_a(f1, f2, f3, f).func_181675_d();
-    tessellator.func_181662_b(x, y2, z).func_181666_a(f1, f2, f3, f).func_181675_d();
-    tessellator.func_181662_b(x2, y2, z).func_181666_a(f1, f2, f3, f).func_181675_d();
-    tessellator.func_181662_b(x2, y, z).func_181666_a(f1, f2, f3, f).func_181675_d();
+    tessellator.pos(x, y, z).color(f1, f2, f3, f).endVertex();
+    tessellator.pos(x, y2, z).color(f1, f2, f3, f).endVertex();
+    tessellator.pos(x2, y2, z).color(f1, f2, f3, f).endVertex();
+    tessellator.pos(x2, y, z).color(f1, f2, f3, f).endVertex();
   }
 
   public void render(double x, double y, double z, boolean depth) {
@@ -82,16 +82,16 @@ public class ChatMessages {
     for (TextBlockClient block : this.messages.values())
       size += block.lines.size();
     Minecraft mc = Minecraft.getMinecraft();
-    int textYSize = (int)((size * font.field_78288_b) * this.scale);
+    int textYSize = (int)((size * font.FONT_HEIGHT ) * this.scale);
     GlStateManager.translate((float)x + 0.0F, (float)y + textYSize * var14, (float)z);
     GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-    GlStateManager.rotate(-(mc.getRenderManager()).field_78735_i, 0.0F, 1.0F, 0.0F);
-    GlStateManager.rotate((mc.getRenderManager()).field_78732_j, 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotate(-(mc.getRenderManager()).playerViewY, 0.0F, 1.0F, 0.0F);
+    GlStateManager.rotate((mc.getRenderManager()).playerViewX, 1.0F, 0.0F, 0.0F);
     GlStateManager.translate(-var14, -var14, var14);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    GlStateManager.func_179132_a(true);
+    GlStateManager.depthMask(true);
     GlStateManager.disableLighting();
-    GlStateManager.func_179147_l();
+    GlStateManager.enableBlend();
     if (depth) {
       GlStateManager.enableDepth();
     } else {
@@ -99,11 +99,11 @@ public class ChatMessages {
     }
     int black = depth ? -16777216 : 1426063360;
     int white = depth ? -1140850689 : 1157627903;
-    GlStateManager.func_179120_a(770, 771, 1, 0);
+    GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
     GlStateManager.disableTexture2D();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    BufferBuilder tessellator = Tessellator.func_178181_a().func_178180_c();
-    tessellator.func_181668_a(7, DefaultVertexFormats.field_181706_f);
+    BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
+    tessellator.begin(7, DefaultVertexFormats.POSITION_COLOR);
     drawRect(tessellator, (-this.boxLength - 2), -2.0D, (this.boxLength + 2), (textYSize + 1), white, 0.11D);
     drawRect(tessellator, (-this.boxLength - 1), -3.0D, (this.boxLength + 1), -2.0D, black, 0.1D);
     drawRect(tessellator, (-this.boxLength - 1), (textYSize + 2), -1.0D, (textYSize + 1), black, 0.1D);
@@ -122,20 +122,20 @@ public class ChatMessages {
     drawRect(tessellator, 1.0D, (textYSize + 4), 2.0D, (textYSize + 5), black, 0.1D);
     drawRect(tessellator, -2.0D, (textYSize + 4), -1.0D, (textYSize + 5), black, 0.1D);
     drawRect(tessellator, -2.0D, (textYSize + 5), 1.0D, (textYSize + 6), black, 0.1D);
-    Tessellator.func_178181_a().func_78381_a();
-    GlStateManager.func_179098_w();
-    GlStateManager.func_179132_a(true);
+    Tessellator.getInstance().func_78381_a();
+    GlStateManager.enableTexture2D();
+    GlStateManager.depthMask(true);
     GlStateManager.translate(this.scale, this.scale, this.scale);
     int index = 0;
     for (TextBlockClient block : this.messages.values()) {
       for (ITextComponent chat : block.lines) {
-        String message = chat.func_150254_d();
-        font.func_78276_b(message, -font.getStringWidth(message) / 2, index * font.field_78288_b, black);
+        String message = chat.getFormattedText();
+        font.drawString(message, -font.getStringWidth(message) / 2, index * font.FONT_HEIGHT , black);
         index++;
       }
     }
     GlStateManager.enableLighting();
-    GlStateManager.func_179084_k();
+    GlStateManager.disableBlend();
     GlStateManager.enableDepth();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GlStateManager.popMatrix();
@@ -154,7 +154,7 @@ public class ChatMessages {
       Pattern.compile("^[a-zA-z0-9_]{2,10}[^a-zA-z0-9]([a-zA-z0-9_]{2,16})[:]? (.*)") };
 
   public static void parseMessage(String toParse) {
-    toParse = toParse.replaceAll(", "");
+    toParse = toParse.replaceAll("\247.", "");
     for (Pattern pattern : patterns) {
       Matcher m = pattern.matcher(toParse);
       if (m.find()) {
@@ -212,7 +212,7 @@ public class ChatMessages {
   }
 
   private static boolean validPlayer(String username) {
-    return ((Minecraft.getMinecraft()).field_71441_e.func_72924_a(username) != null);
+    return ((Minecraft.getMinecraft()).theWorld.getPlayerEntityByName(username) != null);
   }
 
   private Map<Long, TextBlockClient> getMessages() {

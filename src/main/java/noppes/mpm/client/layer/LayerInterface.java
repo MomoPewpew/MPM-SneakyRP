@@ -23,7 +23,7 @@ public abstract class LayerInterface implements LayerRenderer {
 
   public LayerInterface(RenderPlayer render) {
     this.render = render;
-    setModel(render.func_177087_b());
+    setModel(render.getMainModel());
   }
 
   public void setModel(ModelPlayer model) {
@@ -57,7 +57,7 @@ public abstract class LayerInterface implements LayerRenderer {
       return;
     this.player = (AbstractClientPlayer)entity;
     this.playerdata = ModelData.get((EntityPlayer)this.player);
-    ModelPlayer model = this.render.func_177087_b();
+    ModelPlayer model = this.render.getMainModel();
     rotate(par2, par3, par4, par5, par6, par7);
     GlStateManager.pushMatrix();
     if (this.player.isSneaking())

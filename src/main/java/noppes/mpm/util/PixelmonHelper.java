@@ -93,7 +93,7 @@ public class PixelmonHelper {
       return;
     try {
       Method m = entity.getClass().getMethod("getModel", new Class[0]);
-      (Minecraft.getMinecraft()).thePlayer.func_145747_a((ITextComponent)new TextComponentString((String)m.invoke(entity, new Object[0])));
+      (Minecraft.getMinecraft()).thePlayer.addChatMessage((ITextComponent)new TextComponentString((String)m.invoke(entity, new Object[0])));
     } catch (Exception e) {
       e.printStackTrace();
     }

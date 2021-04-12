@@ -49,7 +49,7 @@ public class GuiConfig extends GuiNPCInterface {
       return;
     GuiNpcButton button = (GuiNpcButton)btn;
     if (button.id == 46) {
-      List<EntityPlayer> players = this.field_146297_k.field_71441_e.field_73010_i;
+      List<EntityPlayer> players = this.field_146297_k.theWorld.field_73010_i;
       for (EntityPlayer player : players) {
         ModelData data = ModelData.get(player);
         data.resourceLoaded = false;

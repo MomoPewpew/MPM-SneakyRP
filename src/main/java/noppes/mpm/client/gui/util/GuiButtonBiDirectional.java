@@ -19,7 +19,7 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
     boolean hoverL = (!disabled && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + 11 && mouseY < this.yPosition + this.height);
     boolean hoverR = (!disabled && !hoverL && mouseX >= this.xPosition + this.width - 11 && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    mc.func_110434_K().bindTexture(resource);
+    mc.getTextureManager().bindTexture(resource);
     drawTexturedModalRect(this.xPosition, this.yPosition, 0, disabled ? 20 : (hoverL ? 40 : 0), 11, 20);
     drawTexturedModalRect(this.xPosition + this.width - 11, this.yPosition, 11, disabled ? 20 : (hoverR ? 40 : 0), 11, 20);
     int l = 16777215;

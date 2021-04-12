@@ -21,7 +21,7 @@ public class LayerCapeMPM extends LayerCape {
   }
 
   public void func_177141_a(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-    ModelPlayer modelPlayer = this.render.func_177087_b();
+    ModelPlayer modelPlayer = this.render.getMainModel();
     ModelData data = ModelData.get((EntityPlayer)player);
     ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
     GlStateManager.pushMatrix();

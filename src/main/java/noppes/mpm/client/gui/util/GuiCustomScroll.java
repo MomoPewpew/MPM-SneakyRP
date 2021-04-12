@@ -168,11 +168,11 @@ public class GuiCustomScroll extends GuiScreen {
           func_73728_b(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
           func_73730_a(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
           func_73730_a(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
-          this.field_146289_q.func_78276_b(text, j, k, 16777215);
+          this.field_146289_q.drawString(text, j, k, 16777215);
         } else if (i == this.hover) {
-          this.field_146289_q.func_78276_b(text, j, k, 65280);
+          this.field_146289_q.drawString(text, j, k, 65280);
         } else {
-          this.field_146289_q.func_78276_b(text, j, k, 16777215);
+          this.field_146289_q.drawString(text, j, k, 16777215);
         }
       }
     }

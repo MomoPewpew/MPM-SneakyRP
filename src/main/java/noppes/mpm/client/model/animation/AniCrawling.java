@@ -14,7 +14,7 @@ public class AniCrawling {
     model.bipedHeadwear.rotateAngleZ = model.bipedHead.rotateAngleZ;
     if (limbSwingAmount > 0.25D)
       limbSwingAmount = 0.25F;
-    float movement = MathHelper.func_76134_b(limbSwing * 0.8F + 3.1415927F) * limbSwingAmount;
+    float movement = MathHelper.cos(limbSwing * 0.8F + 3.1415927F) * limbSwingAmount;
     model.field_178724_i.rotateAngleX = 3.1415927F - movement * 0.25F;
     model.field_178724_i.rotateAngleY = movement * -0.46F;
     model.field_178724_i.rotateAngleZ = movement * -0.2F;

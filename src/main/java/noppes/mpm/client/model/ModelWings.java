@@ -115,10 +115,10 @@ public class ModelWings extends ModelBase {
   }
 
   public void renderWings(Entity player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
-    float motion = Math.abs(MathHelper.func_76126_a(limbSwing * 0.033F + 3.1415927F) * 0.4F) * limbSwingAmount;
+    float motion = Math.abs(MathHelper.sin(limbSwing * 0.033F + 3.1415927F) * 0.4F) * limbSwingAmount;
     boolean flapWings = player.worldObj.isAirBlock(player.getPosition().func_177977_b());
     float speed = 0.55F + 0.5F * motion;
-    float y = MathHelper.func_76126_a(ageInTicks * 0.35F);
+    float y = MathHelper.sin(ageInTicks * 0.35F);
     float flap = y * 0.5F * speed;
     GlStateManager.pushMatrix();
     if (flapWings)

@@ -49,11 +49,11 @@ public class EntityEnderFX extends ParticlePortal {
 
   public void func_180434_a(BufferBuilder renderer, Entity entity, float partialTicks, float rotationX, float rotationY, float rotationZ, float rotationXY, float rotationXZ) {
     if (this.move) {
-      this.startX = (float)(this.player.field_70169_q + (this.player.posX - this.player.field_70169_q) * partialTicks);
-      this.startY = (float)(this.player.field_70167_r + (this.player.posY - this.player.field_70167_r) * partialTicks);
-      this.startZ = (float)(this.player.field_70166_s + (this.player.posZ - this.player.field_70166_s) * partialTicks);
+      this.startX = (float)(this.player.posX + (this.player.posX - this.player.posX) * partialTicks);
+      this.startY = (float)(this.player.posY + (this.player.posY - this.player.posY) * partialTicks);
+      this.startZ = (float)(this.player.posZ  + (this.player.posZ - this.player.posZ ) * partialTicks);
     }
-    Tessellator tessellator = Tessellator.func_178181_a();
+    Tessellator tessellator = Tessellator.getInstance();
     tessellator.func_78381_a();
     float scale = (this.field_70546_d + partialTicks) / this.field_70547_e;
     scale = 1.0F - scale;
@@ -73,14 +73,14 @@ public class EntityEnderFX extends ParticlePortal {
     int j = i >> 16 & 0xFFFF;
     int k = i & 0xFFFF;
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    renderer.func_181668_a(7, DefaultVertexFormats.field_181704_d);
-    renderer.func_181662_b((f5 - rotationX * f4 - rotationXY * f4), (f6 - rotationY * f4), (f7 - rotationZ * f4 - rotationXZ * f4)).func_187315_a(f1, f3).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();
-    renderer.func_181662_b((f5 - rotationX * f4 + rotationXY * f4), (f6 + rotationY * f4), (f7 - rotationZ * f4 + rotationXZ * f4)).func_187315_a(f1, f2).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();
-    renderer.func_181662_b((f5 + rotationX * f4 + rotationXY * f4), (f6 + rotationY * f4), (f7 + rotationZ * f4 + rotationXZ * f4)).func_187315_a(f, f2).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();
-    renderer.func_181662_b((f5 + rotationX * f4 - rotationXY * f4), (f6 - rotationY * f4), (f7 + rotationZ * f4 - rotationXZ * f4)).func_187315_a(f, f3).func_181666_a(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).func_181675_d();
+    renderer.begin(7, DefaultVertexFormats.field_181704_d);
+    renderer.pos((f5 - rotationX * f4 - rotationXY * f4), (f6 - rotationY * f4), (f7 - rotationZ * f4 - rotationXZ * f4)).func_187315_a(f1, f3).color(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).endVertex();
+    renderer.pos((f5 - rotationX * f4 + rotationXY * f4), (f6 + rotationY * f4), (f7 - rotationZ * f4 + rotationXZ * f4)).func_187315_a(f1, f2).color(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).endVertex();
+    renderer.pos((f5 + rotationX * f4 + rotationXY * f4), (f6 + rotationY * f4), (f7 + rotationZ * f4 + rotationXZ * f4)).func_187315_a(f, f2).color(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).endVertex();
+    renderer.pos((f5 + rotationX * f4 - rotationXY * f4), (f6 - rotationY * f4), (f7 + rotationZ * f4 - rotationXZ * f4)).func_187315_a(f, f3).color(this.field_70552_h, this.field_70553_i, this.field_70551_j, 1.0F).func_187314_a(j, k).endVertex();
     tessellator.func_78381_a();
     ClientProxy.bindTexture(resource);
-    renderer.func_181668_a(7, DefaultVertexFormats.field_181704_d);
+    renderer.begin(7, DefaultVertexFormats.field_181704_d);
   }
 
   public int func_70537_b() {

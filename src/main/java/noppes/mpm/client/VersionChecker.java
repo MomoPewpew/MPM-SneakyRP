@@ -8,8 +8,8 @@ import net.minecraft.util.text.event.ClickEvent;
 
 public class VersionChecker extends Thread {
   public void run() {
-    String name = ";
-    String link = "here";
+	String name = '\u00A7'+ "2MorePlayerModels" + '\u00A7' + "f";
+	String link = '\u00A7'+"9"+'\u00A7' + "nClick here";
     String text = name + " installed. More info at " + link;
     try {
       EntityPlayerSP entityPlayerSP1 = (Minecraft.getMinecraft()).thePlayer;
@@ -25,7 +25,7 @@ public class VersionChecker extends Thread {
       }
     }
     TextComponentTranslation message = new TextComponentTranslation(text, new Object[0]);
-    message.func_150256_b().func_150241_a(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
-    entityPlayerSP.func_145747_a((ITextComponent)message);
+    message.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
+    entityPlayerSP.addChatMessage((ITextComponent)message);
   }
 }

@@ -20,8 +20,8 @@ public class Camera {
 
   public void update(boolean start) {
     Minecraft mc = Minecraft.getMinecraft();
-    Entity view = mc.func_175606_aa();
-    if (mc.field_71474_y.field_74320_O != 1) {
+    Entity view = mc.getRenderViewEntity();
+    if (mc.gameSettings.thirdPersonView  != 1) {
       if (this.enabled)
         reset();
       return;
@@ -30,32 +30,32 @@ public class Camera {
       return;
     updateCamera();
     if (start) {
-      view.rotationYaw = view.field_70126_B = this.cameraYaw;
-      view.field_70125_A = view.field_70127_C = this.cameraPitch;
+      view.rotationYaw = view.prevRotationYaw  = this.cameraYaw;
+      view.rotationPitch = view.prevRotationPitch = this.cameraPitch;
     } else {
       view.rotationYaw = mc.thePlayer.rotationYaw - this.cameraYaw + this.playerYaw;
-      view.field_70126_B = mc.thePlayer.field_70126_B - this.cameraYaw + this.playerYaw;
-      view.field_70125_A = -this.playerPitch;
-      view.field_70127_C = -this.playerPitch;
+      view.prevRotationYaw  = mc.thePlayer.prevRotationYaw  - this.cameraYaw + this.playerYaw;
+      view.rotationPitch = -this.playerPitch;
+      view.prevRotationPitch = -this.playerPitch;
     }
   }
 
   private void updateCamera() {
     Minecraft mc = Minecraft.getMinecraft();
-    if (!mc.field_71415_G)
+    if (!mc.inGameHasFocus)
       return;
-    float f = mc.field_71474_y.field_74341_c * 0.6F + 0.2F;
+    float f = mc.gameSettings.mouseSensitivity  * 0.6F + 0.2F;
     float f1 = f * f * f * 8.0F;
     double dx = (Mouse.getDX() * f1) * 0.15D;
     double dy = (Mouse.getDY() * f1) * 0.15D;
-    if (ClientProxy.Camera.func_151470_d()) {
+    if (ClientProxy.Camera.isKeyDown()) {
       this.cameraYaw = (float)(this.cameraYaw + dx);
       this.cameraPitch = (float)(this.cameraPitch + dy);
-      this.cameraPitch = MathHelper.func_76131_a(this.cameraPitch, -90.0F, 90.0F);
+      this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
     } else {
       this.playerYaw = (float)(this.playerYaw + dx);
       this.playerPitch = (float)(this.playerPitch + dy);
-      this.playerPitch = MathHelper.func_76131_a(this.playerPitch, -90.0F, 90.0F);
+      this.playerPitch = MathHelper.clamp_float(this.playerPitch, -90.0F, 90.0F);
     }
   }
 
@@ -72,7 +72,7 @@ public class Camera {
     Minecraft mc = Minecraft.getMinecraft();
     if (!this.enabled) {
       this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
-      this.cameraPitch = mc.thePlayer.field_70125_A;
+      this.cameraPitch = mc.thePlayer.rotationPitch;
       this.playerPitch = -this.cameraPitch;
     }
     this.enabled = true;

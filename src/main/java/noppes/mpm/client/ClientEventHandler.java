@@ -63,27 +63,27 @@ public class ClientEventHandler {
     Minecraft mc = Minecraft.getMinecraft();
     if (mc == null || mc.thePlayer == null)
       return;
-    if (ClientProxy.Screen.func_151468_f()) {
+    if (ClientProxy.Screen.isPressed()) {
       ModelData data = ModelData.get((EntityPlayer)mc.thePlayer);
       data.setAnimation(EnumAnimation.NONE);
-      if (mc.field_71462_r == null)
+      if (mc.currentScreen  == null)
         mc.displayGuiScreen((GuiScreen)new GuiMPM());
     }
-    if (mc.field_71462_r == null)
+    if (mc.currentScreen  == null)
       this.slashPressed = (Keyboard.getEventCharacter() == '/');
-    if (!mc.field_71415_G)
+    if (!mc.inGameHasFocus)
       return;
-    if (ClientProxy.MPM1.func_151468_f())
+    if (ClientProxy.MPM1.isPressed())
       processAnimation(MorePlayerModels.button1);
-    if (ClientProxy.MPM2.func_151468_f())
+    if (ClientProxy.MPM2.isPressed())
       processAnimation(MorePlayerModels.button2);
-    if (ClientProxy.MPM3.func_151468_f())
+    if (ClientProxy.MPM3.isPressed())
       processAnimation(MorePlayerModels.button3);
-    if (ClientProxy.MPM4.func_151468_f())
+    if (ClientProxy.MPM4.isPressed())
       processAnimation(MorePlayerModels.button4);
-    if (ClientProxy.MPM5.func_151468_f())
+    if (ClientProxy.MPM5.isPressed())
       processAnimation(MorePlayerModels.button5);
-    if (ClientProxy.Camera.func_151470_d() && mc.field_71474_y.field_74320_O == 1) {
+    if (ClientProxy.Camera.isKeyDown() && mc.gameSettings.thirdPersonView  == 1) {
       long time = System.currentTimeMillis();
       if (!this.altIsPressed)
         if (time - this.lastAltClick < 400L) {
@@ -120,7 +120,7 @@ public class ClientEventHandler {
   @SubscribeEvent
   public void onMouse(MouseEvent event) {
     Minecraft mc = Minecraft.getMinecraft();
-    if (event.getDwheel() == 0 || !mc.field_71415_G || mc.field_71474_y.field_74320_O != 1 || !camera.enabled || !this.altIsPressed)
+    if (event.getDwheel() == 0 || !mc.inGameHasFocus || mc.gameSettings.thirdPersonView  != 1 || !camera.enabled || !this.altIsPressed)
       return;
     camera.cameraDistance -= event.getDwheel() / 100.0F;
     if (camera.cameraDistance > 14.0F) {
@@ -172,19 +172,19 @@ public class ClientEventHandler {
     if (event.side == Side.SERVER || event.phase == TickEvent.Phase.START)
       return;
     Minecraft mc = Minecraft.getMinecraft();
-    if (mc.field_71441_e == null)
+    if (mc.theWorld == null)
       return;
-    if (this.prevWorld != mc.field_71441_e) {
+    if (this.prevWorld != mc.theWorld) {
       MorePlayerModels.HasServerSide = false;
       GuiCreationScreenInterface.Message = "message.noserver";
       ModelData data = ModelData.get((EntityPlayer)mc.thePlayer);
       Client.sendData(EnumPackets.PING, new Object[] { Integer.valueOf(MorePlayerModels.Version), data.writeToNBT() });
-      this.prevWorld = (World)mc.field_71441_e;
+      this.prevWorld = (World)mc.theWorld;
       ClientProxy.fixModels(false);
     }
     RenderEvent.lastSkinTick++;
-    if (mc.field_71441_e.func_72912_H().func_82573_f() % 20L == 0L) {
-      playerList = mc.field_71441_e.func_175661_b(EntityPlayer.class, playerSelector);
+    if (mc.theWorld.func_72912_H().func_82573_f() % 20L == 0L) {
+      playerList = mc.theWorld.func_175661_b(EntityPlayer.class, playerSelector);
       WebApi.instance.run();
     }
   }
@@ -193,19 +193,19 @@ public class ClientEventHandler {
   public void onCamera(EntityViewRenderEvent.CameraSetup event) {
     Minecraft mc = Minecraft.getMinecraft();
     Entity entity = event.getEntity();
-    if ((entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPlayerSleeping()) || mc.field_71474_y.field_74320_O != 1)
+    if ((entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPlayerSleeping()) || mc.gameSettings.thirdPersonView  != 1)
       return;
-    float f = entity.func_70047_e();
+    float f = entity.getEyeHeight();
     double partialTicks = event.getRenderPartialTicks();
-    double d0 = entity.field_70169_q + (entity.posX - entity.field_70169_q) * partialTicks;
-    double d1 = entity.field_70167_r + (entity.posY - entity.field_70167_r) * partialTicks + f;
-    double d2 = entity.field_70166_s + (entity.posZ - entity.field_70166_s) * partialTicks;
+    double d0 = entity.posX + (entity.posX - entity.posX) * partialTicks;
+    double d1 = entity.posY + (entity.posY - entity.posY) * partialTicks + f;
+    double d2 = entity.posZ  + (entity.posZ - entity.posZ ) * partialTicks;
     double d3 = (camera.cameraDistance - 4.0F);
     float f1 = entity.rotationYaw;
-    float f2 = entity.field_70125_A;
-    double d4 = (-MathHelper.func_76126_a(f1 * 0.017453292F) * MathHelper.func_76134_b(f2 * 0.017453292F)) * d3;
-    double d5 = (MathHelper.func_76134_b(f1 * 0.017453292F) * MathHelper.func_76134_b(f2 * 0.017453292F)) * d3;
-    double d6 = -MathHelper.func_76126_a(f2 * 0.017453292F) * d3;
+    float f2 = entity.rotationPitch;
+    double d4 = (-MathHelper.sin(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F)) * d3;
+    double d5 = (MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f2 * 0.017453292F)) * d3;
+    double d6 = -MathHelper.sin(f2 * 0.017453292F) * d3;
     for (int i = 0; i < 8; i++) {
       float f3 = ((i & 0x1) * 2 - 1);
       float f4 = ((i >> 1 & 0x1) * 2 - 1);
@@ -213,18 +213,18 @@ public class ClientEventHandler {
       f3 *= 0.1F;
       f4 *= 0.1F;
       f5 *= 0.1F;
-      RayTraceResult raytraceresult = mc.field_71441_e.func_72933_a(new Vec3d(d0 + f3, d1 + f4, d2 + f5), new Vec3d(d0 - d4 + f3 + f5, d1 - d6 + f4, d2 - d5 + f5));
+      RayTraceResult raytraceresult = mc.theWorld.rayTraceBlocks(new Vec3d(d0 + f3, d1 + f4, d2 + f5), new Vec3d(d0 - d4 + f3 + f5, d1 - d6 + f4, d2 - d5 + f5));
       if (raytraceresult != null) {
-        double d7 = raytraceresult.field_72307_f.func_72438_d(new Vec3d(d0, d1, d2));
+        double d7 = raytraceresult.hitVec.distanceTo(new Vec3d(d0, d1, d2));
         if (d7 < d3)
           d3 = d7;
       }
     }
-    GlStateManager.rotate(entity.field_70125_A - f2, 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotate(entity.rotationPitch - f2, 1.0F, 0.0F, 0.0F);
     GlStateManager.rotate(entity.rotationYaw - f1, 0.0F, 1.0F, 0.0F);
     GlStateManager.translate(0.0F, 0.0F, (float)-d3);
     GlStateManager.rotate(f1 - entity.rotationYaw, 0.0F, 1.0F, 0.0F);
-    GlStateManager.rotate(f2 - entity.field_70125_A, 1.0F, 0.0F, 0.0F);
+    GlStateManager.rotate(f2 - entity.rotationPitch, 1.0F, 0.0F, 0.0F);
   }
 
   @SubscribeEvent
@@ -236,7 +236,7 @@ public class ClientEventHandler {
     EntityLivingBase entity = data.getEntity(player);
     Minecraft mc = Minecraft.getMinecraft();
     if (entity != null) {
-      entity.func_70071_h_();
+      entity.onUpdate();
       MPMEntityUtil.Copy((EntityLivingBase)player, entity);
       return;
     }
@@ -248,17 +248,17 @@ public class ClientEventHandler {
         double d0 = player.getRNG().nextGaussian() * 0.02D;
         double d1 = player.getRNG().nextGaussian() * 0.02D;
         double d2 = player.getRNG().nextGaussian() * 0.02D;
-        player.worldObj.func_175688_a(EnumParticleTypes.HEART, player.posX + (player.getRNG().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, player.posY + 0.5D + (player.getRNG().nextFloat() * player.height), player.posZ + (player.getRNG().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, d0, d1, d2, new int[0]);
+        player.worldObj.spawnParticle(EnumParticleTypes.HEART, player.posX + (player.getRNG().nextFloat() * player.width * 2.0F) - player.width, player.posY + 0.5D + (player.getRNG().nextFloat() * player.height), player.posZ + (player.getRNG().nextFloat() * player.width * 2.0F) - player.width, d0, d1, d2, new int[0]);
       }
     }
     if (data.animation == EnumAnimation.CRY) {
       float f1 = player.rotationYaw * 3.1415927F / 180.0F;
-      float dx = -MathHelper.func_76126_a(f1);
-      float dz = MathHelper.func_76134_b(f1);
+      float dx = -MathHelper.sin(f1);
+      float dz = MathHelper.cos(f1);
       for (int i = 0; i < 10.0F; i++) {
-        float f2 = (player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dx * 0.15F;
-        float f3 = (player.getRNG().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dz * 0.15F;
-        player.worldObj.func_175688_a(EnumParticleTypes.WATER_SPLASH, player.posX + f2, player.posY - data.getBodyY() + 1.100000023841858D - player.func_70033_W(), player.posZ + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
+        float f2 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dx * 0.15F;
+        float f3 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dz * 0.15F;
+        player.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.posX + f2, player.posY - data.getBodyY() + 1.100000023841858D - player.getYOffset(), player.posZ + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
       }
     }
     if (data.animation != EnumAnimation.NONE)
@@ -285,10 +285,10 @@ public class ClientEventHandler {
     if (!MorePlayerModels.EnableParticles)
       return;
     Minecraft minecraft = Minecraft.getMinecraft();
-    double height = player.func_70033_W() + data.getBodyY();
+    double height = player.getYOffset() + data.getBodyY();
     Random rand = player.getRNG();
     for (int i = 0; i < 2; i++) {
-      EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.field_70130_N, rand.nextDouble() * player.height - height - 0.25D, (rand.nextDouble() - 0.5D) * player.field_70130_N, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
+      EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.width, rand.nextDouble() * player.height - height - 0.25D, (rand.nextDouble() - 0.5D) * player.width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
       minecraft.field_71452_i.func_78873_a((Particle)fx);
     }
   }

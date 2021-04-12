@@ -73,10 +73,12 @@ public class ClientProxy extends CommonProxy {
 
   public static KeyBinding Camera;
 
+  @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return null;
   }
 
+  @Override
   public void load() {
     MorePlayerModels.Channel.register(new PacketHandlerClient());
     new PresetController(MorePlayerModels.dir);
@@ -93,21 +95,22 @@ public class ClientProxy extends CommonProxy {
       checker.start();
     }
     MinecraftForge.EVENT_BUS.register(new RenderEvent());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandBow());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandCrawl());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandCry());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandDeath());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandDance());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandHug());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandNo());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandPoint());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandSit());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandSleep());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandWag());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandWave());
-    ClientCommandHandler.instance.func_71560_a((ICommand)new CommandYes());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandBow());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandCrawl());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandCry());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandDeath());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandDance());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandHug());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandNo());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandPoint());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandSit());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandSleep());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandWag());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandWave());
+    ClientCommandHandler.instance.registerCommand((ICommand)new CommandYes());
   }
 
+  @Override
   public void postLoad() {
     fixModels(true);
     if (MorePlayerModels.InventoryGuiEnabled) {
@@ -124,10 +127,10 @@ public class ClientProxy extends CommonProxy {
       RenderPlayer render = map.get(type);
       fixModels(render, type.equals("slim"), !init);
       boolean hasMPMLayers = false;
-      List<? extends LayerRenderer> list = render.field_177097_h;
+      List<? extends LayerRenderer> list = render.layerRenderers;
       for (LayerRenderer layer : list) {
         if (layer instanceof LayerInterface) {
-          ((LayerInterface)layer).setModel(render.func_177087_b());
+          ((LayerInterface)layer).setModel(render.getMainModel());
           hasMPMLayers = true;
         }
       }
@@ -138,11 +141,11 @@ public class ClientProxy extends CommonProxy {
 
   private static void fixModels(RenderPlayer render, boolean slim, boolean fix) {
     if (!MorePlayerModels.Compatibility) {
-      render.field_77045_g = (ModelBase)new ModelPlayerAlt(0.0F, slim);
+      render.mainModel = (ModelBase)new ModelPlayerAlt(0.0F, slim);
     } else if (fix) {
-      render.field_77045_g = (ModelBase)new ModelPlayer(0.0F, slim);
+      render.mainModel = (ModelBase)new ModelPlayer(0.0F, slim);
     }
-    Iterator<? extends LayerRenderer> ita = render.field_177097_h.iterator();
+    Iterator<? extends LayerRenderer> ita = render.layerRenderers.iterator();
     while (ita.hasNext()) {
       LayerRenderer layer = ita.next();
       if (layer instanceof LayerArmorBase) {
@@ -156,16 +159,16 @@ public class ClientProxy extends CommonProxy {
         }
       }
       if (layer instanceof LayerCustomHead)
-        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.func_177087_b()).bipedHead, 0);
+        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.getMainModel()).bipedHead, 0);
       if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
         ita.remove();
     }
     LayerElytraAlt layerElytraAlt = new LayerElytraAlt(render);
-    render.field_177097_h.add(layerElytraAlt);
+    render.layerRenderers.add(layerElytraAlt);
   }
 
   private static void addLayers(RenderPlayer playerRender) {
-    List<LayerRenderer<AbstractClientPlayer>> list = playerRender.field_177097_h;
+    List<LayerRenderer<AbstractClientPlayer>> list = playerRender.layerRenderers;
     list.removeIf(layer -> layer instanceof net.minecraft.client.renderer.entity.layers.LayerCape);
     list.add(1, new LayerEyes(playerRender));
     list.add(2, new LayerHead(playerRender));
@@ -182,15 +185,15 @@ public class ClientProxy extends CommonProxy {
     SimpleTexture simpleTexture;
     if (location == null)
       return;
-    TextureManager manager = Minecraft.getMinecraft().func_110434_K();
-    ITextureObject textureObject = manager.func_110581_b(location);
+    TextureManager manager = Minecraft.getMinecraft().getTextureManager();
+    ITextureObject textureObject = manager.getTexture(location);
     if (textureObject == null) {
       simpleTexture = new SimpleTexture(location);
-      manager.func_110579_a(location, (ITextureObject)simpleTexture);
+      manager.loadTexture(location, (ITextureObject)simpleTexture);
     }
     GlStateManager.func_187401_a(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     GlStateManager.pushMatrix();
-    GlStateManager.func_179147_l();
+    GlStateManager.enableBlend();
     GlStateManager.func_179144_i(simpleTexture.func_110552_b());
     GlStateManager.popMatrix();
   }

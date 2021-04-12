@@ -113,7 +113,7 @@ public class ModelHalo extends ModelBase {
     GlStateManager.pushMatrix();
     GlStateManager.rotate((float)entityIn.worldObj.func_82737_E(), 0.0F, 1.0F, 0.0F);
     float f = entityIn.ticksExisted + Minecraft.getMinecraft().func_184121_ak();
-    float f1 = MathHelper.func_76126_a(f * 0.2F) / 2.0F + 0.5F;
+    float f1 = MathHelper.sin(f * 0.2F) / 2.0F + 0.5F;
     f1 = f1 * f1 + f1;
     GlStateManager.translate(0.0F, -0.2F + f1 * 0.05F, 0.0F);
     if (this.field_78091_s) {

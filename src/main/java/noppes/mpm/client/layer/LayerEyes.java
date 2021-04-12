@@ -23,10 +23,10 @@ public class LayerEyes extends LayerInterface {
     GlStateManager.enableRescaleNormal();
     GlStateManager.func_179103_j(7425);
     GlStateManager.disableTexture2D();
-    GlStateManager.func_179147_l();
+    GlStateManager.enableBlend();
     GlStateManager.func_179089_o();
     GlStateManager.func_179118_c();
-    GlStateManager.func_179132_a(false);
+    GlStateManager.depthMask(false);
     int i = this.player.func_70070_b();
     int j = i % 65536;
     int k = i / 65536;
@@ -36,14 +36,14 @@ public class LayerEyes extends LayerInterface {
     drawLeft();
     drawRight();
     (Minecraft.getMinecraft()).field_71460_t.func_191514_d(false);
-    GlStateManager.func_179132_a(true);
-    GlStateManager.func_179084_k();
+    GlStateManager.depthMask(true);
+    GlStateManager.disableBlend();
     GlStateManager.func_179103_j(7424);
     GlStateManager.func_179141_d();
     GlStateManager.func_179129_p();
     GlStateManager.disableRescaleNormal();
     GlStateManager.popMatrix();
-    GlStateManager.func_179098_w();
+    GlStateManager.enableTexture2D();
   }
 
   private void drawLeft() {
@@ -112,14 +112,14 @@ public class LayerEyes extends LayerInterface {
       f2 *= 0.96F;
       f3 *= 0.96F;
     }
-    BufferBuilder tessellator = Tessellator.func_178181_a().func_178180_c();
+    BufferBuilder tessellator = Tessellator.getInstance().getBuffer();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    tessellator.func_181668_a(7, DefaultVertexFormats.field_181706_f);
-    tessellator.func_181662_b(x, y, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();
-    tessellator.func_181662_b(x, y2, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();
-    tessellator.func_181662_b(x2, y2, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();
-    tessellator.func_181662_b(x2, y, z).func_181666_a(f1, f2, f3, 1.0F).func_181675_d();
-    Tessellator.func_178181_a().func_78381_a();
+    tessellator.begin(7, DefaultVertexFormats.POSITION_COLOR);
+    tessellator.pos(x, y, z).color(f1, f2, f3, 1.0F).endVertex();
+    tessellator.pos(x, y2, z).color(f1, f2, f3, 1.0F).endVertex();
+    tessellator.pos(x2, y2, z).color(f1, f2, f3, 1.0F).endVertex();
+    tessellator.pos(x2, y, z).color(f1, f2, f3, 1.0F).endVertex();
+    Tessellator.getInstance().func_78381_a();
   }
 
   public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {}

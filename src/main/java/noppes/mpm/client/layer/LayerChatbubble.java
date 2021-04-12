@@ -18,7 +18,7 @@ public class LayerChatbubble extends LayerInterface implements LayerPreRender {
     Minecraft mc = Minecraft.getMinecraft();
     if (player == mc.thePlayer)
       return;
-    ChatMessages chat = ChatMessages.getChatMessages(player.func_70005_c_());
+    ChatMessages chat = ChatMessages.getChatMessages(player.getName());
     if (!chat.hasMessage())
       return;
     double x = mc.thePlayer.posX - player.posX;

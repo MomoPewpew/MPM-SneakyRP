@@ -70,7 +70,7 @@ public class ModelScaleRenderer extends ModelRenderer {
   public void compile(float par1) {
     this.field_78811_r = GLAllocation.func_74526_a(1);
     GL11.glNewList(this.field_78811_r, 4864);
-    BufferBuilder worldrenderer = Tessellator.func_178181_a().func_178180_c();
+    BufferBuilder worldrenderer = Tessellator.getInstance().getBuffer();
     for (int i = 0; i < this.field_78804_l.size(); i++)
       ((ModelBox)this.field_78804_l.get(i)).func_178780_a(worldrenderer, par1);
     GL11.glEndList();

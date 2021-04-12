@@ -8,18 +8,18 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandAngry extends MpmCommandInterface {
-  public String func_71517_b() {
+  public String getCommandName() {
     return "angry";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender sender, String[] args) {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
     if (!(sender instanceof EntityPlayerMP))
       return;
     EntityPlayerMP player = (EntityPlayerMP)sender;
     Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(2), player.getUniqueID() });
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  public String getCommandUsage(ICommandSender sender) {
     return "/angry to show you're angry";
   }
 }

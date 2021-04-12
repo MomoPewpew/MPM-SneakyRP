@@ -7,15 +7,18 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandDance extends MpmCommandInterface {
-  public String func_71517_b() {
+  @Override
+  public String getCommandName() {
     return "dance";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender sender, String[] args) {
+  @Override
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
     ClientEventHandler.processAnimation(EnumAnimation.DANCING.ordinal());
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  @Override
+  public String getCommandUsage(ICommandSender sender) {
     return "/dance to dance";
   }
 }

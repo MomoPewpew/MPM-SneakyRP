@@ -8,18 +8,18 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandLove extends MpmCommandInterface {
-  public String func_71517_b() {
+  public String getCommandName() {
     return "love";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender sender, String[] args) {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
     if (!(sender instanceof EntityPlayerMP))
       return;
     EntityPlayerMP player = (EntityPlayerMP)sender;
     Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(0), player.getUniqueID() });
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  public String getCommandUsage(ICommandSender sender) {
     return "/love to show your love";
   }
 }

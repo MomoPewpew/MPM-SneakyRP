@@ -45,11 +45,11 @@ public class CommandMPM extends MpmCommandInterface {
     this.entities.put("clear", null);
   }
 
-  public String func_71517_b() {
+  public String getCommandName() {
     return "mpm";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
+  public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
     EntityPlayerMP entityPlayerMP;
     EntityPlayer entityPlayer1;
     if (args.length < 1)
@@ -206,7 +206,7 @@ public class CommandMPM extends MpmCommandInterface {
     }
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  public String getCommandUsage(ICommandSender sender) {
     return "/mpm <url/model/scale/name/animation> [@p]";
   }
 

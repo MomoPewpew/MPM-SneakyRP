@@ -10,11 +10,11 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandSing extends MpmCommandInterface {
-  public String func_71517_b() {
+  public String getCommandName() {
     return "sing";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender sender, String[] args) {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
     if (!(sender instanceof EntityPlayerMP))
       return;
     EntityPlayerMP player = (EntityPlayerMP)sender;
@@ -30,7 +30,7 @@ public class CommandSing extends MpmCommandInterface {
     Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.posX), Double.valueOf(player.posY + 2.0D), Double.valueOf(player.posZ), Double.valueOf(note / 24.0D) });
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  public String getCommandUsage(ICommandSender sender) {
     return "/sing [0-24] to sing";
   }
 }

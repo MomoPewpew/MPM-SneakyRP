@@ -7,15 +7,19 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandSit extends MpmCommandInterface {
-  public String func_71517_b() {
+
+  @Override
+  public String getCommandName() {
     return "sit";
   }
 
-  public void func_184881_a(MinecraftServer server, ICommandSender icommandsender, String[] args) {
+  @Override
+  public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) {
     ClientEventHandler.processAnimation(EnumAnimation.SITTING.ordinal());
   }
 
-  public String func_71518_a(ICommandSender sender) {
+  @Override
+  public String getCommandUsage(ICommandSender sender) {
     return "/sit to sit down";
   }
 }

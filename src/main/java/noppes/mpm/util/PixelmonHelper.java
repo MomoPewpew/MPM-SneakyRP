@@ -55,7 +55,7 @@ public class PixelmonHelper {
   public static boolean isPixelmon(Entity entity) {
     if (!Enabled)
       return false;
-    return EntityList.func_75621_b(entity).contains("Pixelmon");
+    return EntityList.getEntityString(entity).contains("Pixelmon");
   }
 
   public static Object getModel(EntityLivingBase entity) {

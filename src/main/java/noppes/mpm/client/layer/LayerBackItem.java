@@ -19,7 +19,7 @@ public class LayerBackItem extends LayerInterface {
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
     Minecraft minecraft = Minecraft.getMinecraft();
     ItemStack itemstack = this.playerdata.backItem;
-    if (!MorePlayerModels.EnableBackItem || itemstack.func_190926_b() || ItemStack.func_77989_b(itemstack, this.player.field_71071_by.func_70448_g()))
+    if (!MorePlayerModels.EnableBackItem || itemstack.func_190926_b() || ItemStack.func_77989_b(itemstack, this.player.inventory.func_70448_g()))
       return;
     Item item = itemstack.func_77973_b();
     if (item instanceof net.minecraft.item.ItemBlock)

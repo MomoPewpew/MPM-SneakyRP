@@ -7,10 +7,10 @@ import noppes.mpm.ModelData;
 
 public class AniBow {
   public static void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity, ModelBiped model, ModelData data) {
-    float ticks = (entity.field_70173_aa - data.animationStart) / 10.0F;
+    float ticks = (entity.ticksExisted - data.animationStart) / 10.0F;
     if (ticks > 1.0F)
       ticks = 1.0F;
-    float ticks2 = (entity.field_70173_aa + 1 - data.animationStart) / 10.0F;
+    float ticks2 = (entity.ticksExisted + 1 - data.animationStart) / 10.0F;
     if (ticks2 > 1.0F)
       ticks2 = 1.0F;
     ticks += (ticks2 - ticks) * Minecraft.getMinecraft().func_184121_ak();

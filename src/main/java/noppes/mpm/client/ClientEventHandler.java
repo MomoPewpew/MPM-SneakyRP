@@ -248,7 +248,7 @@ public class ClientEventHandler {
         double d0 = player.func_70681_au().nextGaussian() * 0.02D;
         double d1 = player.func_70681_au().nextGaussian() * 0.02D;
         double d2 = player.func_70681_au().nextGaussian() * 0.02D;
-        player.field_70170_p.func_175688_a(EnumParticleTypes.HEART, player.field_70165_t + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, player.field_70163_u + 0.5D + (player.func_70681_au().nextFloat() * player.field_70131_O), player.field_70161_v + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, d0, d1, d2, new int[0]);
+        player.worldObj.func_175688_a(EnumParticleTypes.HEART, player.field_70165_t + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, player.field_70163_u + 0.5D + (player.func_70681_au().nextFloat() * player.height), player.field_70161_v + (player.func_70681_au().nextFloat() * player.field_70130_N * 2.0F) - player.field_70130_N, d0, d1, d2, new int[0]);
       }
     }
     if (data.animation == EnumAnimation.CRY) {
@@ -258,7 +258,7 @@ public class ClientEventHandler {
       for (int i = 0; i < 10.0F; i++) {
         float f2 = (player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dx * 0.15F;
         float f3 = (player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 0.5F + dz * 0.15F;
-        player.field_70170_p.func_175688_a(EnumParticleTypes.WATER_SPLASH, player.field_70165_t + f2, player.field_70163_u - data.getBodyY() + 1.100000023841858D - player.func_70033_W(), player.field_70161_v + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
+        player.worldObj.func_175688_a(EnumParticleTypes.WATER_SPLASH, player.field_70165_t + f2, player.field_70163_u - data.getBodyY() + 1.100000023841858D - player.func_70033_W(), player.field_70161_v + f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
       }
     }
     if (data.animation != EnumAnimation.NONE)
@@ -288,7 +288,7 @@ public class ClientEventHandler {
     double height = player.func_70033_W() + data.getBodyY();
     Random rand = player.func_70681_au();
     for (int i = 0; i < 2; i++) {
-      EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.field_70130_N, rand.nextDouble() * player.field_70131_O - height - 0.25D, (rand.nextDouble() - 0.5D) * player.field_70130_N, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
+      EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.field_70130_N, rand.nextDouble() * player.height - height - 0.25D, (rand.nextDouble() - 0.5D) * player.field_70130_N, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
       minecraft.field_71452_i.func_78873_a((Particle)fx);
     }
   }

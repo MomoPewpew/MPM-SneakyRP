@@ -221,7 +221,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
     this.rotationPointZ = 0.0F;
     this.rotationPointY = 11.0F;
     if (this.playerdata.animation == EnumAnimation.WAG)
-      rotateAngleY = (float)(Math.sin((this.player.field_70173_aa * 0.55F)) * 0.44999998807907104D);
+      rotateAngleY = (float)(Math.sin((this.player.ticksExisted * 0.55F)) * 0.44999998807907104D);
     if (part.type == 2) {
       this.rotationPointY = 12.0F + (config.scaleY - 1.0F) * 3.0F;
       this.rotationPointZ = 15.0F + (config.scaleZ - 1.0F) * 10.0F;

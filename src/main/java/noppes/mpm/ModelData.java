@@ -70,26 +70,26 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
   public synchronized NBTTagCompound writeToNBT() {
     NBTTagCompound compound = super.writeToNBT();
-    compound.func_74777_a("SoundType", this.soundType);
-    compound.func_74768_a("Animation", this.animation.ordinal());
-    compound.func_74772_a("LastEdited", this.lastEdited);
+    compound.setShort("SoundType", this.soundType);
+    compound.setInteger("Animation", this.animation.ordinal());
+    compound.setLong("LastEdited", this.lastEdited);
     return compound;
   }
 
   public synchronized void readFromNBT(NBTTagCompound compound) {
     String prevUrl = this.url;
     super.readFromNBT(compound);
-    this.soundType = compound.func_74765_d("SoundType");
-    this.lastEdited = compound.func_74763_f("LastEdited");
+    this.soundType = compound.getShort("SoundType");
+    this.lastEdited = compound.getLong("LastEdited");
     if (this.player != null) {
       this.player.refreshDisplayName();
       if (this.entityClass == null) {
-        this.player.getEntityData().func_82580_o("MPMModel");
+        this.player.getEntityData().removeTag("MPMModel");
       } else {
-        this.player.getEntityData().func_74778_a("MPMModel", this.entityClass.getCanonicalName());
+        this.player.getEntityData().setString("MPMModel", this.entityClass.getCanonicalName());
       }
     }
-    setAnimation(compound.func_74762_e("Animation"));
+    setAnimation(compound.getInteger("Animation"));
     if (!prevUrl.equals(this.url)) {
       this.resourceInit = false;
       this.resourceLoaded = false;
@@ -116,7 +116,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     if (this.player == null || ani == EnumAnimation.NONE) {
       this.animationStart = -1;
     } else {
-      this.animationStart = this.player.field_70173_aa;
+      this.animationStart = this.player.ticksExisted;
     }
   }
 
@@ -125,20 +125,20 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
       return null;
     if (this.entity == null)
       try {
-        this.entity = this.entityClass.getConstructor(new Class[] { World.class }).newInstance(new Object[] { player.field_70170_p });
-        if (PixelmonHelper.isPixelmon((Entity)this.entity) && player.field_70170_p.field_72995_K && !this.extra.func_74764_b("Name"))
-          this.extra.func_74778_a("Name", "Abra");
+        this.entity = this.entityClass.getConstructor(new Class[] { World.class }).newInstance(new Object[] { player.worldObj });
+        if (PixelmonHelper.isPixelmon((Entity)this.entity) && player.worldObj.isRemote && !this.extra.hasKey("Name"))
+          this.extra.setString("Name", "Abra");
         this.entity.func_70037_a(this.extra);
         this.entity.func_184224_h(true);
         this.entity.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(player.func_110138_aP());
         if (this.entity instanceof EntityLiving) {
           EntityLiving living = (EntityLiving)this.entity;
-          living.func_184201_a(EntityEquipmentSlot.MAINHAND, player.func_184614_ca());
-          living.func_184201_a(EntityEquipmentSlot.OFFHAND, player.func_184592_cb());
-          living.func_184201_a(EntityEquipmentSlot.HEAD, player.field_71071_by.func_70440_f(3));
-          living.func_184201_a(EntityEquipmentSlot.CHEST, player.field_71071_by.func_70440_f(2));
-          living.func_184201_a(EntityEquipmentSlot.LEGS, player.field_71071_by.func_70440_f(1));
-          living.func_184201_a(EntityEquipmentSlot.FEET, player.field_71071_by.func_70440_f(0));
+          living.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, player.getHeldItemMainhand());
+          living.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, player.getHeldItemOffhand());
+          living.setItemStackToSlot(EntityEquipmentSlot.HEAD, player.inventory.armorItemInSlot(3));
+          living.setItemStackToSlot(EntityEquipmentSlot.CHEST, player.inventory.armorItemInSlot(2));
+          living.setItemStackToSlot(EntityEquipmentSlot.LEGS, player.inventory.armorItemInSlot(1));
+          living.setItemStackToSlot(EntityEquipmentSlot.FEET, player.inventory.armorItemInSlot(0));
         }
       } catch (Exception exception) {}
     return this.entity;
@@ -180,25 +180,25 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
   }
 
   private boolean isBlocked(EntityPlayer player) {
-    return !player.field_70170_p.func_175623_d((new BlockPos((Entity)player)).func_177981_b(2));
+    return !player.worldObj.isAirBlock((new BlockPos((Entity)player)).up(2));
   }
 
   public void setExtra(EntityLivingBase entity, String key, String value) {
     key = key.toLowerCase();
-    if (key.equals("breed") && EntityList.func_75621_b((Entity)entity).equals("tgvstyle.Dog"))
+    if (key.equals("breed") && EntityList.getEntityString((Entity)entity).equals("tgvstyle.Dog"))
       try {
         Method method = entity.getClass().getMethod("getBreedID", new Class[0]);
         Enum breed = (Enum)method.invoke(entity, new Object[0]);
         method = entity.getClass().getMethod("setBreedID", new Class[] { breed.getClass() });
         method.invoke(entity, new Object[] { ((Enum[])breed.getClass().getEnumConstants())[Integer.parseInt(value)] });
         NBTTagCompound comp = new NBTTagCompound();
-        entity.func_70014_b(comp);
-        this.extra.func_74778_a("EntityData21", comp.func_74779_i("EntityData21"));
+        entity.writeEntityToNBT(comp);
+        this.extra.setString("EntityData21", comp.getString("EntityData21"));
       } catch (Exception e) {
         e.printStackTrace();
       }
     if (key.equalsIgnoreCase("name") && PixelmonHelper.isPixelmon((Entity)entity))
-      this.extra.func_74778_a("Name", value);
+      this.extra.setString("Name", value);
     clearEntity();
   }
 
@@ -208,14 +208,14 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     EntityPlayer player = this.player;
     saveExecutor.submit(() -> {
           try {
-            String filename = player.func_110124_au().toString().toLowerCase();
+            String filename = player.getUniqueID().toString().toLowerCase();
             if (filename.isEmpty())
               filename = "noplayername";
             filename = filename + ".dat";
             File file = new File(MorePlayerModels.dir, filename + "_new");
             File file1 = new File(MorePlayerModels.dir, filename + "_old");
             File file2 = new File(MorePlayerModels.dir, filename);
-            CompressedStreamTools.func_74799_a(writeToNBT(), new FileOutputStream(file));
+            CompressedStreamTools.writeCompressed(writeToNBT(), new FileOutputStream(file));
             if (file1.exists())
               file1.delete();
             file2.renameTo(file1);
@@ -234,7 +234,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     ModelData data = (ModelData)player.getCapability(MODELDATA_CAPABILITY, null);
     if (data.player == null) {
       data.player = player;
-      NBTTagCompound compound = loadPlayerData(player.func_110124_au());
+      NBTTagCompound compound = loadPlayerData(player.getUniqueID());
       if (compound != null)
         data.readFromNBT(compound);
     }
@@ -250,25 +250,26 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
       File file = new File(MorePlayerModels.dir, filename);
       if (!file.exists())
         return null;
-      return CompressedStreamTools.func_74796_a(new FileInputStream(file));
+      return CompressedStreamTools.readCompressed(new FileInputStream(file));
     } catch (Exception e) {
       LogWriter.except(e);
       try {
         File file = new File(MorePlayerModels.dir, filename + "_old");
         if (!file.exists())
           return null;
-        return CompressedStreamTools.func_74796_a(new FileInputStream(file));
+        return CompressedStreamTools.readCompressed(new FileInputStream(file));
       } catch (Exception exception) {
         LogWriter.except(exception);
         return null;
       }
     }
   }
-
+  @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
     return (capability == MODELDATA_CAPABILITY);
   }
 
+  @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
     if (hasCapability(capability, facing))
       return (T)this;

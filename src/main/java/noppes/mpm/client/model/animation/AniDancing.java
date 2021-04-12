@@ -6,8 +6,8 @@ import net.minecraft.entity.Entity;
 
 public class AniDancing {
   public static void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity, ModelBiped model) {
-    float dancing = entity.field_70173_aa / 4.0F;
-    float dancing2 = (entity.field_70173_aa + 1) / 4.0F;
+    float dancing = entity.ticksExisted / 4.0F;
+    float dancing2 = (entity.ticksExisted + 1) / 4.0F;
     dancing += (dancing2 - dancing) * Minecraft.getMinecraft().func_184121_ak();
     float x = (float)Math.sin(dancing);
     float y = (float)Math.abs(Math.cos(dancing));

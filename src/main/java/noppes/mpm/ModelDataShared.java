@@ -46,48 +46,48 @@ public class ModelDataShared {
   public NBTTagCompound writeToNBT() {
     NBTTagCompound compound = new NBTTagCompound();
     if (this.entityClass != null)
-      compound.func_74778_a("EntityClass", this.entityClass.getCanonicalName());
-    compound.func_74782_a("ArmsConfig", (NBTBase)this.arm1.writeToNBT());
-    compound.func_74782_a("BodyConfig", (NBTBase)this.body.writeToNBT());
-    compound.func_74782_a("LegsConfig", (NBTBase)this.leg1.writeToNBT());
-    compound.func_74782_a("HeadConfig", (NBTBase)this.head.writeToNBT());
-    compound.func_74782_a("LegParts", (NBTBase)this.legParts.writeToNBT());
-    compound.func_74782_a("Eyes", (NBTBase)this.eyes.writeToNBT());
-    compound.func_74757_a("EyesEnabled", this.eyes.isEnabled());
-    compound.func_74782_a("ExtraData", (NBTBase)this.extra);
-    compound.func_74768_a("WingMode", this.wingMode);
-    compound.func_74778_a("CustomSkinUrl", this.url);
-    compound.func_74778_a("DisplayName", this.displayName);
-    compound.func_74778_a("DisplayDisplayFormat", this.displayFormat);
+      compound.setString("EntityClass", this.entityClass.getCanonicalName());
+    compound.setTag("ArmsConfig", (NBTBase)this.arm1.writeToNBT());
+    compound.setTag("BodyConfig", (NBTBase)this.body.writeToNBT());
+    compound.setTag("LegsConfig", (NBTBase)this.leg1.writeToNBT());
+    compound.setTag("HeadConfig", (NBTBase)this.head.writeToNBT());
+    compound.setTag("LegParts", (NBTBase)this.legParts.writeToNBT());
+    compound.setTag("Eyes", (NBTBase)this.eyes.writeToNBT());
+    compound.setBoolean("EyesEnabled", this.eyes.isEnabled());
+    compound.setTag("ExtraData", (NBTBase)this.extra);
+    compound.setInteger("WingMode", this.wingMode);
+    compound.setString("CustomSkinUrl", this.url);
+    compound.setString("DisplayName", this.displayName);
+    compound.setString("DisplayDisplayFormat", this.displayFormat);
     NBTTagList list = new NBTTagList();
     for (EnumParts e : this.parts.keySet()) {
       NBTTagCompound item = ((ModelPartData)this.parts.get(e)).writeToNBT();
-      item.func_74778_a("PartName", e.name);
-      list.func_74742_a((NBTBase)item);
+      item.setString("PartName", e.name);
+      list.appendTag((NBTBase)item);
     }
-    compound.func_74782_a("Parts", (NBTBase)list);
+    compound.setTag("Parts", (NBTBase)list);
     return compound;
   }
 
   public void readFromNBT(NBTTagCompound compound) {
-    setEntityClass(compound.func_74779_i("EntityClass"));
-    this.arm1.readFromNBT(compound.func_74775_l("ArmsConfig"));
-    this.body.readFromNBT(compound.func_74775_l("BodyConfig"));
-    this.leg1.readFromNBT(compound.func_74775_l("LegsConfig"));
-    this.head.readFromNBT(compound.func_74775_l("HeadConfig"));
-    this.legParts.readFromNBT(compound.func_74775_l("LegParts"));
-    if (compound.func_74764_b("Eyes"))
-      this.eyes.readFromNBT(compound.func_74775_l("Eyes"));
-    this.extra = compound.func_74775_l("ExtraData");
-    this.wingMode = compound.func_74762_e("WingMode");
-    this.url = compound.func_74779_i("CustomSkinUrl");
-    this.displayName = compound.func_74779_i("DisplayName");
-    this.displayFormat = compound.func_74779_i("DisplayDisplayFormat");
+    setEntityClass(compound.getString("EntityClass"));
+    this.arm1.readFromNBT(compound.getCompoundTag("ArmsConfig"));
+    this.body.readFromNBT(compound.getCompoundTag("BodyConfig"));
+    this.leg1.readFromNBT(compound.getCompoundTag("LegsConfig"));
+    this.head.readFromNBT(compound.getCompoundTag("HeadConfig"));
+    this.legParts.readFromNBT(compound.getCompoundTag("LegParts"));
+    if (compound.hasKey("Eyes"))
+      this.eyes.readFromNBT(compound.getCompoundTag("Eyes"));
+    this.extra = compound.getCompoundTag("ExtraData");
+    this.wingMode = compound.getInteger("WingMode");
+    this.url = compound.getString("CustomSkinUrl");
+    this.displayName = compound.getString("DisplayName");
+    this.displayFormat = compound.getString("DisplayDisplayFormat");
     HashMap<EnumParts, ModelPartData> parts = new HashMap<>();
-    NBTTagList list = compound.func_150295_c("Parts", 10);
-    for (int i = 0; i < list.func_74745_c(); i++) {
-      NBTTagCompound item = list.func_150305_b(i);
-      String name = item.func_74779_i("PartName");
+    NBTTagList list = compound.getTagList("Parts", 10);
+    for (int i = 0; i < list.tagCount(); i++) {
+      NBTTagCompound item = list.getCompoundTagAt(i);
+      String name = item.getString("PartName");
       ModelPartData part = new ModelPartData(name);
       part.readFromNBT(item);
       EnumParts e = EnumParts.FromName(name);
@@ -159,7 +159,7 @@ public class ModelDataShared {
   public float offsetY() {
     if (this.entity == null)
       return -getBodyY();
-    return this.entity.field_70131_O - 1.8F;
+    return this.entity.height - 1.8F;
   }
 
   public void clearEntity() {

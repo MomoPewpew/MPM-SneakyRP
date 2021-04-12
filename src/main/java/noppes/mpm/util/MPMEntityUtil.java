@@ -6,7 +6,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class MPMEntityUtil {
   public static void Copy(EntityLivingBase copied, EntityLivingBase entity) {
-    entity.field_70170_p = copied.field_70170_p;
+    entity.worldObj = copied.worldObj;
     entity.field_70725_aQ = copied.field_70725_aQ;
     entity.field_70140_Q = copied.field_70140_Q;
     entity.field_70141_P = copied.field_70140_Q;
@@ -46,7 +46,7 @@ public class MPMEntityUtil {
     entity.field_70732_aI = copied.field_70732_aI;
     entity.field_82175_bq = copied.field_82175_bq;
     entity.field_110158_av = copied.field_110158_av;
-    entity.field_70173_aa = copied.field_70173_aa;
+    entity.ticksExisted = copied.ticksExisted;
     entity.func_70606_j(Math.min(copied.func_110143_aJ(), entity.func_110138_aP()));
     entity.getEntityData().func_179237_a(copied.getEntityData());
     if (entity.func_184187_bx() != copied.func_184187_bx())
@@ -64,7 +64,7 @@ public class MPMEntityUtil {
       ePlayer.field_71085_bR = cPlayer.field_71085_bR;
     }
     for (EntityEquipmentSlot slot : EntityEquipmentSlot.values())
-      entity.func_184201_a(slot, copied.func_184582_a(slot));
+      entity.setItemStackToSlot(slot, copied.func_184582_a(slot));
     if (entity instanceof net.minecraft.entity.boss.EntityDragon)
       entity.field_70177_z += 180.0F;
   }

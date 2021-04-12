@@ -34,22 +34,22 @@ public class PacketHandlerServer {
       if (version == MorePlayerModels.Version) {
         ModelData data = ModelData.get((EntityPlayer)player);
         data.readFromNBT(Server.readNBT(buffer));
-        if (!player.field_70170_p.func_82736_K().func_82766_b("mpmAllowEntityModels"))
+        if (!player.worldObj.func_82736_K().func_82766_b("mpmAllowEntityModels"))
           data.entityClass = null;
         data.save();
-        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
       }
-      ItemStack back = (ItemStack)player.field_71071_by.field_70462_a.get(0);
+      ItemStack back = (ItemStack)player.inventory.field_70462_a.get(0);
       if (!back.func_190926_b())
-        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.func_110124_au(), back.func_77955_b(new NBTTagCompound()) });
+        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), back.func_77955_b(new NBTTagCompound()) });
       Server.sendData(player, EnumPackets.PING, new Object[] { Integer.valueOf(MorePlayerModels.Version) });
     } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {
       ModelData data = ModelData.get((EntityPlayer)player);
       data.readFromNBT(Server.readNBT(buffer));
-      if (!player.field_70170_p.func_82736_K().func_82766_b("mpmAllowEntityModels"))
+      if (!player.worldObj.func_82736_K().func_82766_b("mpmAllowEntityModels"))
         data.entityClass = null;
       data.save();
-      Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+      Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
     } else if (type == EnumPackets.ANIMATION) {
       EnumAnimation animation = EnumAnimation.values()[buffer.readInt()];
       if (animation == EnumAnimation.SLEEPING_SOUTH) {
@@ -69,7 +69,7 @@ public class PacketHandlerServer {
       ModelData data = ModelData.get((EntityPlayer)player);
       if (data.animationEquals(animation))
         animation = EnumAnimation.NONE;
-      Server.sendAssociatedData((Entity)player, EnumPackets.ANIMATION, new Object[] { player.func_110124_au(), animation });
+      Server.sendAssociatedData((Entity)player, EnumPackets.ANIMATION, new Object[] { player.getUniqueID(), animation });
       data.setAnimation(animation);
     }
   }

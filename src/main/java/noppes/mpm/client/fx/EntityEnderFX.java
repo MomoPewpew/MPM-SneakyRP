@@ -27,7 +27,7 @@ public class EntityEnderFX extends ParticlePortal {
   private float startX = 0.0F, startY = 0.0F, startZ = 0.0F;
 
   public EntityEnderFX(AbstractClientPlayer player, double partialTicks, double rotationY, double rotationXY, double par8, double par10, double par12, ModelPartData data) {
-    super(player.field_70170_p, partialTicks, rotationY, rotationXY, par8, par10, par12);
+    super(player.worldObj, partialTicks, rotationY, rotationXY, par8, par10, par12);
     this.player = player;
     this.particleNumber = player.func_70681_au().nextInt(2);
     this.portalParticleScale = this.field_70544_f = this.field_187136_p.nextFloat() * 0.2F + 0.5F;

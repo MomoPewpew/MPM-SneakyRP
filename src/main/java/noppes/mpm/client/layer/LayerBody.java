@@ -144,7 +144,7 @@ public class LayerBody extends LayerInterface {
       this.wing2.render(par7);
     }
     if (data.type == 4)
-      this.wing3.func_78088_a((Entity)this.player, this.player.field_184619_aG, this.player.field_70721_aZ, this.player.field_70173_aa, 0.0F, 0.0F, par7);
+      this.wing3.func_78088_a((Entity)this.player, this.player.field_184619_aG, this.player.field_70721_aZ, this.player.ticksExisted, 0.0F, 0.0F, par7);
     GlStateManager.popMatrix();
   }
 
@@ -189,7 +189,7 @@ public class LayerBody extends LayerInterface {
     this.wing.rotateAngleZ = 0.5090659F;
     this.wing2.rotateAngleY = 0.8F;
     float motion = Math.abs(MathHelper.func_76126_a(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
-    if (this.player.field_70170_p.func_175623_d(this.player.func_180425_c())) {
+    if (this.player.worldObj.isAirBlock(this.player.func_180425_c())) {
       float speed = 0.55F + 0.5F * motion;
       float y = MathHelper.func_76126_a(par3 * 0.35F);
       this.wing.rotateAngleZ += y * 0.5F * speed;

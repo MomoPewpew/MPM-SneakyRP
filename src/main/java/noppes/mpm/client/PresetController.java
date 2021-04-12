@@ -39,11 +39,11 @@ public class PresetController {
     NBTTagCompound compound = loadPreset();
     HashMap<String, Preset> presets = new HashMap<>();
     if (compound != null) {
-      if (compound.func_74764_b("PresetSelected"))
-        this.selected = compound.func_74779_i("PresetSelected");
-      NBTTagList list = compound.func_150295_c("Presets", 10);
-      for (int i = 0; i < list.func_74745_c(); i++) {
-        NBTTagCompound comp = list.func_150305_b(i);
+      if (compound.hasKey("PresetSelected"))
+        this.selected = compound.getString("PresetSelected");
+      NBTTagList list = compound.getTagList("Presets", 10);
+      for (int i = 0; i < list.tagCount(); i++) {
+        NBTTagCompound comp = list.getCompoundTagAt(i);
         Preset preset = new Preset();
         preset.readFromNBT(comp);
         presets.put(preset.name.toLowerCase(), preset);
@@ -71,14 +71,14 @@ public class PresetController {
       File file = new File(this.dir, filename);
       if (!file.exists())
         return null;
-      return CompressedStreamTools.func_74796_a(new FileInputStream(file));
+      return CompressedStreamTools.readCompressed(new FileInputStream(file));
     } catch (Exception e) {
       LogWriter.except(e);
       try {
         File file = new File(this.dir, filename + "_old");
         if (!file.exists())
           return null;
-        return CompressedStreamTools.func_74796_a(new FileInputStream(file));
+        return CompressedStreamTools.readCompressed(new FileInputStream(file));
       } catch (Exception exception) {
         LogWriter.except(exception);
         return null;
@@ -90,9 +90,9 @@ public class PresetController {
     NBTTagCompound compound = new NBTTagCompound();
     NBTTagList list = new NBTTagList();
     for (Preset preset : this.presets.values())
-      list.func_74742_a((NBTBase)preset.writeToNBT());
-    compound.func_74782_a("Presets", (NBTBase)list);
-    compound.func_74778_a("PresetSelected", this.selected);
+      list.appendTag((NBTBase)preset.writeToNBT());
+    compound.setTag("Presets", (NBTBase)list);
+    compound.setString("PresetSelected", this.selected);
     savePreset(compound);
   }
 
@@ -102,7 +102,7 @@ public class PresetController {
       File file = new File(this.dir, filename + "_new");
       File file1 = new File(this.dir, filename + "_old");
       File file2 = new File(this.dir, filename);
-      CompressedStreamTools.func_74799_a(compound, new FileOutputStream(file));
+      CompressedStreamTools.writeCompressed(compound, new FileOutputStream(file));
       if (file1.exists())
         file1.delete();
       file2.renameTo(file1);

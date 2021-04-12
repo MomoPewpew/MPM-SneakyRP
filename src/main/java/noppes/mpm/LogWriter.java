@@ -45,6 +45,7 @@ public class LogWriter {
       if (file.exists())
         file.renameTo(file1);
       handler = new StreamHandler(new FileOutputStream(file), new Formatter() {
+    	    @Override
             public String format(LogRecord record) {
               StackTraceElement element = null;
               for (int i = (Thread.currentThread().getStackTrace()).length; i > 0; i--) {

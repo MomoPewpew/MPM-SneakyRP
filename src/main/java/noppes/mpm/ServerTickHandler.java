@@ -22,13 +22,13 @@ public class ServerTickHandler {
       return;
     EntityPlayerMP player = (EntityPlayerMP)event.player;
     ModelData data = ModelData.get((EntityPlayer)player);
-    ItemStack item = (ItemStack)player.field_71071_by.field_70462_a.get(0);
+    ItemStack item = (ItemStack)player.inventory.field_70462_a.get(0);
     if (data.backItem != item) {
       if (item.func_190926_b()) {
-        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_REMOVE, new Object[] { player.func_110124_au() });
+        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_REMOVE, new Object[] { player.getUniqueID() });
       } else {
         NBTTagCompound tag = item.func_77955_b(new NBTTagCompound());
-        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.func_110124_au(), tag });
+        Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), tag });
       }
       data.backItem = item;
     }
@@ -41,7 +41,7 @@ public class ServerTickHandler {
   }
 
   public static void checkAnimation(EntityPlayer player, ModelData data) {
-    if (data.prevPosY <= 0.0D || player.field_70173_aa < 40)
+    if (data.prevPosY <= 0.0D || player.ticksExisted < 40)
       return;
     double motionX = data.prevPosX - player.field_70165_t;
     double motionY = data.prevPosY - player.field_70163_u;

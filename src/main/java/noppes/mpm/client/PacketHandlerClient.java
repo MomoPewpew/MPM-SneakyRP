@@ -48,13 +48,13 @@ public class PacketHandlerClient extends PacketHandlerServer {
         GuiCreationScreenInterface.Message = "message.higherversion";
       }
     } else if (type == EnumPackets.EYE_BLINK) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       ModelData data = ModelData.get(pl);
       data.eyes.blinkStart = System.currentTimeMillis();
     } else if (type == EnumPackets.SEND_PLAYER_DATA) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       ModelData data = ModelData.get(pl);
@@ -64,19 +64,19 @@ public class PacketHandlerClient extends PacketHandlerServer {
       if (pl == (Minecraft.getMinecraft()).thePlayer)
         data.lastEdited = System.currentTimeMillis();
     } else if (type == EnumPackets.CHAT_EVENT) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       String message = Server.readString(buffer);
       ChatMessages.getChatMessages(pl.func_70005_c_()).addMessage(message);
     } else if (type == EnumPackets.BACK_ITEM_REMOVE) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       ModelData data = ModelData.get(pl);
       data.backItem = ItemStack.field_190927_a;
     } else if (type == EnumPackets.BACK_ITEM_UPDATE) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       NBTTagCompound compound = Server.readNBT(buffer);
@@ -86,15 +86,15 @@ public class PacketHandlerClient extends PacketHandlerServer {
     } else if (type == EnumPackets.PARTICLE) {
       int animation = buffer.readInt();
       if (animation == 0) {
-        EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+        EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
         if (pl == null)
           return;
         ModelData data = ModelData.get(pl);
         data.inLove = 40;
       } else if (animation == 1) {
-        player.field_70170_p.func_175688_a(EnumParticleTypes.NOTE, buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), 0.0D, 0.0D, new int[0]);
+        player.worldObj.func_175688_a(EnumParticleTypes.NOTE, buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), 0.0D, 0.0D, new int[0]);
       } else if (animation == 2) {
-        EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+        EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
         if (pl == null)
           return;
         ModelData data = ModelData.get(pl);
@@ -104,16 +104,16 @@ public class PacketHandlerClient extends PacketHandlerServer {
           double d2 = player.func_70681_au().nextGaussian() * 0.02D;
           double x = player.field_70165_t + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
           double z = player.field_70161_v + ((player.func_70681_au().nextFloat() - 0.5F) * player.field_70130_N * 2.0F);
-          player.field_70170_p.func_175688_a(EnumParticleTypes.VILLAGER_ANGRY, x, player.field_70163_u + 0.800000011920929D + (player.func_70681_au().nextFloat() * player.field_70131_O / 2.0F) - player.func_70033_W() - data.getBodyY(), z, d0, d1, d2, new int[0]);
+          player.worldObj.func_175688_a(EnumParticleTypes.VILLAGER_ANGRY, x, player.field_70163_u + 0.800000011920929D + (player.func_70681_au().nextFloat() * player.height / 2.0F) - player.func_70033_W() - data.getBodyY(), z, d0, d1, d2, new int[0]);
         }
       }
     } else if (type == EnumPackets.ANIMATION) {
-      EntityPlayer pl = player.field_70170_p.func_152378_a(UUID.fromString(Server.readString(buffer)));
+      EntityPlayer pl = player.worldObj.func_152378_a(UUID.fromString(Server.readString(buffer)));
       if (pl == null)
         return;
       ModelData data = ModelData.get(pl);
       data.setAnimation(buffer.readInt());
-      data.animationStart = pl.field_70173_aa;
+      data.animationStart = pl.ticksExisted;
     }
   }
 }

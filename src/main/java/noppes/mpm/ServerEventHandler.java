@@ -72,7 +72,7 @@ public class ServerEventHandler {
 
   @SubscribeEvent
   public void chat(ServerChatEvent event) {
-    Server.sendToAll(event.getPlayer().func_184102_h(), EnumPackets.CHAT_EVENT, new Object[] { event.getPlayer().func_110124_au(), event.getMessage() });
+    Server.sendToAll(event.getPlayer().func_184102_h(), EnumPackets.CHAT_EVENT, new Object[] { event.getPlayer().getUniqueID(), event.getMessage() });
     ModelData data = ModelData.get((EntityPlayer)event.getPlayer());
     if (!data.displayFormat.isEmpty() && event.getComponent() instanceof TextComponentTranslation) {
       Object[] obs = ((TextComponentTranslation)event.getComponent()).func_150271_j();
@@ -91,7 +91,7 @@ public class ServerEventHandler {
 
   @SubscribeEvent
   public void onAttack(LivingAttackEvent event) {
-    if ((event.getEntityLiving()).field_70170_p.field_72995_K || event.getAmount() < 1.0F || !(event.getSource()).field_76373_n.equals("player") || !(event.getSource().func_76346_g() instanceof EntityPlayer))
+    if ((event.getEntityLiving()).worldObj.isRemote || event.getAmount() < 1.0F || !(event.getSource()).field_76373_n.equals("player") || !(event.getSource().func_76346_g() instanceof EntityPlayer))
       return;
     EntityPlayer player = (EntityPlayer)event.getSource().func_76346_g();
     boolean flag = (player.field_70143_R > 0.0F && !player.field_70122_E && !player.func_70617_f_() && !player.func_70090_H() && !player.func_70644_a(MobEffects.field_76440_q) && player.func_184187_bx() == null);
@@ -111,7 +111,7 @@ public class ServerEventHandler {
       return;
     }
     float pitch = (player.func_70681_au().nextFloat() - player.func_70681_au().nextFloat()) * 0.2F + 1.0F;
-    player.field_70170_p.func_184133_a(player, player.func_180425_c(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
+    player.worldObj.func_184133_a(player, player.func_180425_c(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
   }
 
   @SubscribeEvent
@@ -121,12 +121,12 @@ public class ServerEventHandler {
     EntityPlayer target = (EntityPlayer)event.getTarget();
     EntityPlayerMP player = (EntityPlayerMP)event.getEntityPlayer();
     ModelData data = ModelData.get(target);
-    Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, new Object[] { target.func_110124_au(), data.writeToNBT() });
-    ItemStack back = (ItemStack)player.field_71071_by.field_70462_a.get(0);
+    Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, new Object[] { target.getUniqueID(), data.writeToNBT() });
+    ItemStack back = (ItemStack)player.inventory.field_70462_a.get(0);
     if (!back.func_190926_b()) {
-      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.func_110124_au(), back.func_77955_b(new NBTTagCompound()) });
+      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.getUniqueID(), back.func_77955_b(new NBTTagCompound()) });
     } else {
-      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, new Object[] { target.func_110124_au() });
+      Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, new Object[] { target.getUniqueID() });
     }
   }
 

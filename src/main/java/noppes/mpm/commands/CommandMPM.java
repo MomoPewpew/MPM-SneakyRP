@@ -99,7 +99,7 @@ public class CommandMPM extends MpmCommandInterface {
       throw new WrongUsageException("Unknown animation " + type, new Object[0]);
     if (data.animation == animation)
       animation = EnumAnimation.NONE;
-    Server.sendAssociatedData((Entity)player, EnumPackets.ANIMATION, new Object[] { player.func_110124_au(), animation });
+    Server.sendAssociatedData((Entity)player, EnumPackets.ANIMATION, new Object[] { player.getUniqueID(), animation });
     data.setAnimation(animation);
   }
 
@@ -119,7 +119,7 @@ public class CommandMPM extends MpmCommandInterface {
           data.setExtra(entity, split[0], split[1]);
         i++;
       }
-    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
   }
 
   private void name(EntityPlayer player, String[] args, ModelData data) throws WrongUsageException {
@@ -136,7 +136,7 @@ public class CommandMPM extends MpmCommandInterface {
     if (data.displayName.equalsIgnoreCase("clear"))
       data.displayName = "";
     player.refreshDisplayName();
-    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
   }
 
   private void url(EntityPlayer player, String[] args, ModelData data) throws WrongUsageException {
@@ -148,7 +148,7 @@ public class CommandMPM extends MpmCommandInterface {
     if (url.equalsIgnoreCase("clear"))
       url = "";
     data.url = url;
-    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+    Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
   }
 
   private void sendmodel(MinecraftServer server, EntityPlayer fromPlayer, String[] args, ModelData fromData) throws WrongUsageException {
@@ -172,7 +172,7 @@ public class CommandMPM extends MpmCommandInterface {
     NBTTagCompound compound = fromData.writeToNBT();
     toData.readFromNBT(compound);
     toData.save();
-    Server.sendAssociatedData((Entity)entityPlayerMP, EnumPackets.SEND_PLAYER_DATA, new Object[] { entityPlayerMP.func_110124_au(), compound });
+    Server.sendAssociatedData((Entity)entityPlayerMP, EnumPackets.SEND_PLAYER_DATA, new Object[] { entityPlayerMP.getUniqueID(), compound });
   }
 
   private void scale(EntityPlayer player, String[] args, ModelData data) throws WrongUsageException {
@@ -185,7 +185,7 @@ public class CommandMPM extends MpmCommandInterface {
         data.arm2.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
         data.leg1.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
         data.leg2.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
-        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
       } else if (args.length == 4) {
         Scale scale = Scale.Parse(args[0]);
         data.head.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
@@ -197,7 +197,7 @@ public class CommandMPM extends MpmCommandInterface {
         scale = Scale.Parse(args[3]);
         data.leg1.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
         data.leg2.setScale(scale.scaleX, scale.scaleY, scale.scaleZ);
-        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.func_110124_au(), data.writeToNBT() });
+        Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
       } else {
         throw new WrongUsageException("/mpm scale [@p] [head x,y,z] [body x,y,z] [arms x,y,z] [legs x,y,z]. Examples: /mpm scale @p 1, /mpm scale @p 1 1 1 1, /mpm scale 1,1,1 1,1,1 1,1,1 1,1,1", new Object[0]);
       }

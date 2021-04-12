@@ -16,16 +16,16 @@ public class Preset {
 
   public NBTTagCompound writeToNBT() {
     NBTTagCompound compound = new NBTTagCompound();
-    compound.func_74778_a("PresetName", this.name);
-    compound.func_74782_a("PresetData", (NBTBase)this.data.writeToNBT());
-    compound.func_74757_a("PresetMenu", this.menu);
+    compound.setString("PresetName", this.name);
+    compound.setTag("PresetData", (NBTBase)this.data.writeToNBT());
+    compound.setBoolean("PresetMenu", this.menu);
     return compound;
   }
 
   public void readFromNBT(NBTTagCompound compound) {
-    this.name = compound.func_74779_i("PresetName");
-    this.data.readFromNBT(compound.func_74775_l("PresetData"));
-    this.menu = compound.func_74767_n("PresetMenu");
+    this.name = compound.getString("PresetName");
+    this.data.readFromNBT(compound.getCompoundTag("PresetData"));
+    this.menu = compound.getBoolean("PresetMenu");
   }
 
   public static HashMap<String, Preset> GetDefault() {

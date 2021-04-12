@@ -51,7 +51,7 @@ public class LayerEyes extends LayerInterface {
       return;
     drawRect(3.0D, -5.0D, 1.0D, -4.0D, 16185078, 4.01D, false);
     drawRect(2.0D, -5.0D, 1.0D, -4.0D, this.playerdata.eyes.color, 4.011D, (this.playerdata.eyes.type == 1));
-    if (this.playerdata.eyes.glint && this.player.func_70089_S())
+    if (this.playerdata.eyes.glint && this.player.isEntityAlive())
       drawRect(1.5D, -4.9D, 1.9D, -4.5D, -1, 4.012D, false);
     if (this.playerdata.eyes.type == 1) {
       drawRect(3.0D, -4.0D, 1.0D, -3.0D, 16777215, 4.01D, true);
@@ -64,7 +64,7 @@ public class LayerEyes extends LayerInterface {
       return;
     drawRect(-3.0D, -5.0D, -1.0D, -4.0D, 16185078, 4.01D, false);
     drawRect(-2.0D, -5.0D, -1.0D, -4.0D, this.playerdata.eyes.color, 4.011D, (this.playerdata.eyes.type == 1));
-    if (this.playerdata.eyes.glint && this.player.func_70089_S())
+    if (this.playerdata.eyes.glint && this.player.isEntityAlive())
       drawRect(-1.5D, -4.9D, -1.1D, -4.5D, -1, 4.012D, false);
     if (this.playerdata.eyes.type == 1) {
       drawRect(-3.0D, -4.0D, -1.0D, -3.0D, 16777215, 4.01D, true);
@@ -74,7 +74,7 @@ public class LayerEyes extends LayerInterface {
 
   private void drawBrows() {
     float offsetY = 0.0F;
-    if (this.playerdata.eyes.blinkStart > 0L && this.player.func_70089_S()) {
+    if (this.playerdata.eyes.blinkStart > 0L && this.player.isEntityAlive()) {
       float f = (float)(System.currentTimeMillis() - this.playerdata.eyes.blinkStart) / 150.0F;
       if (f > 1.0F)
         f = 2.0F - f;

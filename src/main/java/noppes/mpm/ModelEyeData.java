@@ -53,21 +53,21 @@ public class ModelEyeData extends ModelPartData {
 
   public NBTTagCompound writeToNBT() {
     NBTTagCompound compound = super.writeToNBT();
-    compound.func_74757_a("Glint", this.glint);
-    compound.func_74768_a("SkinColor", this.skinColor);
-    compound.func_74768_a("BrowColor", this.browColor);
-    compound.func_74768_a("PositionY", this.eyePos);
-    compound.func_74768_a("BrowThickness", this.browThickness);
+    compound.setBoolean("Glint", this.glint);
+    compound.setInteger("SkinColor", this.skinColor);
+    compound.setInteger("BrowColor", this.browColor);
+    compound.setInteger("PositionY", this.eyePos);
+    compound.setInteger("BrowThickness", this.browThickness);
     return compound;
   }
 
   public void readFromNBT(NBTTagCompound compound) {
     super.readFromNBT(compound);
-    this.glint = compound.func_74767_n("Glint");
-    this.skinColor = compound.func_74762_e("SkinColor");
-    this.browColor = compound.func_74762_e("BrowColor");
-    this.eyePos = compound.func_74762_e("PositionY");
-    this.browThickness = compound.func_74762_e("BrowThickness");
+    this.glint = compound.getBoolean("Glint");
+    this.skinColor = compound.getInteger("SkinColor");
+    this.browColor = compound.getInteger("BrowColor");
+    this.eyePos = compound.getInteger("PositionY");
+    this.browThickness = compound.getInteger("BrowThickness");
   }
 
   public boolean isEnabled() {
@@ -75,15 +75,15 @@ public class ModelEyeData extends ModelPartData {
   }
 
   public void update(EntityPlayer player) {
-    if (!isEnabled() || !player.func_70089_S())
+    if (!isEnabled() || !player.isEntityAlive())
       return;
     if (this.blinkStart < 0L) {
       this.blinkStart++;
     } else if (this.blinkStart == 0L) {
       if (this.r.nextInt(140) == 1) {
         this.blinkStart = System.currentTimeMillis();
-        if (player != null && player.func_70613_aW())
-          Server.sendAssociatedData((Entity)player, EnumPackets.EYE_BLINK, new Object[] { player.func_110124_au() });
+        if (player != null && player.isServerWorld())
+          Server.sendAssociatedData((Entity)player, EnumPackets.EYE_BLINK, new Object[] { player.getUniqueID() });
       }
     } else if (System.currentTimeMillis() - this.blinkStart > 300L) {
       this.blinkStart = -20L;

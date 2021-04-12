@@ -32,22 +32,23 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
     }
     String text = "";
     float maxWidth = (this.width - 36);
-    if (mc.fontRendererObj.getStringWidth(this.field_146126_j) > maxWidth) {
-      for (int h = 0; h < this.field_146126_j.length(); h++) {
-        char c = this.field_146126_j.charAt(h);
+    if (mc.fontRendererObj.getStringWidth(this.displayString) > maxWidth) {
+      for (int h = 0; h < this.displayString.length(); h++) {
+        char c = this.displayString.charAt(h);
         text = text + c;
         if (mc.fontRendererObj.getStringWidth(text) > maxWidth)
           break;
       }
       text = text + "...";
     } else {
-      text = this.field_146126_j;
+      text = this.displayString;
     }
     if (hover)
-      text = "+ text;
-    func_73732_a(mc.fontRendererObj, text, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);
+    	text = (char)167 + "n" + text;
+    drawCenteredString(mc.fontRendererObj, text, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);
   }
 
+  @Override
   public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
     int value = getValue();
     boolean bo = super.mousePressed(minecraft, mouseX, mouseY);

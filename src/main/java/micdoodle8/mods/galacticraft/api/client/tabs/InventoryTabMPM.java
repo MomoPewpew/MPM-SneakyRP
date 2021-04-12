@@ -21,7 +21,7 @@ public class InventoryTabMPM extends AbstractTab {
 
   public InventoryTabMPM() {
     super(0, 0, 0, new ItemStack(Items.SKULL, 1, 3));
-    this.field_146126_j = I18n.translateToLocal("menu.mpm");
+    this.displayString = I18n.translateToLocal("menu.mpm");
   }
 
   @Override
@@ -48,9 +48,9 @@ public class InventoryTabMPM extends AbstractTab {
       Minecraft mc = Minecraft.getMinecraft();
       boolean hovered = (mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height);
       if (hovered) {
-        int x = mouseX + mc.fontRendererObj.getStringWidth(this.field_146126_j);
+        int x = mouseX + mc.fontRendererObj.getStringWidth(this.displayString);
         GlStateManager.translate(x, (this.yPosition + 2), 0.0F);
-        drawHoveringText(Arrays.asList(new String[] { this.field_146126_j }, ), 0, 0, mc.fontRendererObj);
+        drawHoveringText(Arrays.asList(new String[] { this.displayString }, ), 0, 0, mc.fontRendererObj);
         GlStateManager.translate(-x, -(this.yPosition + 2), 0.0F);
       }
     }

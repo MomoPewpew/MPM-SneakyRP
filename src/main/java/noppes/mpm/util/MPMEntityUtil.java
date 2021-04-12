@@ -33,10 +33,10 @@ public class MPMEntityUtil {
     entity.rotationPitch = copied.rotationPitch;
     entity.prevRotationYaw  = copied.prevRotationYaw ;
     entity.prevRotationPitch = copied.prevRotationPitch;
-    entity.field_70759_as = copied.field_70759_as;
-    entity.field_70758_at = copied.field_70758_at;
-    entity.field_70761_aq = copied.field_70761_aq;
-    entity.field_70760_ar = copied.field_70760_ar;
+    entity.rotationYawHead = copied.rotationYawHead;
+    entity.prevRotationYawHead = copied.prevRotationYawHead;
+    entity.renderYawOffset = copied.renderYawOffset;
+    entity.prevRenderYawOffset = copied.prevRenderYawOffset;
     entity.field_70726_aT = copied.field_70726_aT;
     entity.field_70727_aS = copied.field_70727_aS;
     entity.field_70721_aZ = copied.field_70721_aZ;

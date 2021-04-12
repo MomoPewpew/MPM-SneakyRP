@@ -36,7 +36,7 @@ public class GuiNpcButton extends GuiButton {
   }
 
   public void setDisplayText(String text) {
-    this.field_146126_j = I18n.translateToLocal(text);
+    this.displayString = I18n.translateToLocal(text);
   }
 
   public int getValue() {
@@ -49,6 +49,7 @@ public class GuiNpcButton extends GuiButton {
     super.drawButton(minecraft, i, j, partialTicks);
   }
 
+  @Override
   public boolean mousePressed(Minecraft minecraft, int i, int j) {
     boolean bo = super.mousePressed(minecraft, i, j);
     if (bo && this.display != null) {

@@ -58,11 +58,11 @@ public class GuiNpcSlider extends GuiButton {
   }
 
   public String getDisplayString() {
-    return this.field_146126_j;
+    return this.displayString;
   }
 
   public void setString(String str) {
-    this.field_146126_j = str;
+    this.displayString = str;
   }
 
   public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {

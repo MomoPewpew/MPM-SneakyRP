@@ -71,9 +71,9 @@ public class GuiNpcTextField extends GuiTextField {
     }
   }
 
-  public boolean func_146192_a(int i, int j, int k) {
+  public boolean mouseClicked(int i, int j, int k) {
     boolean wasFocused = func_146206_l();
-    boolean clicked = super.func_146192_a(i, j, k);
+    boolean clicked = super.mouseClicked(i, j, k);
     if (wasFocused != func_146206_l() &&
       wasFocused)
       unFocused();

@@ -151,11 +151,11 @@ public class GuiCustomScroll extends GuiScreen {
         String displayString = I18n.translateToLocal(this.list.get(i));
         String text = "";
         float maxWidth = (this.xSize + xOffset - 8) * 0.8F;
-        if (this.field_146289_q.getStringWidth(displayString) > maxWidth) {
+        if (this.fontRendererObj.getStringWidth(displayString) > maxWidth) {
           for (int h = 0; h < displayString.length(); h++) {
             char c = displayString.charAt(h);
             text = text + c;
-            if (this.field_146289_q.getStringWidth(text) > maxWidth)
+            if (this.fontRendererObj.getStringWidth(text) > maxWidth)
               break;
           }
           if (displayString.length() > text.length())
@@ -164,15 +164,15 @@ public class GuiCustomScroll extends GuiScreen {
           text = displayString;
         }
         if ((this.multipleSelection && this.selectedList.contains(text)) || (!this.multipleSelection && this.selected == i)) {
-          func_73728_b(j - 2, k - 4, k + 10, -1);
-          func_73728_b(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
-          func_73730_a(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
-          func_73730_a(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
-          this.field_146289_q.drawString(text, j, k, 16777215);
+          drawVerticalLine(j - 2, k - 4, k + 10, -1);
+          drawVerticalLine(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
+          drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
+          drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
+          this.fontRendererObj.drawString(text, j, k, 16777215);
         } else if (i == this.hover) {
-          this.field_146289_q.drawString(text, j, k, 65280);
+          this.fontRendererObj.drawString(text, j, k, 65280);
         } else {
-          this.field_146289_q.drawString(text, j, k, 16777215);
+          this.fontRendererObj.drawString(text, j, k, 16777215);
         }
       }
     }
@@ -198,7 +198,7 @@ public class GuiCustomScroll extends GuiScreen {
     return -1;
   }
 
-  public void func_73864_a(int i, int j, int k) {
+  public void mouseClicked(int i, int j, int k) {
     if (k != 0 || this.hover < 0)
       return;
     if (this.multipleSelection) {

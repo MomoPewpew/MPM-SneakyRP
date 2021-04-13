@@ -13,7 +13,7 @@ public class AniBow {
     float ticks2 = (entity.ticksExisted + 1 - data.animationStart) / 10.0F;
     if (ticks2 > 1.0F)
       ticks2 = 1.0F;
-    ticks += (ticks2 - ticks) * Minecraft.getMinecraft().func_184121_ak();
+    ticks += (ticks2 - ticks) * Minecraft.getMinecraft().getRenderPartialTicks();
     model.bipedBody.rotateAngleX = ticks;
     model.bipedHead.rotateAngleX = ticks;
     model.bipedLeftArm.rotateAngleX = ticks;

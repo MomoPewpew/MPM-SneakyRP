@@ -20,7 +20,7 @@ public class LayerBackItem extends LayerInterface {
   public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
     Minecraft minecraft = Minecraft.getMinecraft();
     ItemStack itemstack = this.playerdata.backItem;
-    if (!MorePlayerModels.EnableBackItem || itemstack.func_190926_b() || ItemStack.func_77989_b(itemstack, this.player.inventory.func_70448_g()))
+    if (!MorePlayerModels.EnableBackItem || itemstack.func_190926_b() || ItemStack.areItemStacksEqual(itemstack, this.player.inventory.getCurrentItem()))
       return;
     Item item = itemstack.getItem();
     if (item instanceof net.minecraft.item.ItemBlock)
@@ -33,7 +33,7 @@ public class LayerBackItem extends LayerInterface {
     IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(itemstack);
     ItemTransformVec3f p_175034_1_ = (model.getItemCameraTransforms()).thirdperson_right;
     GlStateManager.translate(p_175034_1_.scale.x + ItemCameraTransforms.offsetScaleX, p_175034_1_.scale.y + ItemCameraTransforms.offsetScaleY, p_175034_1_.scale.z + ItemCameraTransforms.offsetScaleZ);
-    minecraft.func_175597_ag().func_178099_a((EntityLivingBase)this.player, itemstack, ItemCameraTransforms.TransformType.NONE);
+    minecraft.getItemRenderer().renderItem((EntityLivingBase)this.player, itemstack, ItemCameraTransforms.TransformType.NONE);
   }
 
   @Override

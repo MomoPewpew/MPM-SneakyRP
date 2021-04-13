@@ -27,7 +27,7 @@ public class LayerChatbubble extends LayerInterface implements LayerPreRender {
     double x = mc.thePlayer.posX - player.posX;
     double y = mc.thePlayer.posY - player.posY;
     double z = mc.thePlayer.posZ - player.posZ;
-    boolean inRange = (player.func_70032_d((mc.getRenderManager()).field_78734_h) <= 4.0F);
+    boolean inRange = (player.getDistanceToEntity((mc.getRenderManager()).renderViewEntity) <= 4.0F);
     chat.renderMessages(-x, -y + 0.7D + player.height, -z, inRange);
   }
 }

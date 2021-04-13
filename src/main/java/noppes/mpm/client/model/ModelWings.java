@@ -90,11 +90,12 @@ public class ModelWings extends ModelBase {
     this.right_wing_1.addChild(this.right_wing_0);
   }
 
-  public void func_78088_a(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
+  @Override
+  public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
     setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, f5, entityIn);
-    this.field_78091_s = false;
+    this.isRiding = false;
     GlStateManager.pushMatrix();
-    if (this.field_78091_s) {
+    if (this.isRiding) {
       GlStateManager.translate(0.75F, 0.75F, 0.75F);
       GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
       if (entityIn.isSneaking())
@@ -116,7 +117,7 @@ public class ModelWings extends ModelBase {
 
   public void renderWings(Entity player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
     float motion = Math.abs(MathHelper.sin(limbSwing * 0.033F + 3.1415927F) * 0.4F) * limbSwingAmount;
-    boolean flapWings = player.worldObj.isAirBlock(player.getPosition().func_177977_b());
+    boolean flapWings = player.worldObj.isAirBlock(player.getPosition().down());
     float speed = 0.55F + 0.5F * motion;
     float y = MathHelper.sin(ageInTicks * 0.35F);
     float flap = y * 0.5F * speed;

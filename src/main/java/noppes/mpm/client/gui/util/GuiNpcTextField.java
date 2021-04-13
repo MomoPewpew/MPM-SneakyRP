@@ -13,7 +13,7 @@ public class GuiNpcTextField extends GuiTextField {
 
   private ITextfieldListener listener;
 
-  public int field_175208_g;
+  public int id;
 
   public int min = 0;
 
@@ -27,12 +27,13 @@ public class GuiNpcTextField extends GuiTextField {
 
   public GuiNpcTextField(int id, GuiScreen parent, int i, int j, int k, int l, String s) {
     super(id, (Minecraft.getMinecraft()).fontRendererObj, i, j, k, l);
-    func_146203_f(500);
-    func_146180_a(s);
-    this.field_175208_g = id;
+    setMaxStringLength(500);
+    setText(s);
+    this.id = id;
     if (parent instanceof ITextfieldListener)
       this.listener = (ITextfieldListener)parent;
   }
+
 
   public static boolean isActive() {
     return (activeTextfield != null);
@@ -48,10 +49,11 @@ public class GuiNpcTextField extends GuiTextField {
     return false;
   }
 
-  public boolean func_146201_a(char c, int i) {
+  @Override
+  public boolean textboxKeyTyped(char c, int i) {
     if (!charAllowed(c, i))
       return false;
-    return super.func_146201_a(c, i);
+    return super.textboxKeyTyped(c, i);
   }
 
   public boolean isEmpty() {
@@ -71,13 +73,14 @@ public class GuiNpcTextField extends GuiTextField {
     }
   }
 
+  @Override
   public boolean mouseClicked(int i, int j, int k) {
-    boolean wasFocused = func_146206_l();
+    boolean wasFocused = isFocused();
     boolean clicked = super.mouseClicked(i, j, k);
-    if (wasFocused != func_146206_l() &&
+    if (wasFocused != isFocused() &&
       wasFocused)
       unFocused();
-    if (func_146206_l())
+    if (isFocused())
       activeTextfield = this;
     return clicked;
   }
@@ -85,11 +88,11 @@ public class GuiNpcTextField extends GuiTextField {
   public void unFocused() {
     if (this.numbersOnly)
       if (isEmpty() || !isInteger()) {
-        func_146180_a(this.def + "");
+        setText(this.def + "");
       } else if (getInteger() < this.min) {
-        func_146180_a(this.min + "");
+        setText(this.min + "");
       } else if (getInteger() > this.max) {
-        func_146180_a(this.max + "");
+        setText(this.max + "");
       }
     if (this.listener != null)
       this.listener.unFocused(this);
@@ -97,9 +100,10 @@ public class GuiNpcTextField extends GuiTextField {
       activeTextfield = null;
   }
 
-  public void func_146194_f() {
+  @Override
+  public void drawTextBox() {
     if (this.enabled)
-      super.func_146194_f();
+      super.drawTextBox();
   }
 
   public void setMinMaxDefault(int i, int j, int k) {

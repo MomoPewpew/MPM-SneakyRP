@@ -182,7 +182,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   public static void bindTexture(ResourceLocation location) {
-    SimpleTexture simpleTexture;
+    SimpleTexture simpleTexture = null;
     if (location == null)
       return;
     TextureManager manager = Minecraft.getMinecraft().getTextureManager();
@@ -191,10 +191,10 @@ public class ClientProxy extends CommonProxy {
       simpleTexture = new SimpleTexture(location);
       manager.loadTexture(location, (ITextureObject)simpleTexture);
     }
-    GlStateManager.func_187401_a(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     GlStateManager.pushMatrix();
     GlStateManager.enableBlend();
-    GlStateManager.func_179144_i(simpleTexture.func_110552_b());
+    GlStateManager.bindTexture(simpleTexture.getGlTextureId());
     GlStateManager.popMatrix();
   }
 }

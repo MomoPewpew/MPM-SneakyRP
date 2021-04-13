@@ -37,10 +37,10 @@ public class GuiNpcSlider extends GuiButton {
       this.listener.mouseDragged(this);
   }
 
-  public void func_146119_b(Minecraft mc, int par2, int par3) {
+  public void mouseDragged(Minecraft mc, int par2, int par3) {
     if (!this.visible)
       return;
-    mc.getTextureManager().bindTexture(field_146122_a);
+    mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
     if (this.dragging) {
       this.sliderValue = (par2 - this.xPosition + 4) / (this.width - 8);
       if (this.sliderValue < 0.0F)

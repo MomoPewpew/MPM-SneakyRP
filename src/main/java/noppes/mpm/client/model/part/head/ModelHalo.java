@@ -106,18 +106,17 @@ public class ModelHalo extends ModelBase {
     this.halo_1.addChild(this.halo_2);
   }
 
-  @Override
   public void render(float f5, EntityPlayer entityIn) {
-    this.field_78091_s = false;
+    this.isRiding = false;
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);
     (Minecraft.getMinecraft()).renderEngine.bindTexture(wingTexture);
     GlStateManager.pushMatrix();
-    GlStateManager.rotate((float)entityIn.worldObj.func_82737_E(), 0.0F, 1.0F, 0.0F);
-    float f = entityIn.ticksExisted + Minecraft.getMinecraft().func_184121_ak();
+    GlStateManager.rotate((float)entityIn.worldObj.getTotalWorldTime(), 0.0F, 1.0F, 0.0F);
+    float f = entityIn.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
     float f1 = MathHelper.sin(f * 0.2F) / 2.0F + 0.5F;
     f1 = f1 * f1 + f1;
     GlStateManager.translate(0.0F, -0.2F + f1 * 0.05F, 0.0F);
-    if (this.field_78091_s) {
+    if (this.isRiding) {
       GlStateManager.translate(0.75F, 0.75F, 0.75F);
       GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
       if (entityIn.isSneaking())

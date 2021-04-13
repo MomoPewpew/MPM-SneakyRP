@@ -67,7 +67,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     setBackground("menubg.png");
     this.xSize = 366;
     this.ySize = 226;
-    SimpleReloadableResourceManager simplemanager = (SimpleReloadableResourceManager)Minecraft.getMinecraft().func_110442_L();
+    SimpleReloadableResourceManager simplemanager = (SimpleReloadableResourceManager)Minecraft.getMinecraft().getResourceManager();
     Map<String, FallbackResourceManager> map = (Map<String, FallbackResourceManager>)ObfuscationReflectionHelper.getPrivateValue(SimpleReloadableResourceManager.class, simplemanager, 2);
     HashSet<String> set = new HashSet<>();
     for (String name : map.keySet()) {
@@ -78,7 +78,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
           pack = (IResourcePack)ObfuscationReflectionHelper.getPrivateValue(LegacyV2Adapter.class, pack, 0);
         if (pack instanceof AbstractResourcePack) {
           AbstractResourcePack p = (AbstractResourcePack)pack;
-          File file = p.field_110597_b;
+          File file = p.resourcePackFile;
           if (file != null)
             set.add(file.getAbsolutePath());
         }
@@ -96,17 +96,17 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       if (mod.getSource().exists())
         progressFile(mod.getSource());
     }
-    ResourcePackRepository repos = Minecraft.getMinecraft().func_110438_M();
-    repos.func_110611_a();
-    List<ResourcePackRepository.Entry> list = repos.func_110613_c();
-    if (repos.func_148530_e() != null) {
-      AbstractResourcePack p = (AbstractResourcePack)repos.func_148530_e();
-      File file = p.field_110597_b;
+    ResourcePackRepository repos = Minecraft.getMinecraft().getResourcePackRepository();
+    repos.updateRepositoryEntriesAll();
+    List<ResourcePackRepository.Entry> list = repos.getRepositoryEntries();
+    if (repos.getServerResourcePack() != null) {
+      AbstractResourcePack p = (AbstractResourcePack)repos.getServerResourcePack();
+      File file = p.resourcePackFile;
       if (file != null)
         progressFile(file);
     }
     for (ResourcePackRepository.Entry entry : list) {
-      File file = new File(repos.func_110612_e(), entry.func_110515_d());
+      File file = new File(repos.getDirResourcepacks(), entry.getResourcePackName());
       if (file.exists())
         progressFile(file);
     }
@@ -131,11 +131,11 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     String texture = playerdata.url;
     if (texture != null && !texture.isEmpty() && !texture.startsWith("http")) {
       this.selectedResource = new ResourceLocation(texture);
-      this.selectedDomain = this.selectedResource.func_110624_b();
+      this.selectedDomain = this.selectedResource.getNamespace();
       if (!this.domains.containsKey(this.selectedDomain))
         this.selectedDomain = null;
-      int i = this.selectedResource.func_110623_a().lastIndexOf('/');
-      this.location = this.selectedResource.func_110623_a().substring(0, i + 1);
+      int i = this.selectedResource.getPath().lastIndexOf('/');
+      this.location = this.selectedResource.getPath().substring(0, i + 1);
     }
   }
 
@@ -196,7 +196,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       this.scrollQuests.setList(list);
     }
     if (this.selectedResource != null)
-      this.scrollQuests.setSelected(this.selectedResource.func_110623_a());
+      this.scrollQuests.setSelected(this.selectedResource.getPath());
     this.scrollQuests.guiLeft = this.guiLeft + 125;
     this.scrollQuests.guiTop = this.guiTop + 14;
     addScroll(this.scrollQuests);
@@ -214,7 +214,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
   }
 
   public void drawScreen(int i, int j, float f) {
-    EntityPlayerSP entityPlayerSP;
+    EntityPlayerSP entityPlayerSP = null;
     drawDefaultBackground();
     super.drawScreen(i, j, f);
     drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 8, 16777215);

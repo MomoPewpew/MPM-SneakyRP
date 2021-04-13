@@ -128,9 +128,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
         this.entity = this.entityClass.getConstructor(new Class[] { World.class }).newInstance(new Object[] { player.worldObj });
         if (PixelmonHelper.isPixelmon((Entity)this.entity) && player.worldObj.isRemote && !this.extra.hasKey("Name"))
           this.extra.setString("Name", "Abra");
-        this.entity.func_70037_a(this.extra);
-        this.entity.func_184224_h(true);
-        this.entity.func_110148_a(SharedMonsterAttributes.field_111267_a).func_111128_a(player.func_110138_aP());
+        this.entity.readEntityFromNBT(this.extra);
+        this.entity.setJumping(true);
+        this.entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(player.getMaxHealth());
         if (this.entity instanceof EntityLiving) {
           EntityLiving living = (EntityLiving)this.entity;
           living.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, player.getHeldItemMainhand());

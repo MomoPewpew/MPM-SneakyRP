@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 public class ModelScaleRenderer extends ModelRenderer {
   public boolean isCompiled;
 
-  public int field_78811_r;
+  public int displayList;
 
   public ModelPartConfig config;
 
@@ -44,7 +44,7 @@ public class ModelScaleRenderer extends ModelRenderer {
       compile(par1);
     GlStateManager.pushMatrix();
     postRender(par1);
-    GlStateManager.callList(this.field_78811_r);
+    GlStateManager.callList(this.displayList);
     if (this.childModels != null)
       for (int i = 0; i < this.childModels.size(); i++)
         ((ModelRenderer)this.childModels.get(i)).render(par1);
@@ -70,8 +70,8 @@ public class ModelScaleRenderer extends ModelRenderer {
   }
 
   public void compile(float par1) {
-    this.field_78811_r = GLAllocation.generateDisplayLists(1);
-    GL11.glNewList(this.field_78811_r, 4864);
+    this.displayList = GLAllocation.generateDisplayLists(1);
+    GL11.glNewList(this.displayList, 4864);
     BufferBuilder worldrenderer = Tessellator.getInstance().getBuffer();
     for (int i = 0; i < this.cubeList.size(); i++)
       ((ModelBox)this.cubeList.get(i)).render(worldrenderer, par1);

@@ -27,7 +27,7 @@ public class CommandSing extends MpmCommandInterface {
           note = n;
       } catch (NumberFormatException numberFormatException) {}
     float pitch = (float)Math.pow(2.0D, (note - 12) / 12.0D);
-    player.worldObj.func_184148_a(null, player.posX, player.posY, player.posZ, SoundEvents.field_187682_dG, SoundCategory.PLAYERS, 3.0F, pitch);
+    player.worldObj.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.PLAYERS, 3.0F, pitch);
     Server.sendAssociatedData((Entity)player, EnumPackets.PARTICLE, new Object[] { Integer.valueOf(1), Double.valueOf(player.posX), Double.valueOf(player.posY + 2.0D), Double.valueOf(player.posZ), Double.valueOf(note / 24.0D) });
   }
 

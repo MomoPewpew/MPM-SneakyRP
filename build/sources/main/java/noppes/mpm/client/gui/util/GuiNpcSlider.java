@@ -37,10 +37,11 @@ public class GuiNpcSlider extends GuiButton {
       this.listener.mouseDragged(this);
   }
 
-  public void func_146119_b(Minecraft mc, int par2, int par3) {
+  @Override
+  public void mouseDragged(Minecraft mc, int par2, int par3) {
     if (!this.visible)
       return;
-    mc.getTextureManager().bindTexture(field_146122_a);
+    mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
     if (this.dragging) {
       this.sliderValue = (par2 - this.xPosition + 4) / (this.width - 8);
       if (this.sliderValue < 0.0F)
@@ -50,7 +51,7 @@ public class GuiNpcSlider extends GuiButton {
       if (this.listener != null)
         this.listener.mouseDragged(this);
       if (!Mouse.isButtonDown(0))
-        func_146118_a(0, 0);
+        mouseReleased(0, 0);
     }
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (this.width - 8)), this.yPosition, 0, 66, 4, 20);
@@ -65,6 +66,7 @@ public class GuiNpcSlider extends GuiButton {
     this.displayString = str;
   }
 
+  @Override
   public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
     if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height) {
       this.sliderValue = (par2 - this.xPosition + 4) / (this.width - 8);
@@ -80,13 +82,15 @@ public class GuiNpcSlider extends GuiButton {
     return false;
   }
 
-  public void func_146118_a(int par1, int par2) {
+  @Override
+  public void mouseReleased(int par1, int par2) {
     this.dragging = false;
     if (this.listener != null)
       this.listener.mouseReleased(this);
   }
 
-  public int func_146114_a(boolean par1) {
+  @Override
+  public int getHoverState(boolean par1) {
     return 0;
   }
 }

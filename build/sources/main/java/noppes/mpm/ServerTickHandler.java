@@ -24,7 +24,7 @@ public class ServerTickHandler {
     ModelData data = ModelData.get((EntityPlayer)player);
     ItemStack item = (ItemStack)player.inventory.mainInventory.get(0);
     if (data.backItem != item) {
-      if (item.func_190926_b()) {
+      if (item.isEmpty()) {
         Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_REMOVE, new Object[] { player.getUniqueID() });
       } else {
         NBTTagCompound tag = item.writeToNBT(new NBTTagCompound());
@@ -61,13 +61,13 @@ public class ServerTickHandler {
   @SubscribeEvent
   public void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
     MinecraftServer server = event.player.getServer();
-    if (!server.func_70002_Q())
+    if (!server.isSnooperEnabled())
       return;
     String serverName = null;
-    if (server.func_71262_S()) {
+    if (server.isDedicatedServer()) {
       serverName = "server";
     } else {
-      serverName = ((IntegratedServer)server).func_71344_c() ? "lan" : "local";
+      serverName = ((IntegratedServer)server).getPublic() ? "lan" : "local";
     }
     ModelData data = ModelData.get(event.player);
     AnalyticsTracking.sendData(data.analyticsUUID, "join", serverName);

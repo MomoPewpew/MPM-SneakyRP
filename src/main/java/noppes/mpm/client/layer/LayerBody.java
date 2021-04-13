@@ -131,7 +131,7 @@ public class LayerBody extends LayerInterface {
     if (data == null)
       return;
     ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-    if (!itemstack.func_190926_b() && itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
+    if (itemstack != null && itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
       return;
     preRender(data);
     GlStateManager.pushMatrix();

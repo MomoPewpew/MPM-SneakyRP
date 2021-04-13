@@ -50,7 +50,7 @@ public class InventoryTabMPM extends AbstractTab {
       if (hovered) {
         int x = mouseX + mc.fontRendererObj.getStringWidth(this.displayString);
         GlStateManager.translate(x, (this.yPosition + 2), 0.0F);
-        drawHoveringText(Arrays.asList(new String[] { this.displayString }, ), 0, 0, mc.fontRendererObj);
+        drawHoveringText(Arrays.asList(new String[] {displayString}), 0, 0, mc.fontRendererObj);
         GlStateManager.translate(-x, -(this.yPosition + 2), 0.0F);
       }
     }

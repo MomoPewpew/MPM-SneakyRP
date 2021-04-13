@@ -1,5 +1,6 @@
 package noppes.mpm.client;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -159,12 +160,12 @@ public class ClientProxy extends CommonProxy {
         }
       }
       if (layer instanceof LayerCustomHead)
-        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.getMainModel()).bipedHead, 0);
+        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, (render.getMainModel()).bipedHead, 0);
       if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
         ita.remove();
     }
     LayerElytraAlt layerElytraAlt = new LayerElytraAlt(render);
-    render.layerRenderers.add(layerElytraAlt);
+    render.layerRenderers.addAll((Collection<? extends LayerRenderer<AbstractClientPlayer>>) layerElytraAlt);
   }
 
   private static void addLayers(RenderPlayer playerRender) {

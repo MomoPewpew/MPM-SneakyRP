@@ -10,48 +10,112 @@ Found AccessTransformer: mpm_at.cfg
 :downloadServer SKIPPED
 :splitServerJar SKIPPED
 :mergeJars SKIPPED
-:applyBinaryPatches
+:applyBinaryPatches SKIPPED
 :extractDependencyATs SKIPPED
 :extractMcpData SKIPPED
 :extractMcpMappings SKIPPED
 :genSrgs SKIPPED
-:deobfMcMCP
-Applying SpecialSource...
-Applying Exceptor...
-:sourceApiJava
+:deobfMcMCP SKIPPED
+:sourceApiJava UP-TO-DATE
 :compileApiJava UP-TO-DATE
-:copyApiKotlinClasses
+:copyApiKotlinClasses UP-TO-DATE
 :processApiResources UP-TO-DATE
 :apiClasses UP-TO-DATE
 :compileKotlin
-Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl/2.9.4-nightly-20150209/lwjgl-2.9.4-nightly-20150209.jar
-Download https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl_util/2.9.4-nightly-20150209/lwjgl_util-2.9.4-nightly-20150209.jar
 :sourceMainJava
-:compileJavaE:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\micdoodle8\mods\galacticraft\api\client\tabs\InventoryTabMPM.java:53: error: illegal start of expression
-        drawHoveringText(Arrays.asList(new String[] { this.displayString }, ), 0, 0, mc.fontRendererObj);
-                                                                            ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:110: error: not a statement
-    this;
-    ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:112: error: not a statement
-    this;
-    ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\MorePlayerModels.java:114: error: not a statement
-      this;
-      ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ')' expected
-          }"", I18n.translateToLocal("message.delete"), 0);
-           ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: illegal start of expression
-          }"", I18n.translateToLocal("message.delete"), 0);
+:compileJavaE:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\PacketHandlerServer.java:43: error: cannot find symbol
+      if (!back.isEmpty())
+               ^
+  symbol:   method isEmpty()
+  location: variable back of type ItemStack
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\ServerEventHandler.java:82: error: incompatible types: ITextComponent cannot be converted to TextComponentString
+          TextComponentString com = comp.getSiblings().get(0);
+                                                          ^
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\ServerEventHandler.java:126: error: cannot find symbol
+    if (!back.isEmpty()) {
              ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ';' expected
-          }"", I18n.translateToLocal("message.delete"), 0);
-                   ^
-E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\GuiMPM.java:113: error: ';' expected
-          }"", I18n.translateToLocal("message.delete"), 0);
-                                                      ^
-8 errors
+  symbol:   method isEmpty()
+  location: variable back of type ItemStack
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\ServerTickHandler.java:27: error: cannot find symbol
+      if (item.isEmpty()) {
+              ^
+  symbol:   method isEmpty()
+  location: variable item of type ItemStack
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\PacketHandlerClient.java:30: error: cannot find symbol
+            handlePacket(buf, player, en);
+                              ^
+  symbol:   variable player
+  location: class PacketHandlerClient
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\RenderEvent.java:205: error: constructor ImageBufferDownloadAlt in class ImageBufferDownloadAlt cannot be applied to given types;
+      imageDownloadAlt = new ImageDownloadAlt(file, par1Str, def, (IImageBuffer)new ImageBufferDownloadAlt(fix64));
+                                                                                ^
+  required: File,String,ResourceLocation,IImageBuffer
+  found: boolean
+  reason: actual and formal argument lists differ in length
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\RenderEvent.java:253: error: cannot find symbol
+    if (item.isEmpty())
+            ^
+  symbol:   method isEmpty()
+  location: variable item of type ItemStack
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\util\GuiNpcButton.java:49: error: cannot find symbol
+    super.drawButton(minecraft, i, j, partialTicks);
+         ^
+  symbol: method drawButton(Minecraft,int,int,float)
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:78: error: no suitable method found for getPrivateValue(Class<LegacyV2Adapter>,IResourcePack,int)
+          pack = (IResourcePack)ObfuscationReflectionHelper.getPrivateValue(LegacyV2Adapter.class, pack, 0);
+                                                           ^
+    method ObfuscationReflectionHelper.<T#1,E#1>getPrivateValue(Class<? super E#1>,E#1,int) is not applicable
+      (inferred type does not conform to upper bound(s)
+        inferred: IResourcePack
+        upper bound(s): LegacyV2Adapter,Object)
+    method ObfuscationReflectionHelper.<T#2,E#2>getPrivateValue(Class<? super E#2>,E#2,String...) is not applicable
+      (cannot infer type-variable(s) T#2,E#2
+        (varargs mismatch; int cannot be converted to String))
+    method ObfuscationReflectionHelper.<T#3,E#3>getPrivateValue(Class<? super E#3>,E#3,String) is not applicable
+      (cannot infer type-variable(s) T#3,E#3
+        (argument mismatch; int cannot be converted to String))
+  where T#1,E#1,T#2,E#2,T#3,E#3 are type-variables:
+    T#1 extends Object declared in method <T#1,E#1>getPrivateValue(Class<? super E#1>,E#1,int)
+    E#1 extends Object declared in method <T#1,E#1>getPrivateValue(Class<? super E#1>,E#1,int)
+    T#2 extends Object declared in method <T#2,E#2>getPrivateValue(Class<? super E#2>,E#2,String...)
+    E#2 extends Object declared in method <T#2,E#2>getPrivateValue(Class<? super E#2>,E#2,String...)
+    T#3 extends Object declared in method <T#3,E#3>getPrivateValue(Class<? super E#3>,E#3,String)
+    E#3 extends Object declared in method <T#3,E#3>getPrivateValue(Class<? super E#3>,E#3,String)
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:102: error: cannot find symbol
+    if (repos.getServerResourcePack() != null) {
+             ^
+  symbol:   method getServerResourcePack()
+  location: variable repos of type ResourcePackRepository
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:103: error: cannot find symbol
+      AbstractResourcePack p = (AbstractResourcePack)repos.getServerResourcePack();
+                                                          ^
+  symbol:   method getServerResourcePack()
+  location: variable repos of type ResourcePackRepository
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:134: error: cannot find symbol
+      this.selectedDomain = this.selectedResource.getNamespace();
+                                                 ^
+  symbol:   method getNamespace()
+  location: variable selectedResource of type ResourceLocation
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:137: error: cannot find symbol
+      int i = this.selectedResource.getPath().lastIndexOf('/');
+                                   ^
+  symbol:   method getPath()
+  location: variable selectedResource of type ResourceLocation
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:138: error: cannot find symbol
+      this.location = this.selectedResource.getPath().substring(0, i + 1);
+                                           ^
+  symbol:   method getPath()
+  location: variable selectedResource of type ResourceLocation
+E:\Users\Marijn\workspace\MPM-SneakyRP\build\sources\main\java\noppes\mpm\client\gui\select\GuiTextureSelection.java:199: error: cannot find symbol
+      this.scrollQuests.setSelected(this.selectedResource.getPath());
+                                                         ^
+  symbol:   method getPath()
+  location: variable selectedResource of type ResourceLocation
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+15 errors
  FAILED
 :copyMainKotlinClasses SKIPPED
 
@@ -66,4 +130,4 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
 
 BUILD FAILED
 
-Total time: 45.512 secs
+Total time: 16.591 secs

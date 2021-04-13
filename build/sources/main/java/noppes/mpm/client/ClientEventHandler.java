@@ -52,7 +52,7 @@ public class ClientEventHandler {
           final double range = 6400.0D;
 
           public boolean apply(EntityPlayer entity) {
-            return (entity != (Minecraft.getMinecraft()).thePlayer && entity.func_70068_e((Entity)(Minecraft.getMinecraft()).thePlayer) <= 6400.0D);
+            return (entity != (Minecraft.getMinecraft()).thePlayer && entity.getDistanceSqToEntity((Entity)(Minecraft.getMinecraft()).thePlayer) <= 6400.0D);
           }
         } });
 
@@ -183,8 +183,8 @@ public class ClientEventHandler {
       ClientProxy.fixModels(false);
     }
     RenderEvent.lastSkinTick++;
-    if (mc.theWorld.func_72912_H().func_82573_f() % 20L == 0L) {
-      playerList = mc.theWorld.func_175661_b(EntityPlayer.class, playerSelector);
+    if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
+      playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
       WebApi.instance.run();
     }
   }
@@ -265,7 +265,7 @@ public class ClientEventHandler {
       ServerTickHandler.checkAnimation(player, data);
     if (data.animation == EnumAnimation.DEATH) {
       if (player.deathTime == 0)
-        player.func_184185_a(SoundEvents.field_187543_bD, 1.0F, 1.0F);
+        player.playSound(SoundEvents.ENTITY_PLAYER_DEATH, 1.0F, 1.0F);
       if (player.deathTime < 19)
         player.deathTime++;
     }
@@ -289,7 +289,7 @@ public class ClientEventHandler {
     Random rand = player.getRNG();
     for (int i = 0; i < 2; i++) {
       EntityEnderFX fx = new EntityEnderFX((AbstractClientPlayer)player, (rand.nextDouble() - 0.5D) * player.width, rand.nextDouble() * player.height - height - 0.25D, (rand.nextDouble() - 0.5D) * player.width, (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, particles);
-      minecraft.field_71452_i.func_78873_a((Particle)fx);
+      minecraft.effectRenderer.addEffect((Particle)fx);
     }
   }
 }

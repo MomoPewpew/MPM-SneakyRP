@@ -107,12 +107,9 @@ public class MorePlayerModels {
     LogWriter.info("Loading");
     Channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("MorePlayerModels");
     File dir = new File(ev.getModConfigurationDirectory(), "..");
-    this;
-    MorePlayerModels.dir = new File(dir, "moreplayermodels");
-    this;
-    if (!MorePlayerModels.dir.exists()) {
-      this;
-      MorePlayerModels.dir.mkdir();
+    this.dir = new File(dir, "moreplayermodels");
+    if (!this.dir.exists()) {
+      this.dir.mkdir();
     }
     this.configLoader = new ConfigLoader(getClass(), new File(dir, "config"), "MorePlayerModels");
     this.configLoader.loadConfig();

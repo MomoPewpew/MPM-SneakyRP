@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.api.client.tabs;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -79,10 +80,10 @@ public class TabRegistry {
     }
   }
 
-  public static void addTabsToList(List<AbstractTab> buttonList) {
+  public static void addTabsToList(List<GuiButton> list) {
     for (AbstractTab tab : tabList) {
       if (tab.shouldAddToList())
-        buttonList.add(tab);
+        list.add(tab);
     }
   }
 

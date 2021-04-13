@@ -20,7 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SideOnly(Side.CLIENT)
-public class ImageDownloadAlt extends SimpleTexture {
+public class ImageBufferDownloadAlt extends SimpleTexture {
   private static final Logger logger = LogManager.getLogger();
 
   private static final AtomicInteger threadDownloadCounter = new AtomicInteger(0);
@@ -37,7 +37,7 @@ public class ImageDownloadAlt extends SimpleTexture {
 
   private boolean textureUploaded;
 
-  public ImageDownloadAlt(File file, String url, ResourceLocation resource, IImageBuffer buffer) {
+  public ImageBufferDownloadAlt(File file, String url, ResourceLocation resource, IImageBuffer buffer) {
     super(resource);
     this.cacheFile = file;
     this.imageUrl = url;
@@ -65,9 +65,10 @@ public class ImageDownloadAlt extends SimpleTexture {
       this.imageBuffer.skinAvailable();
   }
 
-  public void func_110551_a(IResourceManager resourceManager) throws IOException {
+  @Override
+  public void loadTexture(IResourceManager resourceManager) throws IOException {
     if (this.bufferedImage == null && this.textureLocation != null)
-      super.func_110551_a(resourceManager);
+      super.loadTexture(resourceManager);
     if (this.imageThread == null)
       if (this.cacheFile != null && this.cacheFile.isFile()) {
         logger.debug("Loading http texture from local cache ({})", new Object[] { this.cacheFile });
@@ -90,27 +91,27 @@ public class ImageDownloadAlt extends SimpleTexture {
 
         public void run() {
           HttpURLConnection connection = null;
-          ImageDownloadAlt.logger.debug("Downloading http texture from {} to {}", new Object[] { ImageDownloadAlt.access$000(this.this$0), ImageDownloadAlt.access$100(this.this$0) });
+          ImageBufferDownloadAlt.logger.debug("Downloading http texture from {} to {}", new Object[] { ImageBufferDownloadAlt.this.imageUrl, ImageBufferDownloadAlt.this.cacheFile});
           try {
             BufferedImage bufferedimage;
-            connection = (HttpURLConnection)(new URL(ImageDownloadAlt.this.imageUrl)).openConnection(Minecraft.getMinecraft().getProxy());
+            connection = (HttpURLConnection)(new URL(ImageBufferDownloadAlt.this.imageUrl)).openConnection(Minecraft.getMinecraft().getProxy());
             connection.setDoInput(true);
             connection.setDoOutput(false);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
             connection.connect();
             if (connection.getResponseCode() / 100 != 2)
               return;
-            if (ImageDownloadAlt.this.cacheFile != null) {
-              FileUtils.copyInputStreamToFile(connection.getInputStream(), ImageDownloadAlt.this.cacheFile);
-              bufferedimage = ImageIO.read(ImageDownloadAlt.this.cacheFile);
+            if (ImageBufferDownloadAlt.this.cacheFile != null) {
+              FileUtils.copyInputStreamToFile(connection.getInputStream(), ImageBufferDownloadAlt.this.cacheFile);
+              bufferedimage = ImageIO.read(ImageBufferDownloadAlt.this.cacheFile);
             } else {
               bufferedimage = TextureUtil.readBufferedImage(connection.getInputStream());
             }
-            if (ImageDownloadAlt.this.imageBuffer != null)
-              bufferedimage = ImageDownloadAlt.this.imageBuffer.parseUserSkin(bufferedimage);
-            ImageDownloadAlt.this.setBufferedImage(bufferedimage);
+            if (ImageBufferDownloadAlt.this.imageBuffer != null)
+              bufferedimage = ImageBufferDownloadAlt.this.imageBuffer.parseUserSkin(bufferedimage);
+            ImageBufferDownloadAlt.this.setBufferedImage(bufferedimage);
           } catch (Exception exception) {
-            ImageDownloadAlt.logger.error("Couldn't download http texture", exception);
+            ImageBufferDownloadAlt.logger.error("Couldn't download http texture", exception);
           } finally {
             if (connection != null)
               connection.disconnect();

@@ -84,10 +84,11 @@ public class GuiNPCStringSlot extends GuiSlot {
     this.list = list;
   }
 
+  @Override
   protected void func_192637_a(int i, int j, int k, int p_180791_4_, int p_180791_5_, int p_180791_6_, float partialTicks) {
     if (i >= this.list.size())
       return;
     String s = this.list.get(i);
-    this.parent.func_73731_b((Minecraft.getMinecraft()).fontRendererObj, s, j + 50, k + 3, 16777215);
+    this.parent.drawString((Minecraft.getMinecraft()).fontRendererObj, s, j + 50, k + 3, 16777215);
   }
 }

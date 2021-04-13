@@ -1,5 +1,6 @@
 package noppes.mpm.client;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -159,12 +160,12 @@ public class ClientProxy extends CommonProxy {
         }
       }
       if (layer instanceof LayerCustomHead)
-        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, layer, (render.getMainModel()).bipedHead, 0);
+        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, (render.getMainModel()).bipedHead, 0);
       if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
         ita.remove();
     }
     LayerElytraAlt layerElytraAlt = new LayerElytraAlt(render);
-    render.layerRenderers.add(layerElytraAlt);
+    render.layerRenderers.addAll((Collection<? extends LayerRenderer<AbstractClientPlayer>>) layerElytraAlt);
   }
 
   private static void addLayers(RenderPlayer playerRender) {
@@ -182,7 +183,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   public static void bindTexture(ResourceLocation location) {
-    SimpleTexture simpleTexture;
+    SimpleTexture simpleTexture = null;
     if (location == null)
       return;
     TextureManager manager = Minecraft.getMinecraft().getTextureManager();
@@ -191,10 +192,10 @@ public class ClientProxy extends CommonProxy {
       simpleTexture = new SimpleTexture(location);
       manager.loadTexture(location, (ITextureObject)simpleTexture);
     }
-    GlStateManager.func_187401_a(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     GlStateManager.pushMatrix();
     GlStateManager.enableBlend();
-    GlStateManager.func_179144_i(simpleTexture.func_110552_b());
+    GlStateManager.bindTexture(simpleTexture.getGlTextureId());
     GlStateManager.popMatrix();
   }
 }

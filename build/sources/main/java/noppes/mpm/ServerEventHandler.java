@@ -123,7 +123,7 @@ public class ServerEventHandler {
     ModelData data = ModelData.get(target);
     Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, new Object[] { target.getUniqueID(), data.writeToNBT() });
     ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
-    if (!back.func_190926_b()) {
+    if (!back.isEmpty()) {
       Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.getUniqueID(), back.writeToNBT(new NBTTagCompound()) });
     } else {
       Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, new Object[] { target.getUniqueID() });

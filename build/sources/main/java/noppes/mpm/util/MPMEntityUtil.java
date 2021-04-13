@@ -119,15 +119,15 @@ public class MPMEntityUtil {
     entity.prevRenderYawOffset = copied.prevRenderYawOffset;
     entity.field_70726_aT = copied.field_70726_aT;
     entity.field_70727_aS = copied.field_70727_aS;
-    entity.field_70721_aZ = copied.field_70721_aZ;
+    entity.limbSwingAmount = copied.limbSwingAmount;
     entity.field_184618_aE = copied.field_184618_aE;
-    entity.field_184619_aG = copied.field_184619_aG;
+    entity.limbSwing = copied.limbSwing;
     entity.field_70733_aJ = copied.field_70733_aJ;
     entity.field_70732_aI = copied.field_70732_aI;
     entity.field_82175_bq = copied.field_82175_bq;
     entity.field_110158_av = copied.field_110158_av;
     entity.ticksExisted = copied.ticksExisted;
-    entity.func_70606_j(Math.min(copied.getHealth(), entity.func_110138_aP()));
+    entity.func_70606_j(Math.min(copied.getHealth(), entity.getMaxHealth()));
     entity.getEntityData().func_179237_a(copied.getEntityData());
     if (entity.getRidingEntity() != copied.getRidingEntity())
       entity.field_184239_as = copied.field_184239_as;

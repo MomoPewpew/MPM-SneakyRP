@@ -36,7 +36,6 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
   private static int selected = 0;
 
-  @Override
   public GuiCreationParts() {
     this.active = 2;
     Arrays.sort(this.parts, (o1, o2) -> {
@@ -79,7 +78,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
   @Override
   public void unFocused(GuiNpcTextField textfield) {
-    if (textfield.field_175208_g == 23);
+    if (textfield.id == 23);
   }
 
   @Override

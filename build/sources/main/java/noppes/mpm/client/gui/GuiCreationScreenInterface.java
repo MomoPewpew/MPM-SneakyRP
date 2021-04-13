@@ -90,7 +90,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
   @Override
   public void drawScreen(int x, int y, float f) {
-    EntityPlayer entityPlayer;
+    EntityPlayer entityPlayer = null;
     super.drawScreen(x, y, f);
     this.entity = this.playerdata.getEntity((EntityPlayer)this.mc.thePlayer);
     EntityLivingBase entity = this.entity;

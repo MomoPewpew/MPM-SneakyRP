@@ -102,17 +102,16 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
       setSubGui(new GuiCreationLoad());
     if (button.id == 1) {
       GuiYesNo gui = new GuiYesNo((result, id) -> {
-            if (result) {
-              PresetController.instance.removePreset(this.scroll.getSelected());
-              this.scroll.getList().remove(this.scroll.getSelected());
-              Preset preset = PresetController.instance.getPreset(this.scroll.getList().get(0));
-              this.playerdata.readFromNBT(preset.data.writeToNBT());
-              PresetController.instance.selected = preset.name;
-            }
-            Minecraft.getMinecraft().displayGuiScreen((GuiScreen)this);
-          }"", I18n.translateToLocal("message.delete"), 0);
+				if(result){
+					PresetController.instance.removePreset(scroll.getSelected());
+					scroll.getList().remove(scroll.getSelected());
+					Preset preset = PresetController.instance.getPreset(scroll.getList().get(0));
+			    	playerdata.readFromNBT(preset.data.writeToNBT());
+					PresetController.instance.selected = preset.name;
+				}
+	    		Minecraft.getMinecraft().displayGuiScreen(GuiMPM.this);
+			}, "", I18n.translateToLocal("message.delete"), 0);
       this.mc.displayGuiScreen((GuiScreen)gui);
-    }
     if (button.id == 2)
       try {
         setSubGui((GuiNPCInterface)GuiCreationScreenInterface.Gui.getClass().newInstance());
@@ -121,6 +120,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
       } catch (IllegalAccessException illegalAccessException) {}
     if (button.id == 3)
       setSubGui(new GuiConfig());
+    }
   }
 
   @Override

@@ -106,12 +106,12 @@ public abstract class GuiNPCInterface extends GuiScreen {
     if (this.subgui != null) {
       this.subgui.mouseClicked(i, j, k);
     } else {
-      for (GuiNpcTextField tf : new ArrayList(this.textfields.values())) {
+      for (GuiNpcTextField tf : new ArrayList<GuiNpcTextField>(this.textfields.values())) {
         if (tf.enabled)
           tf.mouseClicked(i, j, k);
       }
       if (k == 0)
-        for (GuiCustomScroll scroll : new ArrayList(this.scrolls.values()))
+        for (GuiCustomScroll scroll : new ArrayList<GuiCustomScroll>(this.scrolls.values()))
           scroll.mouseClicked(i, j, k);
       mouseEvent(i, j, k);
       super.mouseClicked(i, j, k);
@@ -137,7 +137,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
       this.subgui.keyTyped(c, i);
     } else {
       for (GuiNpcTextField tf : this.textfields.values())
-        tf.func_146201_a(c, i);
+        tf.textboxKeyTyped(c, i);
       if (this.closeOnEsc && (i == 1 || (!GuiNpcTextField.isActive() && isInventoryKey(i))))
         close();
     }
@@ -167,7 +167,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
   }
 
   public void addTextField(GuiNpcTextField tf) {
-    this.textfields.put(Integer.valueOf(tf.field_175208_g), tf);
+    this.textfields.put(Integer.valueOf(tf.id), tf);
   }
 
   public GuiNpcTextField getTextField(int i) {
@@ -222,7 +222,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
       for (GuiNpcLabel label : this.labels.values())
         label.drawLabel(this, this.fontRendererObj);
       for (GuiNpcTextField tf : this.textfields.values())
-        tf.func_146194_f();
+        tf.drawTextBox();
       for (GuiCustomScroll scroll : this.scrolls.values())
         scroll.drawScreen(i, j, f, hasSubGui() ? 0 : Mouse.getDWheel());
       for (GuiScreen gui : this.extra.values())

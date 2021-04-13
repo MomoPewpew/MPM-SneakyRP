@@ -22,26 +22,26 @@ public class LayerEyes extends LayerInterface {
     GlStateManager.translate(par7, par7, -par7);
     GlStateManager.translate(0.0F, (((this.playerdata.eyes.type == 1) ? 1 : 2) - this.playerdata.eyes.eyePos), 0.0F);
     GlStateManager.enableRescaleNormal();
-    GlStateManager.func_179103_j(7425);
+    GlStateManager.shadeModel(7425);
     GlStateManager.disableTexture2D();
     GlStateManager.enableBlend();
-    GlStateManager.func_179089_o();
-    GlStateManager.func_179118_c();
+    GlStateManager.enableCull();
+    GlStateManager.disableAlpha();
     GlStateManager.depthMask(false);
     int i = this.player.getBrightnessForRender();
     int j = i % 65536;
     int k = i / 65536;
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
-    (Minecraft.getMinecraft()).field_71460_t.func_191514_d(true);
+    (Minecraft.getMinecraft()).entityRenderer.func_191514_d(true);
     drawBrows();
     drawLeft();
     drawRight();
-    (Minecraft.getMinecraft()).field_71460_t.func_191514_d(false);
+    (Minecraft.getMinecraft()).entityRenderer.func_191514_d(false);
     GlStateManager.depthMask(true);
     GlStateManager.disableBlend();
-    GlStateManager.func_179103_j(7424);
-    GlStateManager.func_179141_d();
-    GlStateManager.func_179129_p();
+    GlStateManager.shadeModel(7424);
+    GlStateManager.enableAlpha();
+    GlStateManager.disableCull();
     GlStateManager.disableRescaleNormal();
     GlStateManager.popMatrix();
     GlStateManager.enableTexture2D();
@@ -83,7 +83,7 @@ public class LayerEyes extends LayerInterface {
         this.playerdata.eyes.blinkStart = 0L;
         f = 0.0F;
       }
-      offsetY = ((this.playerdata.eyes.type == 1) ? 2 : true) * f;
+      offsetY = (playerdata.eyes.type == 1?2:1) * f;
       drawRect(-3.0D, -5.0D, -1.0D, (-5.0F + offsetY), this.playerdata.eyes.skinColor, 4.013D, false);
       drawRect(3.0D, -5.0D, 1.0D, (-5.0F + offsetY), this.playerdata.eyes.skinColor, 4.013D, false);
     }

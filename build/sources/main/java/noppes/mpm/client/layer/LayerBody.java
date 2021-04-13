@@ -131,7 +131,7 @@ public class LayerBody extends LayerInterface {
     if (data == null)
       return;
     ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-    if (!itemstack.func_190926_b() && itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
+    if (itemstack != null && itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
       return;
     preRender(data);
     GlStateManager.pushMatrix();
@@ -146,7 +146,7 @@ public class LayerBody extends LayerInterface {
       this.wing2.render(par7);
     }
     if (data.type == 4)
-      this.wing3.func_78088_a((Entity)this.player, this.player.field_184619_aG, this.player.field_70721_aZ, this.player.ticksExisted, 0.0F, 0.0F, par7);
+      this.wing3.render((Entity)this.player, this.player.limbSwing, this.player.limbSwingAmount, this.player.ticksExisted, 0.0F, 0.0F, par7);
     GlStateManager.popMatrix();
   }
 

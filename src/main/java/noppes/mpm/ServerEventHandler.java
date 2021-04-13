@@ -79,7 +79,7 @@ public class ServerEventHandler {
       if (obs.length > 0) {
         ITextComponent comp = (ITextComponent)obs[0];
         if (comp.getSiblings().size() > 0 && comp.getSiblings().get(0) instanceof TextComponentString) {
-          TextComponentString com = comp.getSiblings().get(0);
+          TextComponentString com = (TextComponentString) comp.getSiblings().get(0);
           if (com.getUnformattedText().equals(event.getPlayer().getDisplayName().getUnformattedText())) {
             comp.getSiblings().remove(0);
             comp.getSiblings().add(0, new TextComponentString(data.displayFormat + event.getPlayer().getDisplayName().getUnformattedText()));
@@ -123,7 +123,7 @@ public class ServerEventHandler {
     ModelData data = ModelData.get(target);
     Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, new Object[] { target.getUniqueID(), data.writeToNBT() });
     ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
-    if (!back.isEmpty()) {
+    if (back != null) {
       Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, new Object[] { target.getUniqueID(), back.writeToNBT(new NBTTagCompound()) });
     } else {
       Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, new Object[] { target.getUniqueID() });

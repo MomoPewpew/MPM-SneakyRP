@@ -250,7 +250,7 @@ public class RenderEvent {
     if (mc.currentScreen != null || MorePlayerModels.Tooltips == 0)
       return;
     ItemStack item = mc.thePlayer.getHeldItemMainhand();
-    if (item.isEmpty())
+    if (item == null)
       return;
     String name = item.getDisplayName();
     int x = event.getResolution().getScaledWidth() - mc.fontRendererObj.getStringWidth(name);

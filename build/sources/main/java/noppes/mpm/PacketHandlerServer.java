@@ -40,7 +40,7 @@ public class PacketHandlerServer {
         Server.sendAssociatedData((Entity)player, EnumPackets.SEND_PLAYER_DATA, new Object[] { player.getUniqueID(), data.writeToNBT() });
       }
       ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
-      if (!back.isEmpty())
+      if (back != null)
         Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_UPDATE, new Object[] { player.getUniqueID(), back.writeToNBT(new NBTTagCompound()) });
       Server.sendData(player, EnumPackets.PING, new Object[] { Integer.valueOf(MorePlayerModels.Version) });
     } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {

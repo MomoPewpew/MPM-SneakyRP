@@ -198,7 +198,7 @@ public class RenderEvent {
   }
 
   private ITextureObject loadTexture(File file, ResourceLocation resource, ResourceLocation def, String par1Str, boolean fix64) {
-    ImageDownloadAlt imageDownloadAlt;
+    ImageDownloadAlt imageDownloadAlt = null;
     TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
     ITextureObject object = texturemanager.getTexture(resource);
     if (object == null) {

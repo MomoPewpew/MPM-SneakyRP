@@ -24,7 +24,7 @@ public class ServerTickHandler {
     ModelData data = ModelData.get((EntityPlayer)player);
     ItemStack item = (ItemStack)player.inventory.mainInventory.get(0);
     if (data.backItem != item) {
-      if (item.isEmpty()) {
+      if (item == null) {
         Server.sendAssociatedData((Entity)player, EnumPackets.BACK_ITEM_REMOVE, new Object[] { player.getUniqueID() });
       } else {
         NBTTagCompound tag = item.writeToNBT(new NBTTagCompound());

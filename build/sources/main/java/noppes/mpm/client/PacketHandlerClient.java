@@ -27,7 +27,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
           EnumPackets en = null;
           try {
             en = EnumPackets.values()[buf.readInt()];
-            handlePacket(buf, player, en);
+            handlePacket(buf, entityPlayerSP, en);
           } catch (Exception e) {
             LogWriter.error("Packet error: " + en, e);
           }

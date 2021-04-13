@@ -46,7 +46,7 @@ public class GuiNpcButton extends GuiButton {
   public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
     if (!this.shown)
       return;
-    super.drawButton(minecraft, i, j, partialTicks);
+    drawButton(minecraft, i, j, partialTicks);
   }
 
   @Override

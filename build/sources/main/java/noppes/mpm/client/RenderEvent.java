@@ -198,7 +198,7 @@ public class RenderEvent {
   }
 
   private ITextureObject loadTexture(File file, ResourceLocation resource, ResourceLocation def, String par1Str, boolean fix64) {
-    ImageDownloadAlt imageDownloadAlt;
+    ImageDownloadAlt imageDownloadAlt = null;
     TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
     ITextureObject object = texturemanager.getTexture(resource);
     if (object == null) {
@@ -250,7 +250,7 @@ public class RenderEvent {
     if (mc.currentScreen != null || MorePlayerModels.Tooltips == 0)
       return;
     ItemStack item = mc.thePlayer.getHeldItemMainhand();
-    if (item.isEmpty())
+    if (item == null)
       return;
     String name = item.getDisplayName();
     int x = event.getResolution().getScaledWidth() - mc.fontRendererObj.getStringWidth(name);

@@ -75,7 +75,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       List<IResourcePack> list1 = (List<IResourcePack>)ObfuscationReflectionHelper.getPrivateValue(FallbackResourceManager.class, manager, 1);
       for (IResourcePack pack : list1) {
         if (pack instanceof LegacyV2Adapter)
-          pack = (IResourcePack)ObfuscationReflectionHelper.getPrivateValue(LegacyV2Adapter.class, pack, 0);
+          pack = (IResourcePack)ObfuscationReflectionHelper.getPrivateValue(LegacyV2Adapter.class, (LegacyV2Adapter)pack, 0);
         if (pack instanceof AbstractResourcePack) {
           AbstractResourcePack p = (AbstractResourcePack)pack;
           File file = p.resourcePackFile;
@@ -99,8 +99,8 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     ResourcePackRepository repos = Minecraft.getMinecraft().getResourcePackRepository();
     repos.updateRepositoryEntriesAll();
     List<ResourcePackRepository.Entry> list = repos.getRepositoryEntries();
-    if (repos.getServerResourcePack() != null) {
-      AbstractResourcePack p = (AbstractResourcePack)repos.getServerResourcePack();
+    if (repos.	getResourcePackInstance() != null) {
+      AbstractResourcePack p = (AbstractResourcePack)repos.	getResourcePackInstance();
       File file = p.resourcePackFile;
       if (file != null)
         progressFile(file);
@@ -131,11 +131,11 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
     String texture = playerdata.url;
     if (texture != null && !texture.isEmpty() && !texture.startsWith("http")) {
       this.selectedResource = new ResourceLocation(texture);
-      this.selectedDomain = this.selectedResource.getNamespace();
+      this.selectedDomain = this.selectedResource.getResourceDomain();
       if (!this.domains.containsKey(this.selectedDomain))
         this.selectedDomain = null;
-      int i = this.selectedResource.getPath().lastIndexOf('/');
-      this.location = this.selectedResource.getPath().substring(0, i + 1);
+      int i = this.selectedResource.getResourcePath().lastIndexOf('/');
+      this.location = this.selectedResource.getResourcePath().substring(0, i + 1);
     }
   }
 
@@ -196,7 +196,7 @@ public class GuiTextureSelection extends GuiNPCInterface implements ICustomScrol
       this.scrollQuests.setList(list);
     }
     if (this.selectedResource != null)
-      this.scrollQuests.setSelected(this.selectedResource.getPath());
+      this.scrollQuests.setSelected(this.selectedResource.getResourcePath());
     this.scrollQuests.guiLeft = this.guiLeft + 125;
     this.scrollQuests.guiTop = this.guiTop + 14;
     addScroll(this.scrollQuests);

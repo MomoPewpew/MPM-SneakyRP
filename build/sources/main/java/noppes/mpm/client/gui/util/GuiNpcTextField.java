@@ -5,116 +5,126 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 
 public class GuiNpcTextField extends GuiTextField {
-  public boolean enabled = true;
+     public boolean enabled = true;
+     public boolean inMenu = true;
+     public boolean numbersOnly = false;
+     private ITextfieldListener listener;
+     public int id;
+     public int min = 0;
+     public int max = Integer.MAX_VALUE;
+     public int def = 0;
+     private static GuiNpcTextField activeTextfield = null;
+     private final int[] allowedSpecialChars = new int[]{14, 211, 203, 205};
 
-  public boolean inMenu = true;
+     public GuiNpcTextField(int id, GuiScreen parent, int i, int j, int k, int l, String s) {
+          super(id, Minecraft.getMinecraft().fontRenderer, i, j, k, l);
+          this.setMaxStringLength(500);
+          this.setText(s);
+          this.id = id;
+          if (parent instanceof ITextfieldListener) {
+               this.listener = (ITextfieldListener)parent;
+          }
 
-  public boolean numbersOnly = false;
+     }
 
-  private ITextfieldListener listener;
+     public static boolean isActive() {
+          return activeTextfield != null;
+     }
 
-  public int id;
+     private boolean charAllowed(char c, int i) {
+          if (this.numbersOnly && !Character.isDigit(c)) {
+               int[] var3 = this.allowedSpecialChars;
+               int var4 = var3.length;
 
-  public int min = 0;
+               for(int var5 = 0; var5 < var4; ++var5) {
+                    int j = var3[var5];
+                    if (j == i) {
+                         return true;
+                    }
+               }
 
-  public int max = Integer.MAX_VALUE;
+               return false;
+          } else {
+               return true;
+          }
+     }
 
-  public int def = 0;
+     public boolean textboxKeyTyped(char c, int i) {
+          return !this.charAllowed(c, i) ? false : super.textboxKeyTyped(c, i);
+     }
 
-  private static GuiNpcTextField activeTextfield = null;
+     public boolean isEmpty() {
+          return this.getText().trim().length() == 0;
+     }
 
-  private final int[] allowedSpecialChars = new int[] { 14, 211, 203, 205 };
+     public int getInteger() {
+          return Integer.parseInt(this.getText());
+     }
 
-  public GuiNpcTextField(int id, GuiScreen parent, int i, int j, int k, int l, String s) {
-    super(id, (Minecraft.getMinecraft()).fontRendererObj, i, j, k, l);
-    setMaxStringLength(500);
-    setText(s);
-    this.id = id;
-    if (parent instanceof ITextfieldListener)
-      this.listener = (ITextfieldListener)parent;
-  }
+     public boolean isInteger() {
+          try {
+               Integer.parseInt(this.getText());
+               return true;
+          } catch (NumberFormatException var2) {
+               return false;
+          }
+     }
 
+     public boolean mouseClicked(int i, int j, int k) {
+          boolean wasFocused = this.isFocused();
+          boolean clicked = super.mouseClicked(i, j, k);
+          if (wasFocused != this.isFocused() && wasFocused) {
+               this.unFocused();
+          }
 
-  public static boolean isActive() {
-    return (activeTextfield != null);
-  }
+          if (this.isFocused()) {
+               activeTextfield = this;
+          }
 
-  private boolean charAllowed(char c, int i) {
-    if (!this.numbersOnly || Character.isDigit(c))
-      return true;
-    for (int j : this.allowedSpecialChars) {
-      if (j == i)
-        return true;
-    }
-    return false;
-  }
+          return clicked;
+     }
 
-  @Override
-  public boolean textboxKeyTyped(char c, int i) {
-    if (!charAllowed(c, i))
-      return false;
-    return super.textboxKeyTyped(c, i);
-  }
+     public void unFocused() {
+          if (this.numbersOnly) {
+               if (!this.isEmpty() && this.isInteger()) {
+                    if (this.getInteger() < this.min) {
+                         this.setText(this.min + "");
+                    } else if (this.getInteger() > this.max) {
+                         this.setText(this.max + "");
+                    }
+               } else {
+                    this.setText(this.def + "");
+               }
+          }
 
-  public boolean isEmpty() {
-    return (getText().trim().length() == 0);
-  }
+          if (this.listener != null) {
+               this.listener.unFocused(this);
+          }
 
-  public int getInteger() {
-    return Integer.parseInt(getText());
-  }
+          if (this == activeTextfield) {
+               activeTextfield = null;
+          }
 
-  public boolean isInteger() {
-    try {
-      Integer.parseInt(getText());
-      return true;
-    } catch (NumberFormatException e) {
-      return false;
-    }
-  }
+     }
 
-  @Override
-  public boolean mouseClicked(int i, int j, int k) {
-    boolean wasFocused = isFocused();
-    boolean clicked = super.mouseClicked(i, j, k);
-    if (wasFocused != isFocused() &&
-      wasFocused)
-      unFocused();
-    if (isFocused())
-      activeTextfield = this;
-    return clicked;
-  }
+     public void drawTextBox() {
+          if (this.enabled) {
+               super.drawTextBox();
+          }
 
-  public void unFocused() {
-    if (this.numbersOnly)
-      if (isEmpty() || !isInteger()) {
-        setText(this.def + "");
-      } else if (getInteger() < this.min) {
-        setText(this.min + "");
-      } else if (getInteger() > this.max) {
-        setText(this.max + "");
-      }
-    if (this.listener != null)
-      this.listener.unFocused(this);
-    if (this == activeTextfield)
-      activeTextfield = null;
-  }
+     }
 
-  @Override
-  public void drawTextBox() {
-    if (this.enabled)
-      super.drawTextBox();
-  }
+     public void setMinMaxDefault(int i, int j, int k) {
+          this.min = i;
+          this.max = j;
+          this.def = k;
+     }
 
-  public void setMinMaxDefault(int i, int j, int k) {
-    this.min = i;
-    this.max = j;
-    this.def = k;
-  }
+     public static void unfocus() {
+          if (activeTextfield != null) {
+               activeTextfield.unFocused();
+          }
 
-  public static void unfocus() {
-    if (activeTextfield != null)
-      activeTextfield.unFocused();
-    activeTextfield = null;
-  }
+          activeTextfield = null;
+     }
 }

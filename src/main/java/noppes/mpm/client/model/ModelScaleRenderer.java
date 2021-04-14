@@ -12,70 +12,79 @@ import noppes.mpm.constants.EnumParts;
 import org.lwjgl.opengl.GL11;
 
 public class ModelScaleRenderer extends ModelRenderer {
-  public boolean isCompiled;
+     public boolean isCompiled;
+     public int displayList;
+     public ModelPartConfig config;
+     public EnumParts part;
 
-  public int displayList;
+     public ModelScaleRenderer(ModelBase modelBase, EnumParts part) {
+          super(modelBase);
+          this.part = part;
+     }
 
-  public ModelPartConfig config;
+     public ModelScaleRenderer(ModelBase modelBase, int par2, int par3, EnumParts part) {
+          this(modelBase, part);
+          this.setTextureOffset(par2, par3);
+     }
 
-  public EnumParts part;
+     public void setRotation(ModelRenderer model, float x, float y, float z) {
+          model.rotateAngleX = x;
+          model.rotateAngleY = y;
+          model.rotateAngleZ = z;
+     }
 
-  public ModelScaleRenderer(ModelBase modelBase, EnumParts part) {
-    super(modelBase);
-    this.part = part;
-  }
+     @Override
+     public void render(float par1) {
+          if (this.showModel && !this.isHidden) {
+               if (!this.isCompiled) {
+                    this.compile(par1);
+               }
 
-  public ModelScaleRenderer(ModelBase modelBase, int par2, int par3, EnumParts part) {
-    this(modelBase, part);
-    setTextureOffset(par2, par3);
-  }
+               GlStateManager.pushMatrix();
+               this.postRender(par1);
+               GlStateManager.callList(this.displayList);
+               if (this.childModels != null) {
+                    for(int i = 0; i < this.childModels.size(); ++i) {
+                         ((ModelRenderer)this.childModels.get(i)).render(par1);
+                    }
+               }
 
-  public void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.rotateAngleX = x;
-    model.rotateAngleY = y;
-    model.rotateAngleZ = z;
-  }
+               GlStateManager.popMatrix();
+          }
+     }
 
-  @Override
-  public void render(float par1) {
-    if (!this.showModel || this.isHidden)
-      return;
-    if (!this.isCompiled)
-      compile(par1);
-    GlStateManager.pushMatrix();
-    postRender(par1);
-    GlStateManager.callList(this.displayList);
-    if (this.childModels != null)
-      for (int i = 0; i < this.childModels.size(); i++)
-        ((ModelRenderer)this.childModels.get(i)).render(par1);
-    GlStateManager.popMatrix();
-  }
+     @Override
+     public void postRender(float par1) {
+          if (this.config != null) {
+               GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
+          }
 
-  @Override
-  public void postRender(float par1) {
-    if (this.config != null)
-      GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
-    super.postRender(par1);
-    if (this.config != null)
-      GlStateManager.translate(this.config.scaleX, this.config.scaleY, this.config.scaleZ);
-  }
+          super.postRender(par1);
+          if (this.config != null) {
+               GlStateManager.scale(this.config.scaleX, this.config.scaleY, this.config.scaleZ);
+          }
 
-  public void postRenderNoScale(float par1) {
-    GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
-    super.postRender(par1);
-  }
+     }
 
-  public void parentRender(float par1) {
-    super.render(par1);
-  }
+     public void postRenderNoScale(float par1) {
+          GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);
+          super.postRender(par1);
+     }
 
-  public void compile(float par1) {
-    this.displayList = GLAllocation.generateDisplayLists(1);
-    GL11.glNewList(this.displayList, 4864);
-    BufferBuilder worldrenderer = Tessellator.getInstance().getBuffer();
-    for (int i = 0; i < this.cubeList.size(); i++)
-      ((ModelBox)this.cubeList.get(i)).render(worldrenderer, par1);
-    GL11.glEndList();
-    this.isCompiled = true;
-  }
+     public void parentRender(float par1) {
+          super.render(par1);
+     }
+
+     public void compile(float par1) {
+          this.displayList = GLAllocation.generateDisplayLists(1);
+          GL11.glNewList(this.displayList, 4864);
+          BufferBuilder worldrenderer = Tessellator.getInstance().getBuffer();
+
+          for(int i = 0; i < this.cubeList.size(); ++i) {
+               ((ModelBox)this.cubeList.get(i)).render(worldrenderer, par1);
+          }
+
+          GL11.glEndList();
+          this.isCompiled = true;
+     }
 }

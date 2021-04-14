@@ -4,12 +4,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.text.translation.I18n;
@@ -21,74 +21,87 @@ import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 
 public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener {
-  public HashMap<String, Class<? extends EntityLivingBase>> data = new HashMap<>();
+     public HashMap data = new HashMap();
+     private List list;
+     private GuiCustomScroll scroll;
+     private boolean resetToSelected = true;
 
-  private List<String> list;
+     public GuiCreationEntities() {
+          Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
 
-  private GuiCustomScroll scroll;
+          while(var1.hasNext()) {
+               EntityEntry ent = (EntityEntry)var1.next();
+               String name = ent.getName();
 
-  private boolean resetToSelected = true;
+               try {
+                    Class c = ent.getEntityClass();
+                    if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
+                         this.data.put(name, c.asSubclass(EntityLivingBase.class));
+                    }
+               } catch (SecurityException var5) {
+                    var5.printStackTrace();
+               } catch (Exception var6) {
+               }
+          }
 
-  public GuiCreationEntities() {
-    for (EntityEntry ent : ForgeRegistries.ENTITIES.getValues()) {
-      String name = ent.getName();
-      try {
-        Class<? extends Entity> c = ent.getEntityClass();
-        if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(new Class[] { World.class }) != null && !Modifier.isAbstract(c.getModifiers()) &&
-          Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof net.minecraft.client.renderer.entity.RenderLivingBase)
-          this.data.put(name, c.asSubclass(EntityLivingBase.class));
-      } catch (SecurityException e) {
-        e.printStackTrace();
-      } catch (Exception exception) {}
-    }
-    this.list = new ArrayList<>(this.data.keySet());
-    this.list.add(I18n.translateToLocal("gui.player"));
-    Collections.sort(this.list, String.CASE_INSENSITIVE_ORDER);
-    this.active = 1;
-    this.xOffset = 60;
-  }
+          this.list = new ArrayList(this.data.keySet());
+          this.list.add(I18n.translateToLocal("gui.player"));
+          Collections.sort(this.list, String.CASE_INSENSITIVE_ORDER);
+          this.active = 1;
+          this.xOffset = 60;
+     }
 
-  @Override
-  public void initGui() {
-    super.initGui();
-    addButton(new GuiNpcButton(10, this.guiLeft, this.guiTop + 46, 120, 20, "gui.resettoplayer"));
-    if (this.scroll == null) {
-      this.scroll = new GuiCustomScroll((GuiScreen)this, 0);
-      this.scroll.setUnsortedList(this.list);
-    }
-    this.scroll.guiLeft = this.guiLeft;
-    this.scroll.guiTop = this.guiTop + 68;
-    this.scroll.setSize(100, this.ySize - 70);
-    String selected = I18n.translateToLocal("gui.player");
-    if (this.entity != null)
-      for (Map.Entry<String, Class<? extends EntityLivingBase>> en : this.data.entrySet()) {
-        if (((Class)en.getValue()).toString().equals(this.entity.getClass().toString()))
-          selected = en.getKey();
-      }
-    this.scroll.setSelected(selected);
-    if (this.resetToSelected) {
-      this.scroll.scrollTo(this.scroll.getSelected());
-      this.resetToSelected = false;
-    }
-    addScroll(this.scroll);
-  }
+     @Override
+     public void initGui() {
+          super.initGui();
+          this.addButton(new GuiNpcButton(10, this.guiLeft, this.guiTop + 46, 120, 20, "gui.resettoplayer"));
+          if (this.scroll == null) {
+               this.scroll = new GuiCustomScroll(this, 0);
+               this.scroll.setUnsortedList(this.list);
+          }
 
-  @Override
-  protected void actionPerformed(GuiButton btn) {
-    super.actionPerformed(btn);
-    if (btn.id == 10) {
-      this.playerdata.setEntityClass(null);
-      this.resetToSelected = true;
-      initGui();
-    }
-  }
+          this.scroll.guiLeft = this.guiLeft;
+          this.scroll.guiTop = this.guiTop + 68;
+          this.scroll.setSize(100, this.ySize - 70);
+          String selected = I18n.translateToLocal("gui.player");
+          if (this.entity != null) {
+               Iterator var2 = this.data.entrySet().iterator();
 
-  @Override
-  public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-    this.playerdata.setEntityClass(this.data.get(scroll.getSelected()));
-    initGui();
-  }
+               while(var2.hasNext()) {
+                    Entry en = (Entry)var2.next();
+                    if (((Class)en.getValue()).toString().equals(this.entity.getClass().toString())) {
+                         selected = (String)en.getKey();
+                    }
+               }
+          }
 
-  @Override
-  public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {}
+          this.scroll.setSelected(selected);
+          if (this.resetToSelected) {
+               this.scroll.scrollTo(this.scroll.getSelected());
+               this.resetToSelected = false;
+          }
+
+          this.addScroll(this.scroll);
+     }
+
+     @Override
+     protected void actionPerformed(GuiButton btn) {
+          super.actionPerformed(btn);
+          if (btn.id == 10) {
+               this.playerdata.setEntityClass((Class)null);
+               this.resetToSelected = true;
+               this.initGui();
+          }
+
+     }
+
+     @Override
+     public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
+          this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
+          this.initGui();
+     }
+
+     @Override
+     public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
+     }
 }

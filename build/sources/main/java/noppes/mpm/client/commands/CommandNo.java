@@ -7,19 +7,15 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandNo extends MpmCommandInterface {
+     public String getName() {
+          return "no";
+     }
 
-  @Override
-  public String getCommandName() {
-    return "no";
-  }
+     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+          ClientEventHandler.processAnimation(EnumAnimation.NO.ordinal());
+     }
 
-  @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-    ClientEventHandler.processAnimation(EnumAnimation.NO.ordinal());
-  }
-
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/no to no";
-  }
+     public String getUsage(ICommandSender sender) {
+          return "/no to no";
+     }
 }

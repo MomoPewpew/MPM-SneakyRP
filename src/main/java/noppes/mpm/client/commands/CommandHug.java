@@ -8,18 +8,18 @@ import noppes.mpm.constants.EnumAnimation;
 
 public class CommandHug extends MpmCommandInterface {
 
-  @Override
-  public String getCommandName() {
-    return "hug";
-  }
+	@Override
+	public String getCommandName() {
+		return "hug";
+	}
 
-  @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-    ClientEventHandler.processAnimation(EnumAnimation.HUG.ordinal());
-  }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.HUG.ordinal());
+	}
 
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/hug to hug";
-  }
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/hug to hug";
+	}
 }

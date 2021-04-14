@@ -7,6 +7,7 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandDance extends MpmCommandInterface {
+
 	@Override
 	public String getCommandName() {
 		return "dance";

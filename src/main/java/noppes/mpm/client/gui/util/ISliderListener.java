@@ -1,9 +1,9 @@
 package noppes.mpm.client.gui.util;
 
 public interface ISliderListener {
-  void mouseDragged(GuiNpcSlider paramGuiNpcSlider);
+     void mouseDragged(GuiNpcSlider var1);
 
-  void mousePressed(GuiNpcSlider paramGuiNpcSlider);
+     void mousePressed(GuiNpcSlider var1);
 
-  void mouseReleased(GuiNpcSlider paramGuiNpcSlider);
+     void mouseReleased(GuiNpcSlider var1);
 }

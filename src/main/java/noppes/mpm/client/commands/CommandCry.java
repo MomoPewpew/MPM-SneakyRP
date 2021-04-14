@@ -1,3 +1,4 @@
+
 package noppes.mpm.client.commands;
 
 import net.minecraft.command.ICommandSender;
@@ -7,18 +8,19 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandCry extends MpmCommandInterface {
-  @Override
-  public String getCommandName() {
-    return "cry";
-  }
 
-  @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-    ClientEventHandler.processAnimation(EnumAnimation.CRY.ordinal());
-  }
+	@Override
+	public String getCommandName() {
+		return "cry";
+	}
 
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/cry to cry";
-  }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.CRY.ordinal());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/cry to cry";
+	}
 }

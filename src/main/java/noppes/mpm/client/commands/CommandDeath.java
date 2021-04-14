@@ -7,18 +7,19 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandDeath extends MpmCommandInterface {
-  @Override
-  public String getCommandName() {
-    return "death";
-  }
 
-  @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-    ClientEventHandler.processAnimation(EnumAnimation.DEATH.ordinal());
-  }
+	@Override
+     public String getCommandName() {
+          return "death";
+     }
 
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/death to die";
-  }
+	@Override
+     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+          ClientEventHandler.processAnimation(EnumAnimation.DEATH.ordinal());
+     }
+
+	@Override
+     public String getCommandUsage(ICommandSender sender) {
+          return "/death to die";
+     }
 }

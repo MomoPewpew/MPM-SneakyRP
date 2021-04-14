@@ -2,30 +2,34 @@ package noppes.mpm.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.ClickEvent.Action;
 
 public class VersionChecker extends Thread {
-  public void run() {
-	String name = '\u00A7'+ "2MorePlayerModels" + '\u00A7' + "f";
-	String link = '\u00A7'+"9"+'\u00A7' + "nClick here";
-    String text = name + " installed. More info at " + link;
-    try {
-      EntityPlayerSP entityPlayerSP1 = (Minecraft.getMinecraft()).thePlayer;
-    } catch (NoSuchMethodError e) {
-      return;
-    }
-    EntityPlayerSP entityPlayerSP;
-    while ((entityPlayerSP = (Minecraft.getMinecraft()).thePlayer) == null) {
-      try {
-        Thread.sleep(2000L);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
-    TextComponentTranslation message = new TextComponentTranslation(text, new Object[0]);
-    message.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
-    entityPlayerSP.addChatMessage((ITextComponent)message);
-  }
+	@Override
+     public void run() {
+          String name = "§2MorePlayerModels§f";
+          String link = "§9§nClick here";
+          String text = name + " installed. More info at " + link;
+
+          EntityPlayerSP player;
+          try {
+               player = Minecraft.getMinecraft().player;
+          } catch (NoSuchMethodError var7) {
+               return;
+          }
+
+          while((player = Minecraft.getMinecraft().player) == null) {
+               try {
+                    Thread.sleep(2000L);
+               } catch (InterruptedException var6) {
+                    var6.printStackTrace();
+               }
+          }
+
+          TextComponentTranslation message = new TextComponentTranslation(text, new Object[0]);
+          message.getStyle().setClickEvent(new ClickEvent(Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
+          player.sendMessage(message);
+     }
 }

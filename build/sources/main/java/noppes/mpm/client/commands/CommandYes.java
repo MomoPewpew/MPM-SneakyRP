@@ -7,18 +7,15 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandYes extends MpmCommandInterface {
-  @Override
-  public String getCommandName() {
-    return "yes";
-  }
+     public String getName() {
+          return "yes";
+     }
 
-  @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-    ClientEventHandler.processAnimation(EnumAnimation.YES.ordinal());
-  }
+     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
+          ClientEventHandler.processAnimation(EnumAnimation.YES.ordinal());
+     }
 
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/yes to yes";
-  }
+     public String getUsage(ICommandSender sender) {
+          return "/yes to yes";
+     }
 }

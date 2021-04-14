@@ -1,28 +1,27 @@
 package noppes.mpm.client;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabMPM;
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.DestFactor;
+import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
+import net.minecraft.client.renderer.entity.layers.LayerElytra;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.ICommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -60,143 +59,156 @@ import noppes.mpm.client.model.ModelBipedAlt;
 import noppes.mpm.client.model.ModelPlayerAlt;
 
 public class ClientProxy extends CommonProxy {
-  public static KeyBinding Screen;
+     public static KeyBinding Screen;
+     public static KeyBinding MPM1;
+     public static KeyBinding MPM2;
+     public static KeyBinding MPM3;
+     public static KeyBinding MPM4;
+     public static KeyBinding MPM5;
+     public static KeyBinding Camera;
 
-  public static KeyBinding MPM1;
+     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+          return null;
+     }
 
-  public static KeyBinding MPM2;
+     public void load() {
+          MorePlayerModels.Channel.register(new PacketHandlerClient());
+          MorePlayerModels var10002 = MorePlayerModels.instance;
+          new PresetController(MorePlayerModels.dir);
+          ClientRegistry.registerKeyBinding(Screen = new KeyBinding("CharacterScreen", 88, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(MPM1 = new KeyBinding("MPM 1", 44, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(MPM2 = new KeyBinding("MPM 2", 0, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(MPM3 = new KeyBinding("MPM 3", 0, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(MPM4 = new KeyBinding("MPM 4", 0, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(MPM5 = new KeyBinding("MPM 5", 0, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 56, "key.categories.gameplay"));
+          MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+          if (MorePlayerModels.EnableUpdateChecker) {
+               VersionChecker checker = new VersionChecker();
+               checker.start();
+          }
 
-  public static KeyBinding MPM3;
+          MinecraftForge.EVENT_BUS.register(new RenderEvent());
+          ClientCommandHandler.instance.registerCommand(new CommandBow());
+          ClientCommandHandler.instance.registerCommand(new CommandCrawl());
+          ClientCommandHandler.instance.registerCommand(new CommandCry());
+          ClientCommandHandler.instance.registerCommand(new CommandDeath());
+          ClientCommandHandler.instance.registerCommand(new CommandDance());
+          ClientCommandHandler.instance.registerCommand(new CommandHug());
+          ClientCommandHandler.instance.registerCommand(new CommandNo());
+          ClientCommandHandler.instance.registerCommand(new CommandPoint());
+          ClientCommandHandler.instance.registerCommand(new CommandSit());
+          ClientCommandHandler.instance.registerCommand(new CommandSleep());
+          ClientCommandHandler.instance.registerCommand(new CommandWag());
+          ClientCommandHandler.instance.registerCommand(new CommandWave());
+          ClientCommandHandler.instance.registerCommand(new CommandYes());
+     }
 
-  public static KeyBinding MPM4;
+     public void postLoad() {
+          fixModels(true);
+          if (MorePlayerModels.InventoryGuiEnabled) {
+               MinecraftForge.EVENT_BUS.register(new TabRegistry());
+               if (TabRegistry.getTabList().size() < 2) {
+                    TabRegistry.registerTab(new InventoryTabVanilla());
+               }
 
-  public static KeyBinding MPM5;
+               TabRegistry.registerTab(new InventoryTabMPM());
+          }
 
-  public static KeyBinding Camera;
+     }
 
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
-  }
+     public static void fixModels(boolean init) {
+          Map map = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+          Iterator var2 = map.keySet().iterator();
 
-  @Override
-  public void load() {
-    MorePlayerModels.Channel.register(new PacketHandlerClient());
-    new PresetController(MorePlayerModels.dir);
-    ClientRegistry.registerKeyBinding(Screen = new KeyBinding("CharacterScreen", 88, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(MPM1 = new KeyBinding("MPM 1", 44, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(MPM2 = new KeyBinding("MPM 2", 0, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(MPM3 = new KeyBinding("MPM 3", 0, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(MPM4 = new KeyBinding("MPM 4", 0, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(MPM5 = new KeyBinding("MPM 5", 0, "key.categories.gameplay"));
-    ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 56, "key.categories.gameplay"));
-    MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-    if (MorePlayerModels.EnableUpdateChecker) {
-      VersionChecker checker = new VersionChecker();
-      checker.start();
-    }
-    MinecraftForge.EVENT_BUS.register(new RenderEvent());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandBow());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandCrawl());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandCry());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandDeath());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandDance());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandHug());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandNo());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandPoint());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandSit());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandSleep());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandWag());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandWave());
-    ClientCommandHandler.instance.registerCommand((ICommand)new CommandYes());
-  }
+          while(var2.hasNext()) {
+               String type = (String)var2.next();
+               RenderPlayer render = (RenderPlayer)map.get(type);
+               fixModels(render, type.equals("slim"), !init);
+               boolean hasMPMLayers = false;
+               List list = render.layerRenderers;
+               Iterator var7 = list.iterator();
 
-  @Override
-  public void postLoad() {
-    fixModels(true);
-    if (MorePlayerModels.InventoryGuiEnabled) {
-      MinecraftForge.EVENT_BUS.register(new TabRegistry());
-      if (TabRegistry.getTabList().size() < 2)
-        TabRegistry.registerTab((AbstractTab)new InventoryTabVanilla());
-      TabRegistry.registerTab((AbstractTab)new InventoryTabMPM());
-    }
-  }
+               while(var7.hasNext()) {
+                    LayerRenderer layer = (LayerRenderer)var7.next();
+                    if (layer instanceof LayerInterface) {
+                         ((LayerInterface)layer).setModel(render.getMainModel());
+                         hasMPMLayers = true;
+                    }
+               }
 
-  public static void fixModels(boolean init) {
-    Map<String, RenderPlayer> map = Minecraft.getMinecraft().getRenderManager().getSkinMap();
-    for (String type : map.keySet()) {
-      RenderPlayer render = map.get(type);
-      fixModels(render, type.equals("slim"), !init);
-      boolean hasMPMLayers = false;
-      List<? extends LayerRenderer> list = render.layerRenderers;
-      for (LayerRenderer layer : list) {
-        if (layer instanceof LayerInterface) {
-          ((LayerInterface)layer).setModel(render.getMainModel());
-          hasMPMLayers = true;
-        }
-      }
-      if (!hasMPMLayers)
-        addLayers(render);
-    }
-  }
+               if (!hasMPMLayers) {
+                    addLayers(render);
+               }
+          }
 
-  private static void fixModels(RenderPlayer render, boolean slim, boolean fix) {
-    if (!MorePlayerModels.Compatibility) {
-      render.mainModel = (ModelBase)new ModelPlayerAlt(0.0F, slim);
-    } else if (fix) {
-      render.mainModel = (ModelBase)new ModelPlayer(0.0F, slim);
-    }
-    Iterator<? extends LayerRenderer> ita = render.layerRenderers.iterator();
-    while (ita.hasNext()) {
-      LayerRenderer layer = ita.next();
-      if (layer instanceof LayerArmorBase) {
-        LayerArmorBase l = (LayerArmorBase)layer;
-        if (!MorePlayerModels.Compatibility) {
-          ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(0.5F), 1);
-          ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(1.0F), 2);
-        } else if (fix) {
-          ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(0.5F), 1);
-          ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(1.0F), 2);
-        }
-      }
-      if (layer instanceof LayerCustomHead)
-        ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, (render.getMainModel()).bipedHead, 0);
-      if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
-        ita.remove();
-    }
+     }
 
-    LayerElytraAlt layerElytraAlt = new LayerElytraAlt(render);
-    render.layerRenderers.add(layerElytraAlt);
-  }
+     private static void fixModels(RenderPlayer render, boolean slim, boolean fix) {
+          if (!MorePlayerModels.Compatibility) {
+               render.mainModel = new ModelPlayerAlt(0.0F, slim);
+          } else if (fix) {
+               render.mainModel = new ModelPlayer(0.0F, slim);
+          }
 
-  private static void addLayers(RenderPlayer playerRender) {
-    List<LayerRenderer<AbstractClientPlayer>> list = playerRender.layerRenderers;
-    list.removeIf(layer -> layer instanceof net.minecraft.client.renderer.entity.layers.LayerCape);
-    list.add(1, new LayerEyes(playerRender));
-    list.add(2, new LayerHead(playerRender));
-    list.add(3, new LayerBody(playerRender));
-    list.add(4, new LayerArms(playerRender));
-    list.add(5, new LayerLegs(playerRender));
-    list.add(6, new LayerHeadwear(playerRender));
-    list.add(new LayerCapeMPM(playerRender));
-    list.add(new LayerChatbubble(playerRender));
-    list.add(new LayerBackItem(playerRender));
-  }
+          Iterator ita = render.layerRenderers.iterator();
 
-  public static void bindTexture(ResourceLocation location) {
-    SimpleTexture simpleTexture = null;
-    if (location == null)
-      return;
-    TextureManager manager = Minecraft.getMinecraft().getTextureManager();
-    ITextureObject textureObject = manager.getTexture(location);
-    if (textureObject == null) {
-      simpleTexture = new SimpleTexture(location);
-      manager.loadTexture(location, (ITextureObject)simpleTexture);
-    }
-    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    GlStateManager.pushMatrix();
-    GlStateManager.enableBlend();
-    GlStateManager.bindTexture(simpleTexture.getGlTextureId());
-    GlStateManager.popMatrix();
-  }
+          while(ita.hasNext()) {
+               LayerRenderer layer = (LayerRenderer)ita.next();
+               if (layer instanceof LayerArmorBase) {
+                    LayerArmorBase l = (LayerArmorBase)layer;
+                    if (!MorePlayerModels.Compatibility) {
+                         ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(0.5F), 1);
+                         ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(1.0F), 2);
+                    } else if (fix) {
+                         ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(0.5F), 1);
+                         ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(1.0F), 2);
+                    }
+               }
+
+               if (layer instanceof LayerCustomHead) {
+                    ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, render.getMainModel().bipedHead, 0);
+               }
+
+               if (layer instanceof LayerElytra) {
+                    ita.remove();
+               }
+          }
+
+          LayerRenderer layer = new LayerElytraAlt(render);
+          render.layerRenderers.add(layer);
+     }
+
+     private static void addLayers(RenderPlayer playerRender) {
+          List list = playerRender.layerRenderers;
+          list.removeIf((layer) -> {
+               return layer instanceof LayerCape;
+          });
+          list.add(1, new LayerEyes(playerRender));
+          list.add(2, new LayerHead(playerRender));
+          list.add(3, new LayerBody(playerRender));
+          list.add(4, new LayerArms(playerRender));
+          list.add(5, new LayerLegs(playerRender));
+          list.add(6, new LayerHeadwear(playerRender));
+          list.add(new LayerCapeMPM(playerRender));
+          list.add(new LayerChatbubble(playerRender));
+          list.add(new LayerBackItem(playerRender));
+     }
+
+     public static void bindTexture(ResourceLocation location) {
+          if (location != null) {
+               TextureManager manager = Minecraft.getMinecraft().getTextureManager();
+               ITextureObject textureObject = manager.getTexture(location);
+               if (textureObject == null) {
+                    textureObject = new SimpleTexture(location);
+                    manager.loadTexture(location, (ITextureObject)textureObject);
+               }
+
+               GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+               GlStateManager.pushMatrix();
+               GlStateManager.enableBlend();
+               GlStateManager.bindTexture(((ITextureObject)textureObject).getGlTextureId());
+               GlStateManager.popMatrix();
+          }
+     }
 }

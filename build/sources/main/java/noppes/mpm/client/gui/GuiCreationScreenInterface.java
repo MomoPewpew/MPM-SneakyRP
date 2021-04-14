@@ -25,17 +25,18 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
      private static float rotation = 0.5F;
 
      public GuiCreationScreenInterface() {
-          this.playerdata = ModelData.get(Minecraft.getMinecraft().player);
+          this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
           this.xSize = 400;
           this.ySize = 240;
           this.xOffset = 140;
-          this.player = Minecraft.getMinecraft().player;
+          this.player = Minecraft.getMinecraft().thePlayer;
           this.closeOnEsc = true;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
-          this.entity = this.playerdata.getEntity(this.mc.player);
+          this.entity = this.playerdata.getEntity(this.mc.thePlayer);
           Keyboard.enableRepeatEvents(true);
           this.addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
           this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
@@ -63,6 +64,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
           this.addSlider(new GuiNpcSlider(this, 500, this.guiLeft + this.xOffset + 142, this.guiTop + 210, 120, 20, rotation));
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 0) {
@@ -91,27 +93,31 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
      }
 
+     @Override
      public void drawScreen(int x, int y, float f) {
           super.drawScreen(x, y, f);
-          this.entity = this.playerdata.getEntity(this.mc.player);
+          this.entity = this.playerdata.getEntity(this.mc.thePlayer);
           EntityLivingBase entity = this.entity;
           if (entity == null) {
                entity = this.player;
           } else {
-               MPMEntityUtil.Copy(this.mc.player, this.player);
+               MPMEntityUtil.Copy(this.mc.thePlayer, this.player);
           }
 
           this.drawNpc((EntityLivingBase)entity, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
      }
 
+     @Override
      public void onGuiClosed() {
           super.onGuiClosed();
           Keyboard.enableRepeatEvents(false);
      }
 
+     @Override
      public void save() {
      }
 
+     @Override
      public boolean drawSubGuiBackground() {
           return true;
      }
@@ -124,10 +130,12 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
      }
 
+     @Override
      public void subGuiClosed(GuiNPCInterface subgui) {
           this.initGui();
      }
 
+     @Override
      public void mouseDragged(GuiNpcSlider slider) {
           if (slider.id == 500) {
                rotation = slider.sliderValue;
@@ -136,9 +144,11 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
      }
 
+     @Override
      public void mousePressed(GuiNpcSlider slider) {
      }
 
+     @Override
      public void mouseReleased(GuiNpcSlider slider) {
      }
 }

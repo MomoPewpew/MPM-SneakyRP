@@ -49,7 +49,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public UUID analyticsUUID;
 
      public ModelData() {
-          this.backItem = ItemStack.EMPTY;
+          this.backItem = null;
           this.inLove = 0;
           this.animationTime = -1;
           this.animation = EnumAnimation.NONE;
@@ -129,8 +129,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           } else {
                if (this.entity == null) {
                     try {
-                         this.entity = (EntityLivingBase)this.entityClass.getConstructor(World.class).newInstance(player.world);
-                         if (PixelmonHelper.isPixelmon(this.entity) && player.world.isRemote && !this.extra.hasKey("Name")) {
+                         this.entity = (EntityLivingBase)this.entityClass.getConstructor(World.class).newInstance(player.worldObj);
+                         if (PixelmonHelper.isPixelmon(this.entity) && player.worldObj.isRemote && !this.extra.hasKey("Name")) {
                               this.extra.setString("Name", "Abra");
                          }
 
@@ -200,7 +200,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      private boolean isBlocked(EntityPlayer player) {
-          return !player.world.isAirBlock((new BlockPos(player)).up(2));
+          return !player.worldObj.isAirBlock((new BlockPos(player)).up(2));
      }
 
      public void setExtra(EntityLivingBase entity, String key, String value) {

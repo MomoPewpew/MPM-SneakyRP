@@ -33,6 +33,7 @@ public class LayerHead extends LayerInterface {
           super(render);
      }
 
+     @Override
      protected void createParts() {
           this.small = new ModelRenderer(this.model, 24, 0);
           this.small.addBox(0.0F, 0.0F, 0.0F, 4, 3, 1);
@@ -103,6 +104,7 @@ public class LayerHead extends LayerInterface {
           this.halo = new ModelHalo();
      }
 
+     @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float scale) {
           this.model.bipedHead.postRender(0.0625F);
           this.renderSnout(scale);
@@ -195,6 +197,7 @@ public class LayerHead extends LayerInterface {
           }
      }
 
+     @Override
      public void rotate(float par2, float par3, float par4, float par5, float par6, float scale) {
           ModelRenderer head = this.model.bipedHead;
           if (head.rotateAngleX < 0.0F) {

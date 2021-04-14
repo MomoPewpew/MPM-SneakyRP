@@ -16,6 +16,7 @@ public class GuiEditButtons extends GuiNPCInterface {
           this.closeOnEsc = true;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           int y = this.guiTop + 20;
@@ -60,6 +61,7 @@ public class GuiEditButtons extends GuiNPCInterface {
           }
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           GuiNpcButton button = (GuiNpcButton)btn;
@@ -99,6 +101,7 @@ public class GuiEditButtons extends GuiNPCInterface {
           return value <= 1 ? value : value + 3;
      }
 
+     @Override
      public void save() {
      }
 }

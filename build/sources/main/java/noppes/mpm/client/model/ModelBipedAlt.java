@@ -55,6 +55,7 @@ public class ModelBipedAlt extends ModelBiped {
           return model;
      }
 
+     @Override
      public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
           EntityPlayer player = (EntityPlayer)entity;
           ModelData data = ModelData.get(player);

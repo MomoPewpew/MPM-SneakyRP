@@ -175,6 +175,7 @@ public class ModelNagaLegs extends ModelRenderer {
 
      }
 
+     @Override
      public void render(float par7) {
           if (!this.isHidden && this.showModel) {
                this.nagaPart1.render(par7);

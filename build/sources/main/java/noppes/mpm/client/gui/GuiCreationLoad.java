@@ -30,13 +30,14 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
      private HashMap presets = Preset.GetDefault();
 
      public GuiCreationLoad() {
-          this.playerdata = ModelData.get(Minecraft.getMinecraft().player);
+          this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
           this.original = this.playerdata.writeToNBT();
           this.drawDefaultBackground = false;
           this.closeOnEsc = true;
           this.presets.putAll(PresetController.instance.presets);
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           if (this.scroll == null) {
@@ -62,6 +63,7 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
           this.addButton(new GuiNpcButton(11, this.guiLeft + 92, this.guiTop + this.ySize - 46, 86, 20, "gui.cancel"));
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 10) {
@@ -86,6 +88,7 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
 
      }
 
+     @Override
      public void drawScreen(int i, int j, float f) {
           this.drawDefaultBackground();
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -96,6 +99,7 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
           GuiInventory.drawEntityOnScreen(this.guiLeft + 144, this.guiTop + 140, 40, (float)(this.guiLeft + 144 - i), (float)(this.guiTop + 80 - j), this.player);
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           this.selected = scroll.getSelected();
           Preset preset = (Preset)this.presets.get(this.selected.toLowerCase());
@@ -106,10 +110,12 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
 
      }
 
+     @Override
      public void save() {
           this.playerdata.readFromNBT(this.original);
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 }

@@ -7,7 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class MPMEntityUtil {
      public static void Copy(EntityLivingBase copied, EntityLivingBase entity) {
-          entity.world = copied.world;
+          entity.worldObj = copied.worldObj;
           entity.deathTime = copied.deathTime;
           entity.distanceWalkedModified = copied.distanceWalkedModified;
           entity.prevDistanceWalkedModified = copied.distanceWalkedModified;

@@ -20,6 +20,7 @@ public class GuiPresetSave extends GuiNPCInterface {
           this.drawDefaultBackground = true;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           this.addTextField(new GuiNpcTextField(0, this, this.guiLeft, this.guiTop + 70, 200, 20, ""));
@@ -27,6 +28,7 @@ public class GuiPresetSave extends GuiNPCInterface {
           this.addButton(new GuiNpcButton(1, this.guiLeft + 100, this.guiTop + 100, 98, 20, "Cancel"));
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           GuiNpcButton button = (GuiNpcButton)btn;
@@ -45,6 +47,7 @@ public class GuiPresetSave extends GuiNPCInterface {
           this.close();
      }
 
+     @Override
      public void save() {
      }
 }

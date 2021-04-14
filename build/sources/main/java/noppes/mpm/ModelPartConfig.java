@@ -33,6 +33,7 @@ public class ModelPartConfig {
           this.notShared = compound.getBoolean("NotShared");
      }
 
+     @Override
      public String toString() {
           return "ScaleX: " + this.scaleX + " - ScaleY: " + this.scaleY + " - ScaleZ: " + this.scaleZ;
      }

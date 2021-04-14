@@ -23,7 +23,7 @@ public class EntityEnderFX extends ParticlePortal {
      private float startZ = 0.0F;
 
      public EntityEnderFX(AbstractClientPlayer player, double partialTicks, double rotationY, double rotationXY, double par8, double par10, double par12, ModelPartData data) {
-          super(player.world, partialTicks, rotationY, rotationXY, par8, par10, par12);
+          super(player.worldObj, partialTicks, rotationY, rotationXY, par8, par10, par12);
           this.player = player;
           this.particleNumber = player.getRNG().nextInt(2);
           this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;

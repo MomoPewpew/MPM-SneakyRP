@@ -17,7 +17,7 @@ public class GuiNpcTextField extends GuiTextField {
      private final int[] allowedSpecialChars = new int[]{14, 211, 203, 205};
 
      public GuiNpcTextField(int id, GuiScreen parent, int i, int j, int k, int l, String s) {
-          super(id, Minecraft.getMinecraft().fontRenderer, i, j, k, l);
+          super(id, Minecraft.getMinecraft().fontRendererObj, i, j, k, l);
           this.setMaxStringLength(500);
           this.setText(s);
           this.id = id;
@@ -49,6 +49,7 @@ public class GuiNpcTextField extends GuiTextField {
           }
      }
 
+     @Override
      public boolean textboxKeyTyped(char c, int i) {
           return !this.charAllowed(c, i) ? false : super.textboxKeyTyped(c, i);
      }
@@ -70,6 +71,7 @@ public class GuiNpcTextField extends GuiTextField {
           }
      }
 
+     @Override
      public boolean mouseClicked(int i, int j, int k) {
           boolean wasFocused = this.isFocused();
           boolean clicked = super.mouseClicked(i, j, k);
@@ -107,6 +109,7 @@ public class GuiNpcTextField extends GuiTextField {
 
      }
 
+     @Override
      public void drawTextBox() {
           if (this.enabled) {
                super.drawTextBox();

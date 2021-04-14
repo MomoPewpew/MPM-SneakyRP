@@ -154,11 +154,11 @@ public class GuiCustomScroll extends GuiScreen {
                     String displayString = I18n.translateToLocal((String)this.list.get(i));
                     String text = "";
                     float maxWidth = (float)(this.xSize + xOffset - 8) * 0.8F;
-                    if ((float)this.fontRenderer.getStringWidth(displayString) > maxWidth) {
+                    if ((float)this.fontRendererObj.getStringWidth(displayString) > maxWidth) {
                          for(int h = 0; h < displayString.length(); ++h) {
                               char c = displayString.charAt(h);
                               text = text + c;
-                              if ((float)this.fontRenderer.getStringWidth(text) > maxWidth) {
+                              if ((float)this.fontRendererObj.getStringWidth(text) > maxWidth) {
                                    break;
                               }
                          }
@@ -175,11 +175,11 @@ public class GuiCustomScroll extends GuiScreen {
                          this.drawVerticalLine(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
-                         this.fontRenderer.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, 16777215);
                     } else if (i == this.hover) {
-                         this.fontRenderer.drawString(text, j, k, 65280);
+                         this.fontRendererObj.drawString(text, j, k, 65280);
                     } else {
-                         this.fontRenderer.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, 16777215);
                     }
                }
           }

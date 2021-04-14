@@ -45,6 +45,7 @@ public class ModelMermaidLegs extends ModelRenderer {
           this.bottom.addChild(this.fin2);
      }
 
+     @Override
      public void render(float f5) {
           if (!this.isHidden && this.showModel) {
                this.top.render(f5);

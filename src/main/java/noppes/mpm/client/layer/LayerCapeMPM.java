@@ -31,7 +31,7 @@ public class LayerCapeMPM extends LayerCape {
           GlStateManager.translate(config.transX, config.transY, config.transZ + (-1.0F + config.scaleZ) * scale);
           GlStateManager.scale(config.scaleX, config.scaleY, 1.0F);
           if (data.animationEquals(EnumAnimation.CRAWLING)) {
-               int rotation = true;
+               int rotation = 78;
                if (player.isSneaking()) {
                     GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
                }

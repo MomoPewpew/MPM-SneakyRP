@@ -1,3 +1,4 @@
+
 package noppes.mpm.client.commands;
 
 import net.minecraft.command.ICommandSender;
@@ -7,15 +8,19 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandBow extends MpmCommandInterface {
-     public String getName() {
-          return "bow";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          ClientEventHandler.processAnimation(EnumAnimation.BOW.ordinal());
-     }
+	@Override
+	public String getCommandName() {
+		return "bow";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/bow to bow";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.BOW.ordinal());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/bow to bow";
+	}
 }

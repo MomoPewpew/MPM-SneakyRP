@@ -40,7 +40,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      public int mouseY;
 
      public GuiNPCInterface() {
-          this.player = Minecraft.getMinecraft().player;
+          this.player = Minecraft.getMinecraft().thePlayer;
           this.xSize = 200;
           this.ySize = 222;
      }
@@ -53,6 +53,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           return new ResourceLocation("moreplayermodels", "textures/gui/" + texture);
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           GuiNpcTextField.unfocus();
@@ -72,6 +73,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           Keyboard.enableRepeatEvents(true);
      }
 
+     @Override
      public void updateScreen() {
           if (this.subgui != null) {
                this.subgui.updateScreen();
@@ -90,6 +92,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 
      }
 
+     @Override
      public void mouseClicked(int i, int j, int k) throws IOException {
           if (this.subgui != null) {
                this.subgui.mouseClicked(i, j, k);
@@ -121,6 +124,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      public void mouseEvent(int i, int j, int k) {
      }
 
+     @Override
      protected void actionPerformed(GuiButton guibutton) {
           if (this.subgui != null) {
                this.subgui.buttonEvent(guibutton);
@@ -133,6 +137,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      public void buttonEvent(GuiButton guibutton) {
      }
 
+     @Override
      public void keyTyped(char c, int i) {
           if (this.subgui != null) {
                this.subgui.keyTyped(c, i);
@@ -151,6 +156,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 
      }
 
+     @Override
      public void onGuiClosed() {
           GuiNpcTextField.unfocus();
      }
@@ -211,6 +217,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 
      public abstract void save();
 
+     @Override
      public void drawScreen(int i, int j, float f) {
           this.mouseX = i;
           this.mouseY = j;
@@ -234,7 +241,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 
                while(var4.hasNext()) {
                     GuiNpcLabel label = (GuiNpcLabel)var4.next();
-                    label.drawLabel(this, this.fontRenderer);
+                    label.drawLabel(this, this.fontRendererObj);
                }
 
                var4 = this.textfields.values().iterator();
@@ -274,7 +281,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      }
 
      public FontRenderer getFontRenderer() {
-          return this.fontRenderer;
+          return this.fontRendererObj;
      }
 
      public void elementClicked() {
@@ -283,7 +290,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           }
 
      }
-
+     @Override
      public boolean doesGuiPauseGame() {
           return false;
      }
@@ -295,6 +302,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           return i == this.mc.gameSettings.keyBindInventory.getKeyCode();
      }
 
+     @Override
      public void drawDefaultBackground() {
           super.drawDefaultBackground();
      }
@@ -357,7 +365,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           npc.rotationPitch = -((float)Math.atan((double)(f6 / 40.0F))) * 20.0F;
           npc.rotationYawHead = npc.rotationYaw;
           this.mc.getRenderManager().playerViewY = 180.0F;
-          this.mc.getRenderManager().renderEntity(npc, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+          this.mc.getRenderManager().doRenderEntity(npc, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
           npc.prevRenderYawOffset = npc.renderYawOffset = f2;
           npc.prevRotationYaw = npc.rotationYaw = f3;
           npc.prevRotationPitch = npc.rotationPitch = f4;

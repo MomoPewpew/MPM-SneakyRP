@@ -99,7 +99,7 @@ public class PixelmonHelper {
           if (Enabled && isPixelmon(entity)) {
                try {
                     Method m = entity.getClass().getMethod("getModel");
-                    Minecraft.getMinecraft().player.sendMessage(new TextComponentString((String)m.invoke(entity)));
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString((String)m.invoke(entity)));
                } catch (Exception var2) {
                     var2.printStackTrace();
                }

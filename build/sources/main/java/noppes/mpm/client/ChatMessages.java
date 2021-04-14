@@ -19,29 +19,30 @@ import org.lwjgl.opengl.GL11;
 
 public class ChatMessages {
      private static Map users = new Hashtable();
-     private Map messages = new TreeMap();
+     private Map<Long,TextBlockClient> messages = new TreeMap<Long,TextBlockClient>();
      private int boxLength = 46;
      private float scale = 0.5F;
      private String lastMessage = "";
      private long lastMessageTime = 0L;
      private static Pattern[] patterns = new Pattern[]{Pattern.compile("^<+([a-zA-z0-9_]{2,16})>[:]? (.*)"), Pattern.compile("^\\[.*[\\]]{1,16}[^a-zA-z0-9]?([a-zA-z0-9_]{2,16})[:]? (.*)"), Pattern.compile("^[a-zA-z0-9_]{2,10}[^a-zA-z0-9]([a-zA-z0-9_]{2,16})[:]? (.*)")};
 
-     public void addMessage(String message) {
-          if (MorePlayerModels.EnableChatBubbles) {
-               long time = System.currentTimeMillis();
-               if (!message.equals(this.lastMessage) || this.lastMessageTime + 1000L <= time) {
-                    Map messages = new TreeMap(this.messages);
-                    messages.put(time, new TextBlockClient(message, this.boxLength * 4));
-                    if (messages.size() > 3) {
-                         messages.remove(messages.keySet().iterator().next());
-                    }
+ 	public void addMessage(String message){
+		if(!MorePlayerModels.EnableChatBubbles)
+			return;
+		long time = System.currentTimeMillis();
+		if(message.equals(lastMessage) && lastMessageTime + 1000 > time){
+			return;
+		}
+		Map<Long,TextBlockClient> messages = new TreeMap<Long,TextBlockClient>(this.messages);
+		messages.put(time, new TextBlockClient(message, (int) (boxLength * 4)));
 
-                    this.messages = messages;
-                    this.lastMessage = message;
-                    this.lastMessageTime = time;
-               }
-          }
-     }
+		if(messages.size() > 3){
+			messages.remove(messages.keySet().iterator().next());
+		}
+		this.messages = messages;
+		lastMessage = message;
+		lastMessageTime = time;
+	}
 
      public void renderMessages(double par3, double par5, double par7, boolean inRange) {
           Map messages = this.getMessages();
@@ -79,16 +80,14 @@ public class ChatMessages {
      }
 
      public void render(double x, double y, double z, boolean depth) {
-          FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+          FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
           float var13 = 1.6F;
           float var14 = 0.016666668F * var13;
           GlStateManager.pushMatrix();
           int size = 0;
 
-          TextBlockClient block;
-          for(Iterator var12 = this.messages.values().iterator(); var12.hasNext(); size += block.lines.size()) {
-               block = (TextBlockClient)var12.next();
-          }
+          for(TextBlockClient block : messages.values())
+          	size += block.lines.size();
 
           Minecraft mc = Minecraft.getMinecraft();
           int textYSize = (int)((float)(size * font.FONT_HEIGHT) * this.scale);
@@ -136,17 +135,14 @@ public class ChatMessages {
           GlStateManager.enableTexture2D();
           GlStateManager.depthMask(true);
           GlStateManager.scale(this.scale, this.scale, this.scale);
+
           int index = 0;
-          Iterator var18 = this.messages.values().iterator();
-
-          while(var18.hasNext()) {
-               TextBlockClient block = (TextBlockClient)var18.next();
-
-               for(Iterator var20 = block.lines.iterator(); var20.hasNext(); ++index) {
-                    ITextComponent chat = (ITextComponent)var20.next();
-                    String message = chat.getFormattedText();
-                    font.drawString(message, -font.getStringWidth(message) / 2, index * font.FONT_HEIGHT, black);
-               }
+          for(TextBlockClient block : messages.values()){
+          	for(ITextComponent chat : block.lines){
+  	        	String message = chat.getFormattedText();
+  	        	font.drawString(message, -font.getStringWidth(message) / 2, index * font.FONT_HEIGHT, black);
+  	        	index++;
+          	}
           }
 
           GlStateManager.enableLighting();
@@ -166,25 +162,20 @@ public class ChatMessages {
           }
      }
 
-     public static void parseMessage(String toParse) {
-          toParse = toParse.replaceAll("§.", "");
-          Pattern[] var1 = patterns;
-          int var2 = var1.length;
-
-          for(int var3 = 0; var3 < var2; ++var3) {
-               Pattern pattern = var1[var3];
-               Matcher m = pattern.matcher(toParse);
-               if (m.find()) {
-                    String username = m.group(1);
-                    if (validPlayer(username)) {
-                         String message = m.group(2);
-                         getChatMessages(username).addMessage(message);
-                         return;
-                    }
-               }
-          }
-
-     }
+ 	public static void parseMessage(String toParse){
+		toParse = toParse.replaceAll("\247.", "");
+		for(Pattern pattern : patterns){
+			Matcher m = pattern.matcher(toParse);
+			if(m.find()){
+				String username = m.group(1);
+				if(!validPlayer(username))
+					continue;
+				String message = m.group(2);
+				getChatMessages(username).addMessage(message);
+				return;
+			}
+		}
+	}
 
      public static void test() {
           test("<Sirnoppes01> :)", "Sirnoppes01: :)");
@@ -204,40 +195,32 @@ public class ChatMessages {
           test("member: Sirnoppes: hey", "");
      }
 
-     private static void test(String toParse, String result) {
-          Pattern[] var2 = patterns;
-          int var3 = var2.length;
-
-          for(int var4 = 0; var4 < var3; ++var4) {
-               Pattern pattern = var2[var4];
-               Matcher m = pattern.matcher(toParse);
-               if (m.find()) {
-                    String username = m.group(1);
-                    String message = m.group(2);
-                    if (message != null && username != null) {
-                         if (result.isEmpty()) {
-                              System.err.println("failed: " + toParse + " - " + username + ": " + message);
-                              return;
-                         }
-
-                         if ((username + ": " + message).equals(result)) {
-                              System.out.println("success: " + toParse);
-                              return;
-                         }
-                    }
-               }
-          }
-
-          if (result.isEmpty()) {
-               System.out.println("success: " + toParse);
-          } else {
-               System.err.println("failed: " + toParse);
-          }
-
+ 	private static void test(String toParse, String result) {
+		for(Pattern pattern : patterns){
+			Matcher m = pattern.matcher(toParse);
+			if(m.find()){
+				String username = m.group(1);
+				String message = m.group(2);
+				if(message == null || username == null)
+					continue;
+				else if(result.isEmpty()){
+					System.err.println("failed: " + toParse + " - " + username + ": " + message);
+					return;
+				}
+				if((username +": " + message).equals(result)){
+					System.out.println("succes: " + toParse);
+					return;
+				}
+			}
+		}
+		if(result.isEmpty())
+			System.out.println("succes: " + toParse);
+		else
+			System.err.println("failed: " + toParse);
      }
 
      private static boolean validPlayer(String username) {
-          return Minecraft.getMinecraft().world.getPlayerEntityByName(username) != null;
+          return Minecraft.getMinecraft().theWorld.getPlayerEntityByName(username) != null;
      }
 
      private Map getMessages() {

@@ -47,11 +47,11 @@ public class ClientEventHandler {
      private long lastAltClick = 0L;
      private boolean altIsPressed = false;
      private World prevWorld;
-     private static final Predicate playerSelector = Predicates.and(new Predicate[]{new Predicate() {
+     private static final Predicate playerSelector = Predicates.and(new Predicate[]{new Predicate<EntityPlayer>() {
           final double range = 6400.0D;
 
           public boolean apply(EntityPlayer entity) {
-               return entity != Minecraft.getMinecraft().player && entity.getDistanceSq(Minecraft.getMinecraft().player) <= 6400.0D;
+               return entity != Minecraft.getMinecraft().thePlayer && entity.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) <= 6400.0D;
           }
      }});
      public static List playerList;
@@ -61,9 +61,9 @@ public class ClientEventHandler {
      @SubscribeEvent
      public void onKey(KeyInputEvent event) {
           Minecraft mc = Minecraft.getMinecraft();
-          if (mc != null && mc.player != null) {
+          if (mc != null && mc.thePlayer != null) {
                if (ClientProxy.Screen.isPressed()) {
-                    ModelData data = ModelData.get(mc.player);
+                    ModelData data = ModelData.get(mc.thePlayer);
                     data.setAnimation(EnumAnimation.NONE);
                     if (mc.currentScreen == null) {
                          mc.displayGuiScreen(new GuiMPM());
@@ -155,7 +155,7 @@ public class ClientEventHandler {
                if (MorePlayerModels.HasServerSide) {
                     Client.sendData(EnumPackets.ANIMATION, type);
                } else {
-                    EntityPlayer player = Minecraft.getMinecraft().player;
+                    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
                     EnumAnimation animation = EnumAnimation.values()[type];
                     if (animation == EnumAnimation.SLEEPING_SOUTH) {
                          float rotation;
@@ -200,19 +200,19 @@ public class ClientEventHandler {
      public void onClientTick(ClientTickEvent event) {
           if (event.side != Side.SERVER && event.phase != Phase.START) {
                Minecraft mc = Minecraft.getMinecraft();
-               if (mc.world != null) {
-                    if (this.prevWorld != mc.world) {
+               if (mc.theWorld != null) {
+                    if (this.prevWorld != mc.theWorld) {
                          MorePlayerModels.HasServerSide = false;
                          GuiCreationScreenInterface.Message = "message.noserver";
-                         ModelData data = ModelData.get(mc.player);
+                         ModelData data = ModelData.get(mc.thePlayer);
                          Client.sendData(EnumPackets.PING, MorePlayerModels.Version, data.writeToNBT());
-                         this.prevWorld = mc.world;
+                         this.prevWorld = mc.theWorld;
                          ClientProxy.fixModels(false);
                     }
 
                     ++RenderEvent.lastSkinTick;
-                    if (mc.world.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
-                         playerList = mc.world.getPlayers(EntityPlayer.class, playerSelector);
+                    if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
+                         playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
                          WebApi.instance.run();
                     }
 
@@ -244,7 +244,7 @@ public class ClientEventHandler {
                     f3 *= 0.1F;
                     f4 *= 0.1F;
                     f5 *= 0.1F;
-                    RayTraceResult raytraceresult = mc.world.rayTraceBlocks(new Vec3d(d0 + (double)f3, d1 + (double)f4, d2 + (double)f5), new Vec3d(d0 - d4 + (double)f3 + (double)f5, d1 - d6 + (double)f4, d2 - d5 + (double)f5));
+                    RayTraceResult raytraceresult = mc.theWorld.rayTraceBlocks(new Vec3d(d0 + (double)f3, d1 + (double)f4, d2 + (double)f5), new Vec3d(d0 - d4 + (double)f3 + (double)f5, d1 - d6 + (double)f4, d2 - d5 + (double)f5));
                     if (raytraceresult != null) {
                          double d7 = raytraceresult.hitVec.distanceTo(new Vec3d(d0, d1, d2));
                          if (d7 < d3) {
@@ -282,7 +282,7 @@ public class ClientEventHandler {
                               double d0 = player.getRNG().nextGaussian() * 0.02D;
                               double d1 = player.getRNG().nextGaussian() * 0.02D;
                               double d2 = player.getRNG().nextGaussian() * 0.02D;
-                              player.world.spawnParticle(EnumParticleTypes.HEART, player.posX + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, player.posY + 0.5D + (double)(player.getRNG().nextFloat() * player.height), player.posZ + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, d0, d1, d2, new int[0]);
+                              player.worldObj.spawnParticle(EnumParticleTypes.HEART, player.posX + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, player.posY + 0.5D + (double)(player.getRNG().nextFloat() * player.height), player.posZ + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, d0, d1, d2, new int[0]);
                          }
                     }
 
@@ -294,7 +294,7 @@ public class ClientEventHandler {
                          for(int i = 0; (float)i < 10.0F; ++i) {
                               float f2 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dx * 0.15F;
                               float f3 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dz * 0.15F;
-                              player.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.posX + (double)f2, player.posY - (double)data.getBodyY() + 1.100000023841858D - player.getYOffset(), player.posZ + (double)f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
+                              player.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.posX + (double)f2, player.posY - (double)data.getBodyY() + 1.100000023841858D - player.getYOffset(), player.posZ + (double)f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
                          }
                     }
 

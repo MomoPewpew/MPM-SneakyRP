@@ -30,7 +30,7 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
      private HashMap presets = Preset.GetDefault();
 
      public GuiCreationLoad() {
-          this.playerdata = ModelData.get(Minecraft.getMinecraft().player);
+          this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
           this.original = this.playerdata.writeToNBT();
           this.drawDefaultBackground = false;
           this.closeOnEsc = true;

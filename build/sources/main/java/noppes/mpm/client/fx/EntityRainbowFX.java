@@ -33,6 +33,7 @@ public class EntityRainbowFX extends Particle {
           this.particleMaxAge = (int)((float)this.particleMaxAge * f);
      }
 
+     @Override
      public void renderParticle(BufferBuilder tessellator, Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
           float f6 = ((float)this.particleAge + f) / (float)this.particleMaxAge * 32.0F;
           if (f6 < 0.0F) {
@@ -45,6 +46,7 @@ public class EntityRainbowFX extends Particle {
           super.renderParticle(tessellator, entity, f, f1, f2, f3, f4, f5);
      }
 
+     @Override
      public void onUpdate() {
           this.prevPosX = this.posX;
           this.prevPosY = this.posY;
@@ -54,7 +56,7 @@ public class EntityRainbowFX extends Particle {
           }
 
           this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
-          this.move(this.motionX, this.motionY, this.motionZ);
+          this.moveEntity(this.motionX, this.motionY, this.motionZ);
           if (this.posY == this.prevPosY) {
                this.motionX *= 1.1D;
                this.motionZ *= 1.1D;
@@ -63,7 +65,7 @@ public class EntityRainbowFX extends Particle {
           this.motionX *= 0.9599999785423279D;
           this.motionY *= 0.9599999785423279D;
           this.motionZ *= 0.9599999785423279D;
-          if (this.onGround) {
+          if (this.isCollided) {
                this.motionX *= 0.699999988079071D;
                this.motionZ *= 0.699999988079071D;
           }

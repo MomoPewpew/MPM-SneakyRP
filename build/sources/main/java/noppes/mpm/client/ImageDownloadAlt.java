@@ -49,6 +49,7 @@ public class ImageDownloadAlt extends SimpleTexture {
 
      }
 
+     @Override
      public int getGlTextureId() {
           this.checkTextureUploaded();
           return super.getGlTextureId();
@@ -62,6 +63,7 @@ public class ImageDownloadAlt extends SimpleTexture {
 
      }
 
+     @Override
      public void loadTexture(IResourceManager resourceManager) throws IOException {
           if (this.bufferedImage == null && this.textureLocation != null) {
                super.loadTexture(resourceManager);

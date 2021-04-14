@@ -17,6 +17,7 @@ public class GuiConfig extends GuiNPCInterface {
           this.closeOnEsc = true;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           int y = this.guiTop + 20;
@@ -53,12 +54,13 @@ public class GuiConfig extends GuiNPCInterface {
           this.addLabel(new GuiNpcLabel(55, "config.compatibility", this.guiLeft, y + 5, 16777215));
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn instanceof GuiNpcButton) {
                GuiNpcButton button = (GuiNpcButton)btn;
                if (button.id == 46) {
-                    List players = this.mc.world.playerEntities;
+                    List players = this.mc.theWorld.playerEntities;
 
                     ModelData data;
                     for(Iterator var4 = players.iterator(); var4.hasNext(); data.webapiInit = false) {

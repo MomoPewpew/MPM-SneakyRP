@@ -32,6 +32,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
           this.active = 2;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           if (this.entity == null) {
@@ -120,7 +121,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
 
      private NBTTagCompound getExtras(EntityLivingBase entity) {
           NBTTagCompound fake = new NBTTagCompound();
-          (new EntityFakeLiving(entity.world)).writeEntityToNBT(fake);
+          (new EntityFakeLiving(entity.worldObj)).writeEntityToNBT(fake);
           NBTTagCompound compound = new NBTTagCompound();
 
           try {
@@ -139,6 +140,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
           return compound;
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.id == 0) {
                this.initGui();
@@ -148,6 +150,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
 
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (this.selected != null) {
@@ -156,6 +159,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
 
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 
@@ -179,7 +183,7 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
           public void actionPerformed(GuiButton button) {
                if (button.id == 11) {
                     int breed = ((GuiNpcButton)button).getValue();
-                    EntityLivingBase entity = GuiCreationExtra.this.playerdata.getEntity(GuiCreationExtra.this.mc.player);
+                    EntityLivingBase entity = GuiCreationExtra.this.playerdata.getEntity(GuiCreationExtra.this.mc.thePlayer);
                     GuiCreationExtra.this.playerdata.setExtra(entity, "breed", ((GuiNpcButton)button).getValue() + "");
                     GuiCreationExtra.this.playerdata.clearEntity();
                }

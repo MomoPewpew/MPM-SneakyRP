@@ -63,7 +63,7 @@ public class Server {
      }
 
      public static void sendAssociatedData(Entity entity, EnumPackets enu, Object... obs) {
-          List list = entity.world.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().grow(160.0D, 160.0D, 160.0D));
+          List list = entity.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D));
           if (!list.isEmpty()) {
                MPMScheduler.runTack(() -> {
                     try {
@@ -87,7 +87,7 @@ public class Server {
      }
 
      public static void sendToAll(MinecraftServer server, EnumPackets enu, Object... obs) {
-          List list = new ArrayList(server.getPlayerList().getPlayers());
+          List list = new ArrayList(server.getPlayerList().getPlayerList());
           if (!list.isEmpty()) {
                MPMScheduler.runTack(() -> {
                     ByteBuf buffer = Unpooled.buffer();

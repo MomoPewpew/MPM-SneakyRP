@@ -27,8 +27,8 @@ public class Camera {
                     view.rotationYaw = view.prevRotationYaw = this.cameraYaw;
                     view.rotationPitch = view.prevRotationPitch = this.cameraPitch;
                } else {
-                    view.rotationYaw = mc.player.rotationYaw - this.cameraYaw + this.playerYaw;
-                    view.prevRotationYaw = mc.player.prevRotationYaw - this.cameraYaw + this.playerYaw;
+                    view.rotationYaw = mc.thePlayer.rotationYaw - this.cameraYaw + this.playerYaw;
+                    view.prevRotationYaw = mc.thePlayer.prevRotationYaw - this.cameraYaw + this.playerYaw;
                     view.rotationPitch = -this.playerPitch;
                     view.prevRotationPitch = -this.playerPitch;
                }
@@ -46,11 +46,11 @@ public class Camera {
                if (ClientProxy.Camera.isKeyDown()) {
                     this.cameraYaw = (float)((double)this.cameraYaw + dx);
                     this.cameraPitch = (float)((double)this.cameraPitch + dy);
-                    this.cameraPitch = MathHelper.clamp(this.cameraPitch, -90.0F, 90.0F);
+                    this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
                } else {
                     this.playerYaw = (float)((double)this.playerYaw + dx);
                     this.playerPitch = (float)((double)this.playerPitch + dy);
-                    this.playerPitch = MathHelper.clamp(this.playerPitch, -90.0F, 90.0F);
+                    this.playerPitch = MathHelper.clamp_float(this.playerPitch, -90.0F, 90.0F);
                }
 
           }
@@ -68,8 +68,8 @@ public class Camera {
      public void enabled() {
           Minecraft mc = Minecraft.getMinecraft();
           if (!this.enabled) {
-               this.cameraYaw = this.playerYaw = mc.player.rotationYaw;
-               this.cameraPitch = mc.player.rotationPitch;
+               this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
+               this.cameraPitch = mc.thePlayer.rotationPitch;
                this.playerPitch = -this.cameraPitch;
           }
 

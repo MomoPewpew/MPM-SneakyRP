@@ -46,12 +46,11 @@ public class NaturalOrderComparator implements Comparator {
           String b = o2.toString().toLowerCase();
           int ia = 0;
           int ib = 0;
-          int nza = false;
+          int nza = 0;
+          int nzb = 0;
           boolean var8 = false;
 
           while(true) {
-               int nzb = 0;
-               int nza = 0;
                char ca = charAt(a, ia);
 
                char cb;

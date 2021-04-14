@@ -45,8 +45,8 @@ public class TabRegistry {
      }
 
      public static void openInventoryGui() {
-          mc.player.connection.sendPacket(new CPacketCloseWindow(mc.player.openContainer.windowId));
-          GuiInventory inventory = new GuiInventory(mc.player);
+          mc.thePlayer.connection.sendPacket(new CPacketCloseWindow(mc.thePlayer.openContainer.windowId));
+          GuiInventory inventory = new GuiInventory(mc.thePlayer);
           mc.displayGuiScreen(inventory);
      }
 
@@ -57,8 +57,8 @@ public class TabRegistry {
                AbstractTab t = (AbstractTab)tabList.get(i);
                if (t.shouldAddToList()) {
                     t.id = count;
-                    t.x = cornerX + (count - 2) * 28;
-                    t.y = cornerY - 28;
+                    t.xPosition = cornerX + (count - 2) * 28;
+                    t.yPosition = cornerY - 28;
                     t.enabled = !t.getClass().equals(selectedButton);
                     t.potionOffsetLast = getPotionOffsetNEI();
                     ++count;
@@ -80,7 +80,7 @@ public class TabRegistry {
      }
 
      public static int getPotionOffset() {
-          if (!mc.player.getActivePotionEffects().isEmpty()) {
+          if (!mc.thePlayer.getActivePotionEffects().isEmpty()) {
                initWithPotion = true;
                return 60 + getPotionOffsetJEI() + getPotionOffsetNEI();
           } else {

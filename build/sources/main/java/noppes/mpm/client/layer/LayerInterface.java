@@ -51,6 +51,7 @@ public abstract class LayerInterface implements LayerRenderer {
           }
      }
 
+     @Override
      public void doRenderLayer(EntityLivingBase entity, float par2, float par3, float par8, float par4, float par5, float par6, float par7) {
           if (!entity.isInvisible()) {
                this.player = (AbstractClientPlayer)entity;
@@ -75,6 +76,7 @@ public abstract class LayerInterface implements LayerRenderer {
           model.rotateAngleZ = z;
      }
 
+     @Override
      public boolean shouldCombineTextures() {
           return true;
      }

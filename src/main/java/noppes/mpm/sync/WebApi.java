@@ -82,7 +82,7 @@ public class WebApi {
                          urlParameters.add(new BasicNameValuePair("update_timestamps", updateBuilderTS.toString()));
                     }
 
-                    ModelData pdata = ModelData.get(mc.player);
+                    ModelData pdata = ModelData.get(mc.thePlayer);
                     if (pdata.lastEdited > this.playerLastUpdated) {
                          this.playerLastUpdated = pdata.lastEdited;
                          NBTTagCompound comp = pdata.writeToNBT();

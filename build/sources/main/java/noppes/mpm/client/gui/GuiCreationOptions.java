@@ -12,6 +12,7 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
           this.xOffset = 150;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           int y = this.guiTop + 50;
@@ -24,6 +25,7 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
           this.addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn instanceof GuiNpcButton) {
@@ -39,6 +41,7 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
           }
      }
 
+     @Override
      public void unFocused(GuiNpcTextField guiNpcTextField) {
           this.playerdata.url = guiNpcTextField.getText();
           this.playerdata.resourceInit = false;

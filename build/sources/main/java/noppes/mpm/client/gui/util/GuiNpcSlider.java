@@ -41,11 +41,12 @@ public class GuiNpcSlider extends GuiButton {
 
      }
 
+     @Override
      public void mouseDragged(Minecraft mc, int par2, int par3) {
           if (this.visible) {
                mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
                if (this.dragging) {
-                    this.sliderValue = (float)(par2 - (this.x + 4)) / (float)(this.width - 8);
+                    this.sliderValue = (float)(par2 - (this.xPosition + 4)) / (float)(this.width - 8);
                     if (this.sliderValue < 0.0F) {
                          this.sliderValue = 0.0F;
                     }
@@ -64,8 +65,8 @@ public class GuiNpcSlider extends GuiButton {
                }
 
                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-               this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
-               this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
+               this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
+               this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
           }
      }
 
@@ -77,9 +78,10 @@ public class GuiNpcSlider extends GuiButton {
           this.displayString = str;
      }
 
+     @Override
      public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
-          if (this.enabled && this.visible && par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height) {
-               this.sliderValue = (float)(par2 - (this.x + 4)) / (float)(this.width - 8);
+          if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height) {
+               this.sliderValue = (float)(par2 - (this.xPosition + 4)) / (float)(this.width - 8);
                if (this.sliderValue < 0.0F) {
                     this.sliderValue = 0.0F;
                }
@@ -99,6 +101,7 @@ public class GuiNpcSlider extends GuiButton {
           }
      }
 
+     @Override
      public void mouseReleased(int par1, int par2) {
           this.dragging = false;
           if (this.listener != null) {
@@ -107,6 +110,7 @@ public class GuiNpcSlider extends GuiButton {
 
      }
 
+     @Override
      public int getHoverState(boolean par1) {
           return 0;
      }

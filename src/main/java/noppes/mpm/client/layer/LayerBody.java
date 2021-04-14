@@ -121,7 +121,7 @@ public class LayerBody extends LayerInterface {
           ModelPartData data = this.playerdata.getPartData(EnumParts.WINGS);
           if (data != null) {
                ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-               if (itemstack.isEmpty() || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode != 2) {
+               if (itemstack == null || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode != 2) {
                     this.preRender(data);
                     GlStateManager.pushMatrix();
                     if (data.type >= 0 && data.type <= 2) {
@@ -196,7 +196,7 @@ public class LayerBody extends LayerInterface {
           this.wing2.rotateAngleY = 0.8F;
           float motion = Math.abs(MathHelper.sin(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
           Model2DRenderer var10000;
-          if (this.player.world.isAirBlock(this.player.getPosition())) {
+          if (this.player.worldObj.isAirBlock(this.player.getPosition())) {
                float speed = 0.55F + 0.5F * motion;
                float y = MathHelper.sin(par3 * 0.35F);
                var10000 = this.wing;

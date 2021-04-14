@@ -18,10 +18,11 @@ public class LayerBackItem extends LayerInterface {
           super(render);
      }
 
+     @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           Minecraft minecraft = Minecraft.getMinecraft();
           ItemStack itemstack = this.playerdata.backItem;
-          if (MorePlayerModels.EnableBackItem && !itemstack.isEmpty() && !ItemStack.areItemStacksEqual(itemstack, this.player.inventory.getCurrentItem())) {
+          if (MorePlayerModels.EnableBackItem && itemstack != null && !ItemStack.areItemStacksEqual(itemstack, this.player.inventory.getCurrentItem())) {
                Item item = itemstack.getItem();
                if (!(item instanceof ItemBlock)) {
                     this.model.bipedBody.postRender(par7);
@@ -39,6 +40,7 @@ public class LayerBackItem extends LayerInterface {
           }
      }
 
+     @Override
      public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
      }
 }

@@ -15,13 +15,13 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
      public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
           if (this.visible) {
                boolean disabled = !this.enabled || this.display.length <= 1;
-               boolean hover = !disabled && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-               boolean hoverL = !disabled && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + 11 && mouseY < this.y + this.height;
-               boolean hoverR = !disabled && !hoverL && mouseX >= this.x + this.width - 11 && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+               boolean hover = !disabled && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+               boolean hoverL = !disabled && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + 11 && mouseY < this.yPosition + this.height;
+               boolean hoverR = !disabled && !hoverL && mouseX >= this.xPosition + this.width - 11 && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                mc.getTextureManager().bindTexture(resource);
-               this.drawTexturedModalRect(this.x, this.y, 0, disabled ? 20 : (hoverL ? 40 : 0), 11, 20);
-               this.drawTexturedModalRect(this.x + this.width - 11, this.y, 11, disabled ? 20 : (hoverR ? 40 : 0), 11, 20);
+               this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, disabled ? 20 : (hoverL ? 40 : 0), 11, 20);
+               this.drawTexturedModalRect(this.xPosition + this.width - 11, this.yPosition, 11, disabled ? 20 : (hoverR ? 40 : 0), 11, 20);
                int l = 16777215;
                if (this.packedFGColour != 0) {
                     l = this.packedFGColour;
@@ -35,11 +35,11 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
 
                String text = "";
                float maxWidth = (float)(this.width - 36);
-               if ((float)mc.fontRenderer.getStringWidth(this.displayString) > maxWidth) {
+               if ((float)mc.fontRendererObj.getStringWidth(this.displayString) > maxWidth) {
                     for(int h = 0; h < this.displayString.length(); ++h) {
                          char c = this.displayString.charAt(h);
                          text = text + c;
-                         if ((float)mc.fontRenderer.getStringWidth(text) > maxWidth) {
+                         if ((float)mc.fontRendererObj.getStringWidth(text) > maxWidth) {
                               break;
                          }
                     }
@@ -53,7 +53,7 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
                     text = "§n" + text;
                }
 
-               this.drawCenteredString(mc.fontRenderer, text, this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
+               this.drawCenteredString(mc.fontRendererObj, text, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);
           }
      }
 
@@ -62,8 +62,8 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
           int value = this.getValue();
           boolean bo = super.mousePressed(minecraft, mouseX, mouseY);
           if (bo && this.display != null && this.display.length != 0) {
-               boolean hoverL = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + 11 && mouseY < this.y + this.height;
-               boolean hoverR = !hoverL && mouseX >= this.x + 11 && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+               boolean hoverL = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + 11 && mouseY < this.yPosition + this.height;
+               boolean hoverR = !hoverL && mouseX >= this.xPosition + 11 && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
                if (hoverR) {
                     value = (value + 1) % this.display.length;
                }

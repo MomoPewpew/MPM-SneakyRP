@@ -67,10 +67,12 @@ public class ClientProxy extends CommonProxy {
      public static KeyBinding MPM5;
      public static KeyBinding Camera;
 
+     @Override
      public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
           return null;
      }
 
+     @Override
      public void load() {
           MorePlayerModels.Channel.register(new PacketHandlerClient());
           MorePlayerModels var10002 = MorePlayerModels.instance;
@@ -104,6 +106,7 @@ public class ClientProxy extends CommonProxy {
           ClientCommandHandler.instance.registerCommand(new CommandYes());
      }
 
+     @Override
      public void postLoad() {
           fixModels(true);
           if (MorePlayerModels.InventoryGuiEnabled) {

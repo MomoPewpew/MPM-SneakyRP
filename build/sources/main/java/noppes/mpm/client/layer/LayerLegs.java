@@ -44,7 +44,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
      public LayerLegs(RenderPlayer render) {
           super(render);
      }
-
+     @Override
      protected void createParts() {
           this.spiderLegs = new ModelSpiderLegs(this.model);
           this.horseLegs = new ModelHorseLegs(this.model);
@@ -83,6 +83,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
           this.feathers = new ModelFeatherTail(this.model);
      }
 
+     @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           GlStateManager.pushMatrix();
           this.renderLegs(par7);
@@ -173,6 +174,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
           }
      }
 
+     @Override
      public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
           this.rotateLegs(par1, par2, par3, par4, par5, par6);
           this.rotateTail(par1, par2, par3, par4, par5, par6);
@@ -245,6 +247,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
           this.fox.rotateAngleY = this.tail.rotateAngleY = this.feathers.rotateAngleY = this.dragon.rotateAngleY = this.squirrel.rotateAngleY = this.horse.rotateAngleY = this.fin.rotateAngleY = this.rodent.rotateAngleY = rotateAngleY;
      }
 
+     @Override
      public void preRender(AbstractClientPlayer player) {
           this.player = player;
           this.playerdata = ModelData.get(player);

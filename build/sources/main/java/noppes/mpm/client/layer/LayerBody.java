@@ -27,6 +27,7 @@ public class LayerBody extends LayerInterface {
           super(render);
      }
 
+     @Override
      protected void createParts() {
           this.wing = new Model2DRenderer(this.model, 56.0F, 16.0F, 8, 16);
           this.wing.setRotationPoint(-2.0F, 2.5F, 1.0F);
@@ -107,6 +108,7 @@ public class LayerBody extends LayerInterface {
           this.fin.rotateAngleY = 1.5707964F;
      }
 
+     @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           this.model.bipedBody.postRender(0.0625F);
           this.renderSkirt(par7);
@@ -119,7 +121,7 @@ public class LayerBody extends LayerInterface {
           ModelPartData data = this.playerdata.getPartData(EnumParts.WINGS);
           if (data != null) {
                ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-               if (itemstack.isEmpty() || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode != 2) {
+               if (itemstack == null || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode != 2) {
                     this.preRender(data);
                     GlStateManager.pushMatrix();
                     if (data.type >= 0 && data.type <= 2) {
@@ -187,13 +189,14 @@ public class LayerBody extends LayerInterface {
           }
      }
 
+     @Override
      public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
           this.wing.rotateAngleX = 0.7141593F;
           this.wing.rotateAngleZ = 0.5090659F;
           this.wing2.rotateAngleY = 0.8F;
           float motion = Math.abs(MathHelper.sin(par1 * 0.033F + 3.1415927F) * 0.4F) * par2;
           Model2DRenderer var10000;
-          if (this.player.world.isAirBlock(this.player.getPosition())) {
+          if (this.player.worldObj.isAirBlock(this.player.getPosition())) {
                float speed = 0.55F + 0.5F * motion;
                float y = MathHelper.sin(par3 * 0.35F);
                var10000 = this.wing;

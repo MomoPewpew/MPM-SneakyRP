@@ -25,7 +25,7 @@ public class ModelHorseLegs extends ModelRenderer {
           super(model);
           this.base = model;
           float var1 = 0.0F;
-          byte var2 = true;
+          byte var2 = 15;
           int zOffset = 10;
           float yOffset = 7.0F;
           ModelRenderer body = new ModelRenderer(model, 0, 34);

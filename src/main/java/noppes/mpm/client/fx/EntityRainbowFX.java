@@ -56,7 +56,7 @@ public class EntityRainbowFX extends Particle {
           }
 
           this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
-          this.move(this.motionX, this.motionY, this.motionZ);
+          this.moveEntity(this.motionX, this.motionY, this.motionZ);
           if (this.posY == this.prevPosY) {
                this.motionX *= 1.1D;
                this.motionZ *= 1.1D;
@@ -65,7 +65,7 @@ public class EntityRainbowFX extends Particle {
           this.motionX *= 0.9599999785423279D;
           this.motionY *= 0.9599999785423279D;
           this.motionZ *= 0.9599999785423279D;
-          if (this.onGround) {
+          if (this.isCollided) {
                this.motionX *= 0.699999988079071D;
                this.motionZ *= 0.699999988079071D;
           }

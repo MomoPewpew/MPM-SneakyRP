@@ -72,6 +72,7 @@ public class ModelPlayerAlt extends ModelPlayer {
           return model;
      }
 
+     @Override
      public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
           EntityPlayer player = (EntityPlayer)entity;
           this.playerdata = ModelData.get(player);
@@ -160,6 +161,7 @@ public class ModelPlayerAlt extends ModelPlayer {
           copyModelAngles(this.bipedHead, this.bipedHeadwear);
      }
 
+     @Override
      public ModelRenderer getRandomModelBox(Random random) {
           switch(random.nextInt(5)) {
           case 0:

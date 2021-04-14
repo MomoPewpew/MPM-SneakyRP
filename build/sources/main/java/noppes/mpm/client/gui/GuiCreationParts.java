@@ -33,6 +33,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
           });
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           if (this.entity != null) {
@@ -64,6 +65,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
           }
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (this.parts[selected] != null) {
@@ -72,12 +74,14 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
      }
 
+     @Override
      public void unFocused(GuiNpcTextField textfield) {
           if (textfield.id == 23) {
           }
 
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.selected >= 0) {
                selected = scroll.selected;
@@ -86,6 +90,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 
@@ -96,6 +101,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.canBeDeleted = false;
           }
 
+          @Override
           public int initGui() {
                this.hasPlayerOption = this.data.type == 1 || this.data.type == 5;
                int y = super.initGui();
@@ -107,6 +113,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                return y;
           }
 
+          @Override
           protected void actionPerformed(GuiButton btn) {
                if (btn.id == 20) {
                     int i = ((GuiNpcButton)btn).getValue();
@@ -131,6 +138,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.types = new String[]{"gui.none", "gui.show"};
           }
 
+          @Override
           public int initGui() {
                int y = super.initGui();
                if (this.data == null) {
@@ -149,6 +157,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.setTypes(new String[]{"gui.none", "1", "2", "3", "4", "5"});
           }
 
+          @Override
           public int initGui() {
                int y = super.initGui();
                if (this.data == null) {
@@ -160,6 +169,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                }
           }
 
+          @Override
           protected void actionPerformed(GuiButton btn) {
                if (btn.id == 34) {
                     GuiCreationParts.this.playerdata.wingMode = ((GuiButtonBiDirectional)btn).getValue();
@@ -180,6 +190,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.eyes = (ModelEyeData)this.data;
           }
 
+          @Override
           public int initGui() {
                int y = super.initGui();
                if (this.data != null && this.eyes.isEnabled()) {
@@ -207,6 +218,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                return y;
           }
 
+          @Override
           protected void actionPerformed(GuiButton btn) {
                if (btn.id == 34) {
                     this.eyes.glint = ((GuiNpcButtonYesNo)btn).getBoolean();
@@ -265,6 +277,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.types = new String[]{"gui.none", "horns.bull", "horns.antlers", "horns.antenna"};
           }
 
+          @Override
           public int initGui() {
                int y = super.initGui();
                if (this.data != null && this.data.type == 2) {
@@ -282,6 +295,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.types = new String[]{"gui.none", "part.tail", "tail.dragon", "tail.horse", "tail.squirrel", "tail.fin", "tail.rodent", "tail.bird", "tail.fox"};
           }
 
+          @Override
           public int initGui() {
                this.data = GuiCreationParts.this.playerdata.getPartData(this.part);
                this.hasPlayerOption = this.data != null && (this.data.type == 0 || this.data.type == 1 || this.data.type == 6 || this.data.type == 7);
@@ -301,6 +315,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                this.types = new String[]{"gui.none", "1", "2"};
           }
 
+          @Override
           public int initGui() {
                int y = super.initGui();
                return this.data == null ? y : y;

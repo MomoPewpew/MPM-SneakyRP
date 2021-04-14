@@ -13,7 +13,7 @@ public class GuiColorButton extends GuiNpcButton {
      @Override
      public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
           if (this.visible) {
-               drawRect(this.x, this.y, this.x + 50, this.y + 20, -16777216 + this.color);
+               drawRect(this.xPosition, this.yPosition, this.xPosition + 50, this.yPosition + 20, -16777216 + this.color);
           }
      }
 }

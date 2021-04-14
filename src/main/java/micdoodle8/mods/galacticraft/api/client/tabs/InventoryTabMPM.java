@@ -41,23 +41,23 @@ public class InventoryTabMPM extends AbstractTab {
           if (!this.visible) {
                super.drawButton(minecraft, mouseX, mouseY, partialTicks);
           } else {
-               this.renderStack = ItemStack.EMPTY;
+               this.renderStack = null;
                if (this.enabled) {
                     Minecraft mc = Minecraft.getMinecraft();
-                    boolean hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                    boolean hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
                     if (hovered) {
-                         int x = mouseX + mc.fontRenderer.getStringWidth(this.displayString);
-                         GlStateManager.translate((float)x, (float)(this.y + 2), 0.0F);
-                         this.drawHoveringText(Arrays.asList(this.displayString), 0, 0, mc.fontRenderer);
-                         GlStateManager.translate((float)(-x), (float)(-(this.y + 2)), 0.0F);
+                         int x = mouseX + mc.fontRendererObj.getStringWidth(this.displayString);
+                         GlStateManager.translate((float)x, (float)(this.yPosition + 2), 0.0F);
+                         this.drawHoveringText(Arrays.asList(this.displayString), 0, 0, mc.fontRendererObj);
+                         GlStateManager.translate((float)(-x), (float)(-(this.yPosition + 2)), 0.0F);
                     }
                }
 
                super.drawButton(minecraft, mouseX, mouseY, partialTicks);
                GlStateManager.pushMatrix();
-               GlStateManager.translate((float)(this.x + 14), (float)this.y + 22.0F, 150.0F);
+               GlStateManager.translate((float)(this.xPosition + 14), (float)this.yPosition + 22.0F, 150.0F);
                GlStateManager.scale(20.0F, 20.0F, 20.0F);
-               ClientProxy.bindTexture(minecraft.player.getLocationSkin());
+               ClientProxy.bindTexture(minecraft.thePlayer.getLocationSkin());
                GlStateManager.enableColorMaterial();
                GlStateManager.rotate(135.0F, -1.0F, 1.0F, -1.0F);
                RenderHelper.enableStandardItemLighting();

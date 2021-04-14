@@ -23,6 +23,7 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
           this.xOffset = 140;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           if (this.scroll == null) {
@@ -80,6 +81,7 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
 
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 13) {
@@ -90,6 +92,7 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
 
      }
 
+     @Override
      public void mouseDragged(GuiNpcSlider slider) {
           super.mouseDragged(slider);
           if (slider.id >= 10 && slider.id <= 12) {
@@ -158,6 +161,7 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
 
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.selected >= 0) {
                selected = (EnumParts)this.data.get(scroll.selected);
@@ -166,6 +170,7 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
 
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 

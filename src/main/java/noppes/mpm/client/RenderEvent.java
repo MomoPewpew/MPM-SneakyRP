@@ -78,7 +78,7 @@ public class RenderEvent {
                AbstractClientPlayer player = (AbstractClientPlayer)event.getEntity();
                Minecraft mc = Minecraft.getMinecraft();
                GlStateManager.pushMatrix();
-               if (ClientEventHandler.camera.enabled && player == mc.player) {
+               if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
                     player.rotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
                     player.prevRotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
                     mc.entityRenderer.getMouseOver(Animation.getPartialTickTime());
@@ -113,7 +113,7 @@ public class RenderEvent {
 
                Entity entity = data.getEntity(player);
                if (entity != null) {
-                    if (ClientEventHandler.camera.enabled && player == mc.player) {
+                    if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
                          entity.rotationPitch = player.rotationPitch;
                          entity.prevRotationPitch = player.prevRotationPitch;
                     }
@@ -142,7 +142,7 @@ public class RenderEvent {
                     GlStateManager.popMatrix();
                } else {
                     offset = 0.0F;
-                    if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.world.isAirBlock(player.getPosition())) {
+                    if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {
                          offset = MathHelper.cos((float)player.ticksExisted * 0.1F) * -0.06F;
                     }
 
@@ -246,14 +246,14 @@ public class RenderEvent {
      @SubscribeEvent
      public void hand(RenderHandEvent event) {
           Minecraft mc = Minecraft.getMinecraft();
-          ModelData data = ModelData.get(mc.player);
-          mc.player.eyeHeight = mc.player.getDefaultEyeHeight() - data.getOffsetCamera(mc.player);
-          Entity entity = data.getEntity(mc.player);
-          if (entity != null || data.isSleeping() || data.animation == EnumAnimation.CRAWLING || data.animation == EnumAnimation.BOW && mc.player.getHeldItemMainhand() == null) {
+          ModelData data = ModelData.get(mc.thePlayer);
+          mc.thePlayer.eyeHeight = mc.thePlayer.getDefaultEyeHeight() - data.getOffsetCamera(mc.thePlayer);
+          Entity entity = data.getEntity(mc.thePlayer);
+          if (entity != null || data.isSleeping() || data.animation == EnumAnimation.CRAWLING || data.animation == EnumAnimation.BOW && mc.thePlayer.getHeldItemMainhand() == null) {
                event.setCanceled(true);
           } else {
                if (!data.resourceInit && lastSkinTick > 6L) {
-                    this.loadPlayerResource(mc.player, data);
+                    this.loadPlayerResource(mc.thePlayer, data);
                     lastSkinTick = 0L;
                     data.resourceInit = true;
                }
@@ -283,37 +283,39 @@ public class RenderEvent {
 
      @SubscribeEvent
      public void overlay(net.minecraftforge.client.event.RenderGameOverlayEvent.Post event) {
-          if (event.getType() == ElementType.ALL) {
-               Minecraft mc = Minecraft.getMinecraft();
-               if (mc.currentScreen == null && MorePlayerModels.Tooltips != 0) {
-                    ItemStack item = mc.player.getHeldItemMainhand();
-                    if (!item.isEmpty()) {
-                         String name = item.getDisplayName();
-                         int x = event.getResolution().getScaledWidth() - mc.fontRenderer.getStringWidth(name);
-                         int posX = 4;
-                         int posY = 4;
-                         if (MorePlayerModels.Tooltips % 2 == 0) {
-                              posX = x - 4;
-                         }
+ 		if(event.getType() != ElementType.ALL)
+			return;
 
-                         if (MorePlayerModels.Tooltips > 2) {
-                              posY = event.getResolution().getScaledHeight() - 24;
-                         }
+    	Minecraft mc = Minecraft.getMinecraft();
+    	if(mc.currentScreen != null || MorePlayerModels.Tooltips == 0)
+    		return;
+		ItemStack item = mc.thePlayer.getHeldItemMainhand();
+		if(item == null)
+			return;
 
-                         mc.fontRenderer.drawStringWithShadow(name, (float)posX, (float)posY, 16777215);
-                         if (item.isItemStackDamageable()) {
-                              int max = item.getMaxDamage();
-                              String dam = max - item.getItemDamage() + "/" + max;
-                              x = event.getResolution().getScaledWidth() - mc.fontRenderer.getStringWidth(dam);
-                              if (MorePlayerModels.Tooltips == 2 || MorePlayerModels.Tooltips == 4) {
-                                   posX = x - 4;
-                              }
+		String name = item.getDisplayName();
+		int x = event.getResolution().getScaledWidth() - mc.fontRendererObj.getStringWidth(name);
 
-                              mc.fontRenderer.drawStringWithShadow(dam, (float)posX, (float)(posY + 12), 16777215);
-                         }
+		int posX = 4;
+		int posY = 4;
+		if(MorePlayerModels.Tooltips % 2 == 0)
+			posX = x - 4;
 
-                    }
-               }
-          }
-     }
+		if(MorePlayerModels.Tooltips > 2)
+			posY = event.getResolution().getScaledHeight() - 24;
+
+		mc.fontRendererObj.drawStringWithShadow(name, posX, posY, 0xffffff);
+		if(item.isItemStackDamageable()){
+			int max = item.getMaxDamage();
+
+			String dam = (max - item.getItemDamage()) + "/" + max;
+
+			x = event.getResolution().getScaledWidth() - mc.fontRendererObj.getStringWidth(dam);
+
+			if(MorePlayerModels.Tooltips == 2 || MorePlayerModels.Tooltips == 4)
+				posX = x - 4;
+
+			mc.fontRendererObj.drawStringWithShadow(dam, posX, posY + 12, 0xffffff);
+		}
+	}
 }

@@ -22,15 +22,15 @@ public class LayerChatbubble extends LayerInterface implements LayerPreRender {
      @Override
      public void preRender(AbstractClientPlayer player) {
           Minecraft mc = Minecraft.getMinecraft();
-          if (player != mc.player) {
-               ChatMessages chat = ChatMessages.getChatMessages(player.getName());
-               if (chat.hasMessage()) {
-                    double x = mc.player.posX - player.posX;
-                    double y = mc.player.posY - player.posY;
-                    double z = mc.player.posZ - player.posZ;
-                    boolean inRange = player.getDistance(mc.getRenderManager().renderViewEntity) <= 4.0F;
-                    chat.renderMessages(-x, -y + 0.7D + (double)player.height, -z, inRange);
-               }
-          }
+          if (player != mc.thePlayer)
+        	  return;
+           ChatMessages chat = ChatMessages.getChatMessages(player.getName());
+           if (chat.hasMessage()) {
+                double x = mc.thePlayer.posX - player.posX;
+                double y = mc.thePlayer.posY - player.posY;
+                double z = mc.thePlayer.posZ - player.posZ;
+                boolean inRange = player.getDistanceToEntity(mc.getRenderManager().renderViewEntity) <= 4.0F;
+                chat.renderMessages(-x, -y + 0.7D + (double)player.height, -z, inRange);
+           }
      }
 }

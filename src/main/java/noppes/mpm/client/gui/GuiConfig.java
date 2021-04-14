@@ -60,7 +60,7 @@ public class GuiConfig extends GuiNPCInterface {
           if (btn instanceof GuiNpcButton) {
                GuiNpcButton button = (GuiNpcButton)btn;
                if (button.id == 46) {
-                    List players = this.mc.world.playerEntities;
+                    List players = this.mc.theWorld.playerEntities;
 
                     ModelData data;
                     for(Iterator var4 = players.iterator(); var4.hasNext(); data.webapiInit = false) {

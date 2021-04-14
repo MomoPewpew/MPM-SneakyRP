@@ -33,6 +33,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           this.color = color;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           this.colorX = this.guiLeft + 4;
@@ -42,6 +43,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           this.textfield.setTextColor(this.color);
      }
 
+     @Override
      protected void actionPerformed(GuiButton guibutton) {
           if (guibutton.id == 66) {
                this.close();
@@ -49,6 +51,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
 
      }
 
+     @Override
      public void keyTyped(char c, int i) {
           String prev = this.textfield.getText();
           super.keyTyped(c, i);
@@ -65,6 +68,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           }
      }
 
+     @Override
      public void drawScreen(int par1, int par2, float par3) {
           super.drawScreen(par1, par2, par3);
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -72,6 +76,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           this.drawTexturedModalRect(this.colorX, this.colorY, 0, 0, 120, 120);
      }
 
+     @Override
      public void mouseClicked(int i, int j, int k) throws IOException {
           super.mouseClicked(i, j, k);
           if (i >= this.colorX && i <= this.colorX + 120 && j >= this.colorY && j <= this.colorY + 120) {
@@ -101,6 +106,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           }
      }
 
+     @Override
      public void unFocused(GuiNpcTextField textfield) {
           try {
                this.color = Integer.parseInt(textfield.getText(), 16);
@@ -120,6 +126,7 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
           return str;
      }
 
+     @Override
      public void save() {
      }
 

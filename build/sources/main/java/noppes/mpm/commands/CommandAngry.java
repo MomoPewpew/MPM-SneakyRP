@@ -7,18 +7,23 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandAngry extends MpmCommandInterface {
-     public String getName() {
-          return "angry";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          if (sender instanceof EntityPlayerMP) {
-               EntityPlayerMP player = (EntityPlayerMP)sender;
-               Server.sendAssociatedData(player, EnumPackets.PARTICLE, 2, player.getUniqueID());
-          }
-     }
+	@Override
+	public String getCommandName() {
+		return "angry";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/angry to show you're angry";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		if(icommandsender instanceof EntityPlayerMP == false)
+			return;
+		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
+		Server.sendAssociatedData(player, EnumPackets.PARTICLE, 2, player.getUniqueID());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/angry to show your angry";
+	}
+
 }

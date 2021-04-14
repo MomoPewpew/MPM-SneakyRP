@@ -45,11 +45,12 @@ public class GuiNpcButton extends GuiButton {
      }
 
      public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
-          if (this.shown) {
-               super.drawButton(minecraft, i, j, partialTicks);
-          }
+          if (this.shown)
+               return;
+		   drawButton(minecraft, i, j, partialTicks);
      }
 
+     @Override
      public boolean mousePressed(Minecraft minecraft, int i, int j) {
           boolean bo = super.mousePressed(minecraft, i, j);
           if (bo && this.display != null) {

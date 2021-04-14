@@ -88,8 +88,8 @@ public class ServerEventHandler {
 
      @SubscribeEvent
      public void onAttack(LivingAttackEvent event) {
-          if (!event.getEntityLiving().world.isRemote && event.getAmount() >= 1.0F && event.getSource().damageType.equals("player") && event.getSource().getTrueSource() instanceof EntityPlayer) {
-               EntityPlayer player = (EntityPlayer)event.getSource().getTrueSource();
+          if (!event.getEntityLiving().worldObj.isRemote && event.getAmount() >= 1.0F && event.getSource().damageType.equals("player") && event.getSource().getSourceOfDamage() instanceof EntityPlayer) {
+               EntityPlayer player = (EntityPlayer)event.getSource().getSourceOfDamage();
                boolean flag = player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater() && !player.isPotionActive(MobEffects.BLINDNESS) && player.getRidingEntity() == null;
                if (flag && event.getEntityLiving().getHealth() >= 0.0F && (float)player.hurtResistantTime <= (float)player.maxHurtResistantTime / 2.0F) {
                     ModelData data = ModelData.get(player);
@@ -108,7 +108,7 @@ public class ServerEventHandler {
                          }
 
                          float pitch = (player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.2F + 1.0F;
-                         player.world.playSound(player, player.getPosition(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
+                         player.worldObj.playSound(player, player.getPosition(), new SoundEvent(new ResourceLocation(sound)), SoundCategory.PLAYERS, 0.9876543F, pitch);
                     }
                }
           }
@@ -122,7 +122,7 @@ public class ServerEventHandler {
                ModelData data = ModelData.get(target);
                Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, target.getUniqueID(), data.writeToNBT());
                ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
-               if (!back.isEmpty()) {
+               if (back != null) {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_UPDATE, 100, target.getUniqueID(), back.writeToNBT(new NBTTagCompound()));
                } else {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());

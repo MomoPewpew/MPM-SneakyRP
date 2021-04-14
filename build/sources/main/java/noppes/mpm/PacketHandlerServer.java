@@ -13,7 +13,7 @@ import noppes.mpm.constants.EnumPackets;
 public class PacketHandlerServer {
      @SubscribeEvent
      public void onPacketData(ServerCustomPacketEvent event) {
-          EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).player;
+          EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).playerEntity;
           ByteBuf buf = event.getPacket().payload();
           player.getServer().addScheduledTask(() -> {
                EnumPackets type = null;
@@ -29,13 +29,12 @@ public class PacketHandlerServer {
      }
 
      private void handlePacket(ByteBuf buffer, EntityPlayerMP player, EnumPackets type) throws Exception {
-          ModelData data;
           if (type == EnumPackets.PING) {
                int version = buffer.readInt();
                if (version == MorePlayerModels.Version) {
-                    data = ModelData.get(player);
+            	   ModelData data = ModelData.get(player);
                     data.readFromNBT(Server.readNBT(buffer));
-                    if (!player.world.getGameRules().getBoolean("mpmAllowEntityModels")) {
+                    if (!player.worldObj.getGameRules().getBoolean("mpmAllowEntityModels")) {
                          data.entityClass = null;
                     }
 
@@ -44,7 +43,7 @@ public class PacketHandlerServer {
                }
 
                ItemStack back = (ItemStack)player.inventory.mainInventory.get(0);
-               if (!back.isEmpty()) {
+               if (back != null) {
                     Server.sendAssociatedData(player, EnumPackets.BACK_ITEM_UPDATE, player.getUniqueID(), back.writeToNBT(new NBTTagCompound()));
                }
 
@@ -52,7 +51,7 @@ public class PacketHandlerServer {
           } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {
                ModelData data = ModelData.get(player);
                data.readFromNBT(Server.readNBT(buffer));
-               if (!player.world.getGameRules().getBoolean("mpmAllowEntityModels")) {
+               if (!player.worldObj.getGameRules().getBoolean("mpmAllowEntityModels")) {
                     data.entityClass = null;
                }
 
@@ -83,7 +82,7 @@ public class PacketHandlerServer {
                     }
                }
 
-               data = ModelData.get(player);
+               ModelData data = ModelData.get(player);
                if (data.animationEquals(animation)) {
                     animation = EnumAnimation.NONE;
                }

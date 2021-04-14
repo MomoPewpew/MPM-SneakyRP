@@ -13,6 +13,7 @@ public class LayerEyes extends LayerInterface {
           super(render);
      }
 
+     @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           if (this.playerdata.eyes.isEnabled()) {
                GlStateManager.pushMatrix();
@@ -30,11 +31,11 @@ public class LayerEyes extends LayerInterface {
                int j = i % 65536;
                int k = i / 65536;
                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-               Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+               Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
                this.drawBrows();
                this.drawLeft();
                this.drawRight();
-               Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+               Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
                GlStateManager.depthMask(true);
                GlStateManager.disableBlend();
                GlStateManager.shadeModel(7424);
@@ -138,6 +139,7 @@ public class LayerEyes extends LayerInterface {
           Tessellator.getInstance().draw();
      }
 
+     @Override
      public void rotate(float par1, float par2, float par3, float par4, float par5, float par6) {
      }
 }

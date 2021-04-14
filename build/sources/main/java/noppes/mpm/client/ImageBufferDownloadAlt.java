@@ -17,6 +17,7 @@ public class ImageBufferDownloadAlt extends ImageBufferDownload {
           this.fix64 = fix64;
      }
 
+     @Override
      public BufferedImage parseUserSkin(BufferedImage bufferedimage) {
           this.imageWidth = bufferedimage.getWidth((ImageObserver)null);
           this.imageHeight = bufferedimage.getHeight((ImageObserver)null);

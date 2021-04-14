@@ -7,15 +7,20 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandWave extends MpmCommandInterface {
-     public String getName() {
-          return "wave";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          ClientEventHandler.processAnimation(EnumAnimation.WAVING.ordinal());
-     }
+	@Override
+	public String getCommandName() {
+		return "wave";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/wave to wave";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.WAVING.ordinal());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/wave to wave";
+	}
+
 }

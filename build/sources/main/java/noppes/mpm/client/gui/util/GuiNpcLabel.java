@@ -29,7 +29,7 @@ public class GuiNpcLabel {
      }
 
      public void center(int width) {
-          int size = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.label);
+          int size = Minecraft.getMinecraft().fontRendererObj.getStringWidth(this.label);
           this.x += (width - size) / 2;
      }
 }

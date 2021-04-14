@@ -28,10 +28,12 @@ public class GuiNPCStringSlot extends GuiSlot {
 
      }
 
+     @Override
      protected int getSize() {
           return this.list.size();
      }
 
+     @Override
      protected void elementClicked(int i, boolean flag, int var3, int var4) {
           long time = System.currentTimeMillis();
           if (this.listener != null && this.selected != null && this.selected.equals(this.list.get(i)) && time - this.prevTime < 400L) {
@@ -52,6 +54,7 @@ public class GuiNPCStringSlot extends GuiSlot {
           this.prevTime = time;
      }
 
+     @Override
      protected boolean isSelected(int i) {
           if (!this.multiSelect) {
                return this.selected == null ? false : this.selected.equals(this.list.get(i));
@@ -60,10 +63,12 @@ public class GuiNPCStringSlot extends GuiSlot {
           }
      }
 
+     @Override
      protected int getContentHeight() {
           return this.list.size() * this.size;
      }
 
+     @Override
      protected void drawBackground() {
           this.parent.drawDefaultBackground();
      }
@@ -76,10 +81,11 @@ public class GuiNPCStringSlot extends GuiSlot {
           this.list = list;
      }
 
-     protected void drawSlot(int i, int j, int k, int p_180791_4_, int p_180791_5_, int p_180791_6_, float partialTicks) {
+     @Override
+     protected void func_192637_a(int i, int j, int k, int p_180791_4_, int p_180791_5_, int p_180791_6_, float partialTicks) {
           if (i < this.list.size()) {
                String s = (String)this.list.get(i);
-               this.parent.drawString(Minecraft.getMinecraft().fontRenderer, s, j + 50, k + 3, 16777215);
+               this.parent.drawString(Minecraft.getMinecraft().fontRendererObj, s, j + 50, k + 3, 16777215);
           }
      }
 }

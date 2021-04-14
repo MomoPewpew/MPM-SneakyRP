@@ -7,18 +7,22 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandLove extends MpmCommandInterface {
-     public String getName() {
-          return "love";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          if (sender instanceof EntityPlayerMP) {
-               EntityPlayerMP player = (EntityPlayerMP)sender;
-               Server.sendAssociatedData(player, EnumPackets.PARTICLE, 0, player.getUniqueID());
-          }
-     }
+	@Override
+	public String getCommandName() {
+		return "love";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/love to show your love";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		if(icommandsender instanceof EntityPlayerMP == false)
+			return;
+		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
+		Server.sendAssociatedData(player, EnumPackets.PARTICLE, 0, player.getUniqueID());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/love to show your love";
+	}
 }

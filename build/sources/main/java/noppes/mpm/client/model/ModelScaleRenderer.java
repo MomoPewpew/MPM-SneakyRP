@@ -33,6 +33,7 @@ public class ModelScaleRenderer extends ModelRenderer {
           model.rotateAngleZ = z;
      }
 
+     @Override
      public void render(float par1) {
           if (this.showModel && !this.isHidden) {
                if (!this.isCompiled) {
@@ -52,6 +53,7 @@ public class ModelScaleRenderer extends ModelRenderer {
           }
      }
 
+     @Override
      public void postRender(float par1) {
           if (this.config != null) {
                GlStateManager.translate(this.config.transX, this.config.transY, this.config.transZ);

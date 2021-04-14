@@ -31,7 +31,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
      private GuiCustomScroll scroll = null;
 
      public GuiMPM() {
-          this.playerdata = ModelData.get(Minecraft.getMinecraft().player);
+          this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
           this.original = this.playerdata.writeToNBT();
           this.xSize = 182;
           this.ySize = 185;
@@ -43,6 +43,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           TabRegistry.updateTabValues(this.guiLeft + 2, this.guiTop + 8, InventoryTabMPM.class);
@@ -78,6 +79,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
           this.addButton(new GuiNpcButton(3, this.guiLeft + 110, this.guiTop + 176, 68, 20, "gui.config"));
      }
 
+     @Override
      public void drawScreen(int i, int j, float f) {
           this.drawDefaultBackground();
           GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -88,6 +90,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
           GuiInventory.drawEntityOnScreen(this.guiLeft + 130, this.guiTop + 130, 40, (float)(this.guiLeft + 130 - i), (float)(this.guiTop + 60 - j), this.player);
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           Preset preset = PresetController.instance.getPreset(scroll.getSelected());
           if (preset != null) {
@@ -97,6 +100,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 
      }
 
+     @Override
      protected void actionPerformed(GuiButton button) {
           if (button instanceof GuiNpcButton) {
                if (button.id == 0) {
@@ -133,6 +137,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
           }
      }
 
+     @Override
      public void save() {
           NBTTagCompound newCompound = this.playerdata.writeToNBT();
           if (!this.original.equals(newCompound)) {
@@ -144,6 +149,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 
      }
 
+     @Override
      public void subGuiClosed(GuiNPCInterface subgui) {
           if (subgui instanceof GuiCreationScreenInterface) {
                Preset p = PresetController.instance.getPreset(this.getScroll(0).getSelected());
@@ -155,6 +161,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 }

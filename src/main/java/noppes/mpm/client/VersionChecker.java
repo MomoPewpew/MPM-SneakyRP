@@ -15,12 +15,12 @@ public class VersionChecker extends Thread {
 
           EntityPlayerSP player;
           try {
-               player = Minecraft.getMinecraft().player;
+               player = Minecraft.getMinecraft().thePlayer;
           } catch (NoSuchMethodError var7) {
                return;
           }
 
-          while((player = Minecraft.getMinecraft().player) == null) {
+          while((player = Minecraft.getMinecraft().thePlayer) == null) {
                try {
                     Thread.sleep(2000L);
                } catch (InterruptedException var6) {
@@ -30,6 +30,6 @@ public class VersionChecker extends Thread {
 
           TextComponentTranslation message = new TextComponentTranslation(text, new Object[0]);
           message.getStyle().setClickEvent(new ClickEvent(Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
-          player.sendMessage(message);
+          player.addChatMessage(message);
      }
 }

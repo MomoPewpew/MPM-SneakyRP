@@ -5,15 +5,19 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 
 public abstract class MpmCommandInterface extends CommandBase {
-     public boolean checkPermission(MinecraftServer server, ICommandSender par1ICommandSender) {
-          return true;
-     }
 
-     public int getRequiredPermissionLevel() {
-          return 0;
-     }
+	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender par1ICommandSender) {
+		return true;
+	}
 
-     public boolean isPlayerOp(ICommandSender player) {
-          return player.canUseCommand(2, "mpm");
-     }
+	@Override
+    public int getRequiredPermissionLevel(){
+        return 0;
+    }
+
+
+	public boolean isPlayerOp(ICommandSender player){
+		return player.canCommandSenderUseCommand(2, "mpm");
+	}
 }

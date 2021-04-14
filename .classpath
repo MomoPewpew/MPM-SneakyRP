@@ -34,5 +34,9 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/.gradle/minecraft/forgeBin-1.12.2-14.23.5.2847-PROJECT(MPM-SneakyRP).jar"/>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/.gradle/minecraft/forge-1.12.2-14.23.5.2847-PROJECT(MPM-SneakyRP)-binpatched.jar"/>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/.gradle/minecraft/forgeBin-1.12.2-14.23.5.2847-PROJECT(moreplayermodels).jar"/>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/.gradle/minecraft/forge-1.12.2-14.23.5.2847-PROJECT(moreplayermodels)-binpatched.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

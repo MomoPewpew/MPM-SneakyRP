@@ -7,15 +7,19 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandCrawl extends MpmCommandInterface {
-     public String getName() {
-          return "crawl";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          ClientEventHandler.processAnimation(EnumAnimation.CRAWLING.ordinal());
-     }
+	@Override
+	public String getCommandName() {
+		return "crawl";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/crawl to crawl";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.CRAWLING.ordinal());
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/crawl to crawl";
+	}
 }

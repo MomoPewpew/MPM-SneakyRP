@@ -31,7 +31,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
      private GuiCustomScroll scroll = null;
 
      public GuiMPM() {
-          this.playerdata = ModelData.get(Minecraft.getMinecraft().player);
+          this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
           this.original = this.playerdata.writeToNBT();
           this.xSize = 182;
           this.ySize = 185;

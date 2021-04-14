@@ -98,7 +98,7 @@ public class ModelHalo extends ModelBase {
           OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.0F, 240.0F);
           Minecraft.getMinecraft().renderEngine.bindTexture(wingTexture);
           GlStateManager.pushMatrix();
-          GlStateManager.rotate((float)entityIn.world.getTotalWorldTime(), 0.0F, 1.0F, 0.0F);
+          GlStateManager.rotate((float)entityIn.worldObj.getTotalWorldTime(), 0.0F, 1.0F, 0.0F);
           float f = (float)entityIn.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
           float f1 = MathHelper.sin(f * 0.2F) / 2.0F + 0.5F;
           f1 += f1 * f1;

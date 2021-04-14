@@ -24,7 +24,7 @@ public abstract class AbstractTab extends GuiButton {
      public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
           int newPotionOffset = TabRegistry.getPotionOffsetNEI();
           if (newPotionOffset != this.potionOffsetLast) {
-               this.x += newPotionOffset - this.potionOffsetLast;
+               this.xPosition += newPotionOffset - this.potionOffsetLast;
                this.potionOffsetLast = newPotionOffset;
           }
 
@@ -33,16 +33,16 @@ public abstract class AbstractTab extends GuiButton {
                int yTexPos = this.enabled ? 3 : 32;
                int ySize = this.enabled ? 25 : 32;
                int xOffset = this.id == 2 ? 0 : 1;
-               int yPos = this.y + (this.enabled ? 3 : 0);
+               int yPos = this.yPosition + (this.enabled ? 3 : 0);
                mc.renderEngine.bindTexture(this.texture);
-               this.drawTexturedModalRect(this.x, yPos, xOffset * 28, yTexPos, 28, ySize);
+               this.drawTexturedModalRect(this.xPosition, yPos, xOffset * 28, yTexPos, 28, ySize);
                RenderHelper.enableGUIStandardItemLighting();
                this.zLevel = 100.0F;
                this.itemRender.zLevel = 100.0F;
                GlStateManager.enableLighting();
                GlStateManager.enableRescaleNormal();
-               this.itemRender.renderItemAndEffectIntoGUI(this.renderStack, this.x + 6, this.y + 8);
-               this.itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, this.renderStack, this.x + 6, this.y + 8, (String)null);
+               this.itemRender.renderItemAndEffectIntoGUI(this.renderStack, this.xPosition + 6, this.yPosition + 8);
+               this.itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, this.renderStack, this.xPosition + 6, this.yPosition + 8, (String)null);
                GlStateManager.disableLighting();
                this.itemRender.zLevel = 0.0F;
                this.zLevel = 0.0F;
@@ -53,7 +53,7 @@ public abstract class AbstractTab extends GuiButton {
 
      @Override
      public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-          boolean inWindow = this.enabled && this.visible && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+          boolean inWindow = this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
           if (inWindow) {
                this.onTabClicked();
           }

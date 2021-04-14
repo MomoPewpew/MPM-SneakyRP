@@ -51,7 +51,7 @@ public class PresetController {
 
           if (presets.isEmpty()) {
                Preset preset = new Preset();
-               preset.data = ModelData.get(Minecraft.getMinecraft().player);
+               preset.data = ModelData.get(Minecraft.getMinecraft().thePlayer);
                preset.name = "Default";
                preset.menu = true;
                presets.put("default", preset);

@@ -274,35 +274,24 @@ public class CommandMPM extends MpmCommandInterface {
           return 2;
      }
 
-     public List getTabCompletions(MinecraftServer server, ICommandSender par1, String[] args, BlockPos pos) {
-          if (args.length == 1) {
-               return CommandBase.getListOfStringsMatchingLastWord(args, this.sub);
-          } else if (args.length < 2) {
-               return super.getTabCompletions(server, par1, args, pos);
-          } else {
-               String type = args[0].toLowerCase();
-               List list = new ArrayList();
-               if (args.length == 2) {
-                    list.addAll(Arrays.asList(server.getPlayerList().getOnlinePlayerNames()));
-               }
-
-               if (type.equals("model")) {
-                    list.addAll(this.entities.keySet());
-               }
-
-               if (type.equals("animation")) {
-                    EnumAnimation[] var7 = EnumAnimation.values();
-                    int var8 = var7.length;
-
-                    for(int var9 = 0; var9 < var8; ++var9) {
-                         EnumAnimation ani = var7[var9];
-                         list.add(ani.name().toLowerCase());
-                    }
-               }
-
-               return CommandBase.getListOfStringsMatchingLastWord(args, list);
-          }
-     }
+     @Override
+     public List getTabCompletionOptions(MinecraftServer server, ICommandSender par1, String[] args, BlockPos pos) {
+    	    if (args.length == 1)
+    	      return CommandBase.getListOfStringsMatchingLastWord(args, this.sub);
+    	    if (args.length >= 2) {
+    	      String type = args[0].toLowerCase();
+    	      List<String> list = new ArrayList<>();
+    	      if (args.length == 2)
+    	        list.addAll(Arrays.asList(server.getPlayerList().getAllUsernames()));
+    	      if (type.equals("model"))
+    	        list.addAll(this.entities.keySet());
+    	      if (type.equals("animation"))
+    	        for (EnumAnimation ani : EnumAnimation.values())
+    	          list.add(ani.name().toLowerCase());
+    	      return CommandBase.getListOfStringsMatchingLastWord(args, list);
+    	    }
+    	    return super.getTabCompletionOptions(server, par1, args, pos);
+    	  }
 
      static class Scale {
           float scaleX;

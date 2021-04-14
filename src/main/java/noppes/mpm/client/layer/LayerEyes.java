@@ -31,11 +31,11 @@ public class LayerEyes extends LayerInterface {
                int j = i % 65536;
                int k = i / 65536;
                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
-               Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+               Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
                this.drawBrows();
                this.drawLeft();
                this.drawRight();
-               Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+               Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
                GlStateManager.depthMask(true);
                GlStateManager.disableBlend();
                GlStateManager.shadeModel(7424);

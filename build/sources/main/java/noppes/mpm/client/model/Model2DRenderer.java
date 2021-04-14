@@ -46,6 +46,7 @@ public class Model2DRenderer extends ModelRenderer {
           this(modelBase, x, y, width, height, modelBase.textureWidth, modelBase.textureHeight);
      }
 
+     @Override
      public void render(float par1) {
           if (this.showModel && !this.isHidden) {
                if (!this.isCompiled) {

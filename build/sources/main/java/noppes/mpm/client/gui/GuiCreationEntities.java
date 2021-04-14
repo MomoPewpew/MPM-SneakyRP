@@ -51,6 +51,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
           this.xOffset = 60;
      }
 
+     @Override
      public void initGui() {
           super.initGui();
           this.addButton(new GuiNpcButton(10, this.guiLeft, this.guiTop + 46, 120, 20, "gui.resettoplayer"));
@@ -83,6 +84,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
           this.addScroll(this.scroll);
      }
 
+     @Override
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 10) {
@@ -93,11 +95,13 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
      }
 
+     @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
           this.initGui();
      }
 
+     @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
 }

@@ -40,7 +40,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      public int mouseY;
 
      public GuiNPCInterface() {
-          this.player = Minecraft.getMinecraft().player;
+          this.player = Minecraft.getMinecraft().thePlayer;
           this.xSize = 200;
           this.ySize = 222;
      }
@@ -241,7 +241,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 
                while(var4.hasNext()) {
                     GuiNpcLabel label = (GuiNpcLabel)var4.next();
-                    label.drawLabel(this, this.fontRenderer);
+                    label.drawLabel(this, this.fontRendererObj);
                }
 
                var4 = this.textfields.values().iterator();
@@ -281,7 +281,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      }
 
      public FontRenderer getFontRenderer() {
-          return this.fontRenderer;
+          return this.fontRendererObj;
      }
 
      public void elementClicked() {
@@ -365,7 +365,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           npc.rotationPitch = -((float)Math.atan((double)(f6 / 40.0F))) * 20.0F;
           npc.rotationYawHead = npc.rotationYaw;
           this.mc.getRenderManager().playerViewY = 180.0F;
-          this.mc.getRenderManager().renderEntity(npc, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+          this.mc.getRenderManager().doRenderEntity(npc, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
           npc.prevRenderYawOffset = npc.renderYawOffset = f2;
           npc.prevRotationYaw = npc.rotationYaw = f3;
           npc.prevRotationPitch = npc.rotationPitch = f4;

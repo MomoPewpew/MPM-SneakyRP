@@ -7,15 +7,18 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 
 public class CommandPoint extends MpmCommandInterface {
-     public String getName() {
-          return "point";
-     }
 
-     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-          ClientEventHandler.processAnimation(EnumAnimation.POINT.ordinal());
-     }
+	@Override
+	public String getCommandName() {
+		return "point";
+	}
 
-     public String getUsage(ICommandSender sender) {
-          return "/point to point";
-     }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
+		ClientEventHandler.processAnimation(EnumAnimation.POINT.ordinal());
+	}
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return "/point to point";
+	}
 }

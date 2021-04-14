@@ -164,8 +164,9 @@ public class ClientProxy extends CommonProxy {
       if (layer instanceof net.minecraft.client.renderer.entity.layers.LayerElytra)
         ita.remove();
     }
+
     LayerElytraAlt layerElytraAlt = new LayerElytraAlt(render);
-    render.layerRenderers.addAll((Collection<? extends LayerRenderer<AbstractClientPlayer>>) layerElytraAlt);
+    render.layerRenderers.add(layerElytraAlt);
   }
 
   private static void addLayers(RenderPlayer playerRender) {

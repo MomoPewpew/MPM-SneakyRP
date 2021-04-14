@@ -28,17 +28,10 @@ Note: Recompile with -Xlint:deprecation for details.
 Note: Some input files use unchecked or unsafe operations.
 Note: Recompile with -Xlint:unchecked for details.
 
-:copyMainKotlinClasses
-:processResources
+:copyMainKotlinClasses UP-TO-DATE
+:processResources UP-TO-DATE
 :classes
 :jar
-:compileTestKotlin UP-TO-DATE
-:sourceTestJava
-:compileTestJava UP-TO-DATE
-:copyTestKotlinClasses
-:processTestResources UP-TO-DATE
-:testClasses UP-TO-DATE
-:test UP-TO-DATE
 :reobfJar
 :extractAnnotationsJarError while building FML annotations cache: duplicate entry: META-INF/fml_cache_annotation.json
 java.util.zip.ZipException: duplicate entry: META-INF/fml_cache_annotation.json
@@ -132,9 +125,7 @@ java.util.zip.ZipException: duplicate entry: META-INF/fml_cache_annotation.json
 	at java.lang.Thread.run(Thread.java:823)
 
 :assemble
-:check UP-TO-DATE
-:build
 
 BUILD SUCCESSFUL
 
-Total time: 22.283 secs
+Total time: 29.908 secs

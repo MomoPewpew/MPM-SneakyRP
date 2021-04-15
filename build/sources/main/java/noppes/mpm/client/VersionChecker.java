@@ -9,9 +9,9 @@ import net.minecraft.util.text.event.ClickEvent.Action;
 public class VersionChecker extends Thread {
 	@Override
      public void run() {
-          String name = "§2MorePlayerModels§f";
-          String link = "§9§nClick here";
-          String text = name + " installed. More info at " + link;
+		String name = '\u00A7'+ "2MorePlayerModels" + '\u00A7' + "f";
+		String link = '\u00A7'+"9"+'\u00A7' + "nClick here";
+		String text =  name +" installed. More info at " + link;
 
           EntityPlayerSP player;
           try {

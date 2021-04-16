@@ -50,7 +50,7 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
                }
 
                if (hover) {
-                    text = "§n" + text;
+            	   text = (char)167 + "n" + text;
                }
 
                this.drawCenteredString(mc.fontRendererObj, text, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);

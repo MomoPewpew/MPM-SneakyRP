@@ -44,10 +44,11 @@ public class GuiNpcButton extends GuiButton {
           return this.displayValue;
      }
 
-     public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
+     @Override
+     public void func_191745_a(Minecraft minecraft, int i, int j, float partialTicks) {
           if (this.shown)
                return;
-		   drawButton(minecraft, i, j, partialTicks);
+		   func_191745_a(minecraft, i, j, partialTicks);
      }
 
      @Override

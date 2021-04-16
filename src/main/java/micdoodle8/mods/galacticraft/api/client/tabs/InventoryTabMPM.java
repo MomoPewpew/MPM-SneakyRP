@@ -37,9 +37,9 @@ public class InventoryTabMPM extends AbstractTab {
      }
 
      @Override
-     public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+     public void func_191745_a(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
           if (!this.visible) {
-               super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+               super.func_191745_a(minecraft, mouseX, mouseY, partialTicks);
           } else {
                this.renderStack = null;
                if (this.enabled) {
@@ -53,7 +53,7 @@ public class InventoryTabMPM extends AbstractTab {
                     }
                }
 
-               super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+               super.func_191745_a(minecraft, mouseX, mouseY, partialTicks);
                GlStateManager.pushMatrix();
                GlStateManager.translate((float)(this.xPosition + 14), (float)this.yPosition + 22.0F, 150.0F);
                GlStateManager.scale(20.0F, 20.0F, 20.0F);

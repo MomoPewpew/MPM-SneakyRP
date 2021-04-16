@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.UUID;
 
 public class AnalyticsTracking {
-     public static void sendData(UUID uuid, String event, String data) {
+/*     public static void sendData(UUID uuid, String event, String data) {
           (new Thread(() -> {
                try {
                     String analyticsPostData = "v=1&tid=UA-29079943-5&cid=" + uuid.toString() + "&t=event&ec=moreplayermodels_1.12&ea=" + event + "&el=" + data + "&ev=300";
@@ -27,5 +27,5 @@ public class AnalyticsTracking {
                }
 
           })).start();
-     }
+     }*/
 }

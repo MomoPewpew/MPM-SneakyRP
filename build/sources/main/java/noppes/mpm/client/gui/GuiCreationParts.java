@@ -349,10 +349,6 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
               this.data = GuiCreationParts.this.playerdata.getPartData(this.part);
               this.hasPlayerOption = this.data != null && (this.data.type == 2);
               int y = super.initGui();
-/*              if (this.data != null && this.data.type == 0) {
-                   GuiCreationParts.this.addLabel(new GuiNpcLabel(22, "gui.pattern", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
-                   GuiCreationParts.this.addButton(new GuiButtonBiDirectional(22, GuiCreationParts.this.guiLeft + 145, y, 100, 20, new String[]{"1", "2"}, this.data.pattern));
-              }*/
 
               return y;
          }

@@ -80,7 +80,7 @@ public class ServerTickHandler {
                }
 
                ModelData data = ModelData.get(event.player);
-               AnalyticsTracking.sendData(data.analyticsUUID, "join", serverName);
+               //AnalyticsTracking.sendData(data.analyticsUUID, "join", serverName);
           }
      }
 }

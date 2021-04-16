@@ -1,40 +1,40 @@
-[21:09:29] [main/INFO]: Extra: []
-[21:09:29] [main/INFO]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Marijn/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
-[21:09:29] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[21:09:29] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[21:09:29] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
-[21:09:29] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[21:09:29] [main/INFO]: Forge Mod Loader version 14.23.5.2847 for Minecraft 1.12.2 loading
-[21:09:29] [main/INFO]: Java is Eclipse OpenJ9 VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at E:\Program Files\Java\jdk8u265-b01\jre
-[21:09:29] [main/ERROR]: Apache Maven library folder was not in the format expected. Using default libraries directory.
-[21:09:29] [main/ERROR]: Full: C:\Users\Marijn\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
-[21:09:29] [main/ERROR]: Trimmed: c:/users/marijn/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
-[21:09:29] [main/INFO]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
-[21:09:29] [main/INFO]: Detected deobfuscated environment, loading log configs for colored console logs.
-[21:09:29] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugininecraftFormatting
-[21:09:29] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugininecraftFormatting
-[21:09:29] [main/INFO] [FML]: Searching E:\Users\Marijn\workspace\MPM-SneakyRP\run\.\mods for modsinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweakerinecraftFormatting
-[21:09:29] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugininecraftFormatting
-[21:09:29] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugininecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweakerinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweakerinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
-[21:09:29] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapperinecraftFormatting
-[21:09:30] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thinginecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapperinecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweakerinecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweakerinecraftFormatting
-[21:09:30] [main/INFO] [GradleStart]: Remapping AccessTransformer rules...inecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweakerinecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweakerinecraftFormatting
-[21:09:30] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}inecraftFormatting
-[21:09:31] [Client thread/INFO] [net.minecraft.client.Minecraft]: Setting user: Player828inecraftFormatting
-[21:09:34] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:inecraftFormatting
-[21:09:34] [Client thread/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4inecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: -- System Details --
+[21:51:03] [main/INFO]: Extra: []
+[21:51:03] [main/INFO]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/Marijn/.gradle/caches/minecraft/assets, --assetIndex, 1.12, --accessToken{REDACTED}, --version, 1.12.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[21:51:03] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[21:51:03] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[21:51:03] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[21:51:03] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[21:51:03] [main/INFO]: Forge Mod Loader version 14.23.5.2847 for Minecraft 1.12.2 loading
+[21:51:03] [main/INFO]: Java is Eclipse OpenJ9 VM, version 1.8.0_265, running on Windows 10:amd64:10.0, installed at E:\Program Files\Java\jdk8u265-b01\jre
+[21:51:03] [main/ERROR]: Apache Maven library folder was not in the format expected. Using default libraries directory.
+[21:51:03] [main/ERROR]: Full: C:\Users\Marijn\.gradle\caches\modules-2\files-2.1\org.apache.maven\maven-artifact\3.5.3\7dc72b6d6d8a6dced3d294ed54c2cc3515ade9f4\maven-artifact-3.5.3.jar
+[21:51:03] [main/ERROR]: Trimmed: c:/users/marijn/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.5.3/
+[21:51:03] [main/INFO]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[21:51:03] [main/INFO]: Detected deobfuscated environment, loading log configs for colored console logs.
+[21:51:03] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLCorePlugin (net.minecraftforge.fml.relauncher.FMLCorePlugin), we are in deobf and it's a forge core plugininecraftFormatting
+[21:51:03] [main/INFO] [FML]: Ignoring missing certificate for coremod FMLForgePlugin (net.minecraftforge.classloading.FMLForgePlugin), we are in deobf and it's a forge core plugininecraftFormatting
+[21:51:03] [main/INFO] [FML]: Searching E:\Users\Marijn\workspace\MPM-SneakyRP\run\.\mods for modsinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweakerinecraftFormatting
+[21:51:03] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugininecraftFormatting
+[21:51:03] [main/INFO] [GradleStart]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugininecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweakerinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweakerinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweakerinecraftFormatting
+[21:51:03] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapperinecraftFormatting
+[21:51:04] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thinginecraftFormatting
+[21:51:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapperinecraftFormatting
+[21:51:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweakerinecraftFormatting
+[21:51:04] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweakerinecraftFormatting
+[21:51:05] [main/INFO] [GradleStart]: Remapping AccessTransformer rules...inecraftFormatting
+[21:51:05] [main/INFO] [LaunchWrapper]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweakerinecraftFormatting
+[21:51:05] [main/INFO] [LaunchWrapper]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweakerinecraftFormatting
+[21:51:05] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}inecraftFormatting
+[21:51:05] [Client thread/INFO] [net.minecraft.client.Minecraft]: Setting user: Player46inecraftFormatting
+[21:51:08] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:inecraftFormatting
+[21:51:08] [Client thread/INFO] [net.minecraft.client.Minecraft]: LWJGL Version: 2.9.4inecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: -- System Details --
 Details:
 	Minecraft Version: 1.12.2
 	Operating System: Windows 10 (amd64) version 10.0
@@ -43,93 +43,91 @@ Details:
 OpenJ9   - 34cf4c075
 OMR      - 113e54219
 JCL      - c82ff0c20f based on jdk8u265-b01), Eclipse OpenJ9
-	Memory: 42966072 bytes (40 MB) / 163840000 bytes (156 MB) up to 4280811520 bytes (4082 MB)
+	Memory: 52747168 bytes (50 MB) / 164429824 bytes (156 MB) up to 4280811520 bytes (4082 MB)
 	JVM Flags: 3 total; -Xoptionsfile=E:\Program Files\Java\jdk8u265-b01\jre\bin\default\options.default -Xlockword:mode=default,noLockword=java/lang/String,noLockword=java/util/MapEntry,noLockword=java/util/HashMap$Entry,noLockword=org/apache/harmony/luni/util/ModifiedMap$Entry,noLockword=java/util/Hashtable$Entry,noLockword=java/lang/invoke/MethodType,noLockword=java/lang/invoke/MethodHandle,noLockword=java/lang/invoke/CollectHandle,noLockword=java/lang/invoke/ConstructorHandle,noLockword=java/lang/invoke/ConvertHandle,noLockword=java/lang/invoke/ArgumentConversionHandle,noLockword=java/lang/invoke/AsTypeHandle,noLockword=java/lang/invoke/ExplicitCastHandle,noLockword=java/lang/invoke/FilterReturnHandle,noLockword=java/lang/invoke/DirectHandle,noLockword=java/lang/invoke/ReceiverBoundHandle,noLockword=java/lang/invoke/DynamicInvokerHandle,noLockword=java/lang/invoke/FieldHandle,noLockword=java/lang/invoke/FieldGetterHandle,noLockword=java/lang/invoke/FieldSetterHandle,noLockword=java/lang/invoke/StaticFieldGetterHandle,noLockword=java/lang/invoke/StaticFieldSetterHandle,noLockword=java/lang/invoke/IndirectHandle,noLockword=java/lang/invoke/InterfaceHandle,noLockword=java/lang/invoke/VirtualHandle,noLockword=java/lang/invoke/PrimitiveHandle,noLockword=java/lang/invoke/InvokeExactHandle,noLockword=java/lang/invoke/InvokeGenericHandle,noLockword=java/lang/invoke/VarargsCollectorHandle,noLockword=java/lang/invoke/ThunkTuple -Xjcl:jclse29
 	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
 	FML: 
 	Loaded coremods (and transformers): 
 	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 456.71' Renderer: 'GeForce GTX 970/PCIe/SSE2'inecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: MinecraftForge v14.23.5.2847 InitializedinecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.inecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...inecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: Replaced 1227 ore ingredientsinecraftFormatting
-[21:09:35] [Client thread/INFO] [FML]: Searching E:\Users\Marijn\workspace\MPM-SneakyRP\run\.\mods for modsinecraftFormatting
-[21:09:36] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to loadinecraftFormatting
-[21:09:36] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, moreplayermodels] at CLIENTinecraftFormatting
-[21:09:36] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, moreplayermodels] at SERVERinecraftFormatting
-[21:09:37] [Client thread/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:MorePlayerModelsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Processing ObjectHolder annotationsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Found 1168 ObjectHolder annotationsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotationsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotationsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0inecraftFormatting
-[21:09:37] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.jsoninecraftFormatting
-[21:09:37] [Thread-6/INFO] [FML]: Using sync timing. 200 frames of Display.update took 110369900 nanosinecraftFormatting
-[21:09:37] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2854inecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Injecting itemstacksinecraftFormatting
-[21:09:37] [Client thread/INFO] [FML]: Itemstack injection completeinecraftFormatting
-[21:09:42] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...inecraftFormatting
-[21:09:42] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenALinecraftFormatting
-[21:09:42] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)inecraftFormatting
-[21:09:42] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.inecraftFormatting
-[21:09:42] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine startedinecraftFormatting
-[21:09:50] [Client thread/INFO] [FML]: Max texture size: 16384inecraftFormatting
-[21:09:50] [Client thread/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlasinecraftFormatting
-[21:09:52] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:09:52] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:09:53] [Client thread/INFO] [FML]: Injecting itemstacksinecraftFormatting
-[21:09:53] [Client thread/INFO] [FML]: Itemstack injection completeinecraftFormatting
-[21:09:53] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 5 modsinecraftFormatting
-[21:09:53] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:inecraftFormatting
-[21:09:53] [Client thread/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loadedinecraftFormatting
-[21:09:54] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: Invalid session idinecraftFormatting
-[21:10:17] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Starting integrated minecraft server version 1.12.2inecraftFormatting
-[21:10:17] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Generating keypairinecraftFormatting
-[21:10:18] [Server thread/INFO] [FML]: Injecting existing registry data into this server instanceinecraftFormatting
-[21:10:18] [Server thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:10:18] [Server thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:10:18] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@6173952)inecraftFormatting
-[21:10:19] [Server thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 488 advancementsinecraftFormatting
-[21:10:19] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@6173952)inecraftFormatting
-[21:10:19] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@6173952)inecraftFormatting
-[21:10:19] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing start region for level 0inecraftFormatting
-[21:10:20] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 5%inecraftFormatting
-[21:10:21] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 72%inecraftFormatting
-[21:10:22] [Server thread/INFO] [FML]: Unloading dimension -1inecraftFormatting
-[21:10:22] [Server thread/INFO] [FML]: Unloading dimension 1inecraftFormatting
-[21:10:22] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Changing view distance to 12, from 10inecraftFormatting
-[21:10:23] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2inecraftFormatting
-[21:10:23] [Netty Server IO #1/INFO] [FML]: Client protocol version 2inecraftFormatting
-[21:10:23] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.12.2,FML@8.0.99.99,forge@14.23.5.2847,mcp@9.42,moreplayermodels@1.12.2inecraftFormatting
-[21:10:23] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection establishedinecraftFormatting
-[21:10:23] [Server thread/INFO] [FML]: [Server thread] Server side modded connection establishedinecraftFormatting
-[21:10:23] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Player828[local:E:509faaf6] logged in with entity id 269 at (-6.199529240453358, 82.0, 104.08111746897839)inecraftFormatting
-[21:10:23] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player828 joined the gameinecraftFormatting
-[21:10:24] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...inecraftFormatting
-[21:10:24] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
-[21:10:25] [Thread-8/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] §2MorePlayerModels§f installed. More info at §9§nClick hereinecraftFormatting
-[21:10:30] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: [Player828: Set own game mode to Survival Mode]inecraftFormatting
-[21:10:30] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] Your game mode has been updated to Survival ModeinecraftFormatting
-[21:10:37] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...inecraftFormatting
-[21:10:37] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Stopping serverinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving playersinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Player828 lost connection: DisconnectedinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player828 left the gameinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Stopping singleplayer server as player logged outinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving worldsinecraftFormatting
-[21:10:38] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
-[21:10:38] [Server thread/INFO] [FML]: Unloading dimension 0inecraftFormatting
-[21:10:38] [Server thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
-[21:10:38] [Server thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
-[21:10:40] [Client thread/INFO] [net.minecraft.client.Minecraft]: Stopping!inecraftFormatting
-[21:10:40] [Client thread/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...inecraftFormatting
-[21:10:41] [Client thread/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.cominecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: MinecraftForge v14.23.5.2847 InitializedinecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: Starts to replace vanilla recipe ingredients with ore ingredients.inecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: Invalid recipe found with multiple oredict ingredients in the same ingredient...inecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: Replaced 1227 ore ingredientsinecraftFormatting
+[21:51:09] [Client thread/INFO] [FML]: Searching E:\Users\Marijn\workspace\MPM-SneakyRP\run\.\mods for modsinecraftFormatting
+[21:51:10] [Client thread/INFO] [FML]: Forge Mod Loader has identified 5 mods to loadinecraftFormatting
+[21:51:10] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, moreplayermodels] at CLIENTinecraftFormatting
+[21:51:10] [Client thread/INFO] [FML]: Attempting connection with missing mods [minecraft, mcp, FML, forge, moreplayermodels] at SERVERinecraftFormatting
+[21:51:11] [Client thread/INFO] [net.minecraft.client.resources.SimpleReloadableResourceManager]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:MorePlayerModelsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Processing ObjectHolder annotationsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Found 1168 ObjectHolder annotationsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Identifying ItemStackHolder annotationsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Found 0 ItemStackHolder annotationsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0inecraftFormatting
+[21:51:11] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.jsoninecraftFormatting
+[21:51:11] [Thread-6/INFO] [FML]: Using sync timing. 200 frames of Display.update took 87515300 nanosinecraftFormatting
+[21:51:11] [Forge Version Check/INFO] [forge.VersionCheck]: [forge] Found status: OUTDATED Target: 14.23.5.2854inecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Injecting itemstacksinecraftFormatting
+[21:51:11] [Client thread/INFO] [FML]: Itemstack injection completeinecraftFormatting
+[21:51:16] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Starting up SoundSystem...inecraftFormatting
+[21:51:16] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: Initializing LWJGL OpenALinecraftFormatting
+[21:51:16] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)inecraftFormatting
+[21:51:16] [Thread-9/INFO] [net.minecraft.client.audio.SoundManager]: OpenAL initialized.inecraftFormatting
+[21:51:17] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager]: Sound engine startedinecraftFormatting
+[21:51:24] [Client thread/INFO] [FML]: Max texture size: 16384inecraftFormatting
+[21:51:25] [Client thread/INFO] [net.minecraft.client.renderer.texture.TextureMap]: Created: 512x512 textures-atlasinecraftFormatting
+[21:51:28] [Client thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:51:28] [Client thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:51:28] [Client thread/INFO] [FML]: Injecting itemstacksinecraftFormatting
+[21:51:28] [Client thread/INFO] [FML]: Itemstack injection completeinecraftFormatting
+[21:51:28] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 5 modsinecraftFormatting
+[21:51:28] [Client thread/WARN] [net.minecraft.client.settings.GameSettings]: Skipping bad option: lastServer:inecraftFormatting
+[21:51:28] [Client thread/INFO] [com.mojang.text2speech.NarratorWindows]: Narrator library for x64 successfully loadedinecraftFormatting
+[21:51:29] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient]: Could not authorize you against Realms server: Invalid session idinecraftFormatting
+[21:54:03] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Starting integrated minecraft server version 1.12.2inecraftFormatting
+[21:54:03] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Generating keypairinecraftFormatting
+[21:54:03] [Server thread/INFO] [FML]: Injecting existing registry data into this server instanceinecraftFormatting
+[21:54:04] [Server thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:54:04] [Server thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:54:04] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@94ba2699)inecraftFormatting
+[21:54:05] [Server thread/INFO] [net.minecraft.advancements.AdvancementList]: Loaded 488 advancementsinecraftFormatting
+[21:54:05] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@94ba2699)inecraftFormatting
+[21:54:05] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@94ba2699)inecraftFormatting
+[21:54:05] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing start region for level 0inecraftFormatting
+[21:54:06] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 4%inecraftFormatting
+[21:54:07] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Preparing spawn area: 76%inecraftFormatting
+[21:54:07] [Server thread/INFO] [FML]: Unloading dimension -1inecraftFormatting
+[21:54:07] [Server thread/INFO] [FML]: Unloading dimension 1inecraftFormatting
+[21:54:07] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Changing view distance to 12, from 10inecraftFormatting
+[21:54:09] [Netty Local Client IO #0/INFO] [FML]: Server protocol version 2inecraftFormatting
+[21:54:09] [Netty Server IO #1/INFO] [FML]: Client protocol version 2inecraftFormatting
+[21:54:09] [Netty Server IO #1/INFO] [FML]: Client attempting to join with 5 mods : minecraft@1.12.2,FML@8.0.99.99,forge@14.23.5.2847,mcp@9.42,moreplayermodels@1.12.2inecraftFormatting
+[21:54:09] [Netty Local Client IO #0/INFO] [FML]: [Netty Local Client IO #0] Client side modded connection establishedinecraftFormatting
+[21:54:09] [Server thread/INFO] [FML]: [Server thread] Server side modded connection establishedinecraftFormatting
+[21:54:09] [Server thread/INFO] [net.minecraft.server.management.PlayerList]: Player46[local:E:3f5fa6e7] logged in with entity id 256 at (-6.82072874705529, 82.0, 103.92318306186688)inecraftFormatting
+[21:54:09] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player46 joined the gameinecraftFormatting
+[21:54:10] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...inecraftFormatting
+[21:54:10] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
+[21:54:10] [Thread-8/INFO] [net.minecraft.client.gui.GuiNewChat]: [CHAT] §2MorePlayerModels§f installed. More info at §9§nClick hereinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer]: Saving and pausing game...inecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Stopping serverinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving playersinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Player46 lost connection: DisconnectedinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Player46 left the gameinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.network.NetHandlerPlayServer]: Stopping singleplayer server as player logged outinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving worldsinecraftFormatting
+[21:54:33] [Server thread/INFO] [net.minecraft.server.MinecraftServer]: Saving chunks for level 'New World'/overworldinecraftFormatting
+[21:54:34] [Server thread/INFO] [FML]: Unloading dimension 0inecraftFormatting
+[21:54:34] [Server thread/INFO] [FML]: Applying holder lookupsinecraftFormatting
+[21:54:34] [Server thread/INFO] [FML]: Holder lookups appliedinecraftFormatting
+[21:54:35] [Client thread/INFO] [net.minecraft.client.Minecraft]: Stopping!inecraftFormatting
+[21:54:35] [Client thread/INFO] [net.minecraft.client.audio.SoundManager]: SoundSystem shutting down...inecraftFormatting
+[21:54:35] [Client thread/WARN] [net.minecraft.client.audio.SoundManager]: Author: Paul Lamb, www.paulscode.cominecraftFormatting

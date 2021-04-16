@@ -22,7 +22,7 @@ Found AccessTransformer: mpm_at.cfg
 :processApiResources UP-TO-DATE
 :apiClasses UP-TO-DATE
 :compileKotlin
-:sourceMainJava UP-TO-DATE
+:sourceMainJava
 :compileJavaNote: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 Note: Some input files use unchecked or unsafe operations.
@@ -31,7 +31,7 @@ Note: Recompile with -Xlint:unchecked for details.
 :copyMainKotlinClasses UP-TO-DATE
 :processResources UP-TO-DATE
 :classes
-:jar UP-TO-DATE
+:jar
 :reobfJar
 :extractAnnotationsJarError while building FML annotations cache: duplicate entry: META-INF/fml_cache_annotation.json
 java.util.zip.ZipException: duplicate entry: META-INF/fml_cache_annotation.json
@@ -128,4 +128,4 @@ java.util.zip.ZipException: duplicate entry: META-INF/fml_cache_annotation.json
 
 BUILD SUCCESSFUL
 
-Total time: 19.52 secs
+Total time: 21.782 secs

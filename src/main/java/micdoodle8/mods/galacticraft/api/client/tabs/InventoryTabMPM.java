@@ -20,7 +20,7 @@ public class InventoryTabMPM extends AbstractTab {
 	private static final ModelPlayer biped = new ModelPlayer(0, true);
 
 	public InventoryTabMPM() {
-		super(0, 0, 0, new ItemStack(Items.SKULL, 1, 3));
+		super(0, 0, 0, null);
 		displayString = I18n.translateToLocal("menu.mpm");
 	}
 

@@ -20,7 +20,7 @@ public class InventoryTabMPM extends AbstractTab {
 	private static final ModelPlayer biped = new ModelPlayer(0, true);
 
 	public InventoryTabMPM() {
-		super(0, 0, 0, new ItemStack(Items.SKULL, 1, 3));
+		super(0, 0, 0, null);
 		displayString = I18n.translateToLocal("menu.mpm");
 	}
 
@@ -40,9 +40,10 @@ public class InventoryTabMPM extends AbstractTab {
 		return true;
 	}
 
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks){
+	@Override
+    public void func_191745_a(Minecraft minecraft, int mouseX, int mouseY, float partialTicks){
         if (!visible){
-            super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+            super.func_191745_a(minecraft, mouseX, mouseY, partialTicks);
             return;
         }
         this.renderStack = null;
@@ -57,7 +58,7 @@ public class InventoryTabMPM extends AbstractTab {
 	        	GlStateManager.translate(-x, -(yPosition + 2), 0);
 	        }
         }
-        super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+        super.func_191745_a(minecraft, mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
         GlStateManager.translate(xPosition + 14, (float)yPosition + 22, 150.0F);
         GlStateManager.scale(20, 20, 20);

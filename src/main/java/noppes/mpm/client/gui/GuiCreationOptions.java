@@ -22,7 +22,7 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
           y += 23;
           this.addTextField(new GuiNpcTextField(52, this, var10005, y, 200, 20, this.playerdata.url));
           this.addLabel(new GuiNpcLabel(52, "config.skinurl", this.guiLeft, y + 5, 16777215));
-          this.addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
+          //this.addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
      }
 
      @Override

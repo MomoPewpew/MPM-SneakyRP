@@ -12,7 +12,7 @@ public class GuiButtonBiDirectional extends GuiNpcButton {
      }
 
      @Override
-     public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+     public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
           if (this.visible) {
                boolean disabled = !this.enabled || this.display.length <= 1;
                boolean hover = !disabled && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;

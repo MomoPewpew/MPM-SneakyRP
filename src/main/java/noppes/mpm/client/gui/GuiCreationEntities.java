@@ -88,17 +88,17 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 10) {
-               this.playerdata.setEntityClass((Class)null);
+/*               this.playerdata.setEntityClass((Class)null);
                this.resetToSelected = true;
-               this.initGui();
+               this.initGui();*/
           }
 
      }
 
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-          this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
-          this.initGui();
+/*          this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
+          this.initGui();*/
      }
 
      @Override

@@ -28,21 +28,25 @@ public class LayerArms extends LayerInterface {
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           ModelPartData data = this.playerdata.getPartData(EnumParts.CLAWS);
           if (data != null) {
+
                this.preRender(data);
                if (data.pattern == 0 || data.pattern == 1) {
+            	   GlStateManager.translate(this.model.bipedLeftArm.offsetX, this.model.bipedLeftArm.offsetY, this.model.bipedLeftArm.offsetZ);
                     GlStateManager.pushMatrix();
                     this.model.bipedLeftArm.postRender(0.0625F);
                     this.lClaw.render(par7);
                     GlStateManager.popMatrix();
+                    GlStateManager.translate(-this.model.bipedLeftArm.offsetX, -this.model.bipedLeftArm.offsetY, -this.model.bipedLeftArm.offsetZ);
                }
 
                if (data.pattern == 0 || data.pattern == 2) {
+            	   GlStateManager.translate(this.model.bipedRightArm.offsetX, this.model.bipedRightArm.offsetY, this.model.bipedRightArm.offsetZ);
                     GlStateManager.pushMatrix();
                     this.model.bipedRightArm.postRender(0.0625F);
                     this.rClaw.render(par7);
                     GlStateManager.popMatrix();
+                    GlStateManager.translate(-this.model.bipedRightArm.offsetX, -this.model.bipedRightArm.offsetY, -this.model.bipedRightArm.offsetZ);
                }
-
           }
      }
 

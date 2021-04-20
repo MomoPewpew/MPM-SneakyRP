@@ -16,6 +16,7 @@ public class LayerEyes extends LayerInterface {
      @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
           if (this.playerdata.eyes.isEnabled()) {
+        	  GlStateManager.translate(this.model.bipedHead.offsetX, this.model.bipedHead.offsetY, this.model.bipedHead.offsetZ);
                GlStateManager.pushMatrix();
                this.model.bipedHead.postRender(0.0625F);
                GlStateManager.scale(par7, par7, -par7);
@@ -43,6 +44,7 @@ public class LayerEyes extends LayerInterface {
                GlStateManager.disableCull();
                GlStateManager.disableRescaleNormal();
                GlStateManager.popMatrix();
+               GlStateManager.translate(-this.model.bipedHead.offsetX, -this.model.bipedHead.offsetY, -this.model.bipedHead.offsetZ);
                GlStateManager.enableTexture2D();
           }
      }

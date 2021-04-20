@@ -35,22 +35,26 @@ public class ModelScaleRenderer extends ModelRenderer {
 
      @Override
      public void render(float par1) {
-          if (this.showModel && !this.isHidden) {
-               if (!this.isCompiled) {
-                    this.compile(par1);
-               }
+         if (this.showModel && !this.isHidden) {
+             if (!this.isCompiled) {
+                  this.compile(par1);
+             }
 
-               GlStateManager.pushMatrix();
-               this.postRender(par1);
-               GlStateManager.callList(this.displayList);
-               if (this.childModels != null) {
-                    for(int i = 0; i < this.childModels.size(); ++i) {
-                         ((ModelRenderer)this.childModels.get(i)).render(par1);
-                    }
-               }
+             GlStateManager.translate(this.offsetX, this.offsetY, this.offsetZ);
 
-               GlStateManager.popMatrix();
-          }
+             GlStateManager.pushMatrix();
+             this.postRender(par1);
+             GlStateManager.callList(this.displayList);
+             if (this.childModels != null) {
+                  for(int i = 0; i < this.childModels.size(); ++i) {
+                       ((ModelRenderer)this.childModels.get(i)).render(par1);
+                  }
+             }
+
+             GlStateManager.popMatrix();
+
+             GlStateManager.translate(-this.offsetX, -this.offsetY, -this.offsetZ);
+        }
      }
 
      @Override

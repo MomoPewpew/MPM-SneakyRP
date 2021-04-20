@@ -85,12 +85,15 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
 
      @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
+    	 GlStateManager.translate(this.model.bipedLeftLeg.offsetX, this.model.bipedLeftLeg.offsetY, this.model.bipedLeftLeg.offsetZ);
           GlStateManager.pushMatrix();
           this.renderLegs(par7);
           GlStateManager.popMatrix();
           GlStateManager.pushMatrix();
           this.renderTails(par7);
           GlStateManager.popMatrix();
+          GlStateManager.translate(-this.model.bipedLeftLeg.offsetX, -this.model.bipedLeftLeg.offsetY, -this.model.bipedLeftLeg.offsetZ);
+
      }
 
      private void renderTails(float par7) {
@@ -205,12 +208,12 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
           ModelPartData part = this.playerdata.getPartData(EnumParts.LEGS);
           ModelPartData partTail = this.playerdata.getPartData(EnumParts.TAIL);
           ModelPartConfig config = this.playerdata.getPartConfig(EnumParts.LEG_LEFT);
-          float rotateAngleY = MathHelper.cos(par1 * 0.6662F) * 0.2F * par2;
-          float rotateAngleX = MathHelper.sin(par3 * 0.067F) * 0.05F;
+          float rotateAngleY = MathHelper.cos(par1 * 0.6662F) * 0.2F * par2 + this.model.bipedBody.rotateAngleY;
+          float rotateAngleX = MathHelper.sin(par3 * 0.067F) * 0.05F + this.model.bipedBody.rotateAngleX;
           this.rotationPointZ = 0.0F;
           this.rotationPointY = 11.0F;
           if (this.playerdata.animation == EnumAnimation.WAG) {
-               rotateAngleY = (float)(Math.sin((double)((float)this.player.ticksExisted * 0.55F)) * 0.44999998807907104D);
+               rotateAngleY = (float)(Math.sin((double)((float)this.player.ticksExisted * 0.55F)) * 0.44999998807907104D + this.model.bipedBody.rotateAngleY);
           }
 
           if (part.type == 2) {

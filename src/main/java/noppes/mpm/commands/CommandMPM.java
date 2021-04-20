@@ -139,7 +139,7 @@ public class CommandMPM extends MpmCommandInterface {
                if (!this.entities.containsKey(arg)) {
                     throw new WrongUsageException("Unknown entity: " + args[0], new Object[0]);
                } else {
-/*                    data.setEntityClass((Class)this.entities.get(arg));
+                    data.setEntityClass((Class)this.entities.get(arg));
                     int i = 1;
                     if (args.length > i) {
                          for(; i < args.length; ++i) {
@@ -149,7 +149,7 @@ public class CommandMPM extends MpmCommandInterface {
                                    data.setExtra(entity, split[0], split[1]);
                               }
                          }
-                    }*/
+                    }
 
                     Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), data.writeToNBT());
                }

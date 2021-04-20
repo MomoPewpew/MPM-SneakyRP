@@ -110,11 +110,16 @@ public class LayerBody extends LayerInterface {
 
      @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
+
+    	 GlStateManager.translate(this.model.bipedBody.offsetX, this.model.bipedBody.offsetY, this.model.bipedBody.offsetZ);
+
           this.model.bipedBody.postRender(0.0625F);
           this.renderSkirt(par7);
           this.renderWings(par7);
           this.renderFin(par7);
           this.renderBreasts(par7);
+
+          GlStateManager.translate(-this.model.bipedBody.offsetX, -this.model.bipedBody.offsetY, -this.model.bipedBody.offsetZ);
      }
 
      private void renderWings(float par7) {

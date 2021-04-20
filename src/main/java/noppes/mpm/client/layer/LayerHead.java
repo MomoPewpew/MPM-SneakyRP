@@ -1,6 +1,7 @@
 package noppes.mpm.client.layer;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
@@ -106,6 +107,9 @@ public class LayerHead extends LayerInterface {
 
      @Override
      public void render(float par2, float par3, float par4, float par5, float par6, float scale) {
+
+    	 GlStateManager.translate(this.model.bipedHead.offsetX, this.model.bipedHead.offsetY, this.model.bipedHead.offsetZ);
+
           this.model.bipedHead.postRender(0.0625F);
           this.renderSnout(scale);
           this.renderBeard(scale);
@@ -114,6 +118,8 @@ public class LayerHead extends LayerInterface {
           this.renderHorns(scale);
           this.renderEars(scale);
           this.renderHalo(scale);
+
+          GlStateManager.translate(-this.model.bipedHead.offsetX, -this.model.bipedHead.offsetY, -this.model.bipedHead.offsetZ);
      }
 
      private void renderHalo(float scale) {

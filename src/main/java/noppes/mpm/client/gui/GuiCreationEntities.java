@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
+import co.runed.multicharacter.addons.mpm.MPMUtil;
 
 public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener {
      public HashMap data = new HashMap();
@@ -88,7 +89,12 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 10) {
-               this.playerdata.setEntityClass((Class)null);
+               //this.playerdata.setEntityClass((Class)null);
+        	   try {
+        		   MPMUtil.clearDisguise(this.getPlayer());
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
                this.resetToSelected = true;
                this.initGui();
           }
@@ -97,7 +103,8 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-          this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
+          //this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
+    	   MPMUtil.setDisguise(this.getPlayer(), (Class)this.data.get(scroll.getSelected()));
           this.initGui();
      }
 

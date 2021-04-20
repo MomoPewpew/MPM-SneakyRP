@@ -89,7 +89,7 @@ public class CommandMPM extends MpmCommandInterface {
                          } else if (type.equals("name")) {
                               this.name((EntityPlayer)player, args, data);
                          } else if (type.equals("entity")) {
-                              this.entity((EntityPlayer)player, args, data);
+/*                              this.entity((EntityPlayer)player, args, data);*/
                          } else if (type.equals("animation")) {
                               this.animation((EntityPlayer)player, args, data);
                          } else if (type.equals("sendmodel")) {

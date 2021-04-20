@@ -151,4 +151,8 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
      @Override
      public void mouseReleased(GuiNpcSlider slider) {
      }
+
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 }

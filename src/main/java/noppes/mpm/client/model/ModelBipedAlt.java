@@ -128,4 +128,76 @@ public class ModelBipedAlt extends ModelBiped {
           }
 
      }
+
+     public static float getPartConfigScale (Entity entity, int bodyPart, int axis) {
+    	 EntityPlayer player;
+         ModelData data;
+
+    	 if (entity instanceof EntityPlayer) {
+    		 player = (EntityPlayer)entity;
+             data = ModelData.get(player);
+    	 } else {
+    		 return 1.0F;
+    	 }
+
+         switch(bodyPart) {
+			case 0 : {
+				switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.HEAD).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.HEAD).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.HEAD).scaleZ;
+				}
+			}; case 6 : {
+				switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.BODY).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.BODY).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.BODY).scaleZ;
+				}
+			}; case 12 : {
+				switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.ARM_RIGHT).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.ARM_RIGHT).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.ARM_RIGHT).scaleZ;
+				}
+			}; case 18 : {
+				switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.ARM_LEFT).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.ARM_LEFT).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.ARM_LEFT).scaleZ;
+				}
+			}; case 24 : {
+				switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.LEG_RIGHT).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.LEG_RIGHT).scaleZ;
+				}
+			}; case 30 : {
+					switch(axis) {
+					case 3:
+						return data.getPartConfig(EnumParts.LEG_LEFT).scaleX;
+					case 4:
+						return data.getPartConfig(EnumParts.LEG_LEFT).scaleY;
+					case 5:
+						return data.getPartConfig(EnumParts.LEG_LEFT).scaleZ;
+				}
+			}; default : {
+				return 1.0F;
+			}
+		}
+     }
 }

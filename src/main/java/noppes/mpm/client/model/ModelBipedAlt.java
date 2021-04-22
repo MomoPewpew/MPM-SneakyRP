@@ -22,6 +22,7 @@ import noppes.mpm.client.model.animation.AniWaving;
 import noppes.mpm.client.model.animation.AniYes;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
+import vazkii.quark.vanity.client.emotes.ModelAccessor;
 
 public class ModelBipedAlt extends ModelBiped {
      private Map map = new HashMap();
@@ -141,7 +142,7 @@ public class ModelBipedAlt extends ModelBiped {
     	 }
 
          switch(bodyPart) {
-			case 0 : {
+			case ModelAccessor.HEAD : {
 				switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.HEAD).scaleX;
@@ -150,7 +151,7 @@ public class ModelBipedAlt extends ModelBiped {
 					case 5:
 						return data.getPartConfig(EnumParts.HEAD).scaleZ;
 				}
-			}; case 6 : {
+			}; case ModelAccessor.BODY : {
 				switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.BODY).scaleX;
@@ -159,7 +160,7 @@ public class ModelBipedAlt extends ModelBiped {
 					case 5:
 						return data.getPartConfig(EnumParts.BODY).scaleZ;
 				}
-			}; case 12 : {
+			}; case ModelAccessor.RIGHT_ARM : {
 				switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.ARM_RIGHT).scaleX;
@@ -168,7 +169,7 @@ public class ModelBipedAlt extends ModelBiped {
 					case 5:
 						return data.getPartConfig(EnumParts.ARM_RIGHT).scaleZ;
 				}
-			}; case 18 : {
+			}; case ModelAccessor.LEFT_ARM : {
 				switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.ARM_LEFT).scaleX;
@@ -177,7 +178,7 @@ public class ModelBipedAlt extends ModelBiped {
 					case 5:
 						return data.getPartConfig(EnumParts.ARM_LEFT).scaleZ;
 				}
-			}; case 24 : {
+			}; case ModelAccessor.RIGHT_LEG : {
 				switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
@@ -186,7 +187,7 @@ public class ModelBipedAlt extends ModelBiped {
 					case 5:
 						return data.getPartConfig(EnumParts.LEG_RIGHT).scaleZ;
 				}
-			}; case 30 : {
+			}; case ModelAccessor.LEFT_LEG : {
 					switch(axis) {
 					case 3:
 						return data.getPartConfig(EnumParts.LEG_LEFT).scaleX;

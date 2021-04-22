@@ -11,5 +11,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/MultiCharacter-v006-beta.jar"/>
+	<classpathentry kind="src" path="/SneakyEmotes"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

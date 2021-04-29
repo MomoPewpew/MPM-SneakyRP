@@ -39,7 +39,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
           this.entity = this.playerdata.getEntity(this.mc.thePlayer);
           Keyboard.enableRepeatEvents(true);
           this.addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
-          this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
+          if (mc.thePlayer.canCommandSenderUseCommand(2, "mpm")) {
+        	  this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
+          }
           if (this.entity == null) {
                this.addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
           } else {

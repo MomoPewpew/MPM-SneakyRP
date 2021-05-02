@@ -1,8 +1,19 @@
 package noppes.mpm.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+
 import org.lwjgl.input.Mouse;
 
 public class Camera {
@@ -12,6 +23,7 @@ public class Camera {
      public float playerYaw = 0.0F;
      public float playerPitch = 0.0F;
      public float cameraDistance = 4.0F;
+     private static Field KEYBIND_ARRAY = null;
 
      public void update(boolean start) {
           Minecraft mc = Minecraft.getMinecraft();
@@ -43,16 +55,22 @@ public class Camera {
                float f1 = f * f * f * 8.0F;
                double dx = (double)((float)Mouse.getDX() * f1) * 0.15D;
                double dy = (double)((float)Mouse.getDY() * f1) * 0.15D;
-               if (ClientProxy.Camera.isKeyDown()) {
-                    this.cameraYaw = (float)((double)this.cameraYaw + dx);
-                    this.cameraPitch = (float)((double)this.cameraPitch + dy);
-                    this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
-               } else {
-                    this.playerYaw = (float)((double)this.playerYaw + dx);
-                    this.playerPitch = (float)((double)this.playerPitch + dy);
-                    this.playerPitch = MathHelper.clamp_float(this.playerPitch, -90.0F, 90.0F);
-               }
 
+                this.cameraYaw = (float)((double)this.cameraYaw + dx);
+                this.cameraPitch = (float)((double)this.cameraPitch + dy);
+                this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
+
+                if (this.cameraYaw < -180.0F) {
+                	this.cameraYaw = this.cameraYaw + 360.0F;
+                } else if (this.cameraYaw > 180.0F) {
+                	this.cameraYaw = this.cameraYaw - 360.0F;
+                }
+
+                if ((this.cameraYaw > (this.playerYaw + 90.0F)) || (this.cameraYaw < (this.playerYaw - 90.0F))) {
+                	this.playerPitch = this.cameraPitch;
+                } else {
+                	this.playerPitch = -this.cameraPitch;
+                }
           }
      }
 
@@ -74,5 +92,8 @@ public class Camera {
           }
 
           this.enabled = true;
+
+          if (!(mc.thePlayer.movementInput instanceof MovementInputAlt))
+        	  mc.thePlayer.movementInput = new MovementInputAlt(mc.gameSettings, this);
      }
 }

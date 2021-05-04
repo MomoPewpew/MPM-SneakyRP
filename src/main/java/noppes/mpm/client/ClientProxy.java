@@ -83,7 +83,7 @@ public class ClientProxy extends CommonProxy {
           ClientRegistry.registerKeyBinding(MPM3 = new KeyBinding("MPM 3", 0, "key.categories.gameplay"));
           ClientRegistry.registerKeyBinding(MPM4 = new KeyBinding("MPM 4", 0, "key.categories.gameplay"));
           ClientRegistry.registerKeyBinding(MPM5 = new KeyBinding("MPM 5", 0, "key.categories.gameplay"));
-          ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 56, "key.categories.gameplay"));
+          ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 71, "key.categories.gameplay"));
           MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
           if (MorePlayerModels.EnableUpdateChecker) {
                VersionChecker checker = new VersionChecker();

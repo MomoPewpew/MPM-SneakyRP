@@ -3,6 +3,7 @@ package noppes.mpm.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -75,12 +76,17 @@ public class Camera {
      }
 
      public void reset() {
+    	 Minecraft mc = Minecraft.getMinecraft();
+
           this.enabled = false;
           this.cameraYaw = 0.0F;
           this.cameraPitch = 0.0F;
           this.playerYaw = 0.0F;
           this.playerPitch = 0.0F;
           this.cameraDistance = 4.0F;
+
+          if ((mc.thePlayer.movementInput instanceof MovementInputAlt))
+        	  mc.thePlayer.movementInput = new MovementInputFromOptions(mc.gameSettings);
      }
 
      public void enabled() {
@@ -89,6 +95,13 @@ public class Camera {
                this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
                this.cameraPitch = mc.thePlayer.rotationPitch;
                this.playerPitch = -this.cameraPitch;
+
+               while (this.playerYaw < -180.0F) {
+               	this.playerYaw = this.playerYaw + 360.0F;
+               }
+               while (this.playerYaw > 180.0F) {
+               	this.playerYaw = this.playerYaw - 360.0F;
+               }
           }
 
           this.enabled = true;

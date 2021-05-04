@@ -98,7 +98,7 @@ public class ClientEventHandler {
                     if (ClientProxy.Camera.isKeyDown() && mc.gameSettings.thirdPersonView == 1) {
                          long time = System.currentTimeMillis();
                          if (!this.altIsPressed) {
-                              if (time - this.lastAltClick < 400L) {
+                              if (camera.enabled == true) {
                                    camera.reset();
                               } else {
                                    camera.enabled();

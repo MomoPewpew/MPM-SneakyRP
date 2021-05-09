@@ -98,12 +98,14 @@ public class ClientEventHandler {
                     if (ClientProxy.Camera.isKeyDown() && mc.gameSettings.thirdPersonView == 1) {
                          long time = System.currentTimeMillis();
                          if (!this.altIsPressed) {
-                              if (camera.enabled == true) {
-                                   camera.reset();
-                              } else {
-                                   camera.enabled();
-                                   this.lastAltClick = time;
-                              }
+                        	 if (camera.closeupenabled == true) {
+                        		 camera.closeupdisabled();
+                        	 } else if (camera.enabled == true) {
+                                 camera.closeupenabled();
+                             } else {
+                                 camera.enabled();
+                                 this.lastAltClick = time;
+                             }
                          }
 
                          this.altIsPressed = true;

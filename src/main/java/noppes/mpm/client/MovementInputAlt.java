@@ -36,24 +36,22 @@ public class MovementInputAlt extends MovementInput {
 
         if (this.gameSettings.keyBindLeft.isKeyDown())
         {
-        	if (camera.enabled = true) {
-        		camera.playerYaw = (float)((double)camera.playerYaw - 10.0F);
-            	while (camera.playerYaw < -180.0F)
-            		camera.playerYaw = camera.playerYaw + 360.0F;
-        	} else {
-        		++this.moveStrafe;
-        	}
+    		camera.playerYaw = camera.playerYaw - 10.0F;
+
+        	while (camera.playerYaw < 0.0F)
+        		camera.playerYaw = camera.playerYaw + 360.0F;
+
+        	camera.yawclamp = camera.playerYaw + 45.0F;
         }
 
         if (this.gameSettings.keyBindRight.isKeyDown())
         {
-        	if (camera.enabled = true) {
-        		camera.playerYaw = (float)((double)camera.playerYaw + 10.0F);
-            	while (camera.playerYaw > 180.0F)
-            		camera.playerYaw = camera.playerYaw - 360.0F;
-        	} else {
-        		--this.moveStrafe;
-        	}
+    		camera.playerYaw = camera.playerYaw + 10.0F;
+
+        	while (camera.playerYaw >= 360.0F)
+        		camera.playerYaw = camera.playerYaw - 360.0F;
+
+        	camera.yawclamp = camera.playerYaw - 45.0F;
         }
 
         this.jump = this.gameSettings.keyBindJump.isKeyDown();

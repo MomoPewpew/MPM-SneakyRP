@@ -18,13 +18,16 @@ import java.util.Map;
 import org.lwjgl.input.Mouse;
 
 public class Camera {
+    Minecraft mc = Minecraft.getMinecraft();
+
      public boolean enabled = false;
+     public boolean closeupenabled = false;
      public float cameraYaw = 0.0F;
      public float cameraPitch = 0.0F;
      public float playerYaw = 0.0F;
      public float playerPitch = 0.0F;
      public float cameraDistance = 4.0F;
-     private static Field KEYBIND_ARRAY = null;
+     public float yawclamp;
 
      public void update(boolean start) {
           Minecraft mc = Minecraft.getMinecraft();
@@ -61,24 +64,38 @@ public class Camera {
                 this.cameraPitch = (float)((double)this.cameraPitch + dy);
                 this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
 
-                if (this.cameraYaw < -180.0F) {
+                while (this.cameraYaw < 0.0F)
                 	this.cameraYaw = this.cameraYaw + 360.0F;
-                } else if (this.cameraYaw > 180.0F) {
-                	this.cameraYaw = this.cameraYaw - 360.0F;
-                }
 
-                if ((this.cameraYaw > (this.playerYaw + 90.0F)) || (this.cameraYaw < (this.playerYaw - 90.0F))) {
+                while (this.cameraYaw >= 360.0F)
+                	this.cameraYaw = this.cameraYaw - 360.0F;
+
+                if (this.closeupenabled && ((this.cameraYaw < (this.playerYaw + 90.0F)) || (this.cameraYaw > (this.playerYaw + 270.0F))))
+                	this.closeupenabled = false;
+
+                if (this.closeupenabled) {
+                	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
+                			&& ((this.cameraYaw > (this.yawclamp + 135.0F)))
+                			&& (this.cameraYaw < (this.yawclamp + 225.0F))) {
+                    	this.playerYaw = this.cameraYaw + 180.0F;
+                    }
+
                 	this.playerPitch = this.cameraPitch;
                 } else {
+                	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
+                			&& (this.cameraYaw > (this.yawclamp - 45.0F))
+                			&& (this.cameraYaw < (this.yawclamp + 45.0F))) {
+                    	this.playerYaw = this.cameraYaw;
+                    }
+
                 	this.playerPitch = -this.cameraPitch;
                 }
           }
      }
 
      public void reset() {
-    	 Minecraft mc = Minecraft.getMinecraft();
-
           this.enabled = false;
+          this.closeupenabled = false;
           this.cameraYaw = 0.0F;
           this.cameraPitch = 0.0F;
           this.playerYaw = 0.0F;
@@ -90,7 +107,6 @@ public class Camera {
      }
 
      public void enabled() {
-          Minecraft mc = Minecraft.getMinecraft();
           if (!this.enabled) {
                this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
                this.cameraPitch = mc.thePlayer.rotationPitch;
@@ -109,4 +125,16 @@ public class Camera {
           if (!(mc.thePlayer.movementInput instanceof MovementInputAlt))
         	  mc.thePlayer.movementInput = new MovementInputAlt(mc.gameSettings, this);
      }
+
+     public void closeupenabled() {
+    	 if (!this.closeupenabled && ((this.cameraYaw > (this.playerYaw + 225.0F)) || (this.cameraYaw < (this.playerYaw + 135.0F))))
+    		 this.cameraYaw = this.playerYaw + 180.0F;
+
+         this.closeupenabled = true;
+    }
+
+     public void closeupdisabled() {
+		 this.cameraYaw = this.playerYaw;
+         this.closeupenabled = false;
+    }
 }

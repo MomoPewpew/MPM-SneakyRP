@@ -57,30 +57,41 @@ public class Camera {
                float f = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
                float f1 = f * f * f * 8.0F;
                double dx = (double)((float)Mouse.getDX() * f1) * 0.15D;
-               double dy = (double)((float)Mouse.getDY() * f1) * 0.15D;
+               double dy = (double)((float)Mouse.getDY() * f1) * -0.15D;
 
                 this.cameraYaw = (float)((double)this.cameraYaw + dx);
                 this.cameraPitch = (float)((double)this.cameraPitch + dy);
                 this.cameraPitch = MathHelper.clamp_float(this.cameraPitch, -90.0F, 90.0F);
 
-                if (this.closeupenabled
-                		&& Math.tan((this.cameraYaw - this.playerYaw) * (Math.PI / 360.0F)) < Math.tan(90.0F * Math.PI / 360.0F)
-        				&& Math.tan((this.cameraYaw - this.playerYaw) * (Math.PI / 360.0F)) > Math.tan(-90.0F * Math.PI / 360.0F))
-                	this.closeupenabled = false;
-
-                if (this.closeupenabled) {
-                	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
-                			&& (Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) > Math.tan(135.0F * Math.PI / 360.0F) || Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) < Math.tan(-135.0F * Math.PI / 360.0F)))
-                    	this.playerYaw = this.cameraYaw + 180.0F;
-
-                	this.playerPitch = this.cameraPitch;
-                } else {
-                	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
-                    		&& Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) < Math.tan(45.0F * Math.PI / 360.0F)
-            				&& Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) > Math.tan(-45.0F * Math.PI / 360.0F))
-                    	this.playerYaw = this.cameraYaw;
-
+                if (mc.gameSettings.keyBindAttack.isKeyDown() || mc.gameSettings.keyBindUseItem.isKeyDown()) {
+                	this.playerYaw = this.cameraYaw;
                 	this.playerPitch = -this.cameraPitch;
+
+                	if (this.cameraYaw > this.yawclamp) {
+                		this.yawclamp = this.cameraYaw - 45.0F;
+                	} else {
+                		this.yawclamp = this.cameraYaw + 45.0F;
+                	}
+                } else {
+                    if (this.closeupenabled
+                    		&& Math.tan((this.cameraYaw - this.playerYaw) * (Math.PI / 360.0F)) < Math.tan(90.0F * Math.PI / 360.0F)
+            				&& Math.tan((this.cameraYaw - this.playerYaw) * (Math.PI / 360.0F)) > Math.tan(-90.0F * Math.PI / 360.0F))
+                    	this.closeupenabled = false;
+
+                    if (this.closeupenabled) {
+                    	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
+                    			&& (Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) > Math.tan(135.0F * Math.PI / 360.0F) || Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) < Math.tan(-135.0F * Math.PI / 360.0F)))
+                        	this.playerYaw = this.cameraYaw + 180.0F;
+
+                    	this.playerPitch = this.cameraPitch;
+                    } else {
+                    	if (!mc.gameSettings.keyBindForward.isKeyDown() && !mc.gameSettings.keyBindBack.isKeyDown() && !mc.gameSettings.keyBindLeft.isKeyDown() && !mc.gameSettings.keyBindRight.isKeyDown()
+                        		&& Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) < Math.tan(45.0F * Math.PI / 360.0F)
+                				&& Math.tan((this.cameraYaw - this.yawclamp) * (Math.PI / 360.0F)) > Math.tan(-45.0F * Math.PI / 360.0F))
+                        	this.playerYaw = this.cameraYaw;
+
+                    	this.playerPitch = -this.cameraPitch;
+                    }
                 }
           }
      }
@@ -93,6 +104,7 @@ public class Camera {
           this.playerYaw = 0.0F;
           this.playerPitch = 0.0F;
           this.cameraDistance = 4.0F;
+          this.yawclamp = 0.0F;
 
           if ((mc.thePlayer.movementInput instanceof MovementInputAlt))
         	  mc.thePlayer.movementInput = new MovementInputFromOptions(mc.gameSettings);
@@ -103,6 +115,7 @@ public class Camera {
                this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
                this.cameraPitch = mc.thePlayer.rotationPitch;
                this.playerPitch = -this.cameraPitch;
+               this.yawclamp = this.playerYaw;
           }
 
           this.enabled = true;

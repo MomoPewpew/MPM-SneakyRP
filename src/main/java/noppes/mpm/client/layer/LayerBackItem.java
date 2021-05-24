@@ -25,6 +25,7 @@ public class LayerBackItem extends LayerInterface {
           if (MorePlayerModels.EnableBackItem && itemstack != null && !ItemStack.areItemStacksEqual(itemstack, this.player.inventory.getCurrentItem())) {
                Item item = itemstack.getItem();
                if (!(item instanceof ItemBlock)) {
+            	   GlStateManager.translate(this.model.bipedBody.offsetX, this.model.bipedBody.offsetY, this.model.bipedBody.offsetZ);
                     this.model.bipedBody.postRender(par7);
                     GlStateManager.translate(0.0D, 0.36D, 0.14D);
                     GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
@@ -36,6 +37,7 @@ public class LayerBackItem extends LayerInterface {
                     ItemTransformVec3f p_175034_1_ = model.getItemCameraTransforms().thirdperson_right;
                     GlStateManager.scale(p_175034_1_.scale.x + ItemCameraTransforms.offsetScaleX, p_175034_1_.scale.y + ItemCameraTransforms.offsetScaleY, p_175034_1_.scale.z + ItemCameraTransforms.offsetScaleZ);
                     minecraft.getItemRenderer().renderItem(this.player, itemstack, TransformType.NONE);
+                    GlStateManager.translate(-this.model.bipedBody.offsetX, -this.model.bipedBody.offsetY, -this.model.bipedBody.offsetZ);
                }
           }
      }

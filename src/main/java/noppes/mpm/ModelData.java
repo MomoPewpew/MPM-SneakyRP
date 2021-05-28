@@ -4,14 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -48,6 +53,18 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public long lastEdited;
      public UUID analyticsUUID;
 
+     public List<ItemStack> propItemStack;
+     public List<ModelRenderer> propBodyPart;
+     public List<Float> propScaleX;
+     public List<Float> propScaleY;
+     public List<Float> propScaleZ;
+     public List<Float> propOffsetX;
+     public List<Float> propOffsetY;
+     public List<Float> propOffsetZ;
+     public List<Float> propRotateX;
+     public List<Float> propRotateY;
+     public List<Float> propRotateZ;
+
      public ModelData() {
           this.backItem = null;
           this.inLove = 0;
@@ -59,6 +76,18 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.player = null;
           this.lastEdited = System.currentTimeMillis();
           this.analyticsUUID = UUID.randomUUID();
+
+          this.propItemStack = new ArrayList();
+          this.propBodyPart = new ArrayList();
+          this.propScaleX = new ArrayList();
+          this.propScaleY = new ArrayList();
+          this.propScaleZ = new ArrayList();
+          this.propOffsetX = new ArrayList();
+          this.propOffsetY = new ArrayList();
+          this.propOffsetZ = new ArrayList();
+          this.propRotateX = new ArrayList();
+          this.propRotateY = new ArrayList();
+          this.propRotateZ = new ArrayList();
      }
 
      @Override
@@ -312,4 +341,21 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      public void update() {
      }
+
+     public void newProp(String itemName, String bodyPartName,
+ 			Float propScaleX, Float propScaleY, Float propScaleZ,
+ 			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+ 			Float propRotateX, Float propRotateY, Float propRotateZ
+ 			) {
+    	this.propItemStack.add(new ItemStack(Blocks.CRAFTING_TABLE));
+ 		this.propScaleX.add(propScaleX);
+ 		this.propScaleY.add(propScaleY);
+ 		this.propScaleZ.add(propScaleZ);
+ 		this.propOffsetX.add(propOffsetX);
+ 		this.propOffsetY.add(propOffsetY);
+ 		this.propOffsetZ.add(propOffsetZ);
+ 		this.propRotateX.add(propRotateX);
+ 		this.propRotateY.add(propRotateY);
+ 		this.propRotateZ.add(propRotateZ);
+ 	}
 }

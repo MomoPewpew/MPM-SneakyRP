@@ -55,6 +55,7 @@ import noppes.mpm.client.layer.LayerHead;
 import noppes.mpm.client.layer.LayerHeadwear;
 import noppes.mpm.client.layer.LayerInterface;
 import noppes.mpm.client.layer.LayerLegs;
+import noppes.mpm.client.layer.LayerProp;
 import noppes.mpm.client.model.ModelBipedAlt;
 import noppes.mpm.client.model.ModelPlayerAlt;
 
@@ -196,6 +197,7 @@ public class ClientProxy extends CommonProxy {
           list.add(new LayerCapeMPM(playerRender));
           list.add(new LayerChatbubble(playerRender));
           list.add(new LayerBackItem(playerRender));
+          list.add(new LayerProp(playerRender));
      }
 
      public static void bindTexture(ResourceLocation location) {

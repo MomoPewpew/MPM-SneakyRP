@@ -9,5 +9,7 @@ public enum EnumPackets {
      BACK_ITEM_UPDATE,
      PARTICLE,
      ANIMATION,
-     EYE_BLINK;
+     EYE_BLINK,
+     PROP_ITEM_UPDATE,
+     PROP_ITEM_CLEAR;
 }

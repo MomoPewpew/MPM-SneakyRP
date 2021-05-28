@@ -2,6 +2,7 @@ package noppes.mpm.client;
 
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -98,6 +99,24 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     ItemStack item = new ItemStack(compound);
                     ModelData data = ModelData.get(pl);
                     data.backItem = item;
+              } else if (type == EnumPackets.PROP_ITEM_UPDATE) {
+                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                   if (pl == null) {
+                        return;
+                   }
+
+                   NBTTagCompound compound = Server.readNBT(buffer);
+                   ItemStack propItemStack = new ItemStack(compound);
+                   ModelData data = ModelData.get(pl);
+                   data.propItemStack.add(propItemStack);
+              } else if (type == EnumPackets.PROP_ITEM_CLEAR) {
+                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                  if (pl == null) {
+                       return;
+                  }
+
+                  ModelData data = ModelData.get(pl);
+                  data.propItemStack = new ArrayList();
                } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

@@ -47,6 +47,12 @@ public class PacketHandlerServer {
                     Server.sendAssociatedData(player, EnumPackets.BACK_ITEM_UPDATE, player.getUniqueID(), back.writeToNBT(new NBTTagCompound()));
                }
 
+               Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_CLEAR, player.getUniqueID());
+               for (int i = 0; i < ((ModelData.get(player)).propItemStack.size()); i++) {
+            	   ItemStack propItemStack = ((ModelData.get(player)).propItemStack.get(i));
+            	   Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+               }
+
                Server.sendData(player, EnumPackets.PING, MorePlayerModels.Version);
           } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {
                ModelData data = ModelData.get(player);

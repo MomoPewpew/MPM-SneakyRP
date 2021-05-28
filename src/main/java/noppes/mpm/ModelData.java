@@ -28,6 +28,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.constants.EnumAnimation;
+import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 
 public class ModelData extends ModelDataShared implements ICapabilityProvider {
@@ -347,7 +348,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
  			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
  			Float propRotateX, Float propRotateY, Float propRotateZ
  			) {
-    	this.propItemStack.add(new ItemStack(Blocks.CRAFTING_TABLE));
+    	 ItemStack item = new ItemStack(Blocks.CRAFTING_TABLE);
+
+    	this.propItemStack.add(item);
  		this.propScaleX.add(propScaleX);
  		this.propScaleY.add(propScaleY);
  		this.propScaleZ.add(propScaleZ);
@@ -357,5 +360,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
  		this.propRotateX.add(propRotateX);
  		this.propRotateY.add(propRotateY);
  		this.propRotateZ.add(propRotateZ);
+
+ 		NBTTagCompound tag = item.writeToNBT(new NBTTagCompound());
+ 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), tag);
  	}
 }

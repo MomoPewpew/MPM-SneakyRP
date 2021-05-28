@@ -128,6 +128,11 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
+               Server.sendDelayedData(player, EnumPackets.PROP_ITEM_CLEAR, 100, target.getUniqueID());
+               for (int i = 0; i < ((ModelData.get(player)).propItemStack.size()); i++) {
+            	   ItemStack propItemStack = ((ModelData.get(player)).propItemStack.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+               }
           }
      }
 

@@ -27,8 +27,8 @@ public class CommandPropTest extends MpmCommandInterface {
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 
-		for (int i = 0; i < data.getPropItemStack().size(); i++) {
-			player.addChatMessage(new TextComponentTranslation(data.getPropItemStack().get(i).getDisplayName()));
+		for (int i = 0; i < data.propItemStack.size(); i++) {
+			player.addChatMessage(new TextComponentTranslation(data.propItemStack.get(i).getDisplayName()));
 		}
 	}
 

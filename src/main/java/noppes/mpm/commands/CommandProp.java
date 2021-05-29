@@ -14,6 +14,7 @@ import noppes.mpm.ModelData;
 public class CommandProp extends MpmCommandInterface {
 
 	private final List<String> listBodyParts = Lists.newArrayList(
+	     "hat",
 		 "head",
 		 "model",
 		 "body",

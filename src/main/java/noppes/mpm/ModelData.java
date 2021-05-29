@@ -355,6 +355,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     		 Float propRotateZNew = propRotateZ;
 
     		 switch(bodyPartName) {
+    		 	 case "hat":
 	    		 case "head":
 	    			 propOffsetYNew = propOffsetYNew + 0.5F;
 	    			 break;

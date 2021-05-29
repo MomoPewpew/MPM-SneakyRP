@@ -41,10 +41,12 @@ public class LayerProp extends LayerInterface {
 				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
+	    		     case "hat":
 		    		 case "head":
 		    			 propBodyPart = this.model.bipedHead;
 		    			 break;
 		    		 case "model" :
+	    			 	 propBodyPart = this.model.bipedBodyWear;
 		    		 case "body" :
 		    		 case "torso":
 		    			 propBodyPart = this.model.bipedBody;
@@ -80,7 +82,7 @@ public class LayerProp extends LayerInterface {
 	    		 }
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetX), (propBodyPart.offsetY - propOffsetY), (propBodyPart.offsetZ - propOffsetZ));
-				GlStateManager.rotate((propRotateX + 180.0F), 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(propRotateZ, 0.0F, 0.0F, 1.0F);
 				GlStateManager.pushMatrix();
@@ -89,13 +91,13 @@ public class LayerProp extends LayerInterface {
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);
 				ItemTransformVec3f transformVec = model.getItemCameraTransforms().thirdperson_right;
-				GlStateManager.scale((propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
+				GlStateManager.scale((-propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (-propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
 				GlStateManager.popMatrix();;
-				GlStateManager.rotate(-(propRotateX + 180.0F), -1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(-propRotateY, 0.0F, -1.0F, 0.0F);
-				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, -1.0F);
+				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, 1.0F);
+				GlStateManager.rotate(-propRotateY, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(-propRotateX, 1.0F, 0.0F, 0.0F);
 				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetX), -(propBodyPart.offsetY - propOffsetY), -(propBodyPart.offsetZ - propOffsetZ));
 	          }
 		}

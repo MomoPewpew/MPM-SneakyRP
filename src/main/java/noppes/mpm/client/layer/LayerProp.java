@@ -45,37 +45,37 @@ public class LayerProp extends LayerInterface {
 		    		 case "head":
 		    			 propBodyPart = this.model.bipedHead;
 		    			 break;
-		    		 case "model" :
+		    		 case "model":
 	    			 	 propBodyPart = this.model.bipedBodyWear;
-		    		 case "body" :
+		    		 case "body":
 		    		 case "torso":
 		    			 propBodyPart = this.model.bipedBody;
 		    			 break;
-		    		 case "arm" :
-		    		 case "hand" :
-		    		 case "armleft" :
-		    		 case "handleft" :
-		    		 case "leftarm" :
+		    		 case "arm":
+		    		 case "hand":
+		    		 case "armleft":
+		    		 case "handleft":
+		    		 case "leftarm":
 		    		 case "lefthand":
 		    			 propBodyPart = this.model.bipedLeftArm;
 		    			 break;
-		    		 case "armright" :
-		    		 case "handright" :
-		    		 case "rightarm" :
+		    		 case "armright":
+		    		 case "handright":
+		    		 case "rightarm":
 		    		 case "righthand":
 		    			 propBodyPart = this.model.bipedRightArm;
 		    			 break;
-		    		 case "leg" :
-		    		 case "foot" :
-		    		 case "legleft" :
-		    		 case "footlef" :
-		    		 case "leftleg" :
+		    		 case "leg":
+		    		 case "foot":
+		    		 case "legleft":
+		    		 case "footlef":
+		    		 case "leftleg":
 		    		 case "leftfoot":
 		    			 propBodyPart = this.model.bipedLeftLeg;
 		    			 break;
-		    		 case "legright" :
-		    		 case "footright" :
-		    		 case "rightleg" :
+		    		 case "legright":
+		    		 case "footright":
+		    		 case "rightleg":
 		    		 case "rightfoot":
 		    			 propBodyPart = this.model.bipedRightLeg;
 		    			 break;

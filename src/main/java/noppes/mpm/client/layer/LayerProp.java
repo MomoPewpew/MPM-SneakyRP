@@ -31,7 +31,16 @@ public class LayerProp extends LayerInterface {
 			if (propItemStack != null) {
 				//ModelRenderer propBodyPart = this.playerdata.propBodyPart.get(i);
 				ModelRenderer propBodyPart = this.model.bipedBody;
-				Float propScaleX = this.playerdata.propScaleX.get(i);
+				Float propScaleX = 1.0F;
+				Float propScaleY = 1.0F;
+				Float propScaleZ = 1.0F;
+				Float propOffsetX = 1.0F;
+				Float propOffsetY = 1.0F;
+				Float propOffsetZ = 1.0F;
+				Float propRotateX = 1.0F;
+				Float propRotateY = 1.0F;
+				Float propRotateZ = 1.0F;
+/*				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
 				Float propOffsetX = this.playerdata.propOffsetX.get(i);
@@ -39,7 +48,7 @@ public class LayerProp extends LayerInterface {
 				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
 				Float propRotateX = this.playerdata.propRotateX.get(i);
 				Float propRotateY = this.playerdata.propRotateY.get(i);
-				Float propRotateZ = this.playerdata.propRotateZ.get(i);
+				Float propRotateZ = this.playerdata.propRotateZ.get(i);*/
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetX), (propBodyPart.offsetY - propOffsetY), (propBodyPart.offsetZ - propOffsetZ));
 				propBodyPart.postRender(par7);
@@ -51,7 +60,11 @@ public class LayerProp extends LayerInterface {
 				ItemTransformVec3f transformVec = model.getItemCameraTransforms().thirdperson_right;
 				GlStateManager.scale((propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
-				GlStateManager.translate(-(propBodyPart.offsetX + propOffsetX), -(propBodyPart.offsetY + propOffsetY), -(propBodyPart.offsetZ + propOffsetZ));
+
+				GlStateManager.rotate(-(propRotateX + 180.0F), 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(-propRotateY, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, 1.0F);
+				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetX), -(propBodyPart.offsetY - propOffsetY), -(propBodyPart.offsetZ - propOffsetZ));
 	          }
 		}
      }

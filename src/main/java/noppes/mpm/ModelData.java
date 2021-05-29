@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.command.CommandBase;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +19,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -343,25 +345,25 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public void update() {
      }
 
-     public void newProp(String itemName, String bodyPartName,
+     public void newProp(ItemStack propItemStack, String bodyPartName,
  			Float propScaleX, Float propScaleY, Float propScaleZ,
  			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
  			Float propRotateX, Float propRotateY, Float propRotateZ
  			) {
-    	 ItemStack item = new ItemStack(Blocks.CRAFTING_TABLE);
+    	 if (propItemStack !=null) {
+	    	this.propItemStack.add(propItemStack);
+	 		this.propScaleX.add(propScaleX);
+	 		this.propScaleY.add(propScaleY);
+	 		this.propScaleZ.add(propScaleZ);
+	 		this.propOffsetX.add(propOffsetX);
+	 		this.propOffsetY.add(propOffsetY);
+	 		this.propOffsetZ.add(propOffsetZ);
+	 		this.propRotateX.add(propRotateX);
+	 		this.propRotateY.add(propRotateY);
+	 		this.propRotateZ.add(propRotateZ);
 
-    	this.propItemStack.add(item);
- 		this.propScaleX.add(propScaleX);
- 		this.propScaleY.add(propScaleY);
- 		this.propScaleZ.add(propScaleZ);
- 		this.propOffsetX.add(propOffsetX);
- 		this.propOffsetY.add(propOffsetY);
- 		this.propOffsetZ.add(propOffsetZ);
- 		this.propRotateX.add(propRotateX);
- 		this.propRotateY.add(propRotateY);
- 		this.propRotateZ.add(propRotateZ);
-
- 		NBTTagCompound tag = item.writeToNBT(new NBTTagCompound());
- 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), tag);
+	 		NBTTagCompound tag = propItemStack.writeToNBT(new NBTTagCompound());
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), tag);
+    	 }
  	}
 }

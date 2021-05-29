@@ -139,9 +139,9 @@ public class ServerEventHandler {
             	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETX_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetX.get(i));
             	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETY_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetY.get(i));
             	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateZ.get(i));
                }
           }
      }

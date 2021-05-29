@@ -31,7 +31,7 @@ public class LayerProp extends LayerInterface {
 			if (propItemStack != null) {
 				//ModelRenderer propBodyPart = this.playerdata.propBodyPart.get(i);
 				ModelRenderer propBodyPart = this.model.bipedBody;
-				Float propScaleX = 1.0F;
+/*				Float propScaleX = 1.0F;
 				Float propScaleY = 1.0F;
 				Float propScaleZ = 1.0F;
 				Float propOffsetX = 1.0F;
@@ -39,8 +39,8 @@ public class LayerProp extends LayerInterface {
 				Float propOffsetZ = 1.0F;
 				Float propRotateX = 1.0F;
 				Float propRotateY = 1.0F;
-				Float propRotateZ = 1.0F;
-/*				Float propScaleX = this.playerdata.propScaleX.get(i);
+				Float propRotateZ = 1.0F;*/
+				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
 				Float propOffsetX = this.playerdata.propOffsetX.get(i);
@@ -48,7 +48,7 @@ public class LayerProp extends LayerInterface {
 				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
 				Float propRotateX = this.playerdata.propRotateX.get(i);
 				Float propRotateY = this.playerdata.propRotateY.get(i);
-				Float propRotateZ = this.playerdata.propRotateZ.get(i);*/
+				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetX), (propBodyPart.offsetY - propOffsetY), (propBodyPart.offsetZ - propOffsetZ));
 				propBodyPart.postRender(par7);

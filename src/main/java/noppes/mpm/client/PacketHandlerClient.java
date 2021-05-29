@@ -165,30 +165,30 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                   ModelData data = ModelData.get(pl);
                   data.propOffsetZ.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_SCALEX_UPDATE) {
+              } else if (type == EnumPackets.PROP_ROTATEX_UPDATE) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
                        return;
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propScaleX.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_SCALEY_UPDATE) {
+                  data.propRotateX.add(buffer.readFloat());
+              } else if (type == EnumPackets.PROP_ROTATEY_UPDATE) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
                        return;
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propScaleY.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_SCALEZ_UPDATE) {
+                  data.propRotateY.add(buffer.readFloat());
+              } else if (type == EnumPackets.PROP_ROTATEZ_UPDATE) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
                        return;
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propScaleZ.add(buffer.readFloat());
+                  data.propRotateZ.add(buffer.readFloat());
               } else if (type == EnumPackets.PROP_CLEAR) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {

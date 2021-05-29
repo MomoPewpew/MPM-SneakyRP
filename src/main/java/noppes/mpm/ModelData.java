@@ -10,16 +10,12 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.command.CommandBase;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,7 +53,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public UUID analyticsUUID;
 
      public List<ItemStack> propItemStack;
-     public List<ModelRenderer> propBodyPart;
+     public List<String> propBodyPartName;
      public List<Float> propScaleX;
      public List<Float> propScaleY;
      public List<Float> propScaleZ;
@@ -81,7 +77,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.analyticsUUID = UUID.randomUUID();
 
           this.propItemStack = new ArrayList();
-          this.propBodyPart = new ArrayList();
+          this.propBodyPartName = new ArrayList();
           this.propScaleX = new ArrayList();
           this.propScaleY = new ArrayList();
           this.propScaleZ = new ArrayList();
@@ -352,6 +348,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
  			) {
     	 if (propItemStack !=null) {
 	    	this.propItemStack.add(propItemStack);
+	    	this.propBodyPartName.add(bodyPartName);
 	 		this.propScaleX.add(propScaleX);
 	 		this.propScaleY.add(propScaleY);
 	 		this.propScaleZ.add(propScaleZ);
@@ -362,8 +359,17 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	 		this.propRotateY.add(propRotateY);
 	 		this.propRotateZ.add(propRotateZ);
 
-	 		NBTTagCompound tag = propItemStack.writeToNBT(new NBTTagCompound());
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), tag);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_PART_UPDATE, player.getUniqueID(), bodyPartName);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEX_UPDATE, player.getUniqueID(), propScaleX);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEY_UPDATE, player.getUniqueID(), propScaleY);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEZ_UPDATE, player.getUniqueID(), propScaleZ);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), propOffsetX);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), propOffsetY);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), propOffsetZ);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), propRotateX);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), propRotateY);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), propRotateZ);
     	 }
  	}
 }

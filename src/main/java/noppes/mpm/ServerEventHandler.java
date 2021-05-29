@@ -128,10 +128,20 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
-               Server.sendDelayedData(player, EnumPackets.PROP_ITEM_CLEAR, 100, target.getUniqueID());
-               for (int i = 0; i < ((ModelData.get(player)).propItemStack.size()); i++) {
-            	   ItemStack propItemStack = ((ModelData.get(player)).propItemStack.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+               Server.sendDelayedData(player, EnumPackets.PROP_CLEAR, 100, target.getUniqueID());
+               ModelData dataplayer = ModelData.get(player);
+               for (int i = 0; i < dataplayer.propItemStack.size(); i++) {
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), dataplayer.propItemStack.get(i).writeToNBT(new NBTTagCompound()));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_PART_UPDATE, 100, target.getUniqueID(), dataplayer.propBodyPartName.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEX_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEZ_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETX_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETY_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleZ.get(i));
                }
           }
      }

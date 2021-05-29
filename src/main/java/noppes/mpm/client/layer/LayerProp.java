@@ -29,17 +29,7 @@ public class LayerProp extends LayerInterface {
 			ItemStack propItemStack = this.playerdata.propItemStack.get(i);
 
 			if (propItemStack != null) {
-				//ModelRenderer propBodyPart = this.playerdata.propBodyPart.get(i);
-				ModelRenderer propBodyPart = this.model.bipedBody;
-/*				Float propScaleX = 1.0F;
-				Float propScaleY = 1.0F;
-				Float propScaleZ = 1.0F;
-				Float propOffsetX = 1.0F;
-				Float propOffsetY = 1.0F;
-				Float propOffsetZ = 1.0F;
-				Float propRotateX = 1.0F;
-				Float propRotateY = 1.0F;
-				Float propRotateZ = 1.0F;*/
+				ModelRenderer propBodyPart = null;
 				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
@@ -50,20 +40,62 @@ public class LayerProp extends LayerInterface {
 				Float propRotateY = this.playerdata.propRotateY.get(i);
 				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
+	    		 switch(this.playerdata.propBodyPartName.get(i)) {
+		    		 case "head":
+		    			 propBodyPart = this.model.bipedHead;
+		    			 break;
+		    		 case "model" :
+		    		 case "body" :
+		    		 case "torso":
+		    			 propBodyPart = this.model.bipedBody;
+		    			 break;
+		    		 case "arm" :
+		    		 case "hand" :
+		    		 case "armleft" :
+		    		 case "handleft" :
+		    		 case "leftarm" :
+		    		 case "lefthand":
+		    			 propBodyPart = this.model.bipedLeftArm;
+		    			 break;
+		    		 case "armright" :
+		    		 case "handright" :
+		    		 case "rightarm" :
+		    		 case "righthand":
+		    			 propBodyPart = this.model.bipedRightArm;
+		    			 break;
+		    		 case "leg" :
+		    		 case "foot" :
+		    		 case "legleft" :
+		    		 case "footlef" :
+		    		 case "leftleg" :
+		    		 case "leftfoot":
+		    			 propBodyPart = this.model.bipedLeftLeg;
+		    			 break;
+		    		 case "legright" :
+		    		 case "footright" :
+		    		 case "rightleg" :
+		    		 case "rightfoot":
+		    			 propBodyPart = this.model.bipedRightLeg;
+		    			 break;
+	    		 }
+
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetX), (propBodyPart.offsetY - propOffsetY), (propBodyPart.offsetZ - propOffsetZ));
-				propBodyPart.postRender(par7);
 				GlStateManager.rotate((propRotateX + 180.0F), 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(propRotateZ, 0.0F, 0.0F, 1.0F);
+				GlStateManager.pushMatrix();
+
+				propBodyPart.postRender(par7);
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);
 				ItemTransformVec3f transformVec = model.getItemCameraTransforms().thirdperson_right;
 				GlStateManager.scale((propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
-				GlStateManager.rotate(-(propRotateX + 180.0F), 1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(-propRotateY, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, 1.0F);
+				GlStateManager.popMatrix();;
+				GlStateManager.rotate(-(propRotateX + 180.0F), -1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(-propRotateY, 0.0F, -1.0F, 0.0F);
+				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, -1.0F);
 				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetX), -(propBodyPart.offsetY - propOffsetY), -(propBodyPart.offsetZ - propOffsetZ));
 	          }
 		}

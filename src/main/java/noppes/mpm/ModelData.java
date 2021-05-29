@@ -347,29 +347,77 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
  			Float propRotateX, Float propRotateY, Float propRotateZ
  			) {
     	 if (propItemStack !=null) {
+    		 Float propOffsetXNew = propOffsetX;
+    		 Float propOffsetYNew = propOffsetY;
+    		 Float propOffsetZNew = propOffsetZ;
+    		 Float propRotateXNew = propRotateX;
+    		 Float propRotateYNew = propRotateY;
+    		 Float propRotateZNew = propRotateZ;
+
+    		 switch(bodyPartName) {
+	    		 case "head":
+	    			 propOffsetYNew = propOffsetYNew + 0.5F;
+	    			 break;
+	    		 case "body" :
+	    		 case "torso":
+	    			 break;
+	    		 case "arm" :
+	    		 case "armleft" :
+	    		 case "leftarm":
+	    			 break;
+	    		 case "hand":
+	    		 case "handleft" :
+	    		 case "lefthand":
+	    			 propOffsetXNew = propOffsetXNew - 0.05F;
+	    			 propOffsetYNew = propOffsetYNew - 0.9F;
+	    			 break;
+	    		 case "armright" :
+	    		 case "rightarm":
+	    			 break;
+	    		 case "handright" :
+	    		 case "righthand":
+	    			 propOffsetXNew = propOffsetXNew + 0.05F;
+	    			 propOffsetYNew = propOffsetYNew - 0.9F;
+	    			 break;
+	    		 case "leg" :
+	    		 case "legleft" :
+	    		 case "leftleg":
+	    			 break;
+	    		 case "foot" :
+	    		 case "footleft" :
+	    		 case "leftfoot":
+	    			 break;
+	    		 case "legright" :
+	    		 case "rightleg":
+	    			 break;
+	    		 case "footright" :
+	    		 case "rightfoot":
+	    			 break;
+    		 }
+
 	    	this.propItemStack.add(propItemStack);
 	    	this.propBodyPartName.add(bodyPartName);
 	 		this.propScaleX.add(propScaleX);
 	 		this.propScaleY.add(propScaleY);
 	 		this.propScaleZ.add(propScaleZ);
-	 		this.propOffsetX.add(propOffsetX);
-	 		this.propOffsetY.add(propOffsetY);
-	 		this.propOffsetZ.add(propOffsetZ);
-	 		this.propRotateX.add(propRotateX);
-	 		this.propRotateY.add(propRotateY);
-	 		this.propRotateZ.add(propRotateZ);
+	 		this.propOffsetX.add(propOffsetXNew);
+	 		this.propOffsetY.add(propOffsetYNew);
+	 		this.propOffsetZ.add(propOffsetZNew);
+	 		this.propRotateX.add(propRotateXNew);
+	 		this.propRotateY.add(propRotateYNew);
+	 		this.propRotateZ.add(propRotateZNew);
 
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_PART_UPDATE, player.getUniqueID(), bodyPartName);
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEX_UPDATE, player.getUniqueID(), propScaleX);
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEY_UPDATE, player.getUniqueID(), propScaleY);
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEZ_UPDATE, player.getUniqueID(), propScaleZ);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), propOffsetX);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), propOffsetY);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), propOffsetZ);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), propRotateX);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), propRotateY);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), propRotateZ);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), propOffsetXNew);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), propOffsetYNew);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), propOffsetZNew);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), propRotateXNew);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), propRotateYNew);
+	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), propRotateZNew);
     	 }
  	}
 }

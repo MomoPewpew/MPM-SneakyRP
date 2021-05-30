@@ -40,6 +40,10 @@ public class LayerProp extends LayerInterface {
 				Float propRotateY = this.playerdata.propRotateY.get(i);
 				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
+	    		Float propOffsetXCorrected;
+    			Float propOffsetYCorrected;
+	    		Float propOffsetZCorrected;
+
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
 	    		     case "hat":
 		    		 case "head":
@@ -81,9 +85,9 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
-	    		Float propOffsetXCorrected = (float) (propOffsetX - (propOffsetY * Math.sin(propBodyPart.rotateAngleZ)));
-	    		Float propOffsetYCorrected = (float) (propOffsetY * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleZ));
-	    		Float propOffsetZCorrected = (float) (propOffsetZ + (propOffsetY * Math.sin(propBodyPart.rotateAngleX)));
+	    		propOffsetXCorrected = (float) ((propOffsetX * Math.cos(propBodyPart.rotateAngleY) * Math.cos(propBodyPart.rotateAngleZ)) - (propOffsetY * Math.sin(propBodyPart.rotateAngleZ)) + (propOffsetZ * Math.sin(propBodyPart.rotateAngleY)));
+    			propOffsetYCorrected = (float) ((propOffsetY * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleZ)) + (propOffsetX * Math.sin(propBodyPart.rotateAngleZ)) - (propOffsetZ * Math.sin(propBodyPart.rotateAngleX)));
+	    		propOffsetZCorrected = (float) ((propOffsetZ * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleY)) - (propOffsetX * Math.sin(propBodyPart.rotateAngleY)) + (propOffsetY * Math.sin(propBodyPart.rotateAngleX)));
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);

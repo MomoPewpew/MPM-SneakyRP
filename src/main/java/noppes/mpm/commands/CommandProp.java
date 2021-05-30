@@ -41,6 +41,13 @@ public class CommandProp extends MpmCommandInterface {
 		 "rightfoot"
 	);
 
+	private final List<String> clearStrings = Lists.newArrayList(
+		     "clear",
+		     "delete",
+		     "remove"
+		);
+
+
 	@Override
 	public String getCommandName() {
 		return "prop";
@@ -54,6 +61,11 @@ public class CommandProp extends MpmCommandInterface {
 		ModelData data = ModelData.get(player);
 
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
+
+		if (args.length > 0 && clearStrings.contains(args[0])) {
+			data.clearProps();
+			return;
+		}
 
 		ItemStack propItemStack = (args.length > 0) ? new ItemStack(getItemByText(icommandsender, args[0])) : new ItemStack(Blocks.CRAFTING_TABLE);
 		String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";

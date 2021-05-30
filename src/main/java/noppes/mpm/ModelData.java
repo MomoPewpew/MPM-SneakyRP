@@ -421,4 +421,21 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), propRotateZNew);
     	 }
  	}
+
+     public void clearProps() {
+
+         this.propItemStack = new ArrayList();
+         this.propBodyPartName = new ArrayList();
+         this.propScaleX = new ArrayList();
+         this.propScaleY = new ArrayList();
+         this.propScaleZ = new ArrayList();
+         this.propOffsetX = new ArrayList();
+         this.propOffsetY = new ArrayList();
+         this.propOffsetZ = new ArrayList();
+         this.propRotateX = new ArrayList();
+         this.propRotateY = new ArrayList();
+         this.propRotateZ = new ArrayList();
+
+		Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
+ 	}
 }

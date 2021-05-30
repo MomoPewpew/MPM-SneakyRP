@@ -81,7 +81,11 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
-				GlStateManager.translate((propBodyPart.offsetX - propOffsetX), (propBodyPart.offsetY - propOffsetY), (propBodyPart.offsetZ - propOffsetZ));
+	    		Float propOffsetXCorrected = (float) (propOffsetX - (propOffsetY * Math.sin(propBodyPart.rotateAngleZ)));
+	    		Float propOffsetYCorrected = (float) (propOffsetY * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleZ));
+	    		Float propOffsetZCorrected = (float) (propOffsetZ + (propOffsetY * Math.sin(propBodyPart.rotateAngleX)));
+
+				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(propRotateZ, 0.0F, 0.0F, 1.0F);
@@ -98,7 +102,7 @@ public class LayerProp extends LayerInterface {
 				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, 1.0F);
 				GlStateManager.rotate(-propRotateY, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(-propRotateX, 1.0F, 0.0F, 0.0F);
-				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetX), -(propBodyPart.offsetY - propOffsetY), -(propBodyPart.offsetZ - propOffsetZ));
+				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected), -(propBodyPart.offsetY - propOffsetYCorrected), -(propBodyPart.offsetZ - propOffsetZCorrected));
 	          }
 		}
      }

@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.MorePlayerModels;
 
 public class LayerProp extends LayerInterface {
@@ -43,6 +44,9 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetXCorrected;
     			Float propOffsetYCorrected;
 	    		Float propOffsetZCorrected;
+	    		Float rotX;
+	    		Float rotY;
+	    		Float rotZ;
 
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
 	    		     case "hat":
@@ -50,7 +54,8 @@ public class LayerProp extends LayerInterface {
 		    			 propBodyPart = this.model.bipedHead;
 		    			 break;
 		    		 case "model":
-	    			 	 propBodyPart = this.model.bipedBodyWear;
+	    			 	 propBodyPart = this.model.bipedHeadwear;
+	    			 	 break;
 		    		 case "body":
 		    		 case "torso":
 		    			 propBodyPart = this.model.bipedBody;
@@ -85,9 +90,20 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
-	    		propOffsetXCorrected = (float) ((propOffsetX * Math.cos(propBodyPart.rotateAngleY) * Math.cos(propBodyPart.rotateAngleZ)) - (propOffsetY * Math.sin(propBodyPart.rotateAngleZ)) + (propOffsetZ * Math.sin(propBodyPart.rotateAngleY)));
-    			propOffsetYCorrected = (float) ((propOffsetY * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleZ)) + (propOffsetX * Math.sin(propBodyPart.rotateAngleZ)) - (propOffsetZ * Math.sin(propBodyPart.rotateAngleX)));
-	    		propOffsetZCorrected = (float) ((propOffsetZ * Math.cos(propBodyPart.rotateAngleX) * Math.cos(propBodyPart.rotateAngleY)) - (propOffsetX * Math.sin(propBodyPart.rotateAngleY)) + (propOffsetY * Math.sin(propBodyPart.rotateAngleX)));
+	    		if (propBodyPart == this.model.bipedHead) {
+	    			rotX = propBodyPart.rotateAngleX;
+	    			rotY = (float) (propBodyPart.rotateAngleY * Math.cos(-propBodyPart.rotateAngleX));
+	    			rotZ = (float) (propBodyPart.rotateAngleY * Math.sin(-propBodyPart.rotateAngleX));
+	    		} else {
+	    			rotX = propBodyPart.rotateAngleX;
+	    			rotY = propBodyPart.rotateAngleY;
+	    			rotZ = propBodyPart.rotateAngleZ;
+	    		}
+
+ 	    		propOffsetXCorrected = (float) ((propOffsetX * Math.cos(rotY) * Math.cos(rotZ)) - (propOffsetY * Math.sin(rotZ)) + (propOffsetZ * Math.sin(rotY)));
+     			propOffsetYCorrected = (float) ((propOffsetY * Math.cos(rotX) * Math.cos(rotZ)) + (propOffsetX * Math.sin(rotZ)) - (propOffsetZ * Math.sin(rotX)));
+ 	    		propOffsetZCorrected = (float) ((propOffsetZ * Math.cos(rotX) * Math.cos(rotY)) - (propOffsetX * Math.sin(rotY)) + (propOffsetY * Math.sin(rotX)));
+
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);

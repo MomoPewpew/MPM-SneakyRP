@@ -27,6 +27,8 @@ public class CommandPropTest extends MpmCommandInterface {
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 
+		player.addChatMessage(new TextComponentTranslation(String.valueOf(Math.toRadians(player.rotationYaw - player.renderYawOffset))));
+
 		for (int i = 0; i < data.propItemStack.size(); i++) {
 			player.addChatMessage(new TextComponentTranslation(data.propBodyPartName.get(i)));
 		}

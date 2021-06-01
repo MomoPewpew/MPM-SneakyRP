@@ -41,9 +41,6 @@ public class LayerProp extends LayerInterface {
 				Float propRotateY = this.playerdata.propRotateY.get(i);
 				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
-	    		Float propOffsetXCorrected;
-    			Float propOffsetYCorrected;
-	    		Float propOffsetZCorrected;
 	    		Float rotX;
 	    		Float rotY;
 	    		Float rotZ;
@@ -100,10 +97,29 @@ public class LayerProp extends LayerInterface {
 	    			rotZ = propBodyPart.rotateAngleZ;
 	    		}
 
- 	    		propOffsetXCorrected = (float) ((propOffsetX * Math.cos(rotY) * Math.cos(rotZ)) - (propOffsetY * Math.sin(rotZ)) + (propOffsetZ * Math.sin(rotY)));
-     			propOffsetYCorrected = (float) ((propOffsetY * Math.cos(rotX) * Math.cos(rotZ)) + (propOffsetX * Math.sin(rotZ)) - (propOffsetZ * Math.sin(rotX)));
- 	    		propOffsetZCorrected = (float) ((propOffsetZ * Math.cos(rotX) * Math.cos(rotY)) - (propOffsetX * Math.sin(rotY)) + (propOffsetY * Math.sin(rotX)));
+	    		if (propOffsetX == 0) { propOffsetX = 0.000000000000000001F;};
+	    		if (propOffsetZ == 0) { propOffsetZ = 0.000000000000000001F;};
 
+	    		//Apply pitch
+	    		Float anglePrev = (float) Math.atan2(propOffsetZ, propOffsetY);
+	    		Float hyp = (float) (propOffsetZ / Math.sin(anglePrev));
+
+	    		Float Zpitch = (float) (Math.sin(anglePrev + rotX) * hyp);
+	    		Float Ypitch = (float) (Math.cos(anglePrev + rotX) * hyp);
+
+	    		//Apply yaw
+	    		anglePrev = (float) Math.atan2(propOffsetX, Zpitch);
+	    		hyp = (float) (propOffsetX / Math.sin(anglePrev));
+
+	    		Float Xyaw = (float) (Math.sin(anglePrev + rotY) * hyp);
+	    		Float propOffsetZCorrected = (float) (Math.cos(anglePrev + rotY) * hyp);
+
+	    		//Apply roll
+	    		anglePrev = (float) Math.atan2(Xyaw, Ypitch);
+	    		hyp = (float) (Xyaw / Math.sin(anglePrev));
+
+	    		Float propOffsetXCorrected = (float) (Math.sin(anglePrev - rotZ) * hyp);
+	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - rotZ) * hyp);
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);

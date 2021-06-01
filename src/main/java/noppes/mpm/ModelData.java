@@ -356,8 +356,10 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
     		 switch(bodyPartName) {
     		 	 case "hat":
-	    		 case "head":
 	    			 propOffsetYNew = propOffsetYNew + 0.7F;
+	    			 break;
+	    		 case "head":
+	    			 propOffsetYNew = propOffsetYNew + 0.35F;
 	    			 break;
 	    		 case "body" :
 	    		 case "torso":
@@ -365,21 +367,21 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	    		 case "arm" :
 	    		 case "armleft" :
 	    		 case "leftarm":
-	    			 propOffsetXNew = propOffsetXNew - 0.05F;
+	    			 propOffsetXNew = propOffsetXNew - 0.07F;
 	    			 break;
 	    		 case "hand":
 	    		 case "handleft" :
 	    		 case "lefthand":
-	    			 propOffsetXNew = propOffsetXNew - 0.05F;
+	    			 propOffsetXNew = propOffsetXNew - 0.07F;
 	    			 propOffsetYNew = propOffsetYNew - 0.7F;
 	    			 break;
 	    		 case "armright" :
 	    		 case "rightarm":
-	    			 propOffsetXNew = propOffsetXNew + 0.05F;
+	    			 propOffsetXNew = propOffsetXNew + 0.07F;
 	    			 break;
 	    		 case "handright" :
 	    		 case "righthand":
-	    			 propOffsetXNew = propOffsetXNew + 0.05F;
+	    			 propOffsetXNew = propOffsetXNew + 0.07F;
 	    			 propOffsetYNew = propOffsetYNew - 0.7F;
 	    			 break;
 	    		 case "leg" :

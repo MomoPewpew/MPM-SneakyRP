@@ -37,9 +37,9 @@ public class LayerProp extends LayerInterface {
 				Float propOffsetX = this.playerdata.propOffsetX.get(i);
 				Float propOffsetY = this.playerdata.propOffsetY.get(i);
 				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
-				Float propRotateX = this.playerdata.propRotateX.get(i);
-				Float propRotateY = this.playerdata.propRotateY.get(i);
-				Float propRotateZ = this.playerdata.propRotateZ.get(i);
+				Float propRotateX = (float) Math.toRadians(this.playerdata.propRotateX.get(i));
+				Float propRotateY = (float) Math.toRadians(this.playerdata.propRotateY.get(i));
+				Float propRotateZ = (float) Math.toRadians(this.playerdata.propRotateZ.get(i));
 
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
 	    		     case "hat":
@@ -108,9 +108,9 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
-				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(propRotateZ, 0.0F, 0.0F, 1.0F);
+				GlStateManager.rotate((float) Math.toDegrees(propRotateX), 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate((float) Math.toDegrees(propRotateY), 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate((float) Math.toDegrees(propRotateZ), 0.0F, 0.0F, 1.0F);
 				GlStateManager.pushMatrix();
 
 				propBodyPart.postRender(par7);
@@ -121,9 +121,9 @@ public class LayerProp extends LayerInterface {
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
 				GlStateManager.popMatrix();;
-				GlStateManager.rotate(-propRotateZ, 0.0F, 0.0F, 1.0F);
-				GlStateManager.rotate(-propRotateY, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(-propRotateX, 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(-(float) Math.toDegrees(propRotateZ), 0.0F, 0.0F, 1.0F);
+				GlStateManager.rotate(-(float) Math.toDegrees(propRotateY), 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(-(float) Math.toDegrees(propRotateX), 1.0F, 0.0F, 0.0F);
 				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected), -(propBodyPart.offsetY - propOffsetYCorrected), -(propBodyPart.offsetZ - propOffsetZCorrected));
 	          }
 		}

@@ -125,7 +125,7 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
 
 	    		//Apply roll
-	    		if (Xyaw == 0) {
+	    		if (Xyaw > -0.0001 && Xyaw < 0.0001) {
 	    			if (Ypitch <= 0) {
 	    				anglePrev = 0.0F;
 		    			hyp = Ypitch;

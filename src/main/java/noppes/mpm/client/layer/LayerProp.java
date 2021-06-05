@@ -83,32 +83,60 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
-	    		if (propOffsetX == 0) { propOffsetX = 0.0000001F;};
-	    		if (propOffsetZ == 0) { propOffsetZ = 0.0000001F;};
+	    		Float anglePrev;
+	    		Float hyp;
+
+	    		Float propAngleXCorrected = propRotateX;
+	    		Float propAngleYCorrected = propRotateY;
+	    		Float propAngleZCorrected = propRotateZ;
 
 	    		//Apply pitch
-	    		Float anglePrev = (float) Math.atan2(propOffsetZ, propOffsetY);
-	    		Float hyp = (float) (propOffsetZ / Math.sin(anglePrev));
-
-	    		Float propAngleXCorrected = (float) (propRotateX - propBodyPart.rotateAngleX + (propBodyPart.rotateAngleX * Math.cos(propRotateY) * Math.cos(propRotateZ)));
+	    		if (propOffsetZ == 0) {
+	    			if (propOffsetY <= 0) {
+	    				anglePrev = 0.0F;
+		    			hyp = propOffsetY;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+	    				hyp = -propOffsetY;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(propOffsetZ, propOffsetY);
+	    			hyp = (float) (propOffsetZ / Math.sin(anglePrev));
+	    		}
 
 	    		Float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
 	    		Float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
 
 	    		//Apply yaw
-	    		anglePrev = (float) Math.atan2(propOffsetX, Zpitch);
-	    		hyp = (float) (propOffsetX / Math.sin(anglePrev));
-
-	    		Float propAngleYCorrected = (float) (propRotateY - propBodyPart.rotateAngleY + (propBodyPart.rotateAngleY * Math.cos(propRotateX) * Math.cos(propRotateZ)));
+	    		if (propOffsetX == 0) {
+	    			if (Zpitch >= 0) {
+	    				anglePrev = 0.0F;
+	    				hyp = Zpitch;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+	    				hyp = -Zpitch;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(propOffsetX, Zpitch);
+	    			hyp = (float) (propOffsetX / Math.sin(anglePrev));
+	    		}
 
 	    		Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
 	    		Float propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
 
 	    		//Apply roll
-	    		anglePrev = (float) Math.atan2(Xyaw, Ypitch);
-	    		hyp = (float) (Xyaw / Math.sin(anglePrev));
-
-	    		Float propAngleZCorrected = (float) (propRotateZ - propBodyPart.rotateAngleZ + (propBodyPart.rotateAngleZ * Math.cos(propRotateX) * Math.cos(propRotateY)));
+	    		if (Xyaw == 0) {
+	    			if (Ypitch <= 0) {
+	    				anglePrev = 0.0F;
+		    			hyp = Ypitch;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+		    			hyp = -Ypitch;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(Xyaw, Ypitch);
+		    		hyp = (float) (Xyaw / Math.sin(anglePrev));
+	    		}
 
 	    		Float propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
@@ -116,7 +144,7 @@ public class LayerProp extends LayerInterface {
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate((float) Math.toDegrees(propAngleXCorrected), -1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate((float) Math.toDegrees(propAngleYCorrected), 0.0F, -1.0F, 0.0F);
-				GlStateManager.rotate((float) Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, -1.0F);
+				GlStateManager.rotate((float) Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, 1.0F);
 				GlStateManager.pushMatrix();
 
 				propBodyPart.postRender(par7);
@@ -127,9 +155,9 @@ public class LayerProp extends LayerInterface {
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
 				GlStateManager.popMatrix();;
-				GlStateManager.rotate(-(float) Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, -1.0F);
-				GlStateManager.rotate(-(float) Math.toDegrees(propAngleYCorrected), 0.0F, -1.0F, 0.0F);
-				GlStateManager.rotate(-(float) Math.toDegrees(propAngleXCorrected), -1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate((float) -Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, 1.0F);
+				GlStateManager.rotate((float) -Math.toDegrees(propAngleYCorrected), 0.0F, -1.0F, 0.0F);
+				GlStateManager.rotate((float) -Math.toDegrees(propAngleXCorrected), -1.0F, 0.0F, 0.0F);
 				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected), -(propBodyPart.offsetY - propOffsetYCorrected), -(propBodyPart.offsetZ - propOffsetZCorrected));
 	          }
 		}

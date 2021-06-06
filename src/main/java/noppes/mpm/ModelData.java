@@ -367,21 +367,21 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	    		 case "arm" :
 	    		 case "armleft" :
 	    		 case "leftarm":
-	    			 propOffsetXNew = propOffsetXNew - 0.07F;
+	    			 propOffsetXNew = propOffsetXNew - 0.0625F;
 	    			 break;
 	    		 case "hand":
 	    		 case "handleft" :
 	    		 case "lefthand":
-	    			 propOffsetXNew = propOffsetXNew - 0.07F;
+	    			 propOffsetXNew = propOffsetXNew - 0.0625F;
 	    			 propOffsetYNew = propOffsetYNew - 0.7F;
 	    			 break;
 	    		 case "armright" :
 	    		 case "rightarm":
-	    			 propOffsetXNew = propOffsetXNew + 0.07F;
+	    			 propOffsetXNew = propOffsetXNew + 0.0625F;
 	    			 break;
 	    		 case "handright" :
 	    		 case "righthand":
-	    			 propOffsetXNew = propOffsetXNew + 0.07F;
+	    			 propOffsetXNew = propOffsetXNew + 0.0625F;
 	    			 propOffsetYNew = propOffsetYNew - 0.7F;
 	    			 break;
 	    		 case "leg" :

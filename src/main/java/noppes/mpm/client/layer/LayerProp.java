@@ -1,5 +1,7 @@
 package noppes.mpm.client.layer;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,6 +33,7 @@ public class LayerProp extends LayerInterface {
 
 			if (propItemStack != null) {
 				ModelRenderer propBodyPart = null;
+				ModelRenderer propRenderer = new ModelRenderer(this.model);
 				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
@@ -40,6 +43,9 @@ public class LayerProp extends LayerInterface {
 				Float propRotateX = (float) Math.toRadians(this.playerdata.propRotateX.get(i));
 				Float propRotateY = (float) Math.toRadians(this.playerdata.propRotateY.get(i));
 				Float propRotateZ = (float) Math.toRadians(this.playerdata.propRotateZ.get(i));
+
+				Float partModifierX = null;
+				Float partModifierY = null;
 
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
 	    		     case "hat":
@@ -60,6 +66,8 @@ public class LayerProp extends LayerInterface {
 		    		 case "leftarm":
 		    		 case "lefthand":
 		    			 propBodyPart = this.model.bipedLeftArm;
+		    			 partModifierX = -0.325F;
+		    			 partModifierY = -0.125F;
 		    			 break;
 		    		 case "armright":
 		    		 case "handright":
@@ -86,11 +94,11 @@ public class LayerProp extends LayerInterface {
 	    		Float anglePrev;
 	    		Float hyp;
 
-	    		Float propAngleXCorrected = propRotateX;
-	    		Float propAngleYCorrected = propRotateY;
-	    		Float propAngleZCorrected = propRotateZ;
-
 	    		//Apply pitch
+	    		Float propAngleXCorrected = (float) (propRotateX - (propBodyPart.rotateAngleX * Math.cos(propRotateY) * Math.cos(propRotateZ)));
+	    		Float propAngleYCorrected = (float) (propRotateY - (propBodyPart.rotateAngleX * Math.sin(propRotateZ)));
+	    		Float propAngleZCorrected = (float) (propRotateZ - (-propBodyPart.rotateAngleX * Math.sin(propRotateY)));
+
 	    		if (propOffsetZ == 0) {
 	    			if (propOffsetY <= 0) {
 	    				anglePrev = 0.0F;
@@ -108,6 +116,10 @@ public class LayerProp extends LayerInterface {
 	    		Float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
 
 	    		//Apply yaw
+	    		propAngleXCorrected += (float) (propBodyPart.rotateAngleY * Math.sin(propRotateZ));
+	    		propAngleYCorrected += (float) (propBodyPart.rotateAngleY * Math.cos(propRotateX) * Math.cos(propRotateZ));
+	    		propAngleZCorrected += (float) (-propBodyPart.rotateAngleY * Math.sin(propRotateX));
+
 	    		if (propOffsetX == 0) {
 	    			if (Zpitch >= 0) {
 	    				anglePrev = 0.0F;
@@ -125,6 +137,10 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
 
 	    		//Apply roll
+	    		propAngleXCorrected += (float) (propBodyPart.rotateAngleZ * Math.sin(propRotateY));
+	    		propAngleYCorrected += (float) (-propBodyPart.rotateAngleZ * Math.sin(propRotateX));
+	    		propAngleZCorrected += (float) (propBodyPart.rotateAngleZ * Math.cos(propRotateX) * Math.cos(propRotateY));
+
 	    		if (Xyaw > -0.0001 && Xyaw < 0.0001) {
 	    			if (Ypitch <= 0) {
 	    				anglePrev = 0.0F;
@@ -141,13 +157,15 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 
-				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected), (propBodyPart.offsetY - propOffsetYCorrected), (propBodyPart.offsetZ - propOffsetZCorrected));
+	    		propRenderer.setRotationPoint(propOffsetXCorrected, propOffsetYCorrected, propOffsetZCorrected);
+
+				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
 				GlStateManager.rotate((float) Math.toDegrees(propAngleXCorrected), -1.0F, 0.0F, 0.0F);
 				GlStateManager.rotate((float) Math.toDegrees(propAngleYCorrected), 0.0F, -1.0F, 0.0F);
 				GlStateManager.rotate((float) Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, 1.0F);
 				GlStateManager.pushMatrix();
 
-				propBodyPart.postRender(par7);
+				propRenderer.postRender(par7);
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);
 				ItemTransformVec3f transformVec = model.getItemCameraTransforms().thirdperson_right;
@@ -158,7 +176,7 @@ public class LayerProp extends LayerInterface {
 				GlStateManager.rotate((float) -Math.toDegrees(propAngleZCorrected), 0.0F, 0.0F, 1.0F);
 				GlStateManager.rotate((float) -Math.toDegrees(propAngleYCorrected), 0.0F, -1.0F, 0.0F);
 				GlStateManager.rotate((float) -Math.toDegrees(propAngleXCorrected), -1.0F, 0.0F, 0.0F);
-				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected), -(propBodyPart.offsetY - propOffsetYCorrected), -(propBodyPart.offsetZ - propOffsetZCorrected));
+				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected - partModifierX), -(propBodyPart.offsetY - propOffsetYCorrected - partModifierY), -(propBodyPart.offsetZ - propOffsetZCorrected));
 	          }
 		}
      }

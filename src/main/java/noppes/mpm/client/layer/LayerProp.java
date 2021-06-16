@@ -91,6 +91,8 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
+
+	    		//Calculate prop offset
 	    		Float anglePrev;
 	    		Float hyp;
 	    		//Apply pitch
@@ -110,10 +112,6 @@ public class LayerProp extends LayerInterface {
 	    		Float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
 	    		Float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
 
-	    		Float propAngleXCorrected = (float) (propRotateX + (propBodyPart.rotateAngleX * Math.cos(propRotateY) * Math.cos(propRotateZ)));
-	    		Float propAngleYCorrected = (float) (propRotateY + (propBodyPart.rotateAngleX * Math.sin(propRotateZ)));
-	    		Float propAngleZCorrected = (float) (propRotateZ + (-propBodyPart.rotateAngleX * Math.sin(propRotateY)));
-
 	    		//Apply yaw
 	    		if (propOffsetX == 0) {
 	    			if (Zpitch >= 0) {
@@ -130,10 +128,6 @@ public class LayerProp extends LayerInterface {
 
 	    		Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
 	    		Float propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
-
-	    		propAngleXCorrected += (float) (propBodyPart.rotateAngleY * Math.sin(propRotateZ));
-	    		propAngleYCorrected += (float) (propBodyPart.rotateAngleY * Math.cos(propRotateX) * Math.cos(propRotateZ));
-	    		propAngleZCorrected += (float) (-propBodyPart.rotateAngleY * Math.sin(propRotateX));
 
 	    		//Apply roll
 	    		if (Xyaw > -0.0001 && Xyaw < 0.0001) {
@@ -152,18 +146,115 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 
-	    		propAngleXCorrected += (float) (propBodyPart.rotateAngleZ * Math.sin(propRotateY));
-	    		propAngleYCorrected += (float) (-propBodyPart.rotateAngleZ * Math.sin(propRotateX));
-	    		propAngleZCorrected += (float) (propBodyPart.rotateAngleZ * Math.cos(propRotateX) * Math.cos(propRotateY));
+	    		//Calculate prop facing
+	    		//First we convert our requested angles to a vector offset that our prop would theoretically be facing
+	    		//After rotating our limbs we will take this offset and convert it back into angles
+	    		//We do this because all other methods fail for some reason
+	    		//Apply pitch
+				anglePrev = (float) Math.PI;
+				hyp = -1.0F;
 
-	    		propRenderer.setRotationPoint(propOffsetXCorrected, propOffsetYCorrected, propOffsetZCorrected);
+	    		Float ZFacingpitch = (float) (Math.sin(anglePrev + propRotateX) * hyp);
+	    		Float YFacingpitch = (float) (Math.cos(anglePrev + propRotateX) * hyp);
 
-				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
+	    		//Apply yaw
+    			if (ZFacingpitch >= 0) {
+    				anglePrev = 0.0F;
+    				hyp = ZFacingpitch;
+    			} else {
+    				anglePrev = (float) Math.PI;
+    				hyp = -ZFacingpitch;
+    			}
+
+	    		Float XFacingyaw = (float) (Math.sin(anglePrev + propRotateY) * hyp);
+	    		Float propOffsetZFacingCorrected = (float) (Math.cos(anglePrev + propRotateY) * hyp);
+
+	    		//Apply roll
+	    		if (XFacingyaw > -0.0001 && XFacingyaw < 0.0001) {
+	    			if (YFacingpitch <= 0) {
+	    				anglePrev = 0.0F;
+		    			hyp = YFacingpitch;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+		    			hyp = -YFacingpitch;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(XFacingyaw, YFacingpitch);
+		    		hyp = (float) (XFacingyaw / Math.sin(anglePrev));
+	    		}
+
+	    		Float propOffsetXFacingCorrected = (float) (Math.sin(anglePrev - propRotateZ) * hyp);
+	    		Float propOffsetYFacingCorrected = (float) (Math.cos(anglePrev - propRotateZ) * hyp);
+
+
+	    		//Here we convert our offset at 0 position into new offsets at different limb rotations.
+	    		Float propOffsetXRotatedFacingVector = propOffsetX + propOffsetXFacingCorrected;
+	    		Float propOffsetYRotatedFacingVector = propOffsetY + propOffsetYFacingCorrected;
+	    		Float propOffsetZRotatedFacingVector = propOffsetZ + propOffsetZFacingCorrected;
+	    		//Apply pitch
+	    		if (propOffsetZRotatedFacingVector == 0) {
+	    			if (propOffsetYRotatedFacingVector <= 0) {
+	    				anglePrev = 0.0F;
+		    			hyp = propOffsetYRotatedFacingVector;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+	    				hyp = -propOffsetYRotatedFacingVector;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(propOffsetZRotatedFacingVector, propOffsetYRotatedFacingVector);
+	    			hyp = (float) (propOffsetZRotatedFacingVector / Math.sin(anglePrev));
+	    		}
+
+	    		Float ZRotatedFacingVectorpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
+	    		Float YRotatedFacingVectorpitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
+
+	    		//Apply yaw
+	    		if (propOffsetXRotatedFacingVector == 0) {
+	    			if (ZRotatedFacingVectorpitch >= 0) {
+	    				anglePrev = 0.0F;
+	    				hyp = ZRotatedFacingVectorpitch;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+	    				hyp = -ZRotatedFacingVectorpitch;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(propOffsetXRotatedFacingVector, ZRotatedFacingVectorpitch);
+	    			hyp = (float) (propOffsetXRotatedFacingVector / Math.sin(anglePrev));
+	    		}
+
+	    		Float XRotatedFacingVectoryaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
+	    		Float propOffsetZRotatedFacingVectorCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
+
+	    		//Apply roll
+	    		if (XRotatedFacingVectoryaw > -0.0001 && XRotatedFacingVectoryaw < 0.0001) {
+	    			if (YRotatedFacingVectorpitch <= 0) {
+	    				anglePrev = 0.0F;
+		    			hyp = YRotatedFacingVectorpitch;
+	    			} else {
+	    				anglePrev = (float) Math.PI;
+		    			hyp = -YRotatedFacingVectorpitch;
+	    			}
+	    		} else {
+	    			anglePrev = (float) Math.atan2(XRotatedFacingVectoryaw, YRotatedFacingVectorpitch);
+		    		hyp = (float) (XRotatedFacingVectoryaw / Math.sin(anglePrev));
+	    		}
+
+	    		Float propOffsetXRotatedFacingVectorCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
+	    		Float propOffsetYRotatedFacingVectorCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
+
+	    		Float targetVectorOffsetX = propOffsetXRotatedFacingVectorCorrected - propOffsetXCorrected;
+	    		Float targetVectorOffsetY = propOffsetYRotatedFacingVectorCorrected - propOffsetYCorrected;
+	    		Float targetVectorOffsetZ = propOffsetZRotatedFacingVectorCorrected - propOffsetZCorrected;
+
+
+	    		//propRenderer.setRotationPoint(propOffsetXCorrected, propOffsetYCorrected, propOffsetZCorrected);
+
 				GlStateManager.pushMatrix();
+				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
 
-				propRenderer.rotateAngleX = propAngleXCorrected;
-				propRenderer.rotateAngleY = propAngleYCorrected;
-				propRenderer.rotateAngleZ = propAngleZCorrected;
+				propRenderer.rotateAngleX = propBodyPart.rotateAngleX;
+				propRenderer.rotateAngleY = propBodyPart.rotateAngleY;
+				propRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
 				propRenderer.postRender(par7);
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);
@@ -171,8 +262,7 @@ public class LayerProp extends LayerInterface {
 				GlStateManager.scale((-propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (-propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 				minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
-				GlStateManager.popMatrix();;
-				GlStateManager.translate(-(propBodyPart.offsetX - propOffsetXCorrected - partModifierX), -(propBodyPart.offsetY - propOffsetYCorrected - partModifierY), -(propBodyPart.offsetZ - propOffsetZCorrected));
+				GlStateManager.popMatrix();
 	          }
 		}
      }

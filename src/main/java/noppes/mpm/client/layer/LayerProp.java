@@ -33,7 +33,9 @@ public class LayerProp extends LayerInterface {
 
 			if (propItemStack != null) {
 				ModelRenderer propBodyPart = null;
+				ModelRenderer motherRenderer = new ModelRenderer(this.model);
 				ModelRenderer propRenderer = new ModelRenderer(this.model);
+				motherRenderer.addChild(propRenderer);
 				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
@@ -146,115 +148,18 @@ public class LayerProp extends LayerInterface {
 	    		Float propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 	    		Float propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 
-	    		//Calculate prop facing
-	    		//First we convert our requested angles to a vector offset that our prop would theoretically be facing
-	    		//After rotating our limbs we will take this offset and convert it back into angles
-	    		//We do this because all other methods fail for some reason
-	    		//Apply pitch
-				anglePrev = (float) Math.PI;
-				hyp = -1.0F;
+	    		GlStateManager.pushMatrix();
 
-	    		Float ZFacingpitch = (float) (Math.sin(anglePrev + propRotateX) * hyp);
-	    		Float YFacingpitch = (float) (Math.cos(anglePrev + propRotateX) * hyp);
+				motherRenderer.rotateAngleX = propBodyPart.rotateAngleX;
+				motherRenderer.rotateAngleY = propBodyPart.rotateAngleY;
+				motherRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
 
-	    		//Apply yaw
-    			if (ZFacingpitch >= 0) {
-    				anglePrev = 0.0F;
-    				hyp = ZFacingpitch;
-    			} else {
-    				anglePrev = (float) Math.PI;
-    				hyp = -ZFacingpitch;
-    			}
+				propRenderer.rotateAngleX = propRotateX;
+				propRenderer.rotateAngleY = propRotateY;
+				propRenderer.rotateAngleZ = propRotateZ;
 
-	    		Float XFacingyaw = (float) (Math.sin(anglePrev + propRotateY) * hyp);
-	    		Float propOffsetZFacingCorrected = (float) (Math.cos(anglePrev + propRotateY) * hyp);
-
-	    		//Apply roll
-	    		if (XFacingyaw > -0.0001 && XFacingyaw < 0.0001) {
-	    			if (YFacingpitch <= 0) {
-	    				anglePrev = 0.0F;
-		    			hyp = YFacingpitch;
-	    			} else {
-	    				anglePrev = (float) Math.PI;
-		    			hyp = -YFacingpitch;
-	    			}
-	    		} else {
-	    			anglePrev = (float) Math.atan2(XFacingyaw, YFacingpitch);
-		    		hyp = (float) (XFacingyaw / Math.sin(anglePrev));
-	    		}
-
-	    		Float propOffsetXFacingCorrected = (float) (Math.sin(anglePrev - propRotateZ) * hyp);
-	    		Float propOffsetYFacingCorrected = (float) (Math.cos(anglePrev - propRotateZ) * hyp);
-
-
-	    		//Here we convert our offset at 0 position into new offsets at different limb rotations.
-	    		Float propOffsetXRotatedFacingVector = propOffsetX + propOffsetXFacingCorrected;
-	    		Float propOffsetYRotatedFacingVector = propOffsetY + propOffsetYFacingCorrected;
-	    		Float propOffsetZRotatedFacingVector = propOffsetZ + propOffsetZFacingCorrected;
-	    		//Apply pitch
-	    		if (propOffsetZRotatedFacingVector == 0) {
-	    			if (propOffsetYRotatedFacingVector <= 0) {
-	    				anglePrev = 0.0F;
-		    			hyp = propOffsetYRotatedFacingVector;
-	    			} else {
-	    				anglePrev = (float) Math.PI;
-	    				hyp = -propOffsetYRotatedFacingVector;
-	    			}
-	    		} else {
-	    			anglePrev = (float) Math.atan2(propOffsetZRotatedFacingVector, propOffsetYRotatedFacingVector);
-	    			hyp = (float) (propOffsetZRotatedFacingVector / Math.sin(anglePrev));
-	    		}
-
-	    		Float ZRotatedFacingVectorpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
-	    		Float YRotatedFacingVectorpitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
-
-	    		//Apply yaw
-	    		if (propOffsetXRotatedFacingVector == 0) {
-	    			if (ZRotatedFacingVectorpitch >= 0) {
-	    				anglePrev = 0.0F;
-	    				hyp = ZRotatedFacingVectorpitch;
-	    			} else {
-	    				anglePrev = (float) Math.PI;
-	    				hyp = -ZRotatedFacingVectorpitch;
-	    			}
-	    		} else {
-	    			anglePrev = (float) Math.atan2(propOffsetXRotatedFacingVector, ZRotatedFacingVectorpitch);
-	    			hyp = (float) (propOffsetXRotatedFacingVector / Math.sin(anglePrev));
-	    		}
-
-	    		Float XRotatedFacingVectoryaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
-	    		Float propOffsetZRotatedFacingVectorCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
-
-	    		//Apply roll
-	    		if (XRotatedFacingVectoryaw > -0.0001 && XRotatedFacingVectoryaw < 0.0001) {
-	    			if (YRotatedFacingVectorpitch <= 0) {
-	    				anglePrev = 0.0F;
-		    			hyp = YRotatedFacingVectorpitch;
-	    			} else {
-	    				anglePrev = (float) Math.PI;
-		    			hyp = -YRotatedFacingVectorpitch;
-	    			}
-	    		} else {
-	    			anglePrev = (float) Math.atan2(XRotatedFacingVectoryaw, YRotatedFacingVectorpitch);
-		    		hyp = (float) (XRotatedFacingVectoryaw / Math.sin(anglePrev));
-	    		}
-
-	    		Float propOffsetXRotatedFacingVectorCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
-	    		Float propOffsetYRotatedFacingVectorCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
-
-	    		Float targetVectorOffsetX = propOffsetXRotatedFacingVectorCorrected - propOffsetXCorrected;
-	    		Float targetVectorOffsetY = propOffsetYRotatedFacingVectorCorrected - propOffsetYCorrected;
-	    		Float targetVectorOffsetZ = propOffsetZRotatedFacingVectorCorrected - propOffsetZCorrected;
-
-
-	    		//propRenderer.setRotationPoint(propOffsetXCorrected, propOffsetYCorrected, propOffsetZCorrected);
-
-				GlStateManager.pushMatrix();
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
-
-				propRenderer.rotateAngleX = propBodyPart.rotateAngleX;
-				propRenderer.rotateAngleY = propBodyPart.rotateAngleY;
-				propRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
+				motherRenderer.postRender(par7);
 				propRenderer.postRender(par7);
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);

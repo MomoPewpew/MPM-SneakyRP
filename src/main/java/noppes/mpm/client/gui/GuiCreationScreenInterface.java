@@ -39,9 +39,11 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
           this.entity = this.playerdata.getEntity(this.mc.thePlayer);
           Keyboard.enableRepeatEvents(true);
           this.addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
-          if (mc.thePlayer.canCommandSenderUseCommand(2, "transform")) {
-        	  this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
+    	  this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
+          if (!mc.thePlayer.canCommandSenderUseCommand(2, "transform")) {
+        	  this.getButton(1).enabled = false;
           }
+          this.addButton(new GuiNpcButton(100, this.guiLeft + 124, this.guiTop, 60, 20, "gui.props"));
           if (this.entity == null) {
                this.addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
           } else {
@@ -93,6 +95,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
                this.close();
           }
 
+          if (btn.id == 100) {
+              this.openGui(new GuiCreationProps());
+         }
      }
 
      @Override

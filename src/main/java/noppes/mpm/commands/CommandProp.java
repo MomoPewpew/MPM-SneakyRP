@@ -42,11 +42,17 @@ public class CommandProp extends MpmCommandInterface {
 	);
 
 	private final List<String> clearStrings = Lists.newArrayList(
-		     "clear",
-		     "delete",
-		     "remove"
-		);
+	     "clear",
+	     "reset"
+	);
 
+	private final List<String> undoStrings = Lists.newArrayList(
+	     "undo",
+	     "remove",
+	     "delete",
+	     "del",
+	     "rem"
+	);
 
 	@Override
 	public String getCommandName() {
@@ -64,6 +70,11 @@ public class CommandProp extends MpmCommandInterface {
 
 		if (args.length > 0 && clearStrings.contains(args[0])) {
 			data.clearProps();
+			return;
+		} else if (args.length > 0 && undoStrings.contains(args[0])) {
+			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.propItemStack.size() - 1);
+
+			data.removeProp(index);
 			return;
 		}
 

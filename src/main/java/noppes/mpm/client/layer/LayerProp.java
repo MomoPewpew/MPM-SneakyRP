@@ -42,9 +42,9 @@ public class LayerProp extends LayerInterface {
 				Float propOffsetX = this.playerdata.propOffsetX.get(i);
 				Float propOffsetY = this.playerdata.propOffsetY.get(i);
 				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
-				Float propRotateX = (float) Math.toRadians(this.playerdata.propRotateX.get(i));
-				Float propRotateY = (float) Math.toRadians(this.playerdata.propRotateY.get(i));
-				Float propRotateZ = (float) Math.toRadians(this.playerdata.propRotateZ.get(i));
+				Float propRotateX = this.playerdata.propRotateX.get(i);
+				Float propRotateY = this.playerdata.propRotateY.get(i);
+				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
 				Float partModifierX = null;
 				Float partModifierY = null;
@@ -154,12 +154,12 @@ public class LayerProp extends LayerInterface {
 				motherRenderer.rotateAngleY = propBodyPart.rotateAngleY;
 				motherRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
 
-				propRenderer.rotateAngleX = propRotateX;
-				propRenderer.rotateAngleY = propRotateY;
-				propRenderer.rotateAngleZ = propRotateZ;
-
 				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
 				motherRenderer.postRender(par7);
+
+				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(propRotateZ, 0.0F, 0.0F, 1.0F);
 				propRenderer.postRender(par7);
 
 				IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(propItemStack);

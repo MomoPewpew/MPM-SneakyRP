@@ -1,5 +1,8 @@
 package noppes.mpm.client.gui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -117,6 +120,15 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
        	   	  this.scroll.selected = selected;
        	   	  propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
               this.initGui();
+         } else if (btn.id == 103) {
+        	 String command = "/prop " +
+        			 this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString() + " " + this.playerdata.propBodyPartName.get(selected) + " " +
+        			 this.playerdata.propScaleX.get(selected) + " " + this.playerdata.propScaleY.get(selected) + " " + this.playerdata.propScaleZ.get(selected) + " " +
+        			 this.playerdata.propOffsetX.get(selected) + " " + this.playerdata.propOffsetY.get(selected) + " " + this.playerdata.propOffsetZ.get(selected) + " " +
+        			 this.playerdata.propRotateX.get(selected) + " " + this.playerdata.propRotateY.get(selected) + " " + this.playerdata.propRotateZ.get(selected);
+        	 StringSelection selection = new StringSelection(command);
+        	 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        	 clipboard.setContents(selection, selection);
          } else if (btn.id == 106) {
         	 sliders = 106;
              this.initGui();

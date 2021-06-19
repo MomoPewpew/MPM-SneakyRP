@@ -65,7 +65,7 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 		    		 case "back":
 		    			 propBodyPart = this.model.bipedBody;
-    					 propOffsetY += -3F;
+    					 propOffsetY += -0.3F;
     					 propOffsetZ += -0.15F;
 		    			 break;
 		    		 case "arm":

@@ -36,7 +36,7 @@ public class CommandProp extends MpmCommandInterface {
 		 "leg",
 		 "foot",
 		 "legleft",
-		 "footlef",
+		 "footleft",
 		 "leftleg",
 		 "leftfoot",
 		 "legright",
@@ -114,7 +114,7 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateY = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
 
-		data.newProp(propItemStack, bodyPartName, propScaleX, propScaleY, propScaleZ, propOffsetX, propOffsetY, propOffsetZ, propRotateX, propRotateY, propRotateZ);
+		data.addProp(propItemStack, bodyPartName, propScaleX, propScaleY, propScaleZ, propOffsetX, propOffsetY, propOffsetZ, propRotateX, propRotateY, propRotateZ);
 	}
 
 	@Override

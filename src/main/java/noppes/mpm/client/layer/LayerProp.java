@@ -39,57 +39,99 @@ public class LayerProp extends LayerInterface {
 				Float propScaleX = this.playerdata.propScaleX.get(i);
 				Float propScaleY = this.playerdata.propScaleY.get(i);
 				Float propScaleZ = this.playerdata.propScaleZ.get(i);
-				Float propOffsetX = this.playerdata.propOffsetX.get(i);
+				Float propOffsetX = -this.playerdata.propOffsetX.get(i);
 				Float propOffsetY = this.playerdata.propOffsetY.get(i);
 				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
-				Float propRotateX = this.playerdata.propRotateX.get(i);
+				Float propRotateX = -this.playerdata.propRotateX.get(i);
 				Float propRotateY = this.playerdata.propRotateY.get(i);
 				Float propRotateZ = this.playerdata.propRotateZ.get(i);
 
-				Float partModifierX = null;
-				Float partModifierY = null;
+				Float partModifierX = 0.0F;
+				Float partModifierY = 0.0F;
+				Float partModifierZ = 0.0F;
 
 	    		 switch(this.playerdata.propBodyPartName.get(i)) {
 	    		     case "hat":
 		    		 case "head":
 		    			 propBodyPart = this.model.bipedHead;
+		    			 propOffsetY += 0.7F;
 		    			 break;
 		    		 case "model":
-	    			 	 propBodyPart = this.model.bipedHeadwear;
+	    			 	 propBodyPart = this.model.bipedBody;
 	    			 	 break;
 		    		 case "body":
 		    		 case "torso":
 		    			 propBodyPart = this.model.bipedBody;
 		    			 break;
+		    		 case "back":
+		    			 propBodyPart = this.model.bipedBody;
+    					 propOffsetY += -3F;
+    					 propOffsetZ += -0.15F;
+		    			 break;
 		    		 case "arm":
-		    		 case "hand":
 		    		 case "armleft":
-		    		 case "handleft":
 		    		 case "leftarm":
+		    			 propBodyPart = this.model.bipedLeftArm;
+		    			 partModifierX = -0.325F;
+		    			 partModifierY = -0.125F;
+
+    					 propOffsetX += -0.0625F;
+		    		 case "hand":
+		    		 case "handleft":
 		    		 case "lefthand":
 		    			 propBodyPart = this.model.bipedLeftArm;
 		    			 partModifierX = -0.325F;
 		    			 partModifierY = -0.125F;
+
+    					 propOffsetX += -0.0625F;
+    					 propOffsetY += -0.7F;
 		    			 break;
 		    		 case "armright":
-		    		 case "handright":
 		    		 case "rightarm":
+		    			 propBodyPart = this.model.bipedRightArm;
+		    			 partModifierX = 0.325F;
+		    			 partModifierY = -0.125F;
+
+    					 propOffsetX += 0.0625F;
+		    			 break;
+		    		 case "handright":
 		    		 case "righthand":
 		    			 propBodyPart = this.model.bipedRightArm;
+		    			 partModifierX = 0.325F;
+		    			 partModifierY = -0.125F;
+
+    					 propOffsetX += 0.0625F;
+    					 propOffsetY += -0.7F;
 		    			 break;
 		    		 case "leg":
-		    		 case "foot":
 		    		 case "legleft":
-		    		 case "footlef":
 		    		 case "leftleg":
+		    			 propBodyPart = this.model.bipedLeftLeg;
+		    			 partModifierX = -0.125F;
+		    			 partModifierY = -0.75F;
+		    			 break;
+		    		 case "foot":
+		    		 case "footleft":
 		    		 case "leftfoot":
 		    			 propBodyPart = this.model.bipedLeftLeg;
+		    			 partModifierX = -0.125F;
+		    			 partModifierY = -0.75F;
+
+    					 propOffsetY += -0.7F;
 		    			 break;
 		    		 case "legright":
-		    		 case "footright":
 		    		 case "rightleg":
+		    			 propBodyPart = this.model.bipedRightLeg;
+		    			 partModifierX = 0.125F;
+		    			 partModifierY = -0.75F;
+		    			 break;
+		    		 case "footright":
 		    		 case "rightfoot":
 		    			 propBodyPart = this.model.bipedRightLeg;
+		    			 partModifierX = 0.125F;
+		    			 partModifierY = -0.75F;
+
+    					 propOffsetY += -0.7F;
 		    			 break;
 	    		 }
 
@@ -150,11 +192,13 @@ public class LayerProp extends LayerInterface {
 
 	    		GlStateManager.pushMatrix();
 
-				motherRenderer.rotateAngleX = propBodyPart.rotateAngleX;
-				motherRenderer.rotateAngleY = propBodyPart.rotateAngleY;
-				motherRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
+	    		if (!this.playerdata.propBodyPartName.get(i).equals("model")) {
+					motherRenderer.rotateAngleX = propBodyPart.rotateAngleX;
+					motherRenderer.rotateAngleY = propBodyPart.rotateAngleY;
+					motherRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
+	    		}
 
-				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected));
+				GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY), (propBodyPart.offsetZ - propOffsetZCorrected - partModifierZ));
 				motherRenderer.postRender(par7);
 
 				GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);

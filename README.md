@@ -12,3 +12,4 @@ List of changes:
 * Created a getter for the PartConfigScale, for better interaction with SneakyEmotes
 * /point will now account for your head pitch (and not just yaw)
 * MPM camera has been changed to instead give you GTA style controls
+* Added a prop system that allows you to render any item as a prop on your body

@@ -71,7 +71,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	  this.addButton(new GuiNpcButton(103, this.guiLeft + 260, y, 72, 20, "gui.copycommand"));
         	  y += 22;
               this.addLabel(new GuiNpcLabel(104, "gui.name", this.guiLeft + 112, y + 5, 16777215));
-              this.addTextField(new GuiNpcTextField(104, this, this.guiLeft + 150, y, 200, 20, propName));
+              this.addTextField(new GuiNpcTextField(104, this, this.guiLeft + 145, y, 185, 20, propName));
         	  y += 22;
         	  this.addLabel(new GuiNpcLabel(105, "gui.bodypart", this.guiLeft + 112, y + 5, 16777215));
               this.addButton(new GuiNpcButton(105, this.guiLeft + 152, y, 70, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
@@ -114,11 +114,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                this.initGui();
           } else if (btn.id == 102) {
        	   	  this.playerdata.removeProp(selected);
-       	   	  if (selected == this.playerdata.propItemStack.size()) {
-           	   	  selected -= 1;
-       	   	  }
+       	   	  if (selected == this.playerdata.propItemStack.size()) selected -= 1;
        	   	  this.scroll.selected = selected;
-       	   	  propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
+       	   	  if (selected >= 0) propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
               this.initGui();
          } else if (btn.id == 103) {
         	 String command = "/prop " +

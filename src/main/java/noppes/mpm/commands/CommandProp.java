@@ -3,6 +3,7 @@ package noppes.mpm.commands;
 import java.util.List;
 import com.google.common.collect.Lists;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,6 +11,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import noppes.mpm.ModelData;
+import noppes.mpm.client.gui.GuiCreationProps;
+import noppes.mpm.client.gui.GuiMPM;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 
 public class CommandProp extends MpmCommandInterface {
 
@@ -54,6 +58,13 @@ public class CommandProp extends MpmCommandInterface {
 	     "rem"
 	);
 
+	private final List<String> guiStrings = Lists.newArrayList(
+		     "gui",
+		     "interface",
+		     "ui",
+		     "options"
+		);
+
 	@Override
 	public String getCommandName() {
 		return "prop";
@@ -63,6 +74,19 @@ public class CommandProp extends MpmCommandInterface {
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 		if(icommandsender instanceof EntityPlayerMP == false)
 			return;
+
+		if (args.length == 0 || (args.length > 0 && guiStrings.contains(args[0]))) {
+
+			GuiMPM guiMPM = new GuiMPM();
+			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+			try {
+				guiMPM.setSubGui((GuiNPCInterface)GuiCreationProps.GuiProps.getClass().newInstance());
+			} catch (IllegalAccessException | InstantiationException e) {
+
+			}
+			return;
+		}
+
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 

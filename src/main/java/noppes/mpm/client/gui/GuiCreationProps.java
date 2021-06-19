@@ -26,6 +26,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private final List<String> bodyParts = Arrays.asList("lefthand", "righthand", "head", "body", "leftfoot", "rightfoot", "model");
      private static String propName;
      public static GuiCreationProps GuiProps = new GuiCreationProps();
+     private static boolean newProp = false;
 
      public GuiCreationProps() {
     	  this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
@@ -53,6 +54,12 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           this.scroll.guiTop = this.guiTop + 46;
           this.scroll.setSize(100, this.ySize - 74);
           this.addScroll(this.scroll);
+
+          if (newProp) {
+        	  this.scroll.selected = selected = this.playerdata.propItemStack.size() - 1;
+        	  propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
+        	  newProp = false;
+          }
 
           y = this.guiTop + 45;
           this.addButton(new GuiNpcButton(101, this.guiLeft + 112, y, 72, 20, "gui.addprop"));
@@ -100,9 +107,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           super.actionPerformed(btn);
           if (btn.id == 101) {
         	   this.playerdata.addProp(new ItemStack(Blocks.CRAFTING_TABLE), "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-               propName = "minecraft:crafting_table";
-               //selected = this.playerdata.propItemStack.size() + 1;
-               //this.scroll.selected = selected;
+               newProp = true;
                this.initGui();
           } else if (btn.id == 102) {
        	   	  this.playerdata.removeProp(selected);
@@ -110,6 +115,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
            	   	  selected -= 1;
        	   	  }
        	   	  this.scroll.selected = selected;
+       	   	  propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
               this.initGui();
          } else if (btn.id == 106) {
         	 sliders = 106;
@@ -210,7 +216,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 			try {
 				this.playerdata.propItemStack.set(selected, new ItemStack(CommandBase.getItemByText(this.getPlayer(), textField.getText())));
-				//this.initGui();
 			} catch (NumberInvalidException e) {
 
 			}

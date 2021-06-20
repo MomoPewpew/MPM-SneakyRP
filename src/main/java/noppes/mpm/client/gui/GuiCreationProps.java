@@ -12,7 +12,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
+import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
@@ -21,6 +23,7 @@ import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISliderListener;
 import noppes.mpm.client.gui.util.ITextfieldListener;
+import noppes.mpm.constants.EnumPackets;
 
 public class GuiCreationProps extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener {
      private GuiCustomScroll scroll;
@@ -109,7 +112,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 101) {
-        	   this.playerdata.addProp(new ItemStack(Blocks.CRAFTING_TABLE), "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        	   this.playerdata.addPropClient(new ItemStack(Blocks.CRAFTING_TABLE), "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                newProp = true;
                this.initGui();
           } else if (btn.id == 102) {
@@ -231,6 +234,4 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			}
 		}
 	}
-
-
 }

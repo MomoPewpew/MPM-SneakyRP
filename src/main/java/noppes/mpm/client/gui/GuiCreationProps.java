@@ -32,7 +32,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private static boolean newProp = false;
 
      public GuiCreationProps() {
-    	  this.playerdata = ModelData.get(Minecraft.getMinecraft().thePlayer);
+    	  this.playerdata = ModelData.get(this.getPlayer());
           this.active = 100;
           this.xOffset = 140;
      }

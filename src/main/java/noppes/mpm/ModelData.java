@@ -384,17 +384,17 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	 		this.propRotateY.add(propRotateY);
 	 		this.propRotateZ.add(propRotateZ);
 
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_PART_UPDATE, player.getUniqueID(), bodyPartName);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEX_UPDATE, player.getUniqueID(), propScaleX);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEY_UPDATE, player.getUniqueID(), propScaleY);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_SCALEZ_UPDATE, player.getUniqueID(), propScaleZ);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), propOffsetX);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), propOffsetY);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), propOffsetZ);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), propRotateX);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), propRotateY);
-	 		Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), propRotateZ);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ITEM_UPDATE, this.player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_PART_UPDATE, this.player.getUniqueID(), bodyPartName);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEX_UPDATE, this.player.getUniqueID(), propScaleX);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEY_UPDATE, this.player.getUniqueID(), propScaleY);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEZ_UPDATE, this.player.getUniqueID(), propScaleZ);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETX_UPDATE, this.player.getUniqueID(), propOffsetX);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETY_UPDATE, this.player.getUniqueID(), propOffsetY);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETZ_UPDATE, this.player.getUniqueID(), propOffsetZ);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEX_UPDATE, this.player.getUniqueID(), propRotateX);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEY_UPDATE, this.player.getUniqueID(), propRotateY);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEZ_UPDATE, this.player.getUniqueID(), propRotateZ);
      }
 
      public void clearProps() {
@@ -410,6 +410,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          this.propRotateY.clear();
          this.propRotateZ.clear();
 
-		Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 }

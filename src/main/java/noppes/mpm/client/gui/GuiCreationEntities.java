@@ -91,7 +91,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
           if (btn.id == 10) {
                //this.playerdata.setEntityClass((Class)null);
         	   try {
-        		   MPMUtil.clearDisguise(this.playerdata.player);
+        		   MPMUtil.clearDisguise(this.getPlayer());
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -104,7 +104,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           //this.playerdata.setEntityClass((Class)this.data.get(scroll.getSelected()));
-    	   MPMUtil.setDisguise(this.playerdata.player, (Class)this.data.get(scroll.getSelected()));
+    	   MPMUtil.setDisguise(this.getPlayer(), (Class)this.data.get(scroll.getSelected()));
           this.initGui();
      }
 

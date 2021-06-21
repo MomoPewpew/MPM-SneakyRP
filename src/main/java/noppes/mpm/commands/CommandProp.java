@@ -157,7 +157,7 @@ public class CommandProp extends MpmCommandInterface {
 	        }
 
 	        double distance = entity.getPosition().distanceSq(player.getPosition());
-	        if ((closest == null || distance < closestDistance) && distance < 3) {
+	        if ((closest == null || distance < closestDistance) && Math.sqrt(distance) <= 3) {
 	            closest = entity;
 	            closestDistance = distance;
 	        }

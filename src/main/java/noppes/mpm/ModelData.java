@@ -366,6 +366,31 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
         }
      }
 
+     public void removePropClient(Integer index) {
+    	 ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
+    	 ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
+    	 ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
+    	 ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
+    	 ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
+    	 ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
+    	 ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
+    	 ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
+    	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
+    	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
+    	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+
+ 		this.clearPropsClient();
+
+        for (int i = 0; i < propItemStackTemp.size(); i++) {
+        	if (i != index) {
+        		this.addPropClient(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
+        				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
+        				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
+        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i));
+        	}
+        }
+     }
+
      public void addProp(ItemStack propItemStack, String bodyPartName,
   			Float propScaleX, Float propScaleY, Float propScaleZ,
   			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
@@ -403,6 +428,18 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      public void clearProps() {
+    	 this.propItemStack.clear();
+         this.propBodyPartName.clear();
+         this.propScaleX.clear();
+         this.propScaleY.clear();
+         this.propScaleZ.clear();
+         this.propOffsetX.clear();
+         this.propOffsetY.clear();
+         this.propOffsetZ.clear();
+         this.propRotateX.clear();
+         this.propRotateY.clear();
+         this.propRotateZ.clear();
+
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 

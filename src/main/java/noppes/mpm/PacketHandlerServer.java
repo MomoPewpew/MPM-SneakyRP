@@ -47,22 +47,6 @@ public class PacketHandlerServer {
                     Server.sendAssociatedData(player, EnumPackets.BACK_ITEM_UPDATE, player.getUniqueID(), back.writeToNBT(new NBTTagCompound()));
                }
 
-/*               Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
-               ModelData dataplayer = ModelData.get(player);
-               for (int i = 0; i < dataplayer.propItemStack.size(); i++) {
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), dataplayer.propItemStack.get(i).writeToNBT(new NBTTagCompound()));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_PART_UPDATE, player.getUniqueID(), dataplayer.propBodyPartName.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_SCALEX_UPDATE, player.getUniqueID(), dataplayer.propScaleX.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_SCALEY_UPDATE, player.getUniqueID(), dataplayer.propScaleY.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_SCALEZ_UPDATE, player.getUniqueID(), dataplayer.propScaleZ.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), dataplayer.propOffsetX.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), dataplayer.propOffsetY.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), dataplayer.propOffsetZ.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), dataplayer.propRotateX.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), dataplayer.propRotateY.get(i));
-            	   Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), dataplayer.propRotateZ.get(i));
-               }*/
-
                Server.sendData(player, EnumPackets.PING, MorePlayerModels.Version);
           } else if (type == EnumPackets.UPDATE_PLAYER_DATA) {
                ModelData data = ModelData.get(player);
@@ -107,8 +91,6 @@ public class PacketHandlerServer {
                data.setAnimation(animation);
          } else if (type == EnumPackets.PROP_CLEAR) {
              ModelData data = ModelData.get(player);
-
-             data.clearPropsClient();
 
               Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
          } else if (type == EnumPackets.PROP_ITEM_UPDATE) {

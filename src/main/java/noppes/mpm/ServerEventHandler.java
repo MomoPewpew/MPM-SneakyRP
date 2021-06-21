@@ -129,19 +129,18 @@ public class ServerEventHandler {
                }
 
                Server.sendDelayedData(player, EnumPackets.PROP_CLEAR, 100, target.getUniqueID());
-               ModelData dataplayer = ModelData.get(player);
-               for (int i = 0; i < dataplayer.propItemStack.size(); i++) {
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), dataplayer.propItemStack.get(i).writeToNBT(new NBTTagCompound()));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_PART_UPDATE, 100, target.getUniqueID(), dataplayer.propBodyPartName.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEX_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEY_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEZ_UPDATE, 100, target.getUniqueID(), dataplayer.propScaleZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETX_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETY_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, 100, target.getUniqueID(), dataplayer.propOffsetZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, 100, target.getUniqueID(), dataplayer.propRotateZ.get(i));
+               for (int i = 0; i < data.propItemStack.size(); i++) {
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), data.propItemStack.get(i).writeToNBT(new NBTTagCompound()));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_PART_UPDATE, 100, target.getUniqueID(), data.propBodyPartName.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEX_UPDATE, 100, target.getUniqueID(), data.propScaleX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEY_UPDATE, 100, target.getUniqueID(), data.propScaleY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEZ_UPDATE, 100, target.getUniqueID(), data.propScaleZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETX_UPDATE, 100, target.getUniqueID(), data.propOffsetX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETY_UPDATE, 100, target.getUniqueID(), data.propOffsetY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, 100, target.getUniqueID(), data.propOffsetZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), data.propRotateX.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), data.propRotateY.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, 100, target.getUniqueID(), data.propRotateZ.get(i));
                }
           }
      }

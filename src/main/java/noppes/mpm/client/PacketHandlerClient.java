@@ -15,7 +15,10 @@ import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PacketHandlerServer;
 import noppes.mpm.Server;
+import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
+import noppes.mpm.client.gui.GuiMPM;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
 
 public class PacketHandlerClient extends PacketHandlerServer {
@@ -235,7 +238,20 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     ModelData data = ModelData.get(pl);
                     data.setAnimation(buffer.readInt());
                     data.animationStart = pl.ticksExisted;
-               }
+               } else if (type == EnumPackets.PROP_GUI_OPEN) {
+                    pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+
+                    if (Minecraft.getMinecraft().thePlayer != pl)
+                    	return;
+
+	       			GuiMPM guiMPM = new GuiMPM();
+	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+	       			try {
+	       				guiMPM.setSubGui((GuiNPCInterface)GuiCreationProps.GuiProps.getClass().newInstance());
+	       			} catch (IllegalAccessException | InstantiationException e) {
+
+	       			}
+              }
           }
 
      }

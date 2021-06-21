@@ -1,19 +1,24 @@
 package noppes.mpm.commands;
 
 import java.util.List;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EntitySelectors;
 import noppes.mpm.ModelData;
+import noppes.mpm.Server;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
+import noppes.mpm.constants.EnumPackets;
 
 public class CommandProp extends MpmCommandInterface {
 
@@ -59,11 +64,15 @@ public class CommandProp extends MpmCommandInterface {
 	);
 
 	private final List<String> guiStrings = Lists.newArrayList(
-		     "gui",
-		     "interface",
-		     "ui",
-		     "options"
-		);
+	     "gui",
+	     "interface",
+	     "ui",
+	     "options"
+	);
+
+	private final List<String> giveStrings = Lists.newArrayList(
+	     "give"
+	);
 
 	@Override
 	public String getCommandName() {
@@ -76,19 +85,35 @@ public class CommandProp extends MpmCommandInterface {
 			return;
 
 		if (args.length == 0 || (args.length > 0 && guiStrings.contains(args[0]))) {
-
-			GuiMPM guiMPM = new GuiMPM();
-			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
-			try {
-				guiMPM.setSubGui((GuiNPCInterface)GuiCreationProps.GuiProps.getClass().newInstance());
-			} catch (IllegalAccessException | InstantiationException e) {
-
-			}
+			Server.sendAssociatedData((Entity) icommandsender, EnumPackets.PROP_GUI_OPEN, ((Entity) icommandsender).getUniqueID());
 			return;
 		}
 
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
+
+		if (args.length > 0 && giveStrings.contains(args[0])) {
+			EntityPlayerMP target = null;
+			Integer index = null;
+
+			if (args.length > 1) {
+				if (args[1].matches("^\\d+$")) {
+					index = Integer.parseInt(args[1]) - 1;
+				} else {
+					target = getPlayer(server, icommandsender, args[1]);
+				}
+			}
+			if (args.length > 2) {
+				if (args[2].matches("^\\d+$")) {
+					index = Integer.parseInt(args[2]) - 1;
+				} else {
+					target = getPlayer(server, icommandsender, args[2]);
+				}
+			}
+
+			giveProp(target, index, (EntityPlayerMP) icommandsender);
+			return;
+		}
 
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
@@ -120,6 +145,43 @@ public class CommandProp extends MpmCommandInterface {
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return "/prop [<itemname>] [<bodypart>] [<scaleX>] [<scaleY>] [<scaleZ>] [<offsetX>] [<offsetY>] [<offsetZ>] [<rotateX>] [<rotateY>] [<rotateZ>]";
+	}
+
+	private EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {
+		EntityPlayerMP closest = null;
+	    double closestDistance = 0;
+
+	    for (EntityPlayerMP entity : player.getEntityWorld().getEntities(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING)) {
+	        if (entity == player || !(entity instanceof EntityPlayerMP)) {
+	            continue;
+	        }
+
+	        double distance = entity.getPosition().distanceSq(player.getPosition());
+	        if ((closest == null || distance < closestDistance) && distance < 3) {
+	            closest = entity;
+	            closestDistance = distance;
+	        }
+	    }
+
+	    return closest;
+	}
+
+	private void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
+		ModelData data = ModelData.get(sender);
+
+		if (index == null) index = data.propItemStack.size() - 1;
+		if (target == null) target = getClosestPlayer(sender);
+
+		if (data != null && target != null && index >= 0) {
+			ModelData targetData = ModelData.get(target);
+
+			targetData.addProp(data.propItemStack.get(index), data.propBodyPartName.get(index),
+					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
+					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
+					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index));
+
+			data.removeProp(index);
+		}
 	}
 
 }

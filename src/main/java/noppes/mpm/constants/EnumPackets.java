@@ -21,5 +21,6 @@ public enum EnumPackets {
      PROP_ROTATEX_UPDATE,
      PROP_ROTATEY_UPDATE,
      PROP_ROTATEZ_UPDATE,
-     PROP_CLEAR;
+     PROP_CLEAR,
+	 PROP_GUI_OPEN;
 }

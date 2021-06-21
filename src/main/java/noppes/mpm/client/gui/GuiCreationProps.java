@@ -6,15 +6,12 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
-import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
@@ -23,7 +20,6 @@ import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISliderListener;
 import noppes.mpm.client.gui.util.ITextfieldListener;
-import noppes.mpm.constants.EnumPackets;
 
 public class GuiCreationProps extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener {
      private GuiCustomScroll scroll;
@@ -38,6 +34,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
     	  this.playerdata = ModelData.get(this.getPlayer());
           this.active = 100;
           this.xOffset = 140;
+          this.selected = this.playerdata.propItemStack.size() - 1;
      }
 
      @Override
@@ -55,6 +52,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                list.add(itemStack);
           }
 
+          this.scroll.selected = this.selected;
           this.scroll.setUnsortedList(list);
           this.scroll.guiLeft = this.guiLeft;
           this.scroll.guiTop = this.guiTop + 46;
@@ -116,9 +114,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                newProp = true;
                this.initGui();
           } else if (btn.id == 102) {
-       	   	  this.playerdata.removeProp(selected);
+       	   	  this.playerdata.removePropClient(selected);
        	   	  if (selected == this.playerdata.propItemStack.size()) selected -= 1;
-       	   	  this.scroll.selected = selected;
        	   	  if (selected >= 0) propName = this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString();
               this.initGui();
          } else if (btn.id == 103) {

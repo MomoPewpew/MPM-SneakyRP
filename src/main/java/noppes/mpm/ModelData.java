@@ -371,19 +371,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
   			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
   			Float propRotateX, Float propRotateY, Float propRotateZ
   			) {
-
-	    	this.propItemStack.add(propItemStack);
-	    	this.propBodyPartName.add(bodyPartName);
-	 		this.propScaleX.add(propScaleX);
-	 		this.propScaleY.add(propScaleY);
-	 		this.propScaleZ.add(propScaleZ);
-	 		this.propOffsetX.add(propOffsetX);
-	 		this.propOffsetY.add(propOffsetY);
-	 		this.propOffsetZ.add(propOffsetZ);
-	 		this.propRotateX.add(propRotateX);
-	 		this.propRotateY.add(propRotateY);
-	 		this.propRotateZ.add(propRotateZ);
-
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ITEM_UPDATE, this.player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_PART_UPDATE, this.player.getUniqueID(), bodyPartName);
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEX_UPDATE, this.player.getUniqueID(), propScaleX);
@@ -402,7 +389,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
   			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
   			Float propRotateX, Float propRotateY, Float propRotateZ
   			) {
-
 	    	this.propItemStack.add(propItemStack);
 	    	this.propBodyPartName.add(bodyPartName);
 	 		this.propScaleX.add(propScaleX);
@@ -417,6 +403,10 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      public void clearProps() {
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
+ 	}
+
+     public void clearPropsClient() {
          this.propItemStack.clear();
          this.propBodyPartName.clear();
          this.propScaleX.clear();
@@ -428,7 +418,5 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          this.propRotateX.clear();
          this.propRotateY.clear();
          this.propRotateZ.clear();
-
-		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 }

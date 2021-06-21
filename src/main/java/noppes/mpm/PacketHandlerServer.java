@@ -108,7 +108,7 @@ public class PacketHandlerServer {
          } else if (type == EnumPackets.PROP_CLEAR) {
              ModelData data = ModelData.get(player);
 
-             data.clearProps();
+             data.clearPropsClient();
 
               Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
          } else if (type == EnumPackets.PROP_ITEM_UPDATE) {

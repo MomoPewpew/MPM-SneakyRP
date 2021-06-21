@@ -196,17 +196,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propItemStack = new ArrayList();
-                  data.propBodyPartName = new ArrayList();
-                  data.propScaleX = new ArrayList();
-                  data.propScaleY = new ArrayList();
-                  data.propScaleZ = new ArrayList();
-                  data.propOffsetX = new ArrayList();
-                  data.propOffsetY = new ArrayList();
-                  data.propOffsetZ = new ArrayList();
-                  data.propRotateX = new ArrayList();
-                  data.propRotateY = new ArrayList();
-                  data.propRotateZ = new ArrayList();
+                  data.clearPropsClient();
                } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

@@ -2,6 +2,8 @@ package noppes.mpm.client;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
@@ -12,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -41,6 +45,10 @@ import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.sync.WebApi;
 import noppes.mpm.util.MPMEntityUtil;
+
+import org.bukkit.GameMode;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClientEventHandler {
@@ -344,4 +352,38 @@ public class ClientEventHandler {
 
           }
      }
+
+  	@EventHandler
+  	public void onGameModeChange(PlayerGameModeChangeEvent event) {
+     	 if (event.getPlayer() == Minecraft.getMinecraft().thePlayer && event.getNewGameMode() != GameMode.SPECTATOR) {
+     		 	ModelData data = ModelData.get((EntityPlayer) event.getPlayer());
+
+     	   		ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(data.propItemStack);
+     			ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(data.propBodyPartName);
+     			ArrayList<Float> propScaleXTemp = new ArrayList<Float>(data.propScaleX);
+     			ArrayList<Float> propScaleYTemp = new ArrayList<Float>(data.propScaleY);
+     			ArrayList<Float> propScaleZTemp = new ArrayList<Float>(data.propScaleZ);
+     			ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(data.propOffsetX);
+     			ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(data.propOffsetY);
+     			ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(data.propOffsetZ);
+     			ArrayList<Float> propRotateXTemp = new ArrayList<Float>(data.propRotateX);
+     			ArrayList<Float> propRotateYTemp = new ArrayList<Float>(data.propRotateY);
+     			ArrayList<Float> propRotateZTemp = new ArrayList<Float>(data.propRotateZ);
+
+     			Client.sendData(EnumPackets.PROP_CLEAR);
+     			for (int i = 0; i < propItemStackTemp.size(); i++) {
+     				Client.sendData(EnumPackets.PROP_ITEM_UPDATE, propItemStackTemp.get(i).writeToNBT(new NBTTagCompound()));
+     				Client.sendData(EnumPackets.PROP_PART_UPDATE, propBodyPartNameTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_SCALEX_UPDATE, propScaleXTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_SCALEY_UPDATE, propScaleYTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_SCALEZ_UPDATE, propScaleZTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_OFFSETX_UPDATE, propOffsetXTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_OFFSETY_UPDATE, propOffsetYTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_OFFSETZ_UPDATE, propOffsetZTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateXTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateYTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZTemp.get(i));
+     			}
+     	 }
+  	}
 }

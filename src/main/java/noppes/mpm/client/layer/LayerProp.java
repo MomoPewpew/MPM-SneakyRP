@@ -134,6 +134,11 @@ public class LayerProp extends LayerInterface {
 		    			 partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
 		    			 partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
+		    			 if (this.player.isSneaking()) {
+		    				 partModifierY += 0.1875F;
+		    				 partModifierZ -= 0.25F;
+		    			 }
+
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
 		    			 propOffsetY = propOffsetY * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleZ;
@@ -145,6 +150,11 @@ public class LayerProp extends LayerInterface {
 		    			 partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
 		    			 partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
+		    			 if (this.player.isSneaking()) {
+		    				 partModifierY += 0.1875F;
+		    				 partModifierZ -= 0.25F;
+		    			 }
+
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
     					 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleZ;
@@ -155,6 +165,11 @@ public class LayerProp extends LayerInterface {
 		    			 partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
 		    			 partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
+		    			 if (this.player.isSneaking()) {
+		    				 partModifierY += 0.1875F;
+		    				 partModifierZ -= 0.25F;
+		    			 }
+
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
 		    			 propOffsetY = propOffsetY * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleZ;
@@ -164,6 +179,11 @@ public class LayerProp extends LayerInterface {
 		    			 propBodyPart = this.model.bipedRightLeg;
 		    			 partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
 		    			 partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+
+		    			 if (this.player.isSneaking()) {
+		    				 partModifierY += 0.1875F;
+		    				 partModifierZ -= 0.25F;
+		    			 }
 
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
     					 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY;

@@ -218,7 +218,7 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
-	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && mc.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
+	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
     			 	continue;
 
 	    		 Float propOffsetXCorrected;

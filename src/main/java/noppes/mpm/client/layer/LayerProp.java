@@ -84,7 +84,7 @@ public class LayerProp extends LayerInterface {
 
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(EnumParts.BODY).scaleX;
     					 propOffsetY = (propOffsetY - 0.3F) * this.playerdata.getPartConfig(EnumParts.BODY).scaleY;
-    					 propOffsetZ = (propOffsetY - 0.15F) * this.playerdata.getPartConfig(EnumParts.BODY).scaleZ;
+    					 propOffsetZ = (propOffsetZ - 0.15F) * this.playerdata.getPartConfig(EnumParts.BODY).scaleZ;
 		    			 break;
 		    		 case "arm":
 		    		 case "armleft":

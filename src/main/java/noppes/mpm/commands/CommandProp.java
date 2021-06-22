@@ -28,6 +28,7 @@ public class CommandProp extends MpmCommandInterface {
 		 "model",
 		 "body",
 		 "torso",
+		 "back",
 		 "arm",
 		 "hand",
 		 "armleft",

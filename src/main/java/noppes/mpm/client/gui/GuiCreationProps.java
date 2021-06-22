@@ -66,10 +66,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           }
 
           y = this.guiTop + 45;
-          this.addButton(new GuiNpcButton(101, this.guiLeft + 112, y, 72, 20, "gui.addprop"));
+          this.addButton(new GuiNpcButton(101, this.guiLeft + 112, y, 20, 20, "+"));
           if (selected >= 0) {
-        	  this.addButton(new GuiNpcButton(102, this.guiLeft + 186, y, 72, 20, "gui.deleteprop"));
-        	  this.addButton(new GuiNpcButton(103, this.guiLeft + 260, y, 72, 20, "gui.copycommand"));
+        	  this.addButton(new GuiNpcButton(102, this.guiLeft + 134, y, 20, 20, "-"));
+        	  this.addButton(new GuiNpcButton(103, this.guiLeft + 253, y, 78, 20, "gui.copycommand"));
         	  y += 22;
               this.addLabel(new GuiNpcLabel(104, "gui.name", this.guiLeft + 112, y + 5, 16777215));
               this.addTextField(new GuiNpcTextField(104, this, this.guiLeft + 145, y, 185, 20, propName));
@@ -103,6 +103,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
               }
 
               this.getButton(sliders).enabled = false;
+
+              y += 22;
+        	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", this.guiLeft + 112, y + 5, 16777215));
+              this.addButton(new GuiNpcButton(118, this.guiLeft + 210, y, 55, 20, new String[]{"gui.false", "gui.true"}, this.playerdata.propMatchScaling.get(selected) ? 1 : 0));
           }
      }
 
@@ -110,7 +114,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 101) {
-        	   this.playerdata.addPropClient(new ItemStack(Blocks.CRAFTING_TABLE), "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        	   this.playerdata.addPropClient(new ItemStack(Blocks.CRAFTING_TABLE), "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, false);
                newProp = true;
                this.initGui();
           } else if (btn.id == 102) {
@@ -123,7 +127,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         			 this.playerdata.propItemStack.get(selected).getItem().getRegistryName().toString() + " " + this.playerdata.propBodyPartName.get(selected) + " " +
         			 this.playerdata.propScaleX.get(selected) + " " + this.playerdata.propScaleY.get(selected) + " " + this.playerdata.propScaleZ.get(selected) + " " +
         			 this.playerdata.propOffsetX.get(selected) + " " + this.playerdata.propOffsetY.get(selected) + " " + this.playerdata.propOffsetZ.get(selected) + " " +
-        			 this.playerdata.propRotateX.get(selected) + " " + this.playerdata.propRotateY.get(selected) + " " + this.playerdata.propRotateZ.get(selected);
+        			 this.playerdata.propRotateX.get(selected) + " " + this.playerdata.propRotateY.get(selected) + " " + this.playerdata.propRotateZ.get(selected) + " " +
+        			 this.playerdata.propMatchScaling.get(selected);
         	 StringSelection selection = new StringSelection(command);
         	 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         	 clipboard.setContents(selection, selection);
@@ -138,6 +143,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
              this.initGui();
          } else if (btn.id == 105) {
         	 this.playerdata.propBodyPartName.set(selected, this.bodyParts.get(((GuiNpcButton)btn).getValue()));
+             this.initGui();
+         } else if (btn.id == 118) {
+        	 this.playerdata.propMatchScaling.set(selected, ((GuiNpcButton)btn).getValue() == 1 ? true : false);
              this.initGui();
          }
      }

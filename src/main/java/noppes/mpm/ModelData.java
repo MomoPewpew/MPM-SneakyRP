@@ -63,6 +63,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public List<Float> propRotateX;
      public List<Float> propRotateY;
      public List<Float> propRotateZ;
+     public List<Boolean> propMatchScaling;
 
      public ModelData() {
           this.backItem = null;
@@ -87,6 +88,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.propRotateX = new ArrayList();
           this.propRotateY = new ArrayList();
           this.propRotateZ = new ArrayList();
+          this.propMatchScaling = new ArrayList();
      }
 
      @Override
@@ -353,6 +355,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
     	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
     	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+    	 ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
 
  		this.clearProps();
 
@@ -361,7 +364,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
         		this.addProp(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
         				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
         				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
-        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i));
+        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
+        				propMatchScalingTemp.get(index));
         	}
         }
      }
@@ -378,15 +382,17 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
     	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
     	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+    	 ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
 
- 		this.clearPropsClient();
+ 		this.clearProps();
 
         for (int i = 0; i < propItemStackTemp.size(); i++) {
         	if (i != index) {
         		this.addPropClient(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
         				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
         				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
-        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i));
+        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
+        				propMatchScalingTemp.get(index));
         	}
         }
      }
@@ -394,7 +400,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public void addProp(ItemStack propItemStack, String bodyPartName,
   			Float propScaleX, Float propScaleY, Float propScaleZ,
   			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-  			Float propRotateX, Float propRotateY, Float propRotateZ
+  			Float propRotateX, Float propRotateY, Float propRotateZ, Boolean propMatchScaling
   			) {
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ITEM_UPDATE, this.player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_PART_UPDATE, this.player.getUniqueID(), bodyPartName);
@@ -407,12 +413,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEX_UPDATE, this.player.getUniqueID(), propRotateX);
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEY_UPDATE, this.player.getUniqueID(), propRotateY);
 	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEZ_UPDATE, this.player.getUniqueID(), propRotateZ);
+	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_AUTOSCALE_UPDATE, this.player.getUniqueID(), propMatchScaling);
      }
 
      public void addPropClient(ItemStack propItemStack, String bodyPartName,
   			Float propScaleX, Float propScaleY, Float propScaleZ,
   			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-  			Float propRotateX, Float propRotateY, Float propRotateZ
+  			Float propRotateX, Float propRotateY, Float propRotateZ, Boolean propMatchScaling
   			) {
 	    	this.propItemStack.add(propItemStack);
 	    	this.propBodyPartName.add(bodyPartName);
@@ -425,6 +432,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	 		this.propRotateX.add(propRotateX);
 	 		this.propRotateY.add(propRotateY);
 	 		this.propRotateZ.add(propRotateZ);
+	 		this.propMatchScaling.add(propMatchScaling);
      }
 
      public void clearProps() {
@@ -439,6 +447,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          this.propRotateX.clear();
          this.propRotateY.clear();
          this.propRotateZ.clear();
+         this.propMatchScaling.clear();
 
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
@@ -455,5 +464,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          this.propRotateX.clear();
          this.propRotateY.clear();
          this.propRotateZ.clear();
+         this.propMatchScaling.clear();
  	}
 }

@@ -170,6 +170,13 @@ public class PacketHandlerServer {
              data.propRotateZ.add(partFloat);
 
 	 	     Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), partFloat);
+	     } else if (type == EnumPackets.PROP_AUTOSCALE_UPDATE) {
+             ModelData data = ModelData.get(player);
+
+             Boolean partBoolean = buffer.readBoolean();
+             data.propMatchScaling.add(partBoolean);
+
+	 	     Server.sendAssociatedData(player, EnumPackets.PROP_AUTOSCALE_UPDATE, player.getUniqueID(), partBoolean);
 	     }
 
      }

@@ -139,8 +139,9 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateX = (args.length > 8) ? Float.valueOf(args[8]) : 0.0F;
 		Float propRotateY = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
+		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
 
-		data.addProp(propItemStack, bodyPartName, propScaleX, propScaleY, propScaleZ, propOffsetX, propOffsetY, propOffsetZ, propRotateX, propRotateY, propRotateZ);
+		data.addProp(propItemStack, bodyPartName, propScaleX, propScaleY, propScaleZ, propOffsetX, propOffsetY, propOffsetZ, propRotateX, propRotateY, propRotateZ, propMatchScaling);
 	}
 
 	@Override
@@ -179,7 +180,8 @@ public class CommandProp extends MpmCommandInterface {
 			targetData.addProp(data.propItemStack.get(index), data.propBodyPartName.get(index),
 					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
 					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
-					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index));
+					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
+					data.propMatchScaling.get(index));
 
 			data.removeProp(index);
 		}

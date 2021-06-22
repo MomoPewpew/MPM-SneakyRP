@@ -141,6 +141,7 @@ public class ServerEventHandler {
             	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), data.propRotateX.get(i));
             	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), data.propRotateY.get(i));
             	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, 100, target.getUniqueID(), data.propRotateZ.get(i));
+            	   Server.sendDelayedData(player, EnumPackets.PROP_AUTOSCALE_UPDATE, 100, target.getUniqueID(), data.propMatchScaling.get(i));
                }
           }
      }

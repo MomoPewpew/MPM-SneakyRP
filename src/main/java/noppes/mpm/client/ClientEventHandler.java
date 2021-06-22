@@ -369,6 +369,7 @@ public class ClientEventHandler {
      			ArrayList<Float> propRotateXTemp = new ArrayList<Float>(data.propRotateX);
      			ArrayList<Float> propRotateYTemp = new ArrayList<Float>(data.propRotateY);
      			ArrayList<Float> propRotateZTemp = new ArrayList<Float>(data.propRotateZ);
+     			ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(data.propMatchScaling);
 
      			Client.sendData(EnumPackets.PROP_CLEAR);
      			for (int i = 0; i < propItemStackTemp.size(); i++) {
@@ -383,6 +384,7 @@ public class ClientEventHandler {
      				Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateXTemp.get(i));
      				Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateYTemp.get(i));
      				Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZTemp.get(i));
+     				Client.sendData(EnumPackets.PROP_AUTOSCALE_UPDATE, propMatchScalingTemp.get(i));
      			}
      	 }
   	}

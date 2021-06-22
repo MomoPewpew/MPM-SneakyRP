@@ -170,6 +170,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 		ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.playerdata.propRotateX);
 		ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.playerdata.propRotateY);
 		ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.playerdata.propRotateZ);
+		ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.playerdata.propMatchScaling);
 
 		Client.sendData(EnumPackets.PROP_CLEAR);
 		for (int i = 0; i < propItemStackTemp.size(); i++) {
@@ -184,6 +185,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 			Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateXTemp.get(i));
 			Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateYTemp.get(i));
 			Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZTemp.get(i));
+			Client.sendData(EnumPackets.PROP_AUTOSCALE_UPDATE, propMatchScalingTemp.get(i));
 		}
      }
 

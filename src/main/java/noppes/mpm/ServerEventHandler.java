@@ -26,6 +26,8 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
 
@@ -157,6 +159,7 @@ public class ServerEventHandler {
 
      }
 
+    @SideOnly(Side.SERVER)
    	@EventHandler
    	public void onGameModeChange(PlayerGameModeChangeEvent event) {
       	 if (event.getNewGameMode() != GameMode.SPECTATOR) {

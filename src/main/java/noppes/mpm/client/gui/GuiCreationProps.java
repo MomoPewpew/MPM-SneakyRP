@@ -197,8 +197,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
      @Override
      public void mouseDragged(GuiNpcSlider slider) {
-          if (this.initiating) return;
           super.mouseDragged(slider);
+          if (this.initiating) return;
 
           if (slider.id >= 109 && slider.id <= 117) {
               Float value = 0.0F;

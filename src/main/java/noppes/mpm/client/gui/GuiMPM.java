@@ -159,34 +159,32 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                }
           }
 
-          if (subgui instanceof GuiCreationProps) {
-       		ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.playerdata.propItemStack);
-    		ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.playerdata.propBodyPartName);
-    		ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.playerdata.propScaleX);
-    		ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.playerdata.propScaleY);
-    		ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.playerdata.propScaleZ);
-    		ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.playerdata.propOffsetX);
-    		ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.playerdata.propOffsetY);
-    		ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.playerdata.propOffsetZ);
-    		ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.playerdata.propRotateX);
-    		ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.playerdata.propRotateY);
-    		ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.playerdata.propRotateZ);
+   		ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.playerdata.propItemStack);
+		ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.playerdata.propBodyPartName);
+		ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.playerdata.propScaleX);
+		ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.playerdata.propScaleY);
+		ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.playerdata.propScaleZ);
+		ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.playerdata.propOffsetX);
+		ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.playerdata.propOffsetY);
+		ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.playerdata.propOffsetZ);
+		ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.playerdata.propRotateX);
+		ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.playerdata.propRotateY);
+		ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.playerdata.propRotateZ);
 
-    		Client.sendData(EnumPackets.PROP_CLEAR);
-    		for (int i = 0; i < propItemStackTemp.size(); i++) {
-    			Client.sendData(EnumPackets.PROP_ITEM_UPDATE, propItemStackTemp.get(i).writeToNBT(new NBTTagCompound()));
-    			Client.sendData(EnumPackets.PROP_PART_UPDATE, propBodyPartNameTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_SCALEX_UPDATE, propScaleXTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_SCALEY_UPDATE, propScaleYTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_SCALEZ_UPDATE, propScaleZTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_OFFSETX_UPDATE, propOffsetXTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_OFFSETY_UPDATE, propOffsetYTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_OFFSETZ_UPDATE, propOffsetZTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateXTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateYTemp.get(i));
-    			Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZTemp.get(i));
-    		}
-          }
+		Client.sendData(EnumPackets.PROP_CLEAR);
+		for (int i = 0; i < propItemStackTemp.size(); i++) {
+			Client.sendData(EnumPackets.PROP_ITEM_UPDATE, propItemStackTemp.get(i).writeToNBT(new NBTTagCompound()));
+			Client.sendData(EnumPackets.PROP_PART_UPDATE, propBodyPartNameTemp.get(i));
+			Client.sendData(EnumPackets.PROP_SCALEX_UPDATE, propScaleXTemp.get(i));
+			Client.sendData(EnumPackets.PROP_SCALEY_UPDATE, propScaleYTemp.get(i));
+			Client.sendData(EnumPackets.PROP_SCALEZ_UPDATE, propScaleZTemp.get(i));
+			Client.sendData(EnumPackets.PROP_OFFSETX_UPDATE, propOffsetXTemp.get(i));
+			Client.sendData(EnumPackets.PROP_OFFSETY_UPDATE, propOffsetYTemp.get(i));
+			Client.sendData(EnumPackets.PROP_OFFSETZ_UPDATE, propOffsetZTemp.get(i));
+			Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateXTemp.get(i));
+			Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateYTemp.get(i));
+			Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZTemp.get(i));
+		}
      }
 
      @Override

@@ -47,6 +47,8 @@ gui.model=Model
 gui.matchscaling=Match Limb Scaling
 gui.true=True
 gui.false=False
+gui.give=Give
+gui.duplicate=Duplicate
 
 animation.sleep=Sleep
 animation.crawl=Crawl

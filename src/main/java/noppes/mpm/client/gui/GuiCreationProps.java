@@ -33,12 +33,13 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private static final Float maxOffset = 2.0F;
      private static final Float maxRotation = 180.0F;
      private Boolean initiating = false;
+     private final Integer guiOffsetX = this.guiLeft + 158;
 
      public GuiCreationProps() {
     	  this.playerdata = ModelData.get(this.getPlayer());
           this.active = 100;
           this.xOffset = 140;
-          this.selected = this.playerdata.propItemStack.size() - 1;
+          selected = this.playerdata.propItemStack.size() - 1;
      }
 
      @Override
@@ -49,7 +50,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                this.scroll = new GuiCustomScroll(this, 0);
           }
 
-
           ArrayList<String> list = new ArrayList<String>();
           Integer y = this.playerdata.propItemStack.size();
 
@@ -58,7 +58,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                list.add(itemStack);
           }
 
-          this.scroll.selected = this.selected;
+          this.scroll.selected = selected;
           this.scroll.setUnsortedList(list);
           this.scroll.guiLeft = this.guiLeft;
           this.scroll.guiTop = this.guiTop + 46;
@@ -72,70 +72,72 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           }
 
           y = this.guiTop + 45;
-          this.addButton(new GuiNpcButton(101, this.guiLeft + 112, y, 20, 20, "+"));
+          this.addButton(new GuiNpcButton(101, this.guiOffsetX, y, 20, 20, "+"));
           if (selected >= 0) {
-        	  this.addButton(new GuiNpcButton(102, this.guiLeft + 134, y, 20, 20, "-"));
-        	  this.addButton(new GuiNpcButton(103, this.guiLeft + 253, y, 78, 20, "gui.copycommand"));
+        	  this.addButton(new GuiNpcButton(102, this.guiOffsetX + 22, y, 20, 20, "-"));
+        	  this.addButton(new GuiNpcButton(119, this.guiOffsetX + 44, y, 54, 20, "gui.duplicate"));
+        	  this.addButton(new GuiNpcButton(120, this.guiOffsetX + 100, y, 39, 20, "gui.give"));
+        	  this.addButton(new GuiNpcButton(103, this.guiOffsetX + 141, y, 78, 20, "gui.copycommand"));
         	  y += 22;
-              this.addLabel(new GuiNpcLabel(104, "gui.name", this.guiLeft + 112, y + 5, 16777215));
-              this.addTextField(new GuiNpcTextField(104, this, this.guiLeft + 145, y, 185, 20, propName));
+              this.addLabel(new GuiNpcLabel(104, "gui.name", this.guiOffsetX, y + 5, 16777215));
+              this.addTextField(new GuiNpcTextField(104, this, this.guiOffsetX + 33, y, 185, 20, propName));
         	  y += 22;
-        	  this.addLabel(new GuiNpcLabel(105, "gui.bodypart", this.guiLeft + 112, y + 5, 16777215));
-              this.addButton(new GuiNpcButton(105, this.guiLeft + 152, y, 70, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
+        	  this.addLabel(new GuiNpcLabel(105, "gui.bodypart", this.guiOffsetX, y + 5, 16777215));
+              this.addButton(new GuiNpcButton(105, this.guiOffsetX + 40, y, 70, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
             		  bodyParts.contains(this.playerdata.propBodyPartName.get(selected)) ? bodyParts.indexOf(this.playerdata.propBodyPartName.get(selected)) : 0));
               y += 22;
-              this.addButton(new GuiNpcButton(106, this.guiLeft + 112, y, 50, 20, "gui.scale"));
-              this.addButton(new GuiNpcButton(107, this.guiLeft + 163, y, 50, 20, "gui.offset"));
-              this.addButton(new GuiNpcButton(108, this.guiLeft + 214, y, 50, 20, "gui.rotate"));
+              this.addButton(new GuiNpcButton(106, this.guiOffsetX, y, 50, 20, "gui.scale"));
+              this.addButton(new GuiNpcButton(107, this.guiOffsetX + 51, y, 50, 20, "gui.offset"));
+              this.addButton(new GuiNpcButton(108, this.guiOffsetX + 102, y, 50, 20, "gui.rotate"));
               y += 22;
               if (sliders == 106) {
-                  this.addTextField(new GuiNpcTextField(109, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleX.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 109, this.guiLeft + 112, y, 152, 20, (this.playerdata.propScaleX.get(selected) / maxScale)));
+                  this.addTextField(new GuiNpcTextField(109, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleX.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 109, this.guiOffsetX, y, 152, 20, (this.playerdata.propScaleX.get(selected) / maxScale)));
                   this.getSlider(109).displayString = "X";
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(110, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleY.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 110, this.guiLeft + 112, y, 152, 20, (this.playerdata.propScaleY.get(selected) / maxScale)));
+                  this.addTextField(new GuiNpcTextField(110, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleY.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 110, this.guiOffsetX, y, 152, 20, (this.playerdata.propScaleY.get(selected) / maxScale)));
                   this.getSlider(110).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(111, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleZ.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 111, this.guiLeft + 112, y, 152, 20, (this.playerdata.propScaleZ.get(selected) / maxScale)));
+                  this.addTextField(new GuiNpcTextField(111, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propScaleZ.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 111, this.guiOffsetX, y, 152, 20, (this.playerdata.propScaleZ.get(selected) / maxScale)));
                   this.getSlider(111).displayString = "Z";
               } else if (sliders == 107) {
-                  this.addTextField(new GuiNpcTextField(112, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetX.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 112, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propOffsetX.get(selected) + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(112, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetX.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 112, this.guiOffsetX, y, 152, 20, ((this.playerdata.propOffsetX.get(selected) + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(112).displayString = "X";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(113, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetY.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 113, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propOffsetY.get(selected) + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(113, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetY.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 113, this.guiOffsetX, y, 152, 20, ((this.playerdata.propOffsetY.get(selected) + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(113).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(114, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetZ.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 114, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propOffsetZ.get(selected) + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(114, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.propOffsetZ.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 114, this.guiOffsetX, y, 152, 20, ((this.playerdata.propOffsetZ.get(selected) + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(114).displayString = "Z";
               } else if (sliders == 108) {
-                  this.addTextField(new GuiNpcTextField(115, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateX.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 115, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propRotateX.get(selected) + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(115, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateX.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 115, this.guiOffsetX, y, 152, 20, ((this.playerdata.propRotateX.get(selected) + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(115).displayString = "X";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(116, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateY.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 116, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propRotateY.get(selected) + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(116, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateY.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 116, this.guiOffsetX, y, 152, 20, ((this.playerdata.propRotateY.get(selected) + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(116).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(117, this, this.guiLeft + 266, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateZ.get(selected))));
-                  this.addSlider(new GuiNpcSlider(this, 117, this.guiLeft + 112, y, 152, 20, ((this.playerdata.propRotateZ.get(selected) + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(117, this, this.guiOffsetX + 154, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", this.playerdata.propRotateZ.get(selected))));
+                  this.addSlider(new GuiNpcSlider(this, 117, this.guiOffsetX, y, 152, 20, ((this.playerdata.propRotateZ.get(selected) + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(117).displayString = "Z";
               }
 
               this.getButton(sliders).enabled = false;
 
               y += 22;
-        	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", this.guiLeft + 112, y + 5, 16777215));
-              this.addButton(new GuiNpcButton(118, this.guiLeft + 210, y, 55, 20, new String[]{"gui.false", "gui.true"}, this.playerdata.propMatchScaling.get(selected) ? 1 : 0));
+        	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", this.guiOffsetX, y + 5, 16777215));
+              this.addButton(new GuiNpcButton(118, this.guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, this.playerdata.propMatchScaling.get(selected) ? 1 : 0));
           }
 
           this.initiating = false;

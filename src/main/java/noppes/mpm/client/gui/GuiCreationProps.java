@@ -180,6 +180,16 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
          } else if (btn.id == 118) {
         	 this.playerdata.propMatchScaling.set(selected, ((GuiNpcButton)btn).getValue() == 1 ? true : false);
              this.initGui();
+         } else if (btn.id == 119) {
+        	 this.playerdata.addPropLocal(this.playerdata.propItemStack.get(selected), this.playerdata.propBodyPartName.get(selected),
+				 this.playerdata.propScaleX.get(selected), this.playerdata.propScaleY.get(selected), this.playerdata.propScaleZ.get(selected),
+				 this.playerdata.propOffsetX.get(selected), this.playerdata.propOffsetY.get(selected), this.playerdata.propOffsetZ.get(selected),
+				 this.playerdata.propRotateX.get(selected), this.playerdata.propRotateY.get(selected), this.playerdata.propRotateZ.get(selected),
+				 this.playerdata.propMatchScaling.get(selected));
+             this.initGui();
+         } else if (btn.id == 120) {
+
+             this.initGui();
          }
      }
 

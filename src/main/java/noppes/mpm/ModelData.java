@@ -15,16 +15,19 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
@@ -343,99 +346,67 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public void update() {
      }
 
-     public void removeProp(Integer index) {
-    	 ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
-    	 ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
-    	 ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
-    	 ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
-    	 ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
-    	 ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
-    	 ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
-    	 ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
-    	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
-    	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
-    	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
-    	 ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
-
- 		this.clearProps();
-
-        for (int i = 0; i < propItemStackTemp.size(); i++) {
-        	if (i != index) {
-        		this.addProp(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
-        				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
-        				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
-        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
-        				propMatchScalingTemp.get(index));
-        	}
-        }
-     }
-
-     public void removePropClient(Integer index) {
-    	 ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
-    	 ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
-    	 ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
-    	 ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
-    	 ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
-    	 ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
-    	 ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
-    	 ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
-    	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
-    	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
-    	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
-    	 ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
-
- 		this.clearProps();
-
-        for (int i = 0; i < propItemStackTemp.size(); i++) {
-        	if (i != index) {
-        		this.addPropClient(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
-        				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
-        				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
-        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
-        				propMatchScalingTemp.get(index));
-        	}
-        }
-     }
-
-     public void addProp(ItemStack propItemStack, String bodyPartName,
-  			Float propScaleX, Float propScaleY, Float propScaleZ,
-  			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-  			Float propRotateX, Float propRotateY, Float propRotateZ, Boolean propMatchScaling
-  			) {
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ITEM_UPDATE, this.player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_PART_UPDATE, this.player.getUniqueID(), bodyPartName);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEX_UPDATE, this.player.getUniqueID(), propScaleX);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEY_UPDATE, this.player.getUniqueID(), propScaleY);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEZ_UPDATE, this.player.getUniqueID(), propScaleZ);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETX_UPDATE, this.player.getUniqueID(), propOffsetX);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETY_UPDATE, this.player.getUniqueID(), propOffsetY);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETZ_UPDATE, this.player.getUniqueID(), propOffsetZ);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEX_UPDATE, this.player.getUniqueID(), propRotateX);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEY_UPDATE, this.player.getUniqueID(), propRotateY);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEZ_UPDATE, this.player.getUniqueID(), propRotateZ);
-	 		Server.sendAssociatedData(this.player, EnumPackets.PROP_AUTOSCALE_UPDATE, this.player.getUniqueID(), propMatchScaling);
+     public void addPropLocal(ItemStack propItemStack, String bodyPartName,
+		Float propScaleX, Float propScaleY, Float propScaleZ,
+		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+		Float propRotateX, Float propRotateY, Float propRotateZ,
+		Boolean propMatchScaling
+		) {
+    	this.propItemStack.add(propItemStack);
+    	this.propBodyPartName.add(bodyPartName);
+ 		this.propScaleX.add(propScaleX);
+ 		this.propScaleY.add(propScaleY);
+ 		this.propScaleZ.add(propScaleZ);
+ 		this.propOffsetX.add(propOffsetX);
+ 		this.propOffsetY.add(propOffsetY);
+ 		this.propOffsetZ.add(propOffsetZ);
+ 		this.propRotateX.add(propRotateX);
+ 		this.propRotateY.add(propRotateY);
+ 		this.propRotateZ.add(propRotateZ);
+ 		this.propMatchScaling.add(propMatchScaling);
      }
 
      public void addPropClient(ItemStack propItemStack, String bodyPartName,
-  			Float propScaleX, Float propScaleY, Float propScaleZ,
-  			Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-  			Float propRotateX, Float propRotateY, Float propRotateZ, Boolean propMatchScaling
-  			) {
-	    	this.propItemStack.add(propItemStack);
-	    	this.propBodyPartName.add(bodyPartName);
-	 		this.propScaleX.add(propScaleX);
-	 		this.propScaleY.add(propScaleY);
-	 		this.propScaleZ.add(propScaleZ);
-	 		this.propOffsetX.add(propOffsetX);
-	 		this.propOffsetY.add(propOffsetY);
-	 		this.propOffsetZ.add(propOffsetZ);
-	 		this.propRotateX.add(propRotateX);
-	 		this.propRotateY.add(propRotateY);
-	 		this.propRotateZ.add(propRotateZ);
-	 		this.propMatchScaling.add(propMatchScaling);
+		Float propScaleX, Float propScaleY, Float propScaleZ,
+		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+		Float propRotateX, Float propRotateY, Float propRotateZ,
+		Boolean propMatchScaling
+		) {
+ 		Client.sendData(EnumPackets.PROP_ITEM_UPDATE, propItemStack.writeToNBT(new NBTTagCompound()));
+ 		Client.sendData(EnumPackets.PROP_PART_UPDATE, bodyPartName);
+ 		Client.sendData(EnumPackets.PROP_SCALEX_UPDATE, propScaleX);
+ 		Client.sendData(EnumPackets.PROP_SCALEY_UPDATE, propScaleY);
+ 		Client.sendData(EnumPackets.PROP_SCALEZ_UPDATE, propScaleZ);
+ 		Client.sendData(EnumPackets.PROP_OFFSETX_UPDATE, propOffsetX);
+ 		Client.sendData(EnumPackets.PROP_OFFSETY_UPDATE, propOffsetY);
+ 		Client.sendData(EnumPackets.PROP_OFFSETZ_UPDATE, propOffsetZ);
+ 		Client.sendData(EnumPackets.PROP_ROTATEX_UPDATE, propRotateX);
+ 		Client.sendData(EnumPackets.PROP_ROTATEY_UPDATE, propRotateY);
+ 		Client.sendData(EnumPackets.PROP_ROTATEZ_UPDATE, propRotateZ);
+ 		Client.sendData(EnumPackets.PROP_AUTOSCALE_UPDATE, propMatchScaling);
      }
 
-     public void clearProps() {
+     public void addPropServer(ItemStack propItemStack, String bodyPartName,
+		Float propScaleX, Float propScaleY, Float propScaleZ,
+		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+		Float propRotateX, Float propRotateY, Float propRotateZ,
+		Boolean propMatchScaling
+		) {
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ITEM_UPDATE, this.player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_PART_UPDATE, this.player.getUniqueID(), bodyPartName);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEX_UPDATE, this.player.getUniqueID(), propScaleX);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEY_UPDATE, this.player.getUniqueID(), propScaleY);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_SCALEZ_UPDATE, this.player.getUniqueID(), propScaleZ);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETX_UPDATE, this.player.getUniqueID(), propOffsetX);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETY_UPDATE, this.player.getUniqueID(), propOffsetY);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_OFFSETZ_UPDATE, this.player.getUniqueID(), propOffsetZ);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEX_UPDATE, this.player.getUniqueID(), propRotateX);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEY_UPDATE, this.player.getUniqueID(), propRotateY);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ROTATEZ_UPDATE, this.player.getUniqueID(), propRotateZ);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_AUTOSCALE_UPDATE, this.player.getUniqueID(), propMatchScaling);
+     }
+
+     public void clearPropsLocal() {
     	 this.propItemStack.clear();
          this.propBodyPartName.clear();
          this.propScaleX.clear();
@@ -448,22 +419,96 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          this.propRotateY.clear();
          this.propRotateZ.clear();
          this.propMatchScaling.clear();
-
-		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 
      public void clearPropsClient() {
-         this.propItemStack.clear();
-         this.propBodyPartName.clear();
-         this.propScaleX.clear();
-         this.propScaleY.clear();
-         this.propScaleZ.clear();
-         this.propOffsetX.clear();
-         this.propOffsetY.clear();
-         this.propOffsetZ.clear();
-         this.propRotateX.clear();
-         this.propRotateY.clear();
-         this.propRotateZ.clear();
-         this.propMatchScaling.clear();
+  		Client.sendData(EnumPackets.PROP_CLEAR);
  	}
+
+     public void clearPropsServer() {
+    	Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
+ 	}
+
+     public void removePropLocal(Integer index) {
+    	 ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
+    	 ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
+    	 ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
+    	 ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
+    	 ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
+    	 ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
+    	 ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
+    	 ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
+    	 ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
+    	 ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
+    	 ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+    	 ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
+
+ 		this.clearPropsLocal();
+
+        for (int i = 0; i < propItemStackTemp.size(); i++) {
+        	if (i != index) {
+        		this.addPropLocal(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
+        				propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
+        				propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
+        				propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
+        				propMatchScalingTemp.get(index));
+        	}
+        }
+     }
+
+     public void removePropClient(Integer index) {
+   		Client.sendData(EnumPackets.PROP_REMOVE, index);
+     }
+
+     public void removePropServer(Integer index) {
+     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), index);
+     }
+
+     public void propSyncClient() {
+		ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
+		ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
+		ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
+		ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
+		ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
+		ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
+		ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
+		ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
+		ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
+		ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
+		ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+		ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
+
+		this.clearPropsClient();
+		for (int i = 0; i < propItemStackTemp.size(); i++) {
+			this.addPropClient(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
+					propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
+					propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
+					propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
+					propMatchScalingTemp.get(i));
+		}
+     }
+
+     public void propSyncServer() {
+ 		ArrayList<ItemStack> propItemStackTemp = new ArrayList<ItemStack>(this.propItemStack);
+ 		ArrayList<String> propBodyPartNameTemp = new ArrayList<String>(this.propBodyPartName);
+ 		ArrayList<Float> propScaleXTemp = new ArrayList<Float>(this.propScaleX);
+ 		ArrayList<Float> propScaleYTemp = new ArrayList<Float>(this.propScaleY);
+ 		ArrayList<Float> propScaleZTemp = new ArrayList<Float>(this.propScaleZ);
+ 		ArrayList<Float> propOffsetXTemp = new ArrayList<Float>(this.propOffsetX);
+ 		ArrayList<Float> propOffsetYTemp = new ArrayList<Float>(this.propOffsetY);
+ 		ArrayList<Float> propOffsetZTemp = new ArrayList<Float>(this.propOffsetZ);
+ 		ArrayList<Float> propRotateXTemp = new ArrayList<Float>(this.propRotateX);
+ 		ArrayList<Float> propRotateYTemp = new ArrayList<Float>(this.propRotateY);
+ 		ArrayList<Float> propRotateZTemp = new ArrayList<Float>(this.propRotateZ);
+ 		ArrayList<Boolean> propMatchScalingTemp = new ArrayList<Boolean>(this.propMatchScaling);
+
+ 		this.clearPropsServer();
+ 		for (int i = 0; i < propItemStackTemp.size(); i++) {
+ 			this.addPropServer(propItemStackTemp.get(i), propBodyPartNameTemp.get(i),
+ 					propScaleXTemp.get(i), propScaleYTemp.get(i), propScaleZTemp.get(i),
+ 					propOffsetXTemp.get(i), propOffsetYTemp.get(i), propOffsetZTemp.get(i),
+ 					propRotateXTemp.get(i), propRotateYTemp.get(i), propRotateZTemp.get(i),
+ 					propMatchScalingTemp.get(i));
+ 		}
+     }
 }

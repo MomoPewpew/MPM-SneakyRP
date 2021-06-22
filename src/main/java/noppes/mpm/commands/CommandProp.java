@@ -86,7 +86,7 @@ public class CommandProp extends MpmCommandInterface {
 			return;
 
 		if (args.length == 0 || (args.length > 0 && guiStrings.contains(args[0]))) {
-			Server.sendAssociatedData((Entity) icommandsender, EnumPackets.PROP_GUI_OPEN, ((Entity) icommandsender).getUniqueID());
+			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.PROP_GUI_OPEN);
 			return;
 		}
 
@@ -119,12 +119,12 @@ public class CommandProp extends MpmCommandInterface {
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
 		if (args.length > 0 && clearStrings.contains(args[0])) {
-			data.clearProps();
+			data.clearPropsServer();
 			return;
 		} else if (args.length > 0 && undoStrings.contains(args[0])) {
 			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.propItemStack.size() - 1);
 
-			data.removeProp(index);
+			data.removePropServer(index);
 			return;
 		}
 
@@ -141,7 +141,11 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
 		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
 
-		data.addProp(propItemStack, bodyPartName, propScaleX, propScaleY, propScaleZ, propOffsetX, propOffsetY, propOffsetZ, propRotateX, propRotateY, propRotateZ, propMatchScaling);
+		data.addPropServer(propItemStack, bodyPartName,
+				propScaleX, propScaleY, propScaleZ,
+				propOffsetX, propOffsetY, propOffsetZ,
+				propRotateX, propRotateY, propRotateZ,
+				propMatchScaling);
 	}
 
 	@Override
@@ -177,13 +181,13 @@ public class CommandProp extends MpmCommandInterface {
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			targetData.addProp(data.propItemStack.get(index), data.propBodyPartName.get(index),
+			targetData.addPropServer(data.propItemStack.get(index), data.propBodyPartName.get(index),
 					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
 					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
 					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
 					data.propMatchScaling.get(index));
 
-			data.removeProp(index);
+			data.removePropServer(index);
 		}
 	}
 

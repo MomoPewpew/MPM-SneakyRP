@@ -1,5 +1,12 @@
 package noppes.mpm;
 
+import java.util.ArrayList;
+
+import org.bukkit.GameMode;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -19,6 +26,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
 
 public class ServerEventHandler {
@@ -128,21 +136,7 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
-               Server.sendDelayedData(player, EnumPackets.PROP_CLEAR, 100, target.getUniqueID());
-               for (int i = 0; i < data.propItemStack.size(); i++) {
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ITEM_UPDATE, 100, target.getUniqueID(), data.propItemStack.get(i).writeToNBT(new NBTTagCompound()));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_PART_UPDATE, 100, target.getUniqueID(), data.propBodyPartName.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEX_UPDATE, 100, target.getUniqueID(), data.propScaleX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEY_UPDATE, 100, target.getUniqueID(), data.propScaleY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_SCALEZ_UPDATE, 100, target.getUniqueID(), data.propScaleZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETX_UPDATE, 100, target.getUniqueID(), data.propOffsetX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETY_UPDATE, 100, target.getUniqueID(), data.propOffsetY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, 100, target.getUniqueID(), data.propOffsetZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEX_UPDATE, 100, target.getUniqueID(), data.propRotateX.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEY_UPDATE, 100, target.getUniqueID(), data.propRotateY.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, 100, target.getUniqueID(), data.propRotateZ.get(i));
-            	   Server.sendDelayedData(player, EnumPackets.PROP_AUTOSCALE_UPDATE, 100, target.getUniqueID(), data.propMatchScaling.get(i));
-               }
+               data.propSyncServer();
           }
      }
 
@@ -162,4 +156,13 @@ public class ServerEventHandler {
           }
 
      }
+
+   	@EventHandler
+   	public void onGameModeChange(PlayerGameModeChangeEvent event) {
+      	 if (event.getNewGameMode() != GameMode.SPECTATOR) {
+      		 	ModelData data = ModelData.get((EntityPlayer) event.getPlayer());
+
+      	   		data.propSyncServer();
+      	 }
+   	}
 }

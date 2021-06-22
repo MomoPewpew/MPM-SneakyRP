@@ -92,6 +92,8 @@ public class PacketHandlerServer {
          } else if (type == EnumPackets.PROP_CLEAR) {
              ModelData data = ModelData.get(player);
 
+             data.clearPropsLocal();
+
               Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
          } else if (type == EnumPackets.PROP_ITEM_UPDATE) {
              ModelData data = ModelData.get(player);
@@ -177,6 +179,13 @@ public class PacketHandlerServer {
              data.propMatchScaling.add(partBoolean);
 
 	 	     Server.sendAssociatedData(player, EnumPackets.PROP_AUTOSCALE_UPDATE, player.getUniqueID(), partBoolean);
+	     } else if (type == EnumPackets.PROP_REMOVE) {
+             ModelData data = ModelData.get(player);
+
+             Integer index = buffer.readInt();
+             data.removePropLocal(index);
+
+	 	     Server.sendAssociatedData(player, EnumPackets.PROP_REMOVE, player.getUniqueID(), index);
 	     }
 
      }

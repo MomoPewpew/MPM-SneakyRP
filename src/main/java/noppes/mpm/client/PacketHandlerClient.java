@@ -207,7 +207,15 @@ public class PacketHandlerClient extends PacketHandlerServer {
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.clearPropsClient();
+                  data.clearPropsLocal();
+               } else if (type == EnumPackets.PROP_REMOVE) {
+                      pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                      if (pl == null) {
+                           return;
+                      }
+
+                      ModelData data = ModelData.get(pl);
+                      data.removePropLocal(buffer.readInt());
                } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {
@@ -247,11 +255,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     data.setAnimation(buffer.readInt());
                     data.animationStart = pl.ticksExisted;
                } else if (type == EnumPackets.PROP_GUI_OPEN) {
-                    pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-
-                    if (Minecraft.getMinecraft().thePlayer != pl)
-                    	return;
-
 	       			GuiMPM guiMPM = new GuiMPM();
 	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
 	       			try {

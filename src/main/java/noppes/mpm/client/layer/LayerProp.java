@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.MorePlayerModels;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumParts;
 
 public class LayerProp extends LayerInterface {
@@ -218,7 +219,7 @@ public class LayerProp extends LayerInterface {
 	    		 }
 
 	    		 Minecraft mc = Minecraft.getMinecraft();
-	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == mc.thePlayer && mc.gameSettings.thirdPersonView == 0)
+	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == mc.thePlayer && mc.gameSettings.thirdPersonView == 0 && !(mc.currentScreen instanceof GuiNPCInterface))
     			 	continue;
 
 	    		 Float propOffsetXCorrected;

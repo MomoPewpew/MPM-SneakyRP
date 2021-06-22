@@ -217,6 +217,10 @@ public class LayerProp extends LayerInterface {
 		    			 break;
 	    		 }
 
+	    		 Minecraft mc = Minecraft.getMinecraft();
+	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == mc.thePlayer && mc.gameSettings.thirdPersonView == 0)
+    			 	continue;
+
 	    		 Float propOffsetXCorrected;
 	    		 Float propOffsetYCorrected;
 	    		 Float propOffsetZCorrected;

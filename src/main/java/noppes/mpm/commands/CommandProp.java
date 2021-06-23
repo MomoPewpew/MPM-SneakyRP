@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -15,9 +13,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.ModelData;
 import noppes.mpm.Server;
-import noppes.mpm.client.gui.GuiCreationProps;
-import noppes.mpm.client.gui.GuiMPM;
-import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandProp extends MpmCommandInterface {
@@ -119,11 +114,13 @@ public class CommandProp extends MpmCommandInterface {
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
 		if (args.length > 0 && clearStrings.contains(args[0])) {
+			data.clearPropsLocal();
 			data.clearPropsServer();
 			return;
 		} else if (args.length > 0 && undoStrings.contains(args[0])) {
 			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.propItemStack.size() - 1);
 
+			data.removePropLocal(index);
 			data.removePropServer(index);
 			return;
 		}
@@ -141,6 +138,11 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
 		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
 
+		data.addPropLocal(propItemStack, bodyPartName,
+				propScaleX, propScaleY, propScaleZ,
+				propOffsetX, propOffsetY, propOffsetZ,
+				propRotateX, propRotateY, propRotateZ,
+				propMatchScaling);
 		data.addPropServer(propItemStack, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
@@ -181,12 +183,18 @@ public class CommandProp extends MpmCommandInterface {
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
+			targetData.addPropLocal(data.propItemStack.get(index), data.propBodyPartName.get(index),
+					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
+					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
+					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
+					data.propMatchScaling.get(index));
 			targetData.addPropServer(data.propItemStack.get(index), data.propBodyPartName.get(index),
 					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
 					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
 					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
 					data.propMatchScaling.get(index));
 
+			data.removePropLocal(index);
 			data.removePropServer(index);
 		}
 	}

@@ -48,7 +48,8 @@ public class CommandProp extends MpmCommandInterface {
 
 	private final List<String> clearStrings = Lists.newArrayList(
 	     "clear",
-	     "reset"
+	     "reset",
+	     "cl"
 	);
 
 	private final List<String> undoStrings = Lists.newArrayList(

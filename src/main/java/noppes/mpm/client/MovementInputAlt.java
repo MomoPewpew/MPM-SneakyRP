@@ -24,26 +24,30 @@ public class MovementInputAlt extends MovementInput {
         this.moveStrafe = 0.0F;
         this.field_192832_b = 0.0F;
 
-        if (this.gameSettings.keyBindForward.isKeyDown())
-        {
-            ++this.field_192832_b;
-        }
-
-        if (this.gameSettings.keyBindBack.isKeyDown())
-        {
-            --this.field_192832_b;
-        }
-
-        if (this.gameSettings.keyBindLeft.isKeyDown())
-        {
-    		camera.playerYaw = camera.playerYaw - 10.0F;
-        	camera.yawclamp = camera.playerYaw + 45.0F;
-        }
-
-        if (this.gameSettings.keyBindRight.isKeyDown())
-        {
-    		camera.playerYaw = camera.playerYaw + 10.0F;
-        	camera.yawclamp = camera.playerYaw - 45.0F;
+        if (this.gameSettings.keyBindForward.isKeyDown() && !this.gameSettings.keyBindRight.isKeyDown()) {
+        	if (!this.gameSettings.keyBindLeft.isKeyDown()) {
+        		move(0.0F);
+        	} else {
+        		move(315.0F);
+        	}
+        } else if (this.gameSettings.keyBindLeft.isKeyDown()) {
+        	if (!this.gameSettings.keyBindBack.isKeyDown()) {
+        		move(270.0F);
+        	} else {
+        		move(225.0F);
+        	}
+        } else if (this.gameSettings.keyBindBack.isKeyDown()) {
+        	if (!this.gameSettings.keyBindRight.isKeyDown()) {
+        		move(180.0F);
+        	} else {
+        		move(135.0F);
+        	}
+        } else if (this.gameSettings.keyBindRight.isKeyDown()) {
+        	if (!this.gameSettings.keyBindForward.isKeyDown()) {
+        		move(90.0F);
+        	} else {
+        		move(45.0F);
+        	}
         }
 
         this.jump = this.gameSettings.keyBindJump.isKeyDown();
@@ -54,6 +58,26 @@ public class MovementInputAlt extends MovementInput {
             this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);
             this.field_192832_b = (float)((double)this.field_192832_b * 0.3D);
         }
+    }
+
+    private void move(Float angleDirection) {
+    	Float rotateAngle = camera.playerYaw - (camera.cameraYaw + angleDirection + (camera.closeupenabled ? 180 : 0));
+
+    	// reduce the angle
+    	rotateAngle =  rotateAngle % 360;
+
+    	// force it to be the positive remainder, so that 0 <= angle < 360
+    	rotateAngle = (rotateAngle + 360) % 360;
+
+    	// force into the minimum absolute value residue class, so that -180 < angle <= 180
+    	if (rotateAngle > 180)
+    		rotateAngle -= 360;
+
+    	rotateAngle = Math.max(-20, Math.min(20, (rotateAngle)));
+
+    	camera.playerYaw -= rotateAngle;
+    	camera.playerPitch = 0.0F;
+    	++this.field_192832_b;
     }
 
 }

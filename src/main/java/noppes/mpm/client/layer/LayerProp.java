@@ -155,11 +155,6 @@ public class LayerProp extends LayerInterface {
 
 		    			 enumPart = EnumParts.LEG_LEFT;
 
-		    			 if (this.player.isSneaking()) {
-		    				 partModifierY += 0.1875F;
-		    				 partModifierZ -= 0.25F;
-		    			 }
-
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
 		    			 propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
@@ -173,11 +168,6 @@ public class LayerProp extends LayerInterface {
 
 		    			 enumPart = EnumParts.LEG_LEFT;
 
-		    			 if (this.player.isSneaking()) {
-		    				 partModifierY += 0.1875F;
-		    				 partModifierZ -= 0.25F;
-		    			 }
-
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
     					 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
@@ -189,11 +179,6 @@ public class LayerProp extends LayerInterface {
 		    			 partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
 		    			 enumPart = EnumParts.LEG_RIGHT;
-
-		    			 if (this.player.isSneaking()) {
-		    				 partModifierY += 0.1875F;
-		    				 partModifierZ -= 0.25F;
-		    			 }
 
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
 		    			 propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
@@ -207,11 +192,6 @@ public class LayerProp extends LayerInterface {
 
 		    			 enumPart = EnumParts.LEG_RIGHT;
 
-		    			 if (this.player.isSneaking()) {
-		    				 partModifierY += 0.1875F;
-		    				 partModifierZ -= 0.25F;
-		    			 }
-
 		    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
     					 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
 		    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
@@ -220,6 +200,15 @@ public class LayerProp extends LayerInterface {
 
 	    		 if (propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
     			 	continue;
+
+    			 if (this.player.isSneaking()) {
+    				 if (propBodyPart == this.model.bipedLeftLeg || propBodyPart == this.model.bipedRightLeg) {
+        				 partModifierY += 0.1875F;
+        				 partModifierZ -= 0.25F;
+    				 } else if (propBodyPart == this.model.bipedHead) {
+        				 partModifierY -= 0.0625F;
+    				 }
+    			 }
 
 	    		 Float propOffsetXCorrected;
 	    		 Float propOffsetYCorrected;

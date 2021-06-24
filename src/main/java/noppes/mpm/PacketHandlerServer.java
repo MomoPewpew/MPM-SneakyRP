@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
+import noppes.mpm.commands.CommandProp;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 
@@ -186,7 +187,12 @@ public class PacketHandlerServer {
              data.removePropLocal(index);
 
 	 	     Server.sendAssociatedData(player, EnumPackets.PROP_REMOVE, player.getUniqueID(), index);
+	     } else if (type == EnumPackets.PROP_GIVE) {
+             Integer index = buffer.readInt();
+
+             CommandProp.giveProp(null, index, player);
 	     }
+
 
      }
 }

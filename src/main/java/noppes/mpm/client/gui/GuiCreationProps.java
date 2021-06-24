@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.ModelData;
+import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
@@ -22,6 +23,7 @@ import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISliderListener;
 import noppes.mpm.client.gui.util.ITextfieldListener;
+import noppes.mpm.constants.EnumPackets;
 
 public class GuiCreationProps extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener {
      private GuiCustomScroll scroll;
@@ -190,7 +192,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				 this.playerdata.propMatchScaling.get(selected));
              this.initGui();
          } else if (btn.id == 120) {
-        	 this.givePropClient(selected);
+             this.playerdata.propSyncClient();
+       		 Client.sendData(EnumPackets.PROP_GIVE, selected);
+
              this.initGui();
          }
      }
@@ -322,41 +326,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			}
 
 			this.getSlider(textField.id).sliderValue = sliderValue;
-		}
-	}
-
-	private EntityPlayerMP getClosestPlayerClient() {
-		EntityPlayerMP closest = null;
-	    double closestDistance = 0;
-
-	    for (EntityPlayerMP entity : this.getPlayer().getEntityWorld().getEntities(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING)) {
-	        if (entity == this.getPlayer() || !(entity instanceof EntityPlayerMP)) {
-	            continue;
-	        }
-
-	        double distance = entity.getPosition().distanceSq(this.getPlayer().getPosition());
-	        if ((closest == null || distance < closestDistance) && Math.sqrt(distance) <= 3) {
-	            closest = entity;
-	            closestDistance = distance;
-	        }
-	    }
-
-	    return closest;
-	}
-
-	private void givePropClient(Integer index) {
-		EntityPlayerMP target = getClosestPlayerClient();
-
-		if (this.playerdata != null && target != null && index >= 0) {
-			ModelData targetData = ModelData.get(target);
-
-			targetData.addPropClient(this.playerdata.propItemStack.get(index), this.playerdata.propBodyPartName.get(index),
-					this.playerdata.propScaleX.get(index), this.playerdata.propScaleY.get(index), this.playerdata.propScaleZ.get(index),
-					this.playerdata.propOffsetX.get(index), this.playerdata.propOffsetY.get(index), this.playerdata.propOffsetZ.get(index),
-					this.playerdata.propRotateX.get(index), this.playerdata.propRotateY.get(index), this.playerdata.propRotateZ.get(index),
-					this.playerdata.propMatchScaling.get(index));
-
-			this.playerdata.removePropLocal(index);
 		}
 	}
 }

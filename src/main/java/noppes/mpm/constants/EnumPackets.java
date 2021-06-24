@@ -24,5 +24,6 @@ public enum EnumPackets {
 	 PROP_AUTOSCALE_UPDATE,
      PROP_CLEAR,
 	 PROP_REMOVE,
-	 PROP_GUI_OPEN;
+	 PROP_GUI_OPEN,
+	 PROP_GIVE;
 }

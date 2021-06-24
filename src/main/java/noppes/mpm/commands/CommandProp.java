@@ -156,7 +156,7 @@ public class CommandProp extends MpmCommandInterface {
 		return "/prop [<itemname>] [<bodypart>] [<scaleX>] [<scaleY>] [<scaleZ>] [<offsetX>] [<offsetY>] [<offsetZ>] [<rotateX>] [<rotateY>] [<rotateZ>]";
 	}
 
-	private EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {
+	private static EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {
 		EntityPlayerMP closest = null;
 	    double closestDistance = 0;
 
@@ -175,7 +175,7 @@ public class CommandProp extends MpmCommandInterface {
 	    return closest;
 	}
 
-	private void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
+	public static void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
 		ModelData data = ModelData.get(sender);
 
 		if (index == null) index = data.propItemStack.size() - 1;

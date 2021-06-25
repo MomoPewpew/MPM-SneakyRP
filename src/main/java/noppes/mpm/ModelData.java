@@ -105,7 +105,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      @Override
      public synchronized void readFromNBT(NBTTagCompound compound) {
-          String prevUrl = this.url;
+          String prevUrl = new String(this.url);
           super.readFromNBT(compound);
           this.soundType = compound.getShort("SoundType");
           this.lastEdited = compound.getLong("LastEdited");

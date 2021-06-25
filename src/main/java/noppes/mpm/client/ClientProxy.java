@@ -3,9 +3,6 @@ package noppes.mpm.client;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabMPM;
-import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
-import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
@@ -110,15 +107,6 @@ public class ClientProxy extends CommonProxy {
      @Override
      public void postLoad() {
           fixModels(true);
-          if (MorePlayerModels.InventoryGuiEnabled) {
-               MinecraftForge.EVENT_BUS.register(new TabRegistry());
-               if (TabRegistry.getTabList().size() < 2) {
-                    TabRegistry.registerTab(new InventoryTabVanilla());
-               }
-
-               TabRegistry.registerTab(new InventoryTabMPM());
-          }
-
      }
 
      public static void fixModels(boolean init) {

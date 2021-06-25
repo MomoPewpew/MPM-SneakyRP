@@ -3,14 +3,11 @@ package noppes.mpm.client.gui;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabMPM;
-import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -47,8 +44,6 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
      @Override
      public void initGui() {
           super.initGui();
-          TabRegistry.updateTabValues(this.guiLeft + 2, this.guiTop + 8, InventoryTabMPM.class);
-          TabRegistry.addTabsToList(this.buttonList);
           if (this.scroll == null) {
                this.scroll = new GuiCustomScroll(this, 0);
                this.scroll.setSize(80, 160);

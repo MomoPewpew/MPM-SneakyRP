@@ -1,11 +1,27 @@
 package noppes.mpm;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -19,7 +35,12 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.MPMScheduler;
 
 public class ServerEventHandler {
      private static final ResourceLocation female_death = new ResourceLocation("moreplayermodels:human.female.death");
@@ -128,6 +149,7 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
+               data.propSyncServer();
           }
      }
 
@@ -147,4 +169,32 @@ public class ServerEventHandler {
           }
 
      }
+
+    @SideOnly(Side.SERVER)
+   	@EventHandler
+   	public void onGameModeChange(PlayerGameModeChangeEvent event) {
+      	 if (event.getNewGameMode() != GameMode.SPECTATOR) {
+      		 	ModelData data = ModelData.get((EntityPlayer) event.getPlayer());
+
+      	   		data.propSyncServer();
+      	 }
+   	}
+
+    @SideOnly(Side.SERVER)
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+    	EntityPlayerMP player = (EntityPlayerMP) event.getPlayer();
+
+        List list = player.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, player.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D));
+        if (!list.isEmpty()) {
+           Iterator iterator = list.iterator();
+
+           while(iterator.hasNext()) {
+                EntityPlayer target = (EntityPlayer)iterator.next();
+
+                ModelData data = ModelData.get(target);
+                Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, target.getUniqueID(), data.writeToNBT());
+           }
+        }
+	}
 }

@@ -65,8 +65,8 @@ public class GuiNpcSlider extends GuiButton {
                }
 
                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-               this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
-               this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
+               this.drawTexturedModalRect(this.xPosition + (int)(Math.max(0.0F, Math.min(1.0F, this.sliderValue)) * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
+               this.drawTexturedModalRect(this.xPosition + (int)(Math.max(0.0F, Math.min(1.0F, this.sliderValue)) * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
           }
      }
 

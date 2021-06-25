@@ -2,6 +2,8 @@ package noppes.mpm.client;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
@@ -12,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -41,6 +45,10 @@ import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.sync.WebApi;
 import noppes.mpm.util.MPMEntityUtil;
+
+import org.bukkit.GameMode;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClientEventHandler {

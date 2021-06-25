@@ -12,5 +12,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/MultiCharacter-v006-beta.jar"/>
 	<classpathentry kind="src" path="/SneakyEmotes"/>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MagicSpells-SneakyRP/lib/craftbukkit-1.10.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

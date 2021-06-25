@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -146,7 +147,6 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                Client.sendData(EnumPackets.UPDATE_PLAYER_DATA, newCompound);
                this.original = newCompound;
           }
-
      }
 
      @Override
@@ -159,6 +159,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                }
           }
 
+          this.playerdata.propSyncClient();
      }
 
      @Override

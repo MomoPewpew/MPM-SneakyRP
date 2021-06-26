@@ -15,5 +15,6 @@ public enum EnumPackets {
 	 PROP_SYNC,
      PROP_CLEAR,
 	 PROP_GUI_OPEN,
-	 PROP_GIVE;
+	 PROP_GIVE,
+	 PROP_HIDE;
 }

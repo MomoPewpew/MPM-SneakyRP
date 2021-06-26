@@ -188,7 +188,7 @@ public class CommandProp extends MpmCommandInterface {
 					prop.rotateX, prop.rotateY, prop.rotateZ,
 					prop.matchScaling, prop.hide);
 
-			data.removePropServer(index);
+			data.hidePropServer(index);
 		}
 	}
 

@@ -409,4 +409,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
          this.props = new ArrayList(propsTemp);
      }
+
+     public void hidePropServer (Integer index) {
+    	 this.props.get(index).hide = true;
+     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
+     }
 }

@@ -148,7 +148,15 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	       			} catch (IllegalAccessException | InstantiationException e) {
 
 	       			}
-             } else if (type == EnumPackets.PARTICLE) {
+             } else if (type == EnumPackets.PROP_HIDE) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.props.get(buffer.readInt()).hide = true;
+    	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {
                          pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));

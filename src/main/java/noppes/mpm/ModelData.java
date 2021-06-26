@@ -394,7 +394,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
          List<Prop> propsTemp = null;
          Boolean hasNext = true;
 
-   		for (int i = 0; i < this.props.size(); i++) {
+   		for (int i = 0; i < Integer.MAX_VALUE; i++) {
    			 NBTTagCompound tag = compound.getCompoundTag("prop" + String.valueOf(i));
 	    	 Prop prop = new Prop();
 	    	 prop.readFromNBT(tag);

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.ModelData;
+import noppes.mpm.Prop;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
@@ -115,17 +116,16 @@ public class CommandProp extends MpmCommandInterface {
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
 		if (args.length > 0 && clearStrings.contains(args[0])) {
-			data.clearPropsLocal();
 			data.clearPropsServer();
 			return;
 		} else if (args.length > 0 && undoStrings.contains(args[0])) {
-			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.propItemStack.size() - 1);
+			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.props.size() - 1);
 
-			data.removePropLocal(index);
 			data.removePropServer(index);
 			return;
 		}
 
+		String propString = (args.length > 0) ? args[0] : "crafting_table";
 		ItemStack propItemStack = (args.length > 0) ? new ItemStack(getItemByText(icommandsender, args[0])) : new ItemStack(Blocks.CRAFTING_TABLE);
 		String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
 		Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
@@ -139,12 +139,7 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
 		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
 
-		data.addPropLocal(propItemStack, bodyPartName,
-				propScaleX, propScaleY, propScaleZ,
-				propOffsetX, propOffsetY, propOffsetZ,
-				propRotateX, propRotateY, propRotateZ,
-				propMatchScaling);
-		data.addPropServer(propItemStack, bodyPartName,
+		data.addPropServer(propString, propItemStack, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
 				propRotateX, propRotateY, propRotateZ,
@@ -178,24 +173,20 @@ public class CommandProp extends MpmCommandInterface {
 	public static void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
 		ModelData data = ModelData.get(sender);
 
-		if (index == null) index = data.propItemStack.size() - 1;
+		if (index == null) index = data.props.size() - 1;
 		if (target == null) target = getClosestPlayer(sender);
 
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			targetData.addPropLocal(data.propItemStack.get(index), data.propBodyPartName.get(index),
-					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
-					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
-					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
-					data.propMatchScaling.get(index));
-			targetData.addPropServer(data.propItemStack.get(index), data.propBodyPartName.get(index),
-					data.propScaleX.get(index), data.propScaleY.get(index), data.propScaleZ.get(index),
-					data.propOffsetX.get(index), data.propOffsetY.get(index), data.propOffsetZ.get(index),
-					data.propRotateX.get(index), data.propRotateY.get(index), data.propRotateZ.get(index),
-					data.propMatchScaling.get(index));
+			Prop prop = data.props.get(index);
 
-			data.removePropLocal(index);
+			targetData.addPropServer(prop.propString, prop.itemStack, prop.bodyPartName,
+					prop.scaleX, prop.scaleY, prop.scaleZ,
+					prop.offsetX, prop.offsetY, prop.offsetZ,
+					prop.rotateX, prop.rotateY, prop.rotateZ,
+					prop.matchScaling);
+
 			data.removePropServer(index);
 		}
 	}

@@ -167,7 +167,6 @@ public class ServerEventHandler {
           if (event.getObject() instanceof EntityPlayer) {
                event.addCapability(key, new ModelData());
           }
-
      }
 
     @SideOnly(Side.SERVER)

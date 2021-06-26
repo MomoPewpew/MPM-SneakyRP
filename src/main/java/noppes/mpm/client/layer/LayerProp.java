@@ -30,31 +30,31 @@ public class LayerProp extends LayerInterface {
 	public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
 		Minecraft minecraft = Minecraft.getMinecraft();
 
-		for (int i = 0; i < this.playerdata.propItemStack.size(); i++) {
-			ItemStack propItemStack = this.playerdata.propItemStack.get(i);
+		for (int i = 0; i < this.playerdata.props.size(); i++) {
+			ItemStack propItemStack = this.playerdata.props.get(i).itemStack;
 
 			if (propItemStack != null) {
 				ModelRenderer propBodyPart = null;
 				ModelRenderer motherRenderer = new ModelRenderer(this.model);
 				ModelRenderer propRenderer = new ModelRenderer(this.model);
 				motherRenderer.addChild(propRenderer);
-				Float propScaleX = this.playerdata.propScaleX.get(i);
-				Float propScaleY = this.playerdata.propScaleY.get(i);
-				Float propScaleZ = this.playerdata.propScaleZ.get(i);
-				Float propOffsetX = -this.playerdata.propOffsetX.get(i);
-				Float propOffsetY = this.playerdata.propOffsetY.get(i);
-				Float propOffsetZ = this.playerdata.propOffsetZ.get(i);
-				Float propRotateX = -this.playerdata.propRotateX.get(i);
-				Float propRotateY = this.playerdata.propRotateY.get(i);
-				Float propRotateZ = this.playerdata.propRotateZ.get(i);
-				Boolean propMatchScaling = this.playerdata.propMatchScaling.get(i);
+				Float propScaleX = this.playerdata.props.get(i).scaleX;
+				Float propScaleY = this.playerdata.props.get(i).scaleY;
+				Float propScaleZ = this.playerdata.props.get(i).scaleZ;
+				Float propOffsetX = -this.playerdata.props.get(i).offsetX;
+				Float propOffsetY = this.playerdata.props.get(i).offsetY;
+				Float propOffsetZ = this.playerdata.props.get(i).offsetZ;
+				Float propRotateX = -this.playerdata.props.get(i).rotateX;
+				Float propRotateY = this.playerdata.props.get(i).rotateY;
+				Float propRotateZ = this.playerdata.props.get(i).rotateZ;
+				Boolean propMatchScaling = this.playerdata.props.get(i).matchScaling;
 
 				Float partModifierX = 0.0F;
 				Float partModifierY = 0.0F;
 				Float partModifierZ = 0.0F;
 				EnumParts enumPart = null;
 
-	    		 switch(this.playerdata.propBodyPartName.get(i)) {
+	    		 switch(this.playerdata.props.get(i).bodyPartName) {
 	    		     case "hat":
 		    		 case "head":
 		    			 propBodyPart = this.model.bipedHead;
@@ -214,7 +214,7 @@ public class LayerProp extends LayerInterface {
 	    		 Float propOffsetYCorrected;
 	    		 Float propOffsetZCorrected;
 
-	    		if (this.playerdata.propBodyPartName.get(i).equals("model")) {
+	    		if (this.playerdata.props.get(i).bodyPartName.equals("model")) {
 	    			propOffsetXCorrected = propOffsetX;
 	    			propOffsetYCorrected = propOffsetY;
 	    			propOffsetZCorrected = propOffsetZ;

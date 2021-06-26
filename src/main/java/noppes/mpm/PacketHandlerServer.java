@@ -93,100 +93,28 @@ public class PacketHandlerServer {
          } else if (type == EnumPackets.PROP_CLEAR) {
              ModelData data = ModelData.get(player);
 
-             data.clearPropsLocal();
-
-              Server.sendAssociatedData(player, EnumPackets.PROP_CLEAR, player.getUniqueID());
-         } else if (type == EnumPackets.PROP_ITEM_UPDATE) {
+             data.clearPropsServer();
+         } else if (type == EnumPackets.PROP_ADD) {
              ModelData data = ModelData.get(player);
 
-             ItemStack propItemStack = new ItemStack(Server.readNBT(buffer));
-             data.propItemStack.add(propItemStack);
+             Prop prop = new Prop();
+             NBTTagCompound compound = Server.readNBT(buffer);
+             prop.readFromNBT(compound);
+             data.props.add(prop);
 
-      	     Server.sendAssociatedData(player, EnumPackets.PROP_ITEM_UPDATE, player.getUniqueID(), propItemStack.writeToNBT(new NBTTagCompound()));
-	     } else if (type == EnumPackets.PROP_PART_UPDATE) {
+      	     Server.sendAssociatedData(player, EnumPackets.PROP_ADD, player.getUniqueID(), compound);
+	     } else if (type == EnumPackets.PROP_SYNC) {
              ModelData data = ModelData.get(player);
 
-             String propBodyPartName = Server.readString(buffer);
-             data.propBodyPartName.add(propBodyPartName);
+             NBTTagCompound compound = Server.readNBT(buffer);
+             data.propsFromNBT(compound);
 
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_PART_UPDATE, player.getUniqueID(), propBodyPartName);
-	     } else if (type == EnumPackets.PROP_SCALEX_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propScaleX.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_SCALEX_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_SCALEY_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propScaleY.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_SCALEY_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_SCALEZ_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propScaleZ.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_SCALEZ_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_OFFSETX_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propOffsetX.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETX_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_OFFSETY_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propOffsetY.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETY_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_OFFSETZ_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propOffsetZ.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_OFFSETZ_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_ROTATEX_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propRotateX.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEX_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_ROTATEY_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propRotateY.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEY_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_ROTATEZ_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Float partFloat = buffer.readFloat();
-             data.propRotateZ.add(partFloat);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_ROTATEZ_UPDATE, player.getUniqueID(), partFloat);
-	     } else if (type == EnumPackets.PROP_AUTOSCALE_UPDATE) {
-             ModelData data = ModelData.get(player);
-
-             Boolean partBoolean = buffer.readBoolean();
-             data.propMatchScaling.add(partBoolean);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_AUTOSCALE_UPDATE, player.getUniqueID(), partBoolean);
+	 	     Server.sendAssociatedData(player, EnumPackets.PROP_SYNC, player.getUniqueID(), compound);
 	     } else if (type == EnumPackets.PROP_REMOVE) {
              ModelData data = ModelData.get(player);
 
              Integer index = buffer.readInt();
-             data.removePropLocal(index);
-
-	 	     Server.sendAssociatedData(player, EnumPackets.PROP_REMOVE, player.getUniqueID(), index);
+             data.removePropServer(index);
 	     } else if (type == EnumPackets.PROP_GIVE) {
              Integer index = buffer.readInt();
 

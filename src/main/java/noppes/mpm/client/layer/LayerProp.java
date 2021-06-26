@@ -31,13 +31,15 @@ public class LayerProp extends LayerInterface {
 		Minecraft minecraft = Minecraft.getMinecraft();
 
 		for (int i = 0; i < this.playerdata.props.size(); i++) {
-			ItemStack propItemStack = this.playerdata.props.get(i).itemStack;
+			Boolean propHide = this.playerdata.props.get(i).hide;
 
-			if (propItemStack != null) {
+			if (propHide == false) {
 				ModelRenderer propBodyPart = null;
 				ModelRenderer motherRenderer = new ModelRenderer(this.model);
 				ModelRenderer propRenderer = new ModelRenderer(this.model);
 				motherRenderer.addChild(propRenderer);
+
+				ItemStack propItemStack = this.playerdata.props.get(i).itemStack;
 				Float propScaleX = this.playerdata.props.get(i).scaleX;
 				Float propScaleY = this.playerdata.props.get(i).scaleY;
 				Float propScaleZ = this.playerdata.props.get(i).scaleZ;

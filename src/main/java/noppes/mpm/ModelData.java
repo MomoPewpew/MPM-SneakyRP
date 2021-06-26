@@ -329,13 +329,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		Float propScaleX, Float propScaleY, Float propScaleZ,
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling
+		Boolean propMatchScaling, Boolean hide
 		) {
     	 Prop prop = new Prop(propString, null, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling);
+    			 propMatchScaling, hide);
 
  		Client.sendData(EnumPackets.PROP_ADD, prop.writeToNBT());
      }
@@ -344,13 +344,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		Float propScaleX, Float propScaleY, Float propScaleZ,
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling
+		Boolean propMatchScaling, Boolean hide
 		) {
     	 Prop prop = new Prop(propString, propItemStack, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling);
+    			 propMatchScaling, hide);
 
     	 this.props.add(prop);
     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());

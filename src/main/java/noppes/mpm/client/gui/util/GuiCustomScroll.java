@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 public class GuiCustomScroll extends GuiScreen {
      public static final ResourceLocation resource = new ResourceLocation("moreplayermodels", "textures/gui/misc.png");
      private List list;
+     public List<Integer> colorlist;
      public int id;
      public int guiLeft;
      public int guiTop;
@@ -61,6 +62,7 @@ public class GuiCustomScroll extends GuiScreen {
 
           this.list = new ArrayList();
           this.id = id;
+          this.colorlist = new ArrayList();
      }
 
      public GuiCustomScroll(GuiScreen parent, int id, boolean multipleSelection) {
@@ -170,16 +172,22 @@ public class GuiCustomScroll extends GuiScreen {
                          text = displayString;
                     }
 
+                	Integer color = 16777215;
+
+                	if (this.colorlist.size() > i) {
+                		color = this.colorlist.get(i);
+                	}
+
                     if (this.multipleSelection && this.selectedList.contains(text) || !this.multipleSelection && this.selected == i) {
                          this.drawVerticalLine(j - 2, k - 4, k + 10, -1);
                          this.drawVerticalLine(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
-                         this.fontRendererObj.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, color);
                     } else if (i == this.hover) {
                          this.fontRendererObj.drawString(text, j, k, 65280);
                     } else {
-                         this.fontRendererObj.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, color);
                     }
                }
           }

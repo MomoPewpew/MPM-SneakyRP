@@ -19,6 +19,7 @@ public class Prop {
     public Float rotateY;
     public Float rotateZ;
     public Boolean matchScaling;
+    public Boolean hide;
 
 	public Prop(){}
 
@@ -26,7 +27,7 @@ public class Prop {
 	    Float scaleX, Float scaleY, Float scaleZ,
 	    Float offsetX, Float offsetY, Float offsetZ,
 	    Float rotateX, Float rotateY, Float rotateZ,
-	    Boolean matchScaling)
+	    Boolean matchScaling, Boolean hide)
 	{
 		this.propString = propString;
 	    this.itemStack = itemStack;
@@ -41,6 +42,7 @@ public class Prop {
 	    this.rotateY = rotateY;
 	    this.rotateZ = rotateZ;
 	    this.matchScaling = matchScaling;
+	    this.hide = hide;
 
 	    if (this.itemStack == null) {
 	    	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
@@ -52,7 +54,7 @@ public class Prop {
 		    Float scaleX, Float scaleY, Float scaleZ,
 		    Float offsetX, Float offsetY, Float offsetZ,
 		    Float rotateX, Float rotateY, Float rotateZ,
-		    Boolean matchScaling)
+		    Boolean matchScaling, Boolean hide)
 		{
 			this.propString = propString;
 	    	ResourceLocation resourcelocation = new ResourceLocation(this.propString);
@@ -67,6 +69,7 @@ public class Prop {
 		    this.rotateX = rotateX;
 		    this.rotateY = rotateY;
 		    this.rotateZ = rotateZ;
+		    this.hide = hide;
 		    this.matchScaling = matchScaling;
 		}
 
@@ -84,6 +87,7 @@ public class Prop {
          compound.setFloat("rotateY", this.rotateY);
          compound.setFloat("rotateZ", this.rotateZ);
          compound.setBoolean("matchScaling", this.matchScaling);
+         compound.setBoolean("hide", this.hide);
          return compound;
      }
 
@@ -100,6 +104,7 @@ public class Prop {
     	 this.rotateY = compound.getFloat("rotateY");
     	 this.rotateZ = compound.getFloat("rotateZ");
     	 this.matchScaling = compound.getBoolean("matchScaling");
+    	 this.hide = compound.getBoolean("hide");
 
     	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
     	 this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));
@@ -111,7 +116,7 @@ public class Prop {
     			 this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
     			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
     			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
-    			 this.matchScaling;
+    			 this.matchScaling + " " + this.hide;
 		return command;
      }
 }

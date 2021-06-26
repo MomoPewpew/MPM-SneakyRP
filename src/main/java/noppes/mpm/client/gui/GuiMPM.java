@@ -154,7 +154,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                }
           }
 
-          this.playerdata.propSyncClient();
+          //this.playerdata.propSyncClient();
      }
 
      @Override

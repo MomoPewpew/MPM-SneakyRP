@@ -252,7 +252,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.selected >= 0) {
                selected = scroll.selected;
-               propName = playerdata.props.get(selected).itemStack.getItem().getRegistryName().toString();
+               propName = playerdata.props.get(selected).propString;
                this.initGui();
           }
      }

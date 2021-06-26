@@ -77,6 +77,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           compound.setShort("SoundType", this.soundType);
           compound.setInteger("Animation", this.animation.ordinal());
           compound.setLong("LastEdited", this.lastEdited);
+          compound = this.propsToNBT(compound);
           return compound;
      }
 
@@ -101,6 +102,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
                this.resourceLoaded = false;
           }
 
+          this.propsFromNBT(compound);
      }
 
      public void setAnimation(int i) {
@@ -373,16 +375,16 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      public void propSyncClient() {
- 		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT());
+        NBTTagCompound compound = new NBTTagCompound();
+ 		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
      }
 
      public void propSyncServer() {
-    	Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT());
+         NBTTagCompound compound = new NBTTagCompound();
+    	Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
      }
 
-     public NBTTagCompound propsToNBT() {
-         NBTTagCompound compound = new NBTTagCompound();
-
+     public NBTTagCompound propsToNBT(NBTTagCompound compound) {
   		for (int i = 0; i < this.props.size(); i++) {
 	    	 compound.setTag(("prop" + String.valueOf(i)), this.props.get(i).writeToNBT());
 		}
@@ -391,18 +393,17 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      public void propsFromNBT(NBTTagCompound compound) {
-         List<Prop> propsTemp = null;
-         Boolean hasNext = true;
+         List<Prop> propsTemp = new ArrayList<Prop>();
 
    		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-   			 NBTTagCompound tag = compound.getCompoundTag("prop" + String.valueOf(i));
-	    	 Prop prop = new Prop();
+  			 NBTTagCompound tag = compound.getCompoundTag("prop" + String.valueOf(i));
+  			 Prop prop = new Prop();
 	    	 prop.readFromNBT(tag);
 
-	    	 if (prop == null) {
-	    		 break;
-	    	 } else {
+	    	 if (prop.propString != "") {
 	    		 propsTemp.add(prop);
+	    	 } else {
+				 break;
 	    	 }
 		}
 

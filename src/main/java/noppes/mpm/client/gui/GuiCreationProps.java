@@ -346,7 +346,20 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	            }
 			}
 
+			textField.setCursorPositionZero();
+			textField.setSelectionPos(0);
 			this.getSlider(textField.id).sliderValue = sliderValue;
+		}
+	}
+
+	@Override
+	public void focused(GuiNpcTextField textField) {
+
+		if (this.initiating) return;
+
+		if (textField.id >= 109 && textField.id <= 117) {
+			textField.setCursorPositionZero();
+			textField.setSelectionPos(textField.getText().length());
 		}
 	}
 }

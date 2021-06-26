@@ -438,4 +438,10 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                return this;
           }
      }
+
+	@Override
+	public void focused(GuiNpcTextField var1) {
+		// TODO Auto-generated method stub
+
+	}
 }

@@ -72,6 +72,10 @@ public class CommandProp extends MpmCommandInterface {
 	     "give"
 	);
 
+	private final List<String> labelStrings = Lists.newArrayList(
+		     "label"
+		);
+
 	@Override
 	public String getCommandName() {
 		return "prop";
@@ -113,15 +117,24 @@ public class CommandProp extends MpmCommandInterface {
 			return;
 		}
 
+		if (args.length > 1 && labelStrings.contains(args[0])) {
+			data.labelPropServer(args[1]);
+			return;
+		}
+
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
 		if (args.length > 0 && clearStrings.contains(args[0])) {
 			data.clearPropsServer();
 			return;
 		} else if (args.length > 0 && undoStrings.contains(args[0])) {
-			Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.props.size() - 1);
+			if (args.length == 1 || args[1].matches("^\\d+$")) {
+				Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.props.size() - 1);
 
-			data.removePropServer(index);
+				data.removePropServer(index);
+			} else {
+				data.removeLabelServer(args[1]);
+			}
 			return;
 		}
 

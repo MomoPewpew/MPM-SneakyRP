@@ -414,4 +414,18 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
     	 this.props.get(index).hide = true;
      	 Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
      }
+
+     public void labelPropServer (String label) {
+    	 this.props.get(this.props.size() - 1).label = label;
+     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_LABEL, this.player.getUniqueID(), label);
+     }
+
+     public void removeLabelServer (String label) {
+   		for (int i = 0; i < this.props.size(); i++) {
+   			if (this.props.get(i).label.contains(label)) {
+   	   	    	this.props.remove(i);
+   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
+   			}
+   		}
+     }
 }

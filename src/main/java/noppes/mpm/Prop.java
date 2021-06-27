@@ -20,6 +20,7 @@ public class Prop {
     public Float rotateZ;
     public Boolean matchScaling;
     public Boolean hide;
+    public String label;
 
 	public Prop(){}
 
@@ -43,6 +44,7 @@ public class Prop {
 	    this.rotateZ = rotateZ;
 	    this.matchScaling = matchScaling;
 	    this.hide = hide;
+	    this.label = "";
 
 	    if (this.itemStack == null) {
 	    	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
@@ -71,6 +73,7 @@ public class Prop {
 		    this.rotateZ = rotateZ;
 		    this.hide = hide;
 		    this.matchScaling = matchScaling;
+		    this.label = "";
 		}
 
      public NBTTagCompound writeToNBT() {
@@ -88,6 +91,7 @@ public class Prop {
          compound.setFloat("rotateZ", this.rotateZ);
          compound.setBoolean("matchScaling", this.matchScaling);
          compound.setBoolean("hide", this.hide);
+         compound.setString("label", this.label);
          return compound;
      }
 
@@ -105,6 +109,7 @@ public class Prop {
     	 this.rotateZ = compound.getFloat("rotateZ");
     	 this.matchScaling = compound.getBoolean("matchScaling");
     	 this.hide = compound.getBoolean("hide");
+    	 this.label = compound.getString("label");
 
     	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
     	 this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));

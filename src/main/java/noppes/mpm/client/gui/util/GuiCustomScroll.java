@@ -36,11 +36,13 @@ public class GuiCustomScroll extends GuiScreen {
      private boolean selectable;
      private int lastClickedItem;
      private long lastClickedTime;
+     private boolean subButton;
 
      public GuiCustomScroll(GuiScreen parent, int id) {
           this.guiLeft = 0;
           this.guiTop = 0;
           this.multipleSelection = false;
+          this.subButton = false;
           this.isSorted = true;
           this.visible = true;
           this.selectable = true;
@@ -69,6 +71,11 @@ public class GuiCustomScroll extends GuiScreen {
           this(parent, id);
           this.multipleSelection = multipleSelection;
      }
+
+     public GuiCustomScroll(GuiScreen parent, int id, boolean multipleSelection, boolean subButton) {
+         this(parent, id, multipleSelection);
+         this.subButton = subButton;
+    }
 
      public void setSize(int x, int y) {
           this.ySize = y;
@@ -184,6 +191,10 @@ public class GuiCustomScroll extends GuiScreen {
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
                          this.fontRendererObj.drawString(text, j, k, color);
+
+                         if (this.subButton) {
+                             this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -1);
+                         }
                     } else if (i == this.hover) {
                          this.fontRendererObj.drawString(text, j, k, 65280);
                     } else {

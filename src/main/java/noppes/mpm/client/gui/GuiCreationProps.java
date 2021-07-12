@@ -54,7 +54,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           this.initiating = true;
           super.initGui();
           if (this.scroll == null) {
-               this.scroll = new GuiCustomScroll(this, 0);
+               this.scroll = new GuiCustomScroll(this, 0, false, true);
           }
 
           ArrayList<String> list = new ArrayList<String>();

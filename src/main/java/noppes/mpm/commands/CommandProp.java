@@ -72,9 +72,10 @@ public class CommandProp extends MpmCommandInterface {
 	     "give"
 	);
 
-	private final List<String> labelStrings = Lists.newArrayList(
-		     "label"
-		);
+	private final List<String> nameStrings = Lists.newArrayList(
+	     "label",
+	     "name"
+	);
 
 	@Override
 	public String getCommandName() {
@@ -117,7 +118,7 @@ public class CommandProp extends MpmCommandInterface {
 			return;
 		}
 
-		if (args.length > 1 && labelStrings.contains(args[0])) {
+		if (args.length > 1 && nameStrings.contains(args[0])) {
 			data.labelPropServer(args[1]);
 			return;
 		}
@@ -152,12 +153,13 @@ public class CommandProp extends MpmCommandInterface {
 		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
 		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
 		Boolean propHide = (args.length > 12) ? parseBoolean(args[12]) : false;
+		String propName = (args.length > 13) ? args[13] : "NONAME";
 
 		data.addPropServer(propString, propItemStack, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
 				propRotateX, propRotateY, propRotateZ,
-				propMatchScaling, propHide);
+				propMatchScaling, propHide, propName);
 	}
 
 	@Override
@@ -199,7 +201,7 @@ public class CommandProp extends MpmCommandInterface {
 					prop.scaleX, prop.scaleY, prop.scaleZ,
 					prop.offsetX, prop.offsetY, prop.offsetZ,
 					prop.rotateX, prop.rotateY, prop.rotateZ,
-					prop.matchScaling, prop.hide);
+					prop.matchScaling, prop.hide, prop.name);
 
 			data.hidePropServer(index);
 		}

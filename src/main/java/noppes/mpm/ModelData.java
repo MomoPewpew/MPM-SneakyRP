@@ -336,13 +336,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		Float propScaleX, Float propScaleY, Float propScaleZ,
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling, Boolean hide
+		Boolean propMatchScaling, Boolean hide, String name
 		) {
     	 Prop prop = new Prop(propString, null, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling, hide);
+    			 propMatchScaling, hide, name);
 
  		Client.sendData(EnumPackets.PROP_ADD, prop.writeToNBT());
      }
@@ -351,13 +351,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		Float propScaleX, Float propScaleY, Float propScaleZ,
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling, Boolean hide
+		Boolean propMatchScaling, Boolean hide, String name
 		) {
     	 Prop prop = new Prop(propString, propItemStack, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling, hide);
+    			 propMatchScaling, hide, name);
 
     	 this.props.add(prop);
     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());
@@ -422,14 +422,14 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      	 Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
      }
 
-     public void labelPropServer (String label) {
-    	 this.props.get(this.props.size() - 1).label = label;
-     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_LABEL, this.player.getUniqueID(), label);
+     public void labelPropServer (String name) {
+    	 this.props.get(this.props.size() - 1).name = name;
+     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_NAME, this.player.getUniqueID(), name);
      }
 
      public void removeLabelServer (String label) {
    		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).label.contains(label)) {
+   			if (this.props.get(i).name.contains(label)) {
    	   	    	this.props.remove(i);
    	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
    			}

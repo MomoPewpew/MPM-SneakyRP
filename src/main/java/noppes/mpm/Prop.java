@@ -20,7 +20,7 @@ public class Prop {
     public Float rotateZ;
     public Boolean matchScaling;
     public Boolean hide;
-    public String label;
+    public String name;
 
 	public Prop(){}
 
@@ -28,7 +28,7 @@ public class Prop {
 	    Float scaleX, Float scaleY, Float scaleZ,
 	    Float offsetX, Float offsetY, Float offsetZ,
 	    Float rotateX, Float rotateY, Float rotateZ,
-	    Boolean matchScaling, Boolean hide)
+	    Boolean matchScaling, Boolean hide, String name)
 	{
 		this.propString = propString;
 	    this.itemStack = itemStack;
@@ -44,7 +44,7 @@ public class Prop {
 	    this.rotateZ = rotateZ;
 	    this.matchScaling = matchScaling;
 	    this.hide = hide;
-	    this.label = "";
+	    this.name = name;
 
 	    if (this.itemStack == null) {
 	    	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
@@ -56,7 +56,7 @@ public class Prop {
 		    Float scaleX, Float scaleY, Float scaleZ,
 		    Float offsetX, Float offsetY, Float offsetZ,
 		    Float rotateX, Float rotateY, Float rotateZ,
-		    Boolean matchScaling, Boolean hide)
+		    Boolean matchScaling, Boolean hide, String name)
 		{
 			this.propString = propString;
 	    	ResourceLocation resourcelocation = new ResourceLocation(this.propString);
@@ -73,7 +73,7 @@ public class Prop {
 		    this.rotateZ = rotateZ;
 		    this.hide = hide;
 		    this.matchScaling = matchScaling;
-		    this.label = "";
+		    this.name = name;
 		}
 
      public NBTTagCompound writeToNBT() {
@@ -91,7 +91,7 @@ public class Prop {
          compound.setFloat("rotateZ", this.rotateZ);
          compound.setBoolean("matchScaling", this.matchScaling);
          compound.setBoolean("hide", this.hide);
-         compound.setString("label", this.label);
+         compound.setString("name", this.name);
          return compound;
      }
 
@@ -109,7 +109,7 @@ public class Prop {
     	 this.rotateZ = compound.getFloat("rotateZ");
     	 this.matchScaling = compound.getBoolean("matchScaling");
     	 this.hide = compound.getBoolean("hide");
-    	 this.label = compound.getString("label");
+    	 this.name = compound.getString("name");
 
     	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
     	 this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));
@@ -121,7 +121,7 @@ public class Prop {
     			 this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
     			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
     			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
-    			 this.matchScaling + " " + this.hide;
+    			 this.matchScaling + " " + this.hide + " " + this.name;
 		return command;
      }
 }

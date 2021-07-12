@@ -407,7 +407,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	    	 }
 		}
 
-         this.props = new ArrayList(propsTemp);
+         this.props = new ArrayList<Prop>(propsTemp);
      }
 
      public void hidePropServer (Integer index) {

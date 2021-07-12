@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
+import co.runed.multicharacter.addons.mpm.MPMUtil;
 
 public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener {
      public HashMap data = new HashMap();

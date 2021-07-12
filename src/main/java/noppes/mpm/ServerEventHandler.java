@@ -149,7 +149,7 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
-               data.propSyncServer();
+               //data.propSyncServer();
           }
      }
 

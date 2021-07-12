@@ -156,6 +156,14 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                  ModelData data = ModelData.get(pl);
                  data.props.get(buffer.readInt()).hide = true;
+             } else if (type == EnumPackets.PROP_SHOW) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.props.get(buffer.readInt()).hide = false;
     	     } else if (type == EnumPackets.PROP_NAME) {
                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                  if (pl == null) {

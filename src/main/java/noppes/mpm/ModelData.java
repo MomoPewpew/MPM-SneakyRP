@@ -422,16 +422,63 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      	 Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
      }
 
-     public void labelPropServer (String name) {
+     public void showPropServer (Integer index) {
+    	 this.props.get(index).hide = false;
+     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
+     }
+
+     public void togglePropServer (Integer index) {
+		if (this.props.get(index).hide == true) {
+   	    	this.props.get(index).hide = false;
+   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
+		} else {
+   	    	this.props.get(index).hide = true;
+   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
+		}
+     }
+
+     public void namePropServer (String name) {
     	 this.props.get(this.props.size() - 1).name = name;
      	 Server.sendAssociatedData(this.player, EnumPackets.PROP_NAME, this.player.getUniqueID(), name);
      }
 
-     public void removeLabelServer (String label) {
+     public void removePropServerByName (String name) {
    		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.contains(label)) {
+   			if (this.props.get(i).name.equals(name)) {
    	   	    	this.props.remove(i);
    	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
+   			}
+   		}
+     }
+
+     public void hidePropServerByName (String name) {
+		for (int i = 0; i < this.props.size(); i++) {
+   			if (this.props.get(i).name.equals(name)) {
+   	   	    	this.props.get(i).hide = true;
+   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
+   			}
+   		}
+     }
+
+     public void showPropServerByName (String name) {
+   		for (int i = 0; i < this.props.size(); i++) {
+   			if (this.props.get(i).name.equals(name)) {
+   	   	    	this.props.get(i).hide = false;
+   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
+   			}
+   		}
+     }
+
+     public void togglePropServerByName (String name) {
+   		for (int i = 0; i < this.props.size(); i++) {
+   			if (this.props.get(i).name.equals(name)) {
+   				if (this.props.get(i).hide == true) {
+   	   	   	    	this.props.get(i).hide = false;
+   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
+   				} else {
+   	   	   	    	this.props.get(i).hide = true;
+   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
+   				}
    			}
    		}
      }

@@ -53,7 +53,7 @@ public class CommandProp extends MpmCommandInterface {
 	     "cl"
 	);
 
-	private final List<String> undoStrings = Lists.newArrayList(
+	private final List<String> deleteStrings = Lists.newArrayList(
 	     "undo",
 	     "remove",
 	     "delete",
@@ -77,6 +77,18 @@ public class CommandProp extends MpmCommandInterface {
 	     "name"
 	);
 
+	private final List<String> hideStrings = Lists.newArrayList(
+	     "hide"
+	);
+
+	private final List<String> showStrings = Lists.newArrayList(
+	     "show"
+	);
+
+	private final List<String> toggleStrings = Lists.newArrayList(
+	     "toggle"
+	);
+
 	@Override
 	public String getCommandName() {
 		return "prop";
@@ -95,48 +107,67 @@ public class CommandProp extends MpmCommandInterface {
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 
-		if (args.length > 0 && giveStrings.contains(args[0])) {
-			EntityPlayerMP target = null;
-			Integer index = null;
-
-			if (args.length > 1) {
-				if (args[1].matches("^\\d+$")) {
-					index = Integer.parseInt(args[1]) - 1;
-				} else {
-					target = getPlayer(server, icommandsender, args[1]);
-				}
-			}
-			if (args.length > 2) {
-				if (args[2].matches("^\\d+$")) {
-					index = Integer.parseInt(args[2]) - 1;
-				} else {
-					target = getPlayer(server, icommandsender, args[2]);
-				}
-			}
-
-			giveProp(target, index, (EntityPlayerMP) icommandsender);
-			return;
-		}
-
-		if (args.length > 1 && nameStrings.contains(args[0])) {
-			data.labelPropServer(args[1]);
-			return;
-		}
-
 		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
 
-		if (args.length > 0 && clearStrings.contains(args[0])) {
-			data.clearPropsServer();
-			return;
-		} else if (args.length > 0 && undoStrings.contains(args[0])) {
-			if (args.length == 1 || args[1].matches("^\\d+$")) {
-				Integer index = ((args.length > 1) ? Integer.valueOf(args[1]) - 1 : data.props.size() - 1);
+		if (args.length > 0) {
+			if (clearStrings.contains(args[0])) {
+				data.clearPropsServer();
+				return;
+			} else if (deleteStrings.contains(args[0])) {
+				if (args.length == 1) {
+					data.removePropServer(data.props.size() - 1);
+				} else {
+					data.removePropServerByName(args[1]);
+				}
+				return;
+			} else if (giveStrings.contains(args[0])) {
+				EntityPlayerMP target = null;
+				Integer index = null;
 
-				data.removePropServer(index);
-			} else {
-				data.removeLabelServer(args[1]);
+				if (args.length > 1) {
+					if (args[1].matches("^\\d+$")) {
+						index = Integer.parseInt(args[1]) - 1;
+					} else {
+						target = getPlayer(server, icommandsender, args[1]);
+					}
+				}
+				if (args.length > 2) {
+					if (args[2].matches("^\\d+$")) {
+						index = Integer.parseInt(args[2]) - 1;
+					} else {
+						target = getPlayer(server, icommandsender, args[2]);
+					}
+				}
+
+				giveProp(target, index, (EntityPlayerMP) icommandsender);
+				return;
+			} else if (hideStrings.contains(args[0])) {
+				if (args.length == 1) {
+					data.hidePropServer(data.props.size() - 1);
+				} else {
+					data.hidePropServerByName(args[1]);
+				}
+				return;
+			} else if (showStrings.contains(args[0])) {
+				if (args.length == 1) {
+					data.showPropServer(data.props.size() - 1);
+				} else {
+					data.showPropServerByName(args[1]);
+				}
+				return;
+			} else if (toggleStrings.contains(args[0])) {
+				if (args.length == 1) {
+					data.togglePropServer(data.props.size() - 1);
+				} else {
+					data.togglePropServerByName(args[1]);
+				}
+				return;
 			}
-			return;
+
+			if (args.length > 1 && nameStrings.contains(args[0])) {
+				data.namePropServer(args[1]);
+				return;
+			}
 		}
 
 		String propString = (args.length > 0) ? args[0] : "crafting_table";

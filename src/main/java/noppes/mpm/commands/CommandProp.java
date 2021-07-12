@@ -122,24 +122,20 @@ public class CommandProp extends MpmCommandInterface {
 				return;
 			} else if (giveStrings.contains(args[0])) {
 				EntityPlayerMP target = null;
-				Integer index = null;
 
-				if (args.length > 1) {
-					if (args[1].matches("^\\d+$")) {
-						index = Integer.parseInt(args[1]) - 1;
-					} else {
-						target = getPlayer(server, icommandsender, args[1]);
-					}
-				}
 				if (args.length > 2) {
-					if (args[2].matches("^\\d+$")) {
-						index = Integer.parseInt(args[2]) - 1;
-					} else {
-						target = getPlayer(server, icommandsender, args[2]);
-					}
+					target = getPlayer(server, icommandsender, args[2]);
 				}
 
-				giveProp(target, index, (EntityPlayerMP) icommandsender);
+				if (args.length == 0) {
+					giveProp(target, (data.props.size() - 1), (EntityPlayerMP) icommandsender);
+				} else if (args.length > 1) {
+			   		for (int i = 0; i < data.props.size(); i++) {
+			   			if (data.props.get(i).name.equals(args[1])) {
+							giveProp(target, i, (EntityPlayerMP) icommandsender);
+			   			}
+			   		}
+				}
 				return;
 			} else if (hideStrings.contains(args[0])) {
 				if (args.length == 1) {

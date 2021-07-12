@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.client.Client;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
@@ -94,6 +96,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
                } else {
                     this.player.getEntityData().setString("MPMModel", this.entityClass.getCanonicalName());
                }
+
+        	   if (this.player.worldObj.isRemote) {
+             	   Minecraft mc = Minecraft.getMinecraft();
+             	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
+             		   return;
+             	   }
+        	   }
           }
 
           this.setAnimation(compound.getInteger("Animation"));

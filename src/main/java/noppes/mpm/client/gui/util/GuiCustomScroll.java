@@ -24,6 +24,7 @@ public class GuiCustomScroll extends GuiScreen {
      public int selected;
      private HashSet selectedList;
      private int hover;
+     private int hoverSub;
      private int listHeight;
      private int scrollY;
      private int maxScrollY;
@@ -107,6 +108,7 @@ public class GuiCustomScroll extends GuiScreen {
                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                if (this.selectable) {
                     this.hover = this.getMouseOver(i, j);
+                    this.hoverSub = this.getMouseOverSubButton(i, j);
                }
 
                this.drawItems();
@@ -154,6 +156,12 @@ public class GuiCustomScroll extends GuiScreen {
           return i >= l - 1 && i < l + this.xSize - 11 && j >= i1 - 1 && j < i1 + 8;
      }
 
+     public boolean mouseInSubButton(int i, int j, int k) {
+         int l = 4;
+         int i1 = 14 * k + 4 - this.scrollY;
+         return i >= l + this.xSize - 11 && i < l + this.xSize - 9 && j >= i1 - 1 && j < i1 + 1;
+    }
+
      protected void drawItems() {
           for(int i = 0; i < this.list.size(); ++i) {
                int j = 4;
@@ -193,7 +201,11 @@ public class GuiCustomScroll extends GuiScreen {
                          this.fontRendererObj.drawString(text, j, k, color);
 
                          if (this.subButton) {
-                             this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -1);
+                        	 if (i == this.hoverSub) {
+                                 this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -800000000);
+                        	 } else {
+                                 this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -1);
+                             }
                          }
                     } else if (i == this.hover) {
                          this.fontRendererObj.drawString(text, j, k, 65280);
@@ -222,6 +234,20 @@ public class GuiCustomScroll extends GuiScreen {
 
           return -1;
      }
+
+     private int getMouseOverSubButton(int i, int j) {
+         i -= this.guiLeft;
+         j -= this.guiTop;
+         if (i >= 4 && i < this.xSize - 4 && j >= 4 && j < this.ySize) {
+              for(int j1 = 0; j1 < this.list.size(); ++j1) {
+                   if (this.mouseInSubButton(i, j, j1)) {
+                        return j1;
+                   }
+              }
+         }
+
+         return -1;
+    }
 
      @Override
      public void mouseClicked(int i, int j, int k) {

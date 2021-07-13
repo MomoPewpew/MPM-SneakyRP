@@ -22,13 +22,11 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.client.Client;
-import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
@@ -57,6 +55,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public long lastEdited;
      public UUID analyticsUUID;
      public List<Prop> props;
+     public List<PropGroup> propGroups;
 
      public ModelData() {
           this.backItem = null;
@@ -70,7 +69,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.lastEdited = System.currentTimeMillis();
           this.analyticsUUID = UUID.randomUUID();
 
-          this.props = new ArrayList();
+          this.props = new ArrayList<Prop>();
+          this.propGroups = new ArrayList<PropGroup>();
      }
 
      @Override

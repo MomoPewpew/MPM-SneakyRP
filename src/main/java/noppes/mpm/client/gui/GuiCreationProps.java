@@ -39,13 +39,14 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private final Integer guiOffsetX = this.guiLeft + 158;
      private static List<Prop> props;
      private static int propGroupAmount;
+     private static Prop prop = null;
 
      public GuiCreationProps() {
-   	  this.playerdata = ModelData.get(this.getPlayer());
+   	  	 this.playerdata = ModelData.get(this.getPlayer());
          this.active = 100;
          this.xOffset = 140;
          props = this.playerdata.props;
-         selected = props.size() - 1;
+         selected = props.size() + propGroupAmount - 1;
          if (selected >= 0) {
           	newProp = true;
          }
@@ -53,9 +54,15 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
     }
 
      public GuiCreationProps(List<Prop> propList) {
-    	  super();
-          props = propList;
-          propGroupAmount = 0;
+   	  	 this.playerdata = ModelData.get(this.getPlayer());
+         this.active = -1;
+         this.xOffset = 140;
+         props = propList;
+         selected = props.size() + propGroupAmount - 1;
+         if (selected >= 0) {
+          	newProp = true;
+         }
+         propGroupAmount = this.playerdata.propGroups.size();
      }
 
      @Override
@@ -69,6 +76,16 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           ArrayList<String> list = new ArrayList<String>();
           Integer y = props.size();
           this.scroll.colorlist = new ArrayList<Integer>();
+
+          for(int n = 0; n < propGroupAmount; ++n) {
+          		list.add(this.playerdata.propGroups.get(n).name);
+
+	       	   if (this.playerdata.propGroups.get(n).hide == true) {
+	       		   this.scroll.colorlist.add(8421504);
+	       	   } else {
+	       		   this.scroll.colorlist.add(255);
+	       	   }
+          }
 
           for(int n = 0; n < y; ++n) {
         	   if (props.get(n).name.equals("NONAME")) {
@@ -92,16 +109,15 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           this.addScroll(this.scroll);
 
           if (newProp) {
-        	  this.scroll.selected = selected = props.size() - 1;
-        	  propString = props.get(selected).propString;
+        	  this.scroll.selected = selected = props.size() + propGroupAmount - 1;
+        	  prop = props.get(selected - propGroupAmount);
+        	  propString = prop.propString;
         	  newProp = false;
           }
 
           y = this.guiTop + 45;
           this.addButton(new GuiNpcButton(101, this.guiOffsetX, y, 20, 20, "+"));
-          if (selected >= 0) {
-        	  Prop prop = props.get(selected);
-
+          if (selected >= propGroupAmount) {
         	  this.addButton(new GuiNpcButton(102, this.guiOffsetX + 22, y, 20, 20, "-"));
         	  this.addButton(new GuiNpcButton(119, this.guiOffsetX + 44, y, 54, 20, "gui.duplicate"));
         	  this.addButton(new GuiNpcButton(120, this.guiOffsetX + 100, y, 35, 20, "gui.give"));
@@ -113,52 +129,52 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	  this.addLabel(new GuiNpcLabel(105, "gui.bodypart", this.guiOffsetX, y + 5, 16777215));
               this.addButton(new GuiNpcButton(105, this.guiOffsetX + 32, y, 69, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
             		  bodyParts.contains(prop.bodyPartName) ? bodyParts.indexOf(prop.bodyPartName) : 0));
-              this.addButton(new GuiNpcButton(121, this.guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, props.get(selected).hide ? 1 : 0));
+              this.addButton(new GuiNpcButton(121, this.guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, prop.hide ? 1 : 0));
               y += 22;
               this.addButton(new GuiNpcButton(106, this.guiOffsetX, y, 49, 20, "gui.scale"));
               this.addButton(new GuiNpcButton(107, this.guiOffsetX + 50, y, 50, 20, "gui.offset"));
               this.addButton(new GuiNpcButton(108, this.guiOffsetX + 102, y, 50, 20, "gui.rotate"));
               y += 22;
               if (sliders == 106) {
-                  this.addTextField(new GuiNpcTextField(109, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).scaleX)));
-                  this.addSlider(new GuiNpcSlider(this, 109, this.guiOffsetX, y, 152, 20, (props.get(selected).scaleX / maxScale)));
+                  this.addTextField(new GuiNpcTextField(109, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.scaleX)));
+                  this.addSlider(new GuiNpcSlider(this, 109, this.guiOffsetX, y, 152, 20, (prop.scaleX / maxScale)));
                   this.getSlider(109).displayString = "X";
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(110, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).scaleY)));
-                  this.addSlider(new GuiNpcSlider(this, 110, this.guiOffsetX, y, 152, 20, (props.get(selected).scaleY / maxScale)));
+                  this.addTextField(new GuiNpcTextField(110, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.scaleY)));
+                  this.addSlider(new GuiNpcSlider(this, 110, this.guiOffsetX, y, 152, 20, (prop.scaleY / maxScale)));
                   this.getSlider(110).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(111, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).scaleZ)));
-                  this.addSlider(new GuiNpcSlider(this, 111, this.guiOffsetX, y, 152, 20, (props.get(selected).scaleZ / maxScale)));
+                  this.addTextField(new GuiNpcTextField(111, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.scaleZ)));
+                  this.addSlider(new GuiNpcSlider(this, 111, this.guiOffsetX, y, 152, 20, (prop.scaleZ / maxScale)));
                   this.getSlider(111).displayString = "Z";
               } else if (sliders == 107) {
-                  this.addTextField(new GuiNpcTextField(112, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).offsetX)));
-                  this.addSlider(new GuiNpcSlider(this, 112, this.guiOffsetX, y, 152, 20, ((props.get(selected).offsetX + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(112, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.offsetX)));
+                  this.addSlider(new GuiNpcSlider(this, 112, this.guiOffsetX, y, 152, 20, ((prop.offsetX + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(112).displayString = "X";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(113, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).offsetY)));
-                  this.addSlider(new GuiNpcSlider(this, 113, this.guiOffsetX, y, 152, 20, ((props.get(selected).offsetY + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(113, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.offsetY)));
+                  this.addSlider(new GuiNpcSlider(this, 113, this.guiOffsetX, y, 152, 20, ((prop.offsetY + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(113).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(114, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", props.get(selected).offsetZ)));
-                  this.addSlider(new GuiNpcSlider(this, 114, this.guiOffsetX, y, 152, 20, ((props.get(selected).offsetZ + maxOffset) / (maxOffset * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(114, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.offsetZ)));
+                  this.addSlider(new GuiNpcSlider(this, 114, this.guiOffsetX, y, 152, 20, ((prop.offsetZ + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(114).displayString = "Z";
               } else if (sliders == 108) {
-                  this.addTextField(new GuiNpcTextField(115, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", props.get(selected).rotateX)));
-                  this.addSlider(new GuiNpcSlider(this, 115, this.guiOffsetX, y, 152, 20, ((props.get(selected).rotateX + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(115, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", prop.rotateX)));
+                  this.addSlider(new GuiNpcSlider(this, 115, this.guiOffsetX, y, 152, 20, ((prop.rotateX + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(115).displayString = "X";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(116, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", props.get(selected).rotateY)));
-                  this.addSlider(new GuiNpcSlider(this, 116, this.guiOffsetX, y, 152, 20, ((props.get(selected).rotateY + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(116, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", prop.rotateY)));
+                  this.addSlider(new GuiNpcSlider(this, 116, this.guiOffsetX, y, 152, 20, ((prop.rotateY + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(116).displayString = "Y";
 
                   y += 22;
-                  this.addTextField(new GuiNpcTextField(117, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", props.get(selected).rotateZ)));
-                  this.addSlider(new GuiNpcSlider(this, 117, this.guiOffsetX, y, 152, 20, ((props.get(selected).rotateZ + maxRotation) / (maxRotation * 2.0F))));
+                  this.addTextField(new GuiNpcTextField(117, this, this.guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", prop.rotateZ)));
+                  this.addSlider(new GuiNpcSlider(this, 117, this.guiOffsetX, y, 152, 20, ((prop.rotateZ + maxRotation) / (maxRotation * 2.0F))));
                   this.getSlider(117).displayString = "Z";
               }
 
@@ -166,7 +182,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
               y += 22;
         	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", this.guiOffsetX, y + 5, 16777215));
-              this.addButton(new GuiNpcButton(118, this.guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, props.get(selected).matchScaling ? 1 : 0));
+              this.addButton(new GuiNpcButton(118, this.guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.matchScaling ? 1 : 0));
           }
 
           this.initiating = false;
@@ -180,12 +196,15 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                newProp = true;
                this.initGui();
           } else if (btn.id == 102) {
-       	   	  props.remove(selected);
-       	   	  if (selected == props.size()) selected -= 1;
-       	   	  if (selected >= 0) propString = props.get(selected).propString;
+       	   	  props.remove(selected - propGroupAmount);
+       	   	  if (selected - propGroupAmount == props.size()) selected -= 1;
+       	   	  if (selected >= propGroupAmount) {
+       	   		  prop = props.get(selected - propGroupAmount);
+       	   		  propString = prop.propString;
+       	   	  }
               this.initGui();
          } else if (btn.id == 103) {
-        	 String command = props.get(selected).getCommand();
+        	 String command = prop.getCommand();
         	 StringSelection selection = new StringSelection(command);
         	 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         	 clipboard.setContents(selection, selection);
@@ -199,16 +218,15 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	 sliders = 108;
              this.initGui();
          } else if (btn.id == 105) {
-        	 props.get(selected).bodyPartName = this.bodyParts.get(((GuiNpcButton)btn).getValue());
+        	 prop.bodyPartName = this.bodyParts.get(((GuiNpcButton)btn).getValue());
              this.initGui();
          } else if (btn.id == 118) {
-        	 props.get(selected).matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
+        	 prop.matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
              this.initGui();
          } else if (btn.id == 121) {
-        	 props.get(selected).hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
+        	 prop.hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
              this.initGui();
          } else if (btn.id == 119) {
-        	 Prop prop = props.get(selected);
         	 props.add(new Prop(prop.propString, prop.itemStack, prop.bodyPartName,
 				 prop.scaleX, prop.scaleY, prop.scaleZ,
 				 prop.offsetX, prop.offsetY, prop.offsetZ,
@@ -217,7 +235,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
              this.initGui();
          } else if (btn.id == 120) {
              this.playerdata.propSyncClient();
-       		 Client.sendData(EnumPackets.PROP_GIVE, selected);
+       		 Client.sendData(EnumPackets.PROP_GIVE, selected - propGroupAmount);
 
              this.initGui();
          }
@@ -236,11 +254,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   value = (slider.sliderValue * maxScale);
 
                   if (slider.id == 109) {
-                	  props.get(selected).scaleX = value;
+                	  prop.scaleX = value;
                   } else if (slider.id == 110) {
-                	  props.get(selected).scaleY = value;
+                	  prop.scaleY = value;
                   } else if (slider.id == 111) {
-                	  props.get(selected).scaleZ = value;
+                	  prop.scaleZ = value;
                   }
 
                   text = String.format(java.util.Locale.US,"%.2f", value);
@@ -248,11 +266,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         		  value = ((slider.sliderValue - 0.5F) * (maxOffset * 2.0F));
 
                   if (slider.id == 112) {
-                	  props.get(selected).offsetX = value;
+                	  prop.offsetX = value;
                   } else if (slider.id == 113) {
-                	  props.get(selected).offsetY = value;
+                	  prop.offsetY = value;
                   } else if (slider.id == 114) {
-                	  props.get(selected).offsetZ = value;
+                	  prop.offsetZ = value;
                   }
 
                   text = String.format(java.util.Locale.US,"%.2f", value);
@@ -260,11 +278,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         		  value = ((slider.sliderValue - 0.5F) * (maxRotation * 2.0F));
 
                   if (slider.id == 115) {
-                	  props.get(selected).rotateX = value;
+                	  prop.rotateX = value;
                   } else if (slider.id == 116) {
-                	  props.get(selected).rotateY = value;
+                	  prop.rotateY = value;
                   } else if (slider.id == 117) {
-                	  props.get(selected).rotateZ = value;
+                	  prop.rotateZ = value;
                   }
 
                   text = String.format(java.util.Locale.US,"%.1f", value);
@@ -278,7 +296,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.selected >= 0) {
               selected = scroll.selected;
-              propString = props.get(selected).propString;
+
+              if (selected >= propGroupAmount) {
+                  prop = props.get(selected - propGroupAmount);
+                  propString = prop.propString;
+              }
 
                this.initGui();
           }
@@ -287,14 +309,14 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
  	@Override
  	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
         if (scroll.selected >= 0) {
-        	this.openGui(new GuiCreationPropRename(selected));
+        	this.openGui(new GuiCreationPropRename(selected - propGroupAmount));
         }
  	}
 
      @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
-         if (scroll.selected >= 0) {
-        	 props.get(selected).hide = !props.get(selected).hide;
+         if (scroll.selected >= propGroupAmount) {
+        	 prop.hide = !prop.hide;
 
              this.initGui();
          }
@@ -314,8 +336,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			propString = textField.getText();
 
 			try {
-				props.get(selected).itemStack = new ItemStack(CommandBase.getItemByText(this.getPlayer(), propString));
-				props.get(selected).propString = propString;
+				prop.itemStack = new ItemStack(CommandBase.getItemByText(this.getPlayer(), propString));
+				prop.propString = propString;
 				this.initGui();
 			} catch (NumberInvalidException e) {
 
@@ -336,31 +358,31 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				sliderValue = value / maxScale;
 
 	            if (textField.id == 109) {
-              	  props.get(selected).scaleX = value;
+              	  prop.scaleX = value;
 	            } else if (textField.id == 110) {
-              	  props.get(selected).scaleY = value;
+              	  prop.scaleY = value;
 	            } else if (textField.id == 111) {
-              	  props.get(selected).scaleZ = value;
+              	  prop.scaleZ = value;
 	            }
 			} else if (textField.id >= 112 && textField.id <= 114) {
 				sliderValue = (value + maxOffset) / (maxOffset * 2.0F);
 
 				if (textField.id == 112) {
-              	  props.get(selected).offsetX = value;
+              	  prop.offsetX = value;
 	            } else if (textField.id == 113) {
-              	  props.get(selected).offsetY = value;
+              	  prop.offsetY = value;
 	            } else if (textField.id == 114) {
-              	  props.get(selected).offsetZ = value;
+              	  prop.offsetZ = value;
 	            }
 			} else if (textField.id >= 115 && textField.id <= 117) {
 				sliderValue = (value + maxRotation) / (maxRotation * 2.0F);
 
 	            if (textField.id == 115) {
-              	  props.get(selected).rotateX = value;
+              	  prop.rotateX = value;
 	            } else if (textField.id == 116) {
-	              	  props.get(selected).rotateY = value;
+	              	  prop.rotateY = value;
 	            } else if (textField.id == 117) {
-	              	  props.get(selected).rotateZ = value;
+	              	  prop.rotateZ = value;
 	            }
 			}
 

@@ -275,4 +275,10 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
           public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           }
      }
+
+	@Override
+	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+		// TODO Auto-generated method stub
+		
+	}
 }

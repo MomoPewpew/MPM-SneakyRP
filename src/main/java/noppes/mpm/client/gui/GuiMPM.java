@@ -160,4 +160,10 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
      @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
+
+	@Override
+	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+		// TODO Auto-generated method stub
+
+	}
 }

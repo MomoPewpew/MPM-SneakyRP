@@ -159,7 +159,7 @@ public class GuiCustomScroll extends GuiScreen {
      public boolean mouseInSubButton(int i, int j, int k) {
          int l = 4;
          int i1 = 14 * k + 4 - this.scrollY;
-         return i >= l + this.xSize - 11 && i < l + this.xSize - 9 && j >= i1 - 1 && j < i1 + 1;
+         return i >= l + this.xSize - 12 && i < l + this.xSize - 8 && j >= i1 - 2 && j < i1 + 2;
     }
 
      protected void drawItems() {
@@ -251,6 +251,12 @@ public class GuiCustomScroll extends GuiScreen {
 
      @Override
      public void mouseClicked(int i, int j, int k) {
+          if (k == 0 && this.hoverSub >= 0 && this.hoverSub == this.selected) {
+              if (this.listener != null) {
+                   this.listener.scrollSubButtonClicked(i, j, k, this);
+              }
+          }
+
           if (k == 0 && this.hover >= 0) {
                if (this.multipleSelection) {
                     if (this.selectedList.contains(this.list.get(this.hover))) {

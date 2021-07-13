@@ -283,6 +283,13 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           }
      }
 
+ 	@Override
+ 	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+        if (scroll.selected >= 0) {
+
+        }
+ 	}
+
      @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }

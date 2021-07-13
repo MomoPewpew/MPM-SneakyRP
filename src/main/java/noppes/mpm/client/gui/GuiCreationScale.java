@@ -177,4 +177,10 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
      static {
           selected = EnumParts.HEAD;
      }
+
+	@Override
+	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+		// TODO Auto-generated method stub
+		
+	}
 }

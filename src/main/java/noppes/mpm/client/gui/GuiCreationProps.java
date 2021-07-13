@@ -59,7 +59,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           Integer y = this.playerdata.props.size();
 
           for(int n = 0; n < y; ++n) {
-        	   if (playerdata.props.get(n).name.contains("NONAME")) {
+        	   if (playerdata.props.get(n).name.equals("NONAME")) {
                    list.add(playerdata.props.get(n).itemStack.getDisplayName());
         	   } else {
                    list.add(playerdata.props.get(n).name);

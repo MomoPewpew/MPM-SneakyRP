@@ -444,7 +444,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      public void removePropServerByName (String name) {
    		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.equals(name)) {
+   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
    	   	    	this.props.remove(i);
    	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
    			}
@@ -453,7 +453,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      public void hidePropServerByName (String name) {
 		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.equals(name)) {
+   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
    	   	    	this.props.get(i).hide = true;
    	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
    			}
@@ -462,7 +462,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      public void showPropServerByName (String name) {
    		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.equals(name)) {
+   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
    	   	    	this.props.get(i).hide = false;
    	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
    			}
@@ -471,7 +471,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      public void togglePropServerByName (String name) {
    		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.equals(name)) {
+   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
    				if (this.props.get(i).hide == true) {
    	   	   	    	this.props.get(i).hide = false;
    	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);

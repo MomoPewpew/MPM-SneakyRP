@@ -131,7 +131,7 @@ public class CommandProp extends MpmCommandInterface {
 					giveProp(target, (data.props.size() - 1), (EntityPlayerMP) icommandsender);
 				} else if (args.length > 1) {
 			   		for (int i = 0; i < data.props.size(); i++) {
-			   			if (data.props.get(i).name.equals(args[1])) {
+			   			if (data.props.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
 							giveProp(target, i, (EntityPlayerMP) icommandsender);
 			   			}
 			   		}

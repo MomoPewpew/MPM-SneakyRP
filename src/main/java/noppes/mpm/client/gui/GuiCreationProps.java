@@ -38,15 +38,24 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private Boolean initiating = false;
      private final Integer guiOffsetX = this.guiLeft + 158;
      private static List<Prop> props;
+     private static int propGroupAmount;
 
      public GuiCreationProps() {
-    	  this.playerdata = ModelData.get(this.getPlayer());
-          this.active = 100;
-          this.xOffset = 140;
-          props = this.playerdata.props;
-          selected = props.size() - 1;
-          if (selected >= 0)
-        	  newProp = true;
+   	  this.playerdata = ModelData.get(this.getPlayer());
+         this.active = 100;
+         this.xOffset = 140;
+         props = this.playerdata.props;
+         selected = props.size() - 1;
+         if (selected >= 0) {
+          	newProp = true;
+         }
+         propGroupAmount = this.playerdata.propGroups.size();
+    }
+
+     public GuiCreationProps(List<Prop> propList) {
+    	  super();
+          props = propList;
+          propGroupAmount = 0;
      }
 
      @Override

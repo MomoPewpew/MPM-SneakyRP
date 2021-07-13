@@ -57,6 +57,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
           ArrayList<String> list = new ArrayList<String>();
           Integer y = this.playerdata.props.size();
+          this.scroll.colorlist = new ArrayList<Integer>();
 
           for(int n = 0; n < y; ++n) {
         	   if (playerdata.props.get(n).name.equals("NONAME")) {
@@ -64,16 +65,13 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	   } else {
                    list.add(playerdata.props.get(n).name);
         	   }
-          }
 
-          this.scroll.colorlist = new ArrayList<Integer>();
-          for (int i = 0; i < this.playerdata.props.size(); i++) {
- 	    	 if (this.playerdata.props.get(i).hide == true) {
- 	    		 this.scroll.colorlist.add(8421504);
- 	    	 } else {
- 	    		 this.scroll.colorlist.add(16777215);
- 	    	 }
-  		  }
+        	   if (this.playerdata.props.get(n).hide == true) {
+        		   this.scroll.colorlist.add(8421504);
+        	   } else {
+        		   this.scroll.colorlist.add(16777215);
+        	   }
+          }
 
           this.scroll.selected = selected;
           this.scroll.setUnsortedList(list);

@@ -14,6 +14,7 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PacketHandlerServer;
+import noppes.mpm.Prop;
 import noppes.mpm.Server;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
@@ -102,121 +103,76 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     ItemStack item = new ItemStack(compound);
                     ModelData data = ModelData.get(pl);
                     data.backItem = item;
-              } else if (type == EnumPackets.PROP_ITEM_UPDATE) {
+              } else if (type == EnumPackets.PROP_ADD) {
                    pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                    if (pl == null) {
                         return;
                    }
 
-                   NBTTagCompound compound = Server.readNBT(buffer);
-                   ItemStack propItemStack = new ItemStack(compound);
                    ModelData data = ModelData.get(pl);
-                   data.propItemStack.add(propItemStack);
-              } else if (type == EnumPackets.PROP_PART_UPDATE) {
+
+                   Prop prop = new Prop();
+                   NBTTagCompound compound = Server.readNBT(buffer);
+                   prop.readFromNBT(compound);
+                   data.props.add(prop);
+              } else if (type == EnumPackets.PROP_SYNC) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
                        return;
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propBodyPartName.add(Server.readString(buffer));
-              } else if (type == EnumPackets.PROP_SCALEX_UPDATE) {
+                  NBTTagCompound compound = Server.readNBT(buffer);
+                  data.propsFromNBT(compound);
+              } else if (type == EnumPackets.PROP_CLEAR) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
                        return;
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.propScaleX.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_SCALEY_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propScaleY.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_SCALEZ_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propScaleZ.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_OFFSETX_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propOffsetX.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_OFFSETY_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propOffsetY.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_OFFSETZ_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propOffsetZ.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_ROTATEX_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propRotateX.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_ROTATEY_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propRotateY.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_ROTATEZ_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propRotateZ.add(buffer.readFloat());
-              } else if (type == EnumPackets.PROP_AUTOSCALE_UPDATE) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.propMatchScaling.add(buffer.readBoolean());
-               } else if (type == EnumPackets.PROP_CLEAR) {
-                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-                  if (pl == null) {
-                       return;
-                  }
-
-                  ModelData data = ModelData.get(pl);
-                  data.clearPropsLocal();
-               } else if (type == EnumPackets.PROP_REMOVE) {
+                  data.props.clear();
+              } else if (type == EnumPackets.PROP_REMOVE) {
                       pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                       if (pl == null) {
                            return;
                       }
 
                       ModelData data = ModelData.get(pl);
-                      data.removePropLocal(buffer.readInt());
-               } else if (type == EnumPackets.PARTICLE) {
+                      data.props.remove(buffer.readInt());
+               } else if (type == EnumPackets.PROP_GUI_OPEN) {
+	       			GuiMPM guiMPM = new GuiMPM();
+	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+	       			try {
+	       				guiMPM.setSubGui((GuiNPCInterface)GuiCreationProps.GuiProps.getClass().newInstance());
+	       			} catch (IllegalAccessException | InstantiationException e) {
+
+	       			}
+             } else if (type == EnumPackets.PROP_HIDE) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.props.get(buffer.readInt()).hide = true;
+             } else if (type == EnumPackets.PROP_SHOW) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.props.get(buffer.readInt()).hide = false;
+    	     } else if (type == EnumPackets.PROP_NAME) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.props.get(data.props.size() - 1).name = Server.readString(buffer);
+    	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {
                          pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
@@ -254,15 +210,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     ModelData data = ModelData.get(pl);
                     data.setAnimation(buffer.readInt());
                     data.animationStart = pl.ticksExisted;
-               } else if (type == EnumPackets.PROP_GUI_OPEN) {
-	       			GuiMPM guiMPM = new GuiMPM();
-	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
-	       			try {
-	       				guiMPM.setSubGui((GuiNPCInterface)GuiCreationProps.GuiProps.getClass().newInstance());
-	       			} catch (IllegalAccessException | InstantiationException e) {
-
-	       			}
-              }
+               }
           }
 
      }

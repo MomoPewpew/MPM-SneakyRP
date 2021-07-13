@@ -47,4 +47,10 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
           this.playerdata.resourceInit = false;
           this.playerdata.resourceLoaded = false;
      }
+
+	@Override
+	public void focused(GuiNpcTextField var1) {
+		// TODO Auto-generated method stub
+
+	}
 }

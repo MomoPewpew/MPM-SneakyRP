@@ -133,4 +133,10 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
      public interface ColorCallback {
           void color(int var1);
      }
+
+	@Override
+	public void focused(GuiNpcTextField var1) {
+		// TODO Auto-generated method stub
+
+	}
 }

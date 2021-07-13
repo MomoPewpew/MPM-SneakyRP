@@ -49,6 +49,8 @@ gui.true=True
 gui.false=False
 gui.give=Give
 gui.duplicate=Duplicate
+gui.shown=Shown
+gui.hidden=Hidden
 
 animation.sleep=Sleep
 animation.crawl=Crawl

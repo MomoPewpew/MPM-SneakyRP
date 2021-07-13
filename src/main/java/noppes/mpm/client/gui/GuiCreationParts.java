@@ -438,4 +438,16 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                return this;
           }
      }
+
+	@Override
+	public void focused(GuiNpcTextField var1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+		// TODO Auto-generated method stub
+		
+	}
 }

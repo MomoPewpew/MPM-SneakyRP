@@ -149,7 +149,7 @@ public class ServerEventHandler {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
 
-               data.propSyncServer();
+               //data.propSyncServer();
           }
      }
 
@@ -167,10 +167,9 @@ public class ServerEventHandler {
           if (event.getObject() instanceof EntityPlayer) {
                event.addCapability(key, new ModelData());
           }
-
      }
 
-    @SideOnly(Side.SERVER)
+/*    @SideOnly(Side.SERVER)
    	@EventHandler
    	public void onGameModeChange(PlayerGameModeChangeEvent event) {
       	 if (event.getNewGameMode() != GameMode.SPECTATOR) {
@@ -196,5 +195,5 @@ public class ServerEventHandler {
                 Server.sendDelayedData(player, EnumPackets.SEND_PLAYER_DATA, 100, target.getUniqueID(), data.writeToNBT());
            }
         }
-	}
+	}*/
 }

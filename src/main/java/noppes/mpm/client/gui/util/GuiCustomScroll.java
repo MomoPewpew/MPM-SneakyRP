@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 public class GuiCustomScroll extends GuiScreen {
      public static final ResourceLocation resource = new ResourceLocation("moreplayermodels", "textures/gui/misc.png");
      private List list;
+     public List<Integer> colorlist;
      public int id;
      public int guiLeft;
      public int guiTop;
@@ -23,6 +24,7 @@ public class GuiCustomScroll extends GuiScreen {
      public int selected;
      private HashSet selectedList;
      private int hover;
+     private int hoverSub;
      private int listHeight;
      private int scrollY;
      private int maxScrollY;
@@ -35,11 +37,13 @@ public class GuiCustomScroll extends GuiScreen {
      private boolean selectable;
      private int lastClickedItem;
      private long lastClickedTime;
+     private boolean subButton;
 
      public GuiCustomScroll(GuiScreen parent, int id) {
           this.guiLeft = 0;
           this.guiTop = 0;
           this.multipleSelection = false;
+          this.subButton = false;
           this.isSorted = true;
           this.visible = true;
           this.selectable = true;
@@ -61,12 +65,18 @@ public class GuiCustomScroll extends GuiScreen {
 
           this.list = new ArrayList();
           this.id = id;
+          this.colorlist = new ArrayList();
      }
 
      public GuiCustomScroll(GuiScreen parent, int id, boolean multipleSelection) {
           this(parent, id);
           this.multipleSelection = multipleSelection;
      }
+
+     public GuiCustomScroll(GuiScreen parent, int id, boolean multipleSelection, boolean subButton) {
+         this(parent, id, multipleSelection);
+         this.subButton = subButton;
+    }
 
      public void setSize(int x, int y) {
           this.ySize = y;
@@ -98,6 +108,7 @@ public class GuiCustomScroll extends GuiScreen {
                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                if (this.selectable) {
                     this.hover = this.getMouseOver(i, j);
+                    this.hoverSub = this.getMouseOverSubButton(i, j);
                }
 
                this.drawItems();
@@ -145,6 +156,12 @@ public class GuiCustomScroll extends GuiScreen {
           return i >= l - 1 && i < l + this.xSize - 11 && j >= i1 - 1 && j < i1 + 8;
      }
 
+     public boolean mouseInSubButton(int i, int j, int k) {
+         int l = 4;
+         int i1 = 14 * k + 4 - this.scrollY;
+         return i >= l + this.xSize - 12 && i < l + this.xSize - 8 && j >= i1 - 2 && j < i1 + 2;
+    }
+
      protected void drawItems() {
           for(int i = 0; i < this.list.size(); ++i) {
                int j = 4;
@@ -170,16 +187,30 @@ public class GuiCustomScroll extends GuiScreen {
                          text = displayString;
                     }
 
+                	Integer color = 16777215;
+
+                	if (this.colorlist.size() > i) {
+                		color = this.colorlist.get(i);
+                	}
+
                     if (this.multipleSelection && this.selectedList.contains(text) || !this.multipleSelection && this.selected == i) {
                          this.drawVerticalLine(j - 2, k - 4, k + 10, -1);
                          this.drawVerticalLine(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k + 10, -1);
-                         this.fontRendererObj.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, color);
+
+                         if (this.subButton) {
+                        	 if (i == this.hoverSub) {
+                                 this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -800000000);
+                        	 } else {
+                                 this.drawRect(j + this.xSize - 11, k - 1, j + this.xSize - 9, k + 1, -1);
+                             }
+                         }
                     } else if (i == this.hover) {
                          this.fontRendererObj.drawString(text, j, k, 65280);
                     } else {
-                         this.fontRendererObj.drawString(text, j, k, 16777215);
+                         this.fontRendererObj.drawString(text, j, k, color);
                     }
                }
           }
@@ -204,8 +235,28 @@ public class GuiCustomScroll extends GuiScreen {
           return -1;
      }
 
+     private int getMouseOverSubButton(int i, int j) {
+         i -= this.guiLeft;
+         j -= this.guiTop;
+         if (i >= 4 && i < this.xSize - 4 && j >= 4 && j < this.ySize) {
+              for(int j1 = 0; j1 < this.list.size(); ++j1) {
+                   if (this.mouseInSubButton(i, j, j1)) {
+                        return j1;
+                   }
+              }
+         }
+
+         return -1;
+    }
+
      @Override
      public void mouseClicked(int i, int j, int k) {
+          if (k == 0 && this.hoverSub >= 0 && this.hoverSub == this.selected) {
+              if (this.listener != null) {
+                   this.listener.scrollSubButtonClicked(i, j, k, this);
+              }
+          }
+
           if (k == 0 && this.hover >= 0) {
                if (this.multipleSelection) {
                     if (this.selectedList.contains(this.list.get(this.hover))) {

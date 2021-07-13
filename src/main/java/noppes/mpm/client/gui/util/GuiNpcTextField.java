@@ -79,6 +79,10 @@ public class GuiNpcTextField extends GuiTextField {
                this.unFocused();
           }
 
+          if (this.isFocused() && !wasFocused) {
+              this.focused();
+          }
+
           if (this.isFocused()) {
                activeTextfield = this;
           }
@@ -107,6 +111,12 @@ public class GuiNpcTextField extends GuiTextField {
                activeTextfield = null;
           }
 
+     }
+
+     public void focused() {
+         if (this.listener != null) {
+             this.listener.focused(this);
+        }
      }
 
      @Override

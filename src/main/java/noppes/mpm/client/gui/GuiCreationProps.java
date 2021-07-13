@@ -68,7 +68,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	   }
           }
 
-          this.scroll.colorlist = new ArrayList();
+          this.scroll.colorlist = new ArrayList<Integer>();
           for (int i = 0; i < this.playerdata.props.size(); i++) {
  	    	 if (this.playerdata.props.get(i).hide == true) {
  	    		 this.scroll.colorlist.add(8421504);

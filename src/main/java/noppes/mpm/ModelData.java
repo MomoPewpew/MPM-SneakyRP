@@ -22,11 +22,13 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.client.Client;
+import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
@@ -83,6 +85,18 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
      @Override
      public synchronized void readFromNBT(NBTTagCompound compound) {
+         if (this.player != null) {
+      	    if (this.player.worldObj.isRemote) {
+           	   Minecraft mc = Minecraft.getMinecraft();
+           	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
+           		   if (((GuiNPCInterface) mc.currentScreen).hasSubGui()) {
+               		   return;
+           		   } else {
+           		   }
+           	   }
+      	    }
+         }
+
           String prevUrl = new String(this.url);
           super.readFromNBT(compound);
           this.soundType = compound.getShort("SoundType");
@@ -94,13 +108,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
                } else {
                     this.player.getEntityData().setString("MPMModel", this.entityClass.getCanonicalName());
                }
-
-        	   if (this.player.worldObj.isRemote) {
-             	   Minecraft mc = Minecraft.getMinecraft();
-             	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
-             		   return;
-             	   }
-        	   }
           }
 
           this.setAnimation(compound.getInteger("Animation"));

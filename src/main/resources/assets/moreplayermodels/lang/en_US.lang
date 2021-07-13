@@ -51,6 +51,7 @@ gui.give=Give
 gui.duplicate=Duplicate
 gui.shown=Shown
 gui.hidden=Hidden
+gui.prop=Prop
 
 animation.sleep=Sleep
 animation.crawl=Crawl

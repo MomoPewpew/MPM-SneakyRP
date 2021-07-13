@@ -61,7 +61,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
                this.addButton(new GuiNpcButton(3, this.guiLeft + 62, this.guiTop + 23, 60, 20, "gui.scale"));
           }
 
-          this.getButton(this.active).enabled = false;
+          if (this.active >= 0)
+        	  this.getButton(this.active).enabled = false;
+
           this.addButton(new GuiNpcButton(66, this.guiLeft + this.xSize - 20, this.guiTop, 20, 20, "X"));
           this.addLabel(new GuiNpcLabel(0, Message, this.guiLeft + 120, this.guiTop + this.ySize - 10, 16711680));
           this.getLabel(0).center(this.xSize - 120);

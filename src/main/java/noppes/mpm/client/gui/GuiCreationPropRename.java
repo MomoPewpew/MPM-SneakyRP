@@ -24,7 +24,7 @@ public class GuiCreationPropRename extends GuiCreationScreenInterface implements
          Integer x = this.guiLeft + 102;
          Integer y = this.guiTop + 67;
          this.addLabel(new GuiNpcLabel(201, "gui.name", x, y + 5, 16777215));
-         this.addTextField(new GuiNpcTextField(201, this, x + 33, y, 185, 20, prop.name));
+         this.addTextField(new GuiNpcTextField(201, this, x + 33, y, 185, 20, prop.name.equals("NONAME") ? "" : prop.name));
 
          this.initiating = false;
     }
@@ -35,7 +35,16 @@ public class GuiCreationPropRename extends GuiCreationScreenInterface implements
 		if (this.initiating) return;
 
 		if (textField.id == 201) {
+			String newName;
+			if (textField.getText().equals("")) {
+				newName = "NONAME";
+			} else {
+				newName = textField.getText().replace(" ", "");
+			}
 
+			prop.name = newName;
+			this.initiating = true;
+			this.openGui(new GuiCreationProps());
 		}
 	}
 

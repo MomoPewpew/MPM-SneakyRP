@@ -39,14 +39,12 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private static final Float maxRotation = 180.0F;
      private Boolean initiating = false;
      private final Integer guiOffsetX = this.guiLeft + 158;
-     private static long lastclick = 0L;
 
      public GuiCreationProps() {
     	  this.playerdata = ModelData.get(this.getPlayer());
           this.active = 100;
           this.xOffset = 140;
           selected = this.playerdata.props.size() - 1;
-          lastclick = 0L;
      }
 
      @Override
@@ -270,14 +268,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
           if (scroll.selected >= 0) {
-        	  if (System.currentTimeMillis() <= (lastclick + 1000L) && scroll.selected == selected) {
-        		  lastclick = 0L;
-        		  playerdata.props.get(selected).hide = !playerdata.props.get(selected).hide;
-        	  } else {
-        		  lastclick = System.currentTimeMillis();
-                  selected = scroll.selected;
-                  itemName = playerdata.props.get(selected).propString;
-        	  }
+              selected = scroll.selected;
+              itemName = playerdata.props.get(selected).propString;
 
                this.initGui();
           }
@@ -292,6 +284,12 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
      @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
+         if (scroll.selected >= 0) {
+        	 playerdata.props.get(selected).hide = !playerdata.props.get(selected).hide;
+
+             this.initGui();
+         }
+
      }
 
      static {

@@ -45,7 +45,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
    	  	 this.playerdata = ModelData.get(this.getPlayer());
          this.active = 100;
          this.xOffset = 140;
-         props = this.playerdata.props;
+         props = this.playerdata.propBase.props;
          selected = props.size() + propGroupAmount - 1;
          if (selected >= 0) {
           	newProp = true;
@@ -234,7 +234,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				 prop.matchScaling, prop.hide, prop.name));
              this.initGui();
          } else if (btn.id == 120) {
-             this.playerdata.propSyncClient();
+             this.playerdata.syncPropsClient();
        		 Client.sendData(EnumPackets.PROP_GIVE, selected - propGroupAmount);
 
              this.initGui();

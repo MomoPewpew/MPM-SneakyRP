@@ -29,15 +29,15 @@ public class LayerProp extends LayerInterface {
 
 	@Override
 	public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-		for (int i = 0; i < this.playerdata.props.size(); i++) {
-			renderProp(this.playerdata.props.get(i), par7);
+		for (int i = 0; i < this.playerdata.propBase.props.size(); i++) {
+			renderProp(this.playerdata.propBase.props.get(i), par7);
 		}
 
 		for (int i = 0; i < this.playerdata.propGroups.size(); i++) {
 			if (this.playerdata.propGroups.get(i).hide)
 				continue;
 
-			for (int j = 0; j < this.playerdata.props.size(); j++) {
+			for (int j = 0; j < this.playerdata.propBase.props.size(); j++) {
 				renderProp(this.playerdata.propGroups.get(i).props.get(j), par7);
 			}
 		}

@@ -115,9 +115,9 @@ public class CommandProp extends MpmCommandInterface {
 				return;
 			} else if (deleteStrings.contains(args[0])) {
 				if (args.length == 1) {
-					data.removePropServer(data.props.size() - 1);
+					data.propBase.removePropServer(data.propBase.props.size() - 1);
 				} else {
-					data.removePropServerByName(args[1]);
+					data.propBase.removePropServerByName(args[1]);
 				}
 				return;
 			} else if (giveStrings.contains(args[0])) {
@@ -128,10 +128,10 @@ public class CommandProp extends MpmCommandInterface {
 				}
 
 				if (args.length == 0) {
-					giveProp(target, (data.props.size() - 1), (EntityPlayerMP) icommandsender);
+					giveProp(target, (data.propBase.props.size() - 1), (EntityPlayerMP) icommandsender);
 				} else if (args.length > 1) {
-			   		for (int i = 0; i < data.props.size(); i++) {
-			   			if (data.props.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
+			   		for (int i = 0; i < data.propBase.props.size(); i++) {
+			   			if (data.propBase.props.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
 							giveProp(target, i, (EntityPlayerMP) icommandsender);
 			   			}
 			   		}
@@ -139,29 +139,29 @@ public class CommandProp extends MpmCommandInterface {
 				return;
 			} else if (hideStrings.contains(args[0])) {
 				if (args.length == 1) {
-					data.hidePropServer(data.props.size() - 1);
+					data.propBase.hidePropServer(data.propBase.props.size() - 1);
 				} else {
-					data.hidePropServerByName(args[1]);
+					data.propBase.hidePropServerByName(args[1]);
 				}
 				return;
 			} else if (showStrings.contains(args[0])) {
 				if (args.length == 1) {
-					data.showPropServer(data.props.size() - 1);
+					data.propBase.showPropServer(data.propBase.props.size() - 1);
 				} else {
-					data.showPropServerByName(args[1]);
+					data.propBase.showPropServerByName(args[1]);
 				}
 				return;
 			} else if (toggleStrings.contains(args[0])) {
 				if (args.length == 1) {
-					data.togglePropServer(data.props.size() - 1);
+					data.propBase.togglePropServer(data.propBase.props.size() - 1);
 				} else {
-					data.togglePropServerByName(args[1]);
+					data.propBase.togglePropServerByName(args[1]);
 				}
 				return;
 			}
 
 			if (args.length > 1 && nameStrings.contains(args[0])) {
-				data.namePropServer(args[1]);
+				data.propBase.namePropServer(args[1]);
 				return;
 			}
 		}
@@ -182,7 +182,7 @@ public class CommandProp extends MpmCommandInterface {
 		Boolean propHide = (args.length > 12) ? parseBoolean(args[12]) : false;
 		String propName = (args.length > 13) ? args[13] : "NONAME";
 
-		data.addPropServer(propString, propItemStack, bodyPartName,
+		data.propBase.addPropServer(propString, propItemStack, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
 				propRotateX, propRotateY, propRotateZ,
@@ -216,21 +216,21 @@ public class CommandProp extends MpmCommandInterface {
 	public static void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
 		ModelData data = ModelData.get(sender);
 
-		if (index == null) index = data.props.size() - 1;
+		if (index == null) index = data.propBase.props.size() - 1;
 		if (target == null) target = getClosestPlayer(sender);
 
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			Prop prop = data.props.get(index);
+			Prop prop = data.propBase.props.get(index);
 
-			targetData.addPropServer(prop.propString, prop.itemStack, prop.bodyPartName,
+			targetData.propBase.addPropServer(prop.propString, prop.itemStack, prop.bodyPartName,
 					prop.scaleX, prop.scaleY, prop.scaleZ,
 					prop.offsetX, prop.offsetY, prop.offsetZ,
 					prop.rotateX, prop.rotateY, prop.rotateZ,
 					prop.matchScaling, prop.hide, prop.name);
 
-			data.hidePropServer(index);
+			data.propBase.hidePropServer(index);
 		}
 	}
 

@@ -114,7 +114,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                    Prop prop = new Prop();
                    NBTTagCompound compound = Server.readNBT(buffer);
                    prop.readFromNBT(compound);
-                   data.props.add(prop);
+                   data.propBase.props.add(prop);
               } else if (type == EnumPackets.PROP_SYNC) {
                   pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                   if (pl == null) {
@@ -131,7 +131,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                   }
 
                   ModelData data = ModelData.get(pl);
-                  data.props.clear();
+                  data.propBase.props.clear();
               } else if (type == EnumPackets.PROP_REMOVE) {
                       pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                       if (pl == null) {
@@ -139,7 +139,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                       }
 
                       ModelData data = ModelData.get(pl);
-                      data.props.remove(buffer.readInt());
+                      data.propBase.props.remove(buffer.readInt());
                } else if (type == EnumPackets.PROP_GUI_OPEN) {
 	       			GuiMPM guiMPM = new GuiMPM();
 	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
@@ -155,7 +155,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                  }
 
                  ModelData data = ModelData.get(pl);
-                 data.props.get(buffer.readInt()).hide = true;
+                 data.propBase.props.get(buffer.readInt()).hide = true;
              } else if (type == EnumPackets.PROP_SHOW) {
                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                  if (pl == null) {
@@ -163,7 +163,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                  }
 
                  ModelData data = ModelData.get(pl);
-                 data.props.get(buffer.readInt()).hide = false;
+                 data.propBase.props.get(buffer.readInt()).hide = false;
     	     } else if (type == EnumPackets.PROP_NAME) {
                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                  if (pl == null) {
@@ -171,7 +171,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
                  }
 
                  ModelData data = ModelData.get(pl);
-                 data.props.get(data.props.size() - 1).name = Server.readString(buffer);
+                 data.propBase.props.get(data.propBase.props.size() - 1).name = Server.readString(buffer);
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

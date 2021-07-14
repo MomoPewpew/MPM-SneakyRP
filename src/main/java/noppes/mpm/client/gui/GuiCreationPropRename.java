@@ -13,7 +13,7 @@ public class GuiCreationPropRename extends GuiCreationScreenInterface implements
     public GuiCreationPropRename(int index) {
          this.active = -1;
          this.xOffset = 140;
-         prop = ModelData.get(this.getPlayer()).props.get(index);
+         prop = ModelData.get(this.getPlayer()).propBase.props.get(index);
     }
 
     @Override

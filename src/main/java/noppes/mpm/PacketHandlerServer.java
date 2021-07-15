@@ -119,6 +119,10 @@ public class PacketHandlerServer {
              Integer index = buffer.readInt();
 
              CommandProp.giveProp(null, index, player);
+	     } else if (type == EnumPackets.PROPGROUP_GIVE) {
+             Integer index = buffer.readInt();
+
+             CommandProp.givePropGroup(null, index, player);
 	     }
 
 

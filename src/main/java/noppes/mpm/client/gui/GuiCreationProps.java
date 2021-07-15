@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
+import noppes.mpm.PropGroup;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
@@ -36,7 +37,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      private static final Float maxOffset = 2.0F;
      private static final Float maxRotation = 180.0F;
      private Boolean initiating = false;
-     private final Integer guiOffsetX = this.guiLeft + 158;
+     private final int guiOffsetX = this.guiLeft + 158;
+     private static PropGroup propGroup;
+     private static PropGroup selectedPropGroup = null;
      private static List<Prop> props;
      private static int propGroupAmount;
      private static Prop prop = null;
@@ -45,24 +48,28 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
    	  	 this.playerdata = ModelData.get(this.getPlayer());
          this.active = 100;
          this.xOffset = 140;
-         props = this.playerdata.propBase.props;
-         selected = props.size() + propGroupAmount - 1;
+
+         propGroupAmount = this.playerdata.propGroups.size();
+
+         propGroup = this.playerdata.propBase;
+         props = propGroup.props;
          if (selected >= 0) {
           	newProp = true;
          }
-         propGroupAmount = this.playerdata.propGroups.size();
     }
 
-     public GuiCreationProps(List<Prop> propList) {
+     public GuiCreationProps(PropGroup propGroupArg) {
    	  	 this.playerdata = ModelData.get(this.getPlayer());
          this.active = -1;
          this.xOffset = 140;
-         props = propList;
-         selected = props.size() + propGroupAmount - 1;
+
+         propGroupAmount = 0;
+
+         propGroup = propGroupArg;
+         props = propGroup.props;
          if (selected >= 0) {
           	newProp = true;
          }
-         propGroupAmount = this.playerdata.propGroups.size();
      }
 
      @Override
@@ -110,8 +117,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
           if (newProp) {
         	  this.scroll.selected = selected = props.size() + propGroupAmount - 1;
-        	  prop = props.get(selected - propGroupAmount);
-        	  propString = prop.propString;
+        	  if (selected >= propGroupAmount) {
+            	  prop = props.get(selected - propGroupAmount);
+            	  propString = prop.propString;
+        	  }
         	  newProp = false;
           }
 
@@ -121,7 +130,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	  this.addButton(new GuiNpcButton(102, this.guiOffsetX + 22, y, 20, 20, "-"));
         	  this.addButton(new GuiNpcButton(119, this.guiOffsetX + 44, y, 54, 20, "gui.duplicate"));
         	  this.addButton(new GuiNpcButton(120, this.guiOffsetX + 100, y, 35, 20, "gui.give"));
-        	  this.addButton(new GuiNpcButton(103, this.guiOffsetX + 136, y, 84, 20, "gui.copycommand"));
+        	  this.addButton(new GuiNpcButton(103, this.guiOffsetX + 136, y, 84, 20, "gui.copycode"));
         	  y += 22;
               this.addLabel(new GuiNpcLabel(104, "gui.prop", this.guiOffsetX, y + 5, 16777215));
               this.addTextField(new GuiNpcTextField(104, this, this.guiOffsetX + 33, y, 185, 20, propString));
@@ -183,6 +192,18 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
               y += 22;
         	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", this.guiOffsetX, y + 5, 16777215));
               this.addButton(new GuiNpcButton(118, this.guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.matchScaling ? 1 : 0));
+              y += 22;
+              this.addButton(new GuiNpcButton(122, this.guiOffsetX, y, 152, 20, "gui.propgroup"));
+          } else if (selected >= 0) {
+        	  selectedPropGroup = this.playerdata.propGroups.get(selected);
+          	  this.addButton(new GuiNpcButton(302, this.guiOffsetX + 22, y, 20, 20, "-"));
+        	  this.addButton(new GuiNpcButton(305, this.guiOffsetX + 44, y, 54, 20, "gui.duplicate"));
+        	  this.addButton(new GuiNpcButton(306, this.guiOffsetX + 100, y, 35, 20, "gui.give"));
+        	  y += 22;
+              this.addLabel(new GuiNpcLabel(303, "gui.name", this.guiOffsetX, y + 5, 16777215));
+              this.addTextField(new GuiNpcTextField(303, this, this.guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
+        	  y += 22;
+              this.addButton(new GuiNpcButton(307, this.guiOffsetX, y, 80, 20, "gui.browse"));
           }
 
           this.initiating = false;
@@ -227,17 +248,28 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	 prop.hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
              this.initGui();
          } else if (btn.id == 119) {
-        	 props.add(new Prop(prop.propString, prop.itemStack, prop.bodyPartName,
-				 prop.scaleX, prop.scaleY, prop.scaleZ,
-				 prop.offsetX, prop.offsetY, prop.offsetZ,
-				 prop.rotateX, prop.rotateY, prop.rotateZ,
-				 prop.matchScaling, prop.hide, prop.name));
+        	 Prop propTemp = new Prop();
+        	 propTemp.readFromNBT(prop.writeToNBT());
+        	 props.add(propTemp);
+        	 newProp = true;
              this.initGui();
          } else if (btn.id == 120) {
              this.playerdata.syncPropsClient();
        		 Client.sendData(EnumPackets.PROP_GIVE, selected - propGroupAmount);
 
              this.initGui();
+         } else if (btn.id == 122) {
+        	 this.openGui(new GuiCreationPropGroups(selected - propGroupAmount, propGroup));
+         } else if (btn.id == 302) {
+        	 this.playerdata.propGroups.remove(selected);
+
+        	 this.initGui();
+         } else if (btn.id == 305) {
+
+         } else if (btn.id == 306) {
+
+         } else if (btn.id == 307) {
+        	 this.openGui(new GuiCreationProps(selectedPropGroup));
          }
      }
 
@@ -308,7 +340,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
  	@Override
  	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
-        if (scroll.selected >= 0) {
+        if (scroll.selected >= propGroupAmount) {
         	this.openGui(new GuiCreationPropRename(selected - propGroupAmount));
         }
  	}
@@ -317,6 +349,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
          if (scroll.selected >= propGroupAmount) {
         	 prop.hide = !prop.hide;
+
+             this.initGui();
+         } else if (scroll.selected >= 0) {
+        	 this.playerdata.propGroups.get(selected).hide = !this.playerdata.propGroups.get(selected).hide;
 
              this.initGui();
          }
@@ -342,9 +378,12 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			} catch (NumberInvalidException e) {
 
 			}
-		}
+		} else if (textField.id == 303) {
+			if (textField.getText().equals("")) return;
 
-		if (textField.id >= 109 && textField.id <= 117) {
+			selectedPropGroup.name = textField.getText();
+			this.initGui();
+		} else if (textField.id >= 109 && textField.id <= 117) {
 			Float value = null;
 			try {
 			    value = Float.parseFloat(textField.getText().replace(',', '.'));

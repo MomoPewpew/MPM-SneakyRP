@@ -19,5 +19,7 @@ public enum EnumPackets {
 	 PROP_HIDE,
 	 PROP_SHOW,
 	 PROP_TOGGLE,
-	 PROP_NAME;
+	 PROP_NAME,
+	 PROPGROUP_GIVE,
+	 PROPGROUP_HIDE;
 }

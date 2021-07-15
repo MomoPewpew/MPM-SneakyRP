@@ -388,4 +388,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		 }
      }
 
+     public void hidePropGroupServer (int i) {
+    	 this.propGroups.get(i).hide = true;
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+     }
 }

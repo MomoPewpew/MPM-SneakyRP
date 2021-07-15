@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
+import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
@@ -222,15 +223,30 @@ public class CommandProp extends MpmCommandInterface {
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			Prop prop = data.propBase.props.get(index);
+			Prop prop = new Prop();
+			prop.readFromNBT(data.propBase.props.get(index).writeToNBT());
 
-			targetData.propBase.addPropServer(prop.propString, prop.itemStack, prop.bodyPartName,
-					prop.scaleX, prop.scaleY, prop.scaleZ,
-					prop.offsetX, prop.offsetY, prop.offsetZ,
-					prop.rotateX, prop.rotateY, prop.rotateZ,
-					prop.matchScaling, prop.hide, prop.name);
+			targetData.propBase.props.add(prop);
 
 			data.propBase.hidePropServer(index);
+		}
+	}
+
+	public static void givePropGroup(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {
+		ModelData data = ModelData.get(sender);
+
+		if (index == null) index = data.propGroups.size() - 1;
+		if (target == null) target = getClosestPlayer(sender);
+
+		if (data != null && target != null && index >= 0) {
+			ModelData targetData = ModelData.get(target);
+
+			PropGroup propGroup = new PropGroup(target);
+			propGroup.readFromNBT(data.propGroups.get(index).writeToNBT());
+
+			targetData.propGroups.add(propGroup);
+
+			data.hidePropGroupServer(index);
 		}
 	}
 

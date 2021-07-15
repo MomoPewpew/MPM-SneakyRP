@@ -172,6 +172,14 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                  ModelData data = ModelData.get(pl);
                  data.propBase.props.get(data.propBase.props.size() - 1).name = Server.readString(buffer);
+    	     } else if (type == EnumPackets.PROPGROUP_HIDE) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.propGroups.get(buffer.readInt()).hide = true;
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

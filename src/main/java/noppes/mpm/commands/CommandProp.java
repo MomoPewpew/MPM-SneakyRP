@@ -226,7 +226,7 @@ public class CommandProp extends MpmCommandInterface {
 			Prop prop = new Prop();
 			prop.readFromNBT(data.propBase.props.get(index).writeToNBT());
 
-			targetData.propBase.props.add(prop);
+			targetData.propBase.addPropServer(prop);
 
 			data.propBase.hidePropServer(index);
 		}

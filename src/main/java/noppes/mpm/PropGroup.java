@@ -85,6 +85,11 @@ public class PropGroup {
     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());
      }
 
+     public void addPropServer(Prop prop) {
+    	 this.props.add(prop);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());
+     }
+
 
      public void removePropClient(Integer index) {
    		Client.sendData(EnumPackets.PROP_REMOVE, index);

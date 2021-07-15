@@ -192,7 +192,7 @@ public class CommandProp extends MpmCommandInterface {
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/prop [<itemname>] [<bodypart>] [<scaleX>] [<scaleY>] [<scaleZ>] [<offsetX>] [<offsetY>] [<offsetZ>] [<rotateX>] [<rotateY>] [<rotateZ>] [Bodypart scaling <TRUE/FALSE>] [Hidden <TRUE/FALSE>]";
+		return "/prop [<itemname>] [<bodypart>] [<scaleX>] [<scaleY>] [<scaleZ>] [<offsetX>] [<offsetY>] [<offsetZ>] [<rotateX>] [<rotateY>] [<rotateZ>] [Bodypart scaling <TRUE/FALSE>] [Hidden <TRUE/FALSE>] [<Name>]";
 	}
 
 	private static EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {

@@ -203,7 +203,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
               this.addLabel(new GuiNpcLabel(303, "gui.name", this.guiOffsetX, y + 5, 16777215));
               this.addTextField(new GuiNpcTextField(303, this, this.guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
         	  y += 22;
-              this.addButton(new GuiNpcButton(307, this.guiOffsetX, y, 80, 20, "gui.browse"));
+              this.addButton(new GuiNpcButton(307, this.guiOffsetX, y, 100, 20, "gui.browse"));
+              this.addButton(new GuiNpcButton(308, this.guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, selectedPropGroup.hide ? 1 : 0));
           }
 
           this.initiating = false;
@@ -218,7 +219,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                this.initGui();
           } else if (btn.id == 102) {
        	   	  props.remove(selected - propGroupAmount);
-       	   	  if (selected - propGroupAmount == props.size()) selected -= 1;
+       	   	  if (selected == props.size() + propGroupAmount) selected -= 1;
        	   	  if (selected >= propGroupAmount) {
        	   		  prop = props.get(selected - propGroupAmount);
        	   		  propString = prop.propString;
@@ -262,14 +263,31 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	 this.openGui(new GuiCreationPropGroups(selected - propGroupAmount, propGroup));
          } else if (btn.id == 302) {
         	 this.playerdata.propGroups.remove(selected);
+        	 propGroupAmount -= 1;
+
+      	   	  if (selected == props.size() + propGroupAmount) selected -= 1;
+      	   	  if (selected >= propGroupAmount) {
+       	   		  prop = props.get(selected - propGroupAmount);
+       	   		  propString = prop.propString;
+       	   	  }
 
         	 this.initGui();
          } else if (btn.id == 305) {
+        	 PropGroup propGroupTemp = new PropGroup(this.getPlayer());
+        	 propGroupTemp.readFromNBT(selectedPropGroup.writeToNBT());
+        	 this.playerdata.propGroups.add(propGroupTemp);
 
+        	 this.initGui();
          } else if (btn.id == 306) {
+             this.playerdata.syncPropsClient();
+        	 Client.sendData(EnumPackets.PROPGROUP_GIVE, selected);
 
+             this.initGui();
          } else if (btn.id == 307) {
         	 this.openGui(new GuiCreationProps(selectedPropGroup));
+         } else if (btn.id == 308) {
+        	 selectedPropGroup.hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
+             this.initGui();
          }
      }
 

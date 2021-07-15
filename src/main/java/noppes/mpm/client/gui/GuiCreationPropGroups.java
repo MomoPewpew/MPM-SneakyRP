@@ -75,7 +75,7 @@ public class GuiCreationPropGroups extends GuiCreationScreenInterface implements
             this.addLabel(new GuiNpcLabel(303, "gui.name", this.guiOffsetX, y + 5, 16777215));
             this.addTextField(new GuiNpcTextField(303, this, this.guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
             y += 22;
-            this.addButton(new GuiNpcButton(304, this.guiOffsetX, y, 80, 20, "gui.confirmmove"));
+            this.addButton(new GuiNpcButton(304, this.guiOffsetX, y, 100, 20, "gui.confirmmove"));
         }
 
         this.initiating = false;

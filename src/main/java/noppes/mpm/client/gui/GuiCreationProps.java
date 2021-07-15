@@ -276,6 +276,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	 PropGroup propGroupTemp = new PropGroup(this.getPlayer());
         	 propGroupTemp.readFromNBT(selectedPropGroup.writeToNBT());
         	 this.playerdata.propGroups.add(propGroupTemp);
+        	 propGroupAmount += 1;
+        	 selected = propGroupAmount - 1;
 
         	 this.initGui();
          } else if (btn.id == 306) {
@@ -360,6 +362,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
  	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
         if (scroll.selected >= propGroupAmount) {
         	this.openGui(new GuiCreationPropRename(selected - propGroupAmount));
+        } else if (scroll.selected >= 0) {
+        	this.openGui(new GuiCreationProps(selectedPropGroup));
         }
  	}
 

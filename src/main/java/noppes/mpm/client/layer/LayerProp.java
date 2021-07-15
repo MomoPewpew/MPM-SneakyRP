@@ -37,7 +37,7 @@ public class LayerProp extends LayerInterface {
 			if (this.playerdata.propGroups.get(i).hide)
 				continue;
 
-			for (int j = 0; j < this.playerdata.propBase.props.size(); j++) {
+			for (int j = 0; j < this.playerdata.propGroups.get(i).props.size(); j++) {
 				renderProp(this.playerdata.propGroups.get(i).props.get(j), par7);
 			}
 		}

@@ -30,6 +30,6 @@ public class VersionChecker extends Thread {
 
           TextComponentTranslation message = new TextComponentTranslation(text, new Object[0]);
           message.getStyle().setClickEvent(new ClickEvent(Action.OPEN_URL, "http://www.kodevelopment.nl/minecraft/moreplayermodels/"));
-          player.addChatMessage(message);
+          //player.addChatMessage(message);
      }
 }

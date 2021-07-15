@@ -58,7 +58,7 @@ public class MorePlayerModels {
      @ConfigProp(
           info = "Enables the item on your back"
      )
-     public static boolean EnableBackItem = true;
+     public static boolean EnableBackItem = false;
      @ConfigProp(
           info = "Enables chat bubbles"
      )

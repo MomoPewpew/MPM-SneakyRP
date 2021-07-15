@@ -22,13 +22,11 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.client.Client;
-import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
@@ -56,7 +54,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public EntityPlayer player;
      public long lastEdited;
      public UUID analyticsUUID;
-     public List<Prop> props;
+     public PropGroup propBase;
+     public List<PropGroup> propGroups;
 
      public ModelData() {
           this.backItem = null;
@@ -70,7 +69,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.lastEdited = System.currentTimeMillis();
           this.analyticsUUID = UUID.randomUUID();
 
-          this.props = new ArrayList();
+          this.propBase = new PropGroup(this.player);
+          this.propGroups = new ArrayList<PropGroup>();
      }
 
      @Override
@@ -339,154 +339,57 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public void update() {
      }
 
-     public void addPropClient(String propString, String bodyPartName,
-		Float propScaleX, Float propScaleY, Float propScaleZ,
-		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling, Boolean hide, String name
-		) {
-    	 Prop prop = new Prop(propString, null, bodyPartName,
-    			 propScaleX, propScaleY, propScaleZ,
-    			 propOffsetX, propOffsetY, propOffsetZ,
-    			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling, hide, name);
-
- 		Client.sendData(EnumPackets.PROP_ADD, prop.writeToNBT());
-     }
-
-     public void addPropServer(String propString, ItemStack propItemStack, String bodyPartName,
-		Float propScaleX, Float propScaleY, Float propScaleZ,
-		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-		Float propRotateX, Float propRotateY, Float propRotateZ,
-		Boolean propMatchScaling, Boolean hide, String name
-		) {
-    	 Prop prop = new Prop(propString, propItemStack, bodyPartName,
-    			 propScaleX, propScaleY, propScaleZ,
-    			 propOffsetX, propOffsetY, propOffsetZ,
-    			 propRotateX, propRotateY, propRotateZ,
-    			 propMatchScaling, hide, name);
-
-    	 this.props.add(prop);
-    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());
-     }
-
      public void clearPropsClient() {
   		Client.sendData(EnumPackets.PROP_CLEAR);
  	}
 
      public void clearPropsServer() {
-    	this.props.clear();
+    	this.propBase = new PropGroup(this.player);
     	Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 
-     public void removePropClient(Integer index) {
-   		Client.sendData(EnumPackets.PROP_REMOVE, index);
-     }
-
-     public void removePropServer(Integer index) {
-    	 this.props.remove(index);
-     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), index);
-     }
-
-     public void propSyncClient() {
+     public void syncPropsClient() {
         NBTTagCompound compound = new NBTTagCompound();
  		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
      }
 
-     public void propSyncServer() {
+     public void syncPropsServer() {
          NBTTagCompound compound = new NBTTagCompound();
     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
      }
 
      public NBTTagCompound propsToNBT(NBTTagCompound compound) {
-  		for (int i = 0; i < this.props.size(); i++) {
-	    	 compound.setTag(("prop" + String.valueOf(i)), this.props.get(i).writeToNBT());
+
+    	compound.setTag("propBase", this.propBase.writeToNBT());
+
+  		for (int i = 0; i < this.propGroups.size(); i++) {
+	    	 compound.setTag(("propGroup" + String.valueOf(i)), this.propGroups.get(i).writeToNBT());
 		}
 
 		return compound;
      }
 
      public void propsFromNBT(NBTTagCompound compound) {
-         List<Prop> propsTemp = new ArrayList<Prop>();
 
-   		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-  			 NBTTagCompound tag = compound.getCompoundTag("prop" + String.valueOf(i));
-  			 Prop prop = new Prop();
-	    	 prop.readFromNBT(tag);
+    	 this.propBase = new PropGroup(this.player);
+         this.propBase.readFromNBT(compound.getCompoundTag("propBase"));
 
-	    	 if (prop.propString != "") {
-	    		 propsTemp.add(prop);
+    	 this.propGroups = new ArrayList<PropGroup>();
+
+   		 for (int i = 0; i < Integer.MAX_VALUE; i++) {
+  			PropGroup propGroup = new PropGroup(this.player);
+  			propGroup.readFromNBT(compound.getCompoundTag("propGroup" + String.valueOf(i)));
+
+  			if (!propGroup.name.equals("")) {
+  				this.propGroups.add(propGroup);
 	    	 } else {
 				 break;
 	    	 }
-		}
-
-         this.props = new ArrayList<Prop>(propsTemp);
+		 }
      }
 
-     public void hidePropServer (Integer index) {
-    	 this.props.get(index).hide = true;
-     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
-     }
-
-     public void showPropServer (Integer index) {
-    	 this.props.get(index).hide = false;
-     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
-     }
-
-     public void togglePropServer (Integer index) {
-		if (this.props.get(index).hide == true) {
-   	    	this.props.get(index).hide = false;
-   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
-		} else {
-   	    	this.props.get(index).hide = true;
-   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
-		}
-     }
-
-     public void namePropServer (String name) {
-    	 this.props.get(this.props.size() - 1).name = name;
-     	 Server.sendAssociatedData(this.player, EnumPackets.PROP_NAME, this.player.getUniqueID(), name);
-     }
-
-     public void removePropServerByName (String name) {
-   		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.props.remove(i);
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
-
-     public void hidePropServerByName (String name) {
-		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.props.get(i).hide = true;
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
-
-     public void showPropServerByName (String name) {
-   		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.props.get(i).hide = false;
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
-
-     public void togglePropServerByName (String name) {
-   		for (int i = 0; i < this.props.size(); i++) {
-   			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   				if (this.props.get(i).hide == true) {
-   	   	   	    	this.props.get(i).hide = false;
-   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
-   				} else {
-   	   	   	    	this.props.get(i).hide = true;
-   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
-   				}
-   			}
-   		}
+     public void hidePropGroupServer (int i) {
+    	 this.propGroups.get(i).hide = true;
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
      }
 }

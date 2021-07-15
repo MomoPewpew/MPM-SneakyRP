@@ -100,7 +100,7 @@ public class PacketHandlerServer {
              Prop prop = new Prop();
              NBTTagCompound compound = Server.readNBT(buffer);
              prop.readFromNBT(compound);
-             data.props.add(prop);
+             data.propBase.props.add(prop);
 
       	     Server.sendAssociatedData(player, EnumPackets.PROP_ADD, player.getUniqueID(), compound);
 	     } else if (type == EnumPackets.PROP_SYNC) {
@@ -114,11 +114,15 @@ public class PacketHandlerServer {
              ModelData data = ModelData.get(player);
 
              Integer index = buffer.readInt();
-             data.removePropServer(index);
+             data.propBase.removePropServer(index);
 	     } else if (type == EnumPackets.PROP_GIVE) {
              Integer index = buffer.readInt();
 
              CommandProp.giveProp(null, index, player);
+	     } else if (type == EnumPackets.PROPGROUP_GIVE) {
+             Integer index = buffer.readInt();
+
+             CommandProp.givePropGroup(null, index, player);
 	     }
 
 

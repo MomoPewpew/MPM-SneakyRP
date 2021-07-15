@@ -68,8 +68,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
           this.player = null;
           this.lastEdited = System.currentTimeMillis();
           this.analyticsUUID = UUID.randomUUID();
-          this.resourceInit = false;
-          this.resourceLoaded = false;
 
           this.propBase = new PropGroup(this.player);
           this.propGroups = new ArrayList<PropGroup>();

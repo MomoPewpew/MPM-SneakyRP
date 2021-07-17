@@ -184,6 +184,14 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                  ModelData data = ModelData.get(pl);
                  data.propGroups.get(buffer.readInt()).hide = true;
+    	     } else if (type == EnumPackets.PROPGROUP_SHOW) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.propGroups.get(buffer.readInt()).hide = false;
     	     } else if (type == EnumPackets.PROPGROUP_ADD) {
                  pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                  if (pl == null) {
@@ -196,6 +204,19 @@ public class PacketHandlerClient extends PacketHandlerServer {
                  NBTTagCompound compound = Server.readNBT(buffer);
                  propGroup.readFromNBT(compound);
                  data.propGroups.add(propGroup);
+             } else if (type == EnumPackets.PROPGROUP_REMOVE) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+                 data.propGroups.remove(buffer.readInt());
+    	     } else if (type == EnumPackets.LOAD_SKIN) {
+    	    	 ModelData data = ModelData.get(player);
+
+    	    	 data.resourceInit = false;
+                 data.resourceLoaded = false;
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

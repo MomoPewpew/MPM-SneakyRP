@@ -23,6 +23,7 @@ public class PropGroup {
          NBTTagCompound compound = new NBTTagCompound();
 
          compound.setString("groupName", this.name);
+         compound.setBoolean("hide", this.hide);
 
    		for (int i = 0; i < this.props.size(); i++) {
 	    	 compound.setTag(("prop" + String.valueOf(i)), this.props.get(i).writeToNBT());
@@ -35,6 +36,7 @@ public class PropGroup {
         this.props = new ArrayList<Prop>();
 
         this.name = compound.getString("groupName");
+        this.hide = compound.getBoolean("hide");
 
    		for (int i = 0; i < Integer.MAX_VALUE; i++) {
   			 NBTTagCompound tag = compound.getCompoundTag("prop" + String.valueOf(i));

@@ -127,6 +127,10 @@ public class ServerEventHandler {
                } else {
                     Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
                }
+
+               if (target == player) {
+            	   Server.sendDelayedData(player, EnumPackets.LOAD_SKIN, 100, target.getUniqueID());
+               }
           }
      }
 
@@ -146,5 +150,5 @@ public class ServerEventHandler {
           }
      }
 
-     
+
 }

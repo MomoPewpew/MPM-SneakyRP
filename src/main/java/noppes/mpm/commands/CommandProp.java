@@ -119,6 +119,7 @@ public class CommandProp extends MpmCommandInterface {
 					data.propBase.removePropServer(data.propBase.props.size() - 1);
 				} else {
 					data.propBase.removePropServerByName(args[1]);
+					data.removePropGroupServerByName(args[1]);
 				}
 				return;
 			} else if (giveStrings.contains(args[0])) {
@@ -136,6 +137,12 @@ public class CommandProp extends MpmCommandInterface {
 							giveProp(target, i, (EntityPlayerMP) icommandsender);
 			   			}
 			   		}
+
+			   		for (int i = 0; i < data.propGroups.size(); i++) {
+			   			if (data.propGroups.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
+							givePropGroup(target, i, (EntityPlayerMP) icommandsender);
+			   			}
+			   		}
 				}
 				return;
 			} else if (hideStrings.contains(args[0])) {
@@ -143,6 +150,7 @@ public class CommandProp extends MpmCommandInterface {
 					data.propBase.hidePropServer(data.propBase.props.size() - 1);
 				} else {
 					data.propBase.hidePropServerByName(args[1]);
+					data.hidePropGroupServerByName(args[1]);
 				}
 				return;
 			} else if (showStrings.contains(args[0])) {
@@ -150,6 +158,7 @@ public class CommandProp extends MpmCommandInterface {
 					data.propBase.showPropServer(data.propBase.props.size() - 1);
 				} else {
 					data.propBase.showPropServerByName(args[1]);
+					data.showPropGroupServerByName(args[1]);
 				}
 				return;
 			} else if (toggleStrings.contains(args[0])) {
@@ -157,6 +166,7 @@ public class CommandProp extends MpmCommandInterface {
 					data.propBase.togglePropServer(data.propBase.props.size() - 1);
 				} else {
 					data.propBase.togglePropServerByName(args[1]);
+					data.togglePropGroupServerByName(args[1]);
 				}
 				return;
 			}

@@ -192,6 +192,10 @@ public class CommandProp extends MpmCommandInterface {
 					File dir = null;
 		            dir = new File(dir, "../moreplayermodels/propGroups");
 
+		            if (!dir.exists()) {
+		                  return;
+		             }
+
 		            NBTTagCompound compound = new NBTTagCompound();
 
 			        try {

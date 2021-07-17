@@ -1,6 +1,8 @@
 package noppes.mpm.client;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +17,7 @@ import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PacketHandlerServer;
 import noppes.mpm.Prop;
+import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
@@ -132,6 +135,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                   ModelData data = ModelData.get(pl);
                   data.propBase.props.clear();
+                  data.propGroups = new ArrayList<PropGroup>();
               } else if (type == EnumPackets.PROP_REMOVE) {
                       pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
                       if (pl == null) {
@@ -180,6 +184,18 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                  ModelData data = ModelData.get(pl);
                  data.propGroups.get(buffer.readInt()).hide = true;
+    	     } else if (type == EnumPackets.PROPGROUP_ADD) {
+                 pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+                 if (pl == null) {
+                      return;
+                 }
+
+                 ModelData data = ModelData.get(pl);
+
+                 PropGroup propGroup = new PropGroup(pl);
+                 NBTTagCompound compound = Server.readNBT(buffer);
+                 propGroup.readFromNBT(compound);
+                 data.propGroups.add(propGroup);
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

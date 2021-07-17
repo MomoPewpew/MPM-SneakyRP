@@ -339,12 +339,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      public void update() {
      }
 
-     public void clearPropsClient() {
-  		Client.sendData(EnumPackets.PROP_CLEAR);
- 	}
-
      public void clearPropsServer() {
     	this.propBase = new PropGroup(this.player);
+    	this.propGroups = new ArrayList<PropGroup>();
     	Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
  	}
 
@@ -388,8 +385,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		 }
      }
 
-     public void hidePropGroupServer (int i) {
+     public void hidePropGroupServer(int i) {
     	 this.propGroups.get(i).hide = true;
     	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+     }
+
+     public void addPropGroupServer(PropGroup propGroup) {
+    	 this.propGroups.add(propGroup);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), propGroup.writeToNBT());
      }
 }

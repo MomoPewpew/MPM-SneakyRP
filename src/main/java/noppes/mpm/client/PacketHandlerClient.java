@@ -196,6 +196,11 @@ public class PacketHandlerClient extends PacketHandlerServer {
                  NBTTagCompound compound = Server.readNBT(buffer);
                  propGroup.readFromNBT(compound);
                  data.propGroups.add(propGroup);
+    	     } else if (type == EnumPackets.LOAD_SKIN) {
+    	    	 ModelData data = ModelData.get(player);
+
+    	    	 data.resourceInit = false;
+                 data.resourceLoaded = false;
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

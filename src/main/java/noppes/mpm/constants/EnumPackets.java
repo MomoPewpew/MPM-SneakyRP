@@ -22,5 +22,6 @@ public enum EnumPackets {
 	 PROP_NAME,
 	 PROPGROUP_GIVE,
 	 PROPGROUP_HIDE,
-	 PROPGROUP_ADD;
+	 PROPGROUP_ADD,
+	 LOAD_SKIN;
 }

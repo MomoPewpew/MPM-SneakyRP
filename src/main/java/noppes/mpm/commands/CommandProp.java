@@ -1,16 +1,22 @@
 package noppes.mpm.commands;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
+import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
@@ -88,6 +94,10 @@ public class CommandProp extends MpmCommandInterface {
 
 	private final List<String> toggleStrings = Lists.newArrayList(
 	     "toggle"
+	);
+
+	private final List<String> groupStrings = Lists.newArrayList(
+	     "group"
 	);
 
 	@Override
@@ -171,9 +181,33 @@ public class CommandProp extends MpmCommandInterface {
 				return;
 			}
 
-			if (args.length > 1 && nameStrings.contains(args[0])) {
-				data.propBase.namePropServer(args[1]);
-				return;
+			if (args.length > 1) {
+				if (nameStrings.contains(args[0])) {
+					data.propBase.namePropServer(args[1]);
+					return;
+				} else if (groupStrings.contains(args[0])) {
+					String filename = args[1] + ".dat";
+					File file;
+
+					File dir = null;
+		            dir = new File(dir, "moreplayermodels/propGroups");
+
+		            NBTTagCompound compound = new NBTTagCompound();
+
+			        try {
+			             file = new File(dir, filename);
+			             compound = !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
+
+			             PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
+			             propGroup.readFromNBT(compound);
+
+			             data.addPropGroupServer(propGroup);
+			        } catch (Exception var4) {
+			             LogWriter.except(var4);
+		            }
+
+					return;
+				}
 			}
 		}
 

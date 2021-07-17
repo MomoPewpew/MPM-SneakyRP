@@ -2,6 +2,7 @@ package noppes.mpm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,7 +53,8 @@ public class PropGroup {
      }
 
      public String getCommand() {
-    	String command = "/prop group ";
+    	UUID uuid = UUID.randomUUID();
+    	String command = "/prop group " + uuid.toString();
 		return command;
      }
 

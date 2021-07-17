@@ -6,11 +6,14 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
@@ -199,6 +202,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           	  this.addButton(new GuiNpcButton(302, this.guiOffsetX + 22, y, 20, 20, "-"));
         	  this.addButton(new GuiNpcButton(305, this.guiOffsetX + 44, y, 54, 20, "gui.duplicate"));
         	  this.addButton(new GuiNpcButton(306, this.guiOffsetX + 100, y, 35, 20, "gui.give"));
+        	  this.addButton(new GuiNpcButton(309, this.guiOffsetX + 136, y, 84, 20, "gui.copycode"));
         	  y += 22;
               this.addLabel(new GuiNpcLabel(303, "gui.name", this.guiOffsetX, y + 5, 16777215));
               this.addTextField(new GuiNpcTextField(303, this, this.guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
@@ -290,6 +294,19 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
          } else if (btn.id == 308) {
         	 selectedPropGroup.hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
              this.initGui();
+         } else if (btn.id == 309) {
+        	 String uuid = UUID.randomUUID().toString();
+         	 String command = "/prop group " + uuid;
+
+        	 StringSelection selection = new StringSelection(command);
+        	 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        	 clipboard.setContents(selection, selection);
+
+        	 NBTTagCompound compound = new NBTTagCompound();
+        	 compound.setTag("propGroup", selectedPropGroup.writeToNBT());
+        	 compound.setString("uuid", uuid);
+
+        	 Client.sendData(EnumPackets.PROPGROUP_SAVE, compound);
          }
      }
 

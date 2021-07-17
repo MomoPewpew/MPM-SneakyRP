@@ -233,10 +233,7 @@ public class CommandProp extends MpmCommandInterface {
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			Prop prop = new Prop();
-			prop.readFromNBT(data.propBase.props.get(index).writeToNBT());
-
-			targetData.propBase.addPropServer(prop);
+			targetData.propBase.addPropServer(data.propBase.props.get(index));
 
 			data.propBase.hidePropServer(index);
 		}
@@ -251,10 +248,7 @@ public class CommandProp extends MpmCommandInterface {
 		if (data != null && target != null && index >= 0) {
 			ModelData targetData = ModelData.get(target);
 
-			PropGroup propGroup = new PropGroup(target);
-			propGroup.readFromNBT(data.propGroups.get(index).writeToNBT());
-
-			targetData.propGroups.add(propGroup);
+			targetData.addPropGroupServer(data.propGroups.get(index));
 
 			data.hidePropGroupServer(index);
 		}

@@ -212,11 +212,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
                  ModelData data = ModelData.get(pl);
                  data.propGroups.remove(buffer.readInt());
-    	     } else if (type == EnumPackets.LOAD_SKIN) {
-    	    	 ModelData data = ModelData.get(player);
-
-    	    	 data.resourceInit = false;
-                 data.resourceLoaded = false;
     	     } else if (type == EnumPackets.PARTICLE) {
                     animation = buffer.readInt();
                     if (animation == 0) {

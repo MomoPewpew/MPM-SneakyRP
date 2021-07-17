@@ -431,7 +431,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
      }
 
      public void addPropGroupServer(PropGroup propGroup) {
-    	 this.propGroups.add(propGroup);
-    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), propGroup.writeToNBT());
+    	 NBTTagCompound compound = propGroup.writeToNBT();
+
+    	 PropGroup propGroupTemp = new PropGroup(this.player);
+    	 propGroupTemp.readFromNBT(compound);
+
+    	 this.propGroups.add(propGroupTemp);
+
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
      }
 }

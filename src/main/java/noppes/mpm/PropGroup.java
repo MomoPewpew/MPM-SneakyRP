@@ -88,8 +88,13 @@ public class PropGroup {
      }
 
      public void addPropServer(Prop prop) {
-    	 this.props.add(prop);
-    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());
+    	 NBTTagCompound compound = prop.writeToNBT();
+
+    	 Prop propTemp = new Prop();
+    	 propTemp.readFromNBT(compound);
+
+    	 this.props.add(propTemp);
+    	 Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), compound);
      }
 
 

@@ -91,7 +91,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
            	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
            		   if (((GuiNPCInterface) mc.currentScreen).hasSubGui()) {
                		   return;
-           		   } else {
            		   }
            	   }
       	    }

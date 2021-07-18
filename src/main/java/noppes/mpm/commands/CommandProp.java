@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
+import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
@@ -215,7 +217,6 @@ public class CommandProp extends MpmCommandInterface {
 		}
 
 		String propString = (args.length > 0) ? args[0] : "crafting_table";
-		ItemStack propItemStack = (args.length > 0) ? new ItemStack(getItemByText(icommandsender, args[0])) : new ItemStack(Blocks.CRAFTING_TABLE);
 		String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
 		Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
 		Float propScaleY = (args.length > 3) ? Float.valueOf(args[3]) : propScaleX;
@@ -230,11 +231,16 @@ public class CommandProp extends MpmCommandInterface {
 		Boolean propHide = (args.length > 12) ? parseBoolean(args[12]) : false;
 		String propName = (args.length > 13) ? args[13] : "NONAME";
 
-		data.propBase.addPropServer(propString, propItemStack, bodyPartName,
+		Prop prop = new Prop(propString, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
 				propRotateX, propRotateY, propRotateZ,
 				propMatchScaling, propHide, propName);
+
+		if (!prop.parsePropString(propString))
+			return;
+
+		data.propBase.addPropServer(prop);
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class PropGroup {
 		Float propRotateX, Float propRotateY, Float propRotateZ,
 		Boolean propMatchScaling, Boolean hide, String name
 		) {
-    	 Prop prop = new Prop(propString, null, bodyPartName,
+    	 Prop prop = new Prop(propString, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,

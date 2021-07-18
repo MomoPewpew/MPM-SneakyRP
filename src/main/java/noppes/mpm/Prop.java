@@ -45,11 +45,6 @@ public class Prop {
 	    this.matchScaling = matchScaling;
 	    this.hide = hide;
 	    this.name = name;
-
-	    if (this.itemStack == null) {
-	    	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
-	    	 this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));
-	    }
 	}
 
 	public Prop(String propString, String bodyPartName,
@@ -59,8 +54,7 @@ public class Prop {
 		    Boolean matchScaling, Boolean hide, String name)
 		{
 			this.propString = propString;
-	    	ResourceLocation resourcelocation = new ResourceLocation(this.propString);
-	    	this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));
+			this.parsePropString(this.propString);
 		    this.bodyPartName = bodyPartName;
 		    this.scaleX = scaleX;
 		    this.scaleY = scaleY;
@@ -97,6 +91,7 @@ public class Prop {
 
      public void readFromNBT(NBTTagCompound compound) {
     	 this.propString = compound.getString("propString");
+    	 this.parsePropString(this.propString);
     	 this.bodyPartName = compound.getString("bodyPartName");
     	 this.scaleX = compound.getFloat("scaleX");
     	 this.scaleY = compound.getFloat("scaleY");
@@ -110,9 +105,6 @@ public class Prop {
     	 this.matchScaling = compound.getBoolean("matchScaling");
     	 this.hide = compound.getBoolean("hide");
     	 this.name = compound.getString("name");
-
-    	 ResourceLocation resourcelocation = new ResourceLocation(this.propString);
-    	 this.itemStack = new ItemStack(Item.REGISTRY.getObject(resourcelocation));
      }
 
      public String getCommand() {
@@ -123,5 +115,17 @@ public class Prop {
     			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
     			 this.matchScaling + " " + this.hide + " " + this.name;
 		return command;
+     }
+
+     public boolean parsePropString(String propString) {
+    	  ResourceLocation resourcelocation = new ResourceLocation(this.propString);
+    	  Item item = (Item)Item.REGISTRY.getObject(resourcelocation);
+
+    	  if (item == null) {
+              return false;
+          } else {
+              this.itemStack = new ItemStack(item);
+              return true;
+          }
      }
 }

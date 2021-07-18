@@ -410,12 +410,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 		if (textField.id == 104) {
 			propString = textField.getText();
 
-			try {
-				prop.itemStack = new ItemStack(CommandBase.getItemByText(this.getPlayer(), propString));
+			if (prop.parsePropString(propString)) {
 				prop.propString = propString;
 				this.initGui();
-			} catch (NumberInvalidException e) {
-
 			}
 		} else if (textField.id == 303) {
 			if (textField.getText().equals("")) return;

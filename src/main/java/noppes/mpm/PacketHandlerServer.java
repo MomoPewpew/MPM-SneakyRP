@@ -133,9 +133,9 @@ public class PacketHandlerServer {
              NBTTagCompound propCompound = compound.getCompoundTag("propGroup");
 
              File dir = null;
-             dir = new File(dir, "../moreplayermodels/propGroups");
+             dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroups");
              if (!dir.exists()) {
-                  dir.mkdir();
+                  dir.mkdirs();
              }
 
              String filename = uuid + ".dat";

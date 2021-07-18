@@ -1,8 +1,12 @@
 package noppes.mpm;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -123,6 +127,26 @@ public class PacketHandlerServer {
              Integer index = buffer.readInt();
 
              CommandProp.givePropGroup(null, index, player);
+	     } else if (type == EnumPackets.PROPGROUP_SAVE) {
+             NBTTagCompound compound = Server.readNBT(buffer);
+             String uuid = compound.getString("uuid");
+             NBTTagCompound propCompound = compound.getCompoundTag("propGroup");
+
+             File dir = null;
+             dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroups");
+             if (!dir.exists()) {
+                  dir.mkdirs();
+             }
+
+             String filename = uuid + ".dat";
+
+             try {
+                  File file = new File(dir, filename);
+                  CompressedStreamTools.writeCompressed(propCompound, new FileOutputStream(file));
+             } catch (Exception var6) {
+                  LogWriter.except(var6);
+                  var6.printStackTrace();
+             }
 	     }
 
 

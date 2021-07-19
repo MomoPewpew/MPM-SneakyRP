@@ -252,7 +252,9 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     data.animationStart = pl.ticksExisted;
                } else if (type == EnumPackets.ENTITIES_ENABLE) {
             	   MorePlayerModels.hasEntityPermission = true;
-              }
+               } else if (type == EnumPackets.ENTITIES_DISABLE) {
+            	   MorePlayerModels.hasEntityPermission = false;
+               }
           }
 
      }

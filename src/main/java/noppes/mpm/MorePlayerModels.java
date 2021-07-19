@@ -110,7 +110,7 @@ public class MorePlayerModels {
      @ConfigProp(
           info = "Used to register buttons to animations"
      )
-     public static boolean hasEntityPermission = false;
+     public static boolean hasEntityPermission = true;
      public static int button5;
      public ConfigLoader configLoader;
 

@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.Preset;
 import noppes.mpm.client.PresetController;
@@ -92,6 +93,10 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
           if (preset != null) {
                this.playerdata.readFromNBT(preset.data.writeToNBT());
                PresetController.instance.selected = preset.name;
+
+               if (!MorePlayerModels.hasEntityPermission) {
+            	   this.playerdata.setEntityClass((Class)null);
+               }
           }
 
      }
@@ -153,8 +158,6 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                     PresetController.instance.save();
                }
           }
-
-          //this.playerdata.propSyncClient();
      }
 
      @Override

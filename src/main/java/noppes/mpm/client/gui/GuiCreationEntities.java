@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
-import co.runed.multicharacter.addons.mpm.MPMUtil;
 
 public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener {
      public HashMap data = new HashMap();
@@ -109,6 +108,6 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 	@Override
 	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

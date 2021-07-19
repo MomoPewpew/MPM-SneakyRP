@@ -10,8 +10,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/MultiCharacter-v006-beta.jar"/>
 	<classpathentry kind="src" path="/SneakyEmotes"/>
-	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MagicSpells-SneakyRP/lib/craftbukkit-1.10.2.jar"/>
+	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/bukkit-1.9.4-R0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

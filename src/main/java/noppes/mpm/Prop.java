@@ -118,13 +118,32 @@ public class Prop {
      }
 
      public boolean parsePropString(String propString) {
-    	  ResourceLocation resourcelocation = new ResourceLocation(this.propString);
+    	 String nameSpacedId = "";
+    	 short dataValue = 0;
+
+    	 String[] parts = new String(propString).split(":");
+
+		 for (int i = 0; i < parts.length; i++) {
+			  if (i == (parts.length - 1)) {
+				  try {
+					  dataValue = Short.parseShort(parts[i]);
+		          } catch (NumberFormatException var2) {
+		        	  nameSpacedId += parts[i] + ":";
+		          }
+			  } else {
+			 	 nameSpacedId += parts[i] + ":";
+			  }
+   		  }
+
+		  nameSpacedId = nameSpacedId.substring(0, nameSpacedId.length() - 1);
+
+    	  ResourceLocation resourcelocation = new ResourceLocation(nameSpacedId);
     	  Item item = (Item)Item.REGISTRY.getObject(resourcelocation);
 
     	  if (item == null) {
               return false;
           } else {
-              this.itemStack = new ItemStack(item);
+              this.itemStack = new ItemStack(item, 1, dataValue);
               return true;
           }
      }

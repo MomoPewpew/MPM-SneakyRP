@@ -250,6 +250,10 @@ public class PacketHandlerClient extends PacketHandlerServer {
                     ModelData data = ModelData.get(pl);
                     data.setAnimation(buffer.readInt());
                     data.animationStart = pl.ticksExisted;
+               } else if (type == EnumPackets.ENTITIES_ENABLE) {
+            	   MorePlayerModels.hasEntityPermission = true;
+               } else if (type == EnumPackets.ENTITIES_DISABLE) {
+            	   MorePlayerModels.hasEntityPermission = false;
                }
           }
 

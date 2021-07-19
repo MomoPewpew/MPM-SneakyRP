@@ -14,6 +14,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +28,7 @@ import noppes.mpm.constants.EnumPackets;
 
 public class CommandMPM extends MpmCommandInterface {
      private HashMap entities = new HashMap();
-     private List sub = Arrays.asList("url", "name", "entity", "scale", "animation", "sendmodel");
+     private List sub = Arrays.asList("url", "name", "entity", "scale", "animation", "sendmodel", "enableentity", "disableentity");
 
      public CommandMPM() {
           Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
@@ -94,8 +95,11 @@ public class CommandMPM extends MpmCommandInterface {
                               this.animation((EntityPlayer)player, args, data);
                          } else if (type.equals("sendmodel")) {
                               this.sendmodel(server, (EntityPlayer)player, args, data);
+                         } else if (type.equals("enableentity")) {
+                        	 Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.ENTITIES_ENABLE, 100);
+                         } else if (type.equals("disableentity")) {
+                        	 Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.ENTITIES_DISABLE, 100);
                          }
-
                     }
                }
           }

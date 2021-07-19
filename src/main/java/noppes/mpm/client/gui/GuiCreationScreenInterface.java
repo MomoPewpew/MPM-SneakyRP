@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
@@ -40,7 +41,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
           Keyboard.enableRepeatEvents(true);
           this.addButton(new GuiNpcButton(0, this.guiLeft, this.guiTop, 60, 20, "gui.options"));
     	  this.addButton(new GuiNpcButton(1, this.guiLeft + 62, this.guiTop, 60, 20, "gui.entity"));
-          if (!mc.thePlayer.canCommandSenderUseCommand(2, "mpm")) {
+          if (!MorePlayerModels.hasEntityPermission) {
         	  this.getButton(1).enabled = false;
           }
           this.addButton(new GuiNpcButton(100, this.guiLeft + 124, this.guiTop, 60, 20, "gui.props"));

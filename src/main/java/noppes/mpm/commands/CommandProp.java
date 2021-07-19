@@ -216,7 +216,7 @@ public class CommandProp extends MpmCommandInterface {
 			}
 		}
 
-		String propString = (args.length > 0) ? args[0] : "crafting_table";
+		String propString = (args.length > 0) ? args[0] : "minecraft:stained_glass:2";
 		String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
 		Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
 		Float propScaleY = (args.length > 3) ? Float.valueOf(args[3]) : propScaleX;

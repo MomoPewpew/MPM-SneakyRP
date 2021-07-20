@@ -193,7 +193,7 @@ public class GuiCustomScroll extends GuiScreen {
                 		color = this.colorlist.get(i);
                 	}
 
-                    if (this.multipleSelection && this.selectedList.contains(text) || !this.multipleSelection && this.selected == i) {
+                    if (this.multipleSelection && this.selectedList.contains(displayString) || !this.multipleSelection && this.selected == i) {
                          this.drawVerticalLine(j - 2, k - 4, k + 10, -1);
                          this.drawVerticalLine(j + this.xSize - 18 + xOffset, k - 4, k + 10, -1);
                          this.drawHorizontalLine(j - 2, j + this.xSize - 18 + xOffset, k - 3, -1);

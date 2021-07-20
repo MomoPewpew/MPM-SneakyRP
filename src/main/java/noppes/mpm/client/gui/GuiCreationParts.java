@@ -273,7 +273,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
                     return y;
                } else {
                     GuiCreationParts.this.addLabel(new GuiNpcLabel(24, I18n.translateToLocal("part.wings") + "/" + I18n.translateToLocal("item.elytra.name"), GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
-                    GuiCreationParts.this.addButton(new GuiButtonBiDirectional(34, GuiCreationParts.this.guiLeft + 185, y, 100, 20, new String[]{"gui.both", "part.wings", "item.elytra.name"}, this.data.pattern));
+                    GuiCreationParts.this.addButton(new GuiButtonBiDirectional(34, GuiCreationParts.this.guiLeft + 185, y, 100, 20, new String[]{"gui.both", "part.wings", "item.elytra.name"}, GuiCreationParts.this.playerdata.wingMode));
                     return y;
                }
           }

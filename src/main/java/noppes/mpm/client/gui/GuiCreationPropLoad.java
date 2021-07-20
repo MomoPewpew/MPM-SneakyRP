@@ -26,7 +26,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 
      public GuiCreationPropLoad() {
    	  	 this.playerdata = ModelData.get(this.getPlayer());
-         this.active = 500;
+         this.active = 450;
          this.xOffset = 140;
          searchString = "";
          list = new ArrayList<String>();
@@ -64,7 +64,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
         	  }
           }
 
-          this.addTextField(new GuiNpcTextField(501, this, this.guiLeft + 1, this.guiTop + 46, 98, 16, searchString.equals("") ? "Search" : searchString));
+          this.addTextField(new GuiNpcTextField(451, this, this.guiLeft + 1, this.guiTop + 46, 98, 16, searchString.equals("") ? "Search" : searchString));
 
           this.scroll.selected = selected;
           this.scroll.setUnsortedList(list);
@@ -77,7 +77,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 
           y = this.guiTop + 44;
 
-          this.addButton(new GuiNpcButton(502, guiOffsetX, y, 50, 20, "gui.refresh"));
+          this.addButton(new GuiNpcButton(452, guiOffsetX, y, 50, 20, "gui.refresh"));
 
           this.initiating = false;
      }
@@ -86,7 +86,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
 
-          if (btn.id == 502) {
+          if (btn.id == 452) {
         	  this.initGui();
           }
      }
@@ -123,7 +123,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 	public void unFocused(GuiNpcTextField textField) {
 		if (this.initiating) return;
 
-		if (textField.id >= 501) {
+		if (textField.id >= 451) {
 			searchString = textField.getText();
 			this.initGui();
 		}
@@ -133,7 +133,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 	public void focused(GuiNpcTextField textField) {
 		if (this.initiating) return;
 
-		if (textField.id >= 501) {
+		if (textField.id >= 451) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

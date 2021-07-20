@@ -152,6 +152,8 @@ public class PacketHandlerServer {
              }
 	     } else if (type == EnumPackets.SKIN_FILENAME_UPDATE) {
              MorePlayerModels.syncSkinFileNames(player);
+	     } else if (type == EnumPackets.PROPGROUPS_FILENAME_UPDATE) {
+             MorePlayerModels.syncPropGroupFileNames(player);
 	     } else if (type == EnumPackets.UPDATE_PLAYER_DATA_CLIENT) {
              NBTTagCompound compound = Server.readNBT(buffer);
 

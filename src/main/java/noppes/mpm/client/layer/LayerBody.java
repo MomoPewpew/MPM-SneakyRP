@@ -128,27 +128,28 @@ public class LayerBody extends LayerInterface implements LayerPreRender  {
           ModelPartData data = this.playerdata.getPartData(EnumParts.WINGS);
           if (data != null) {
                ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-               if (itemstack == null || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode != 2) {
-                    this.preRender(data);
-                    GlStateManager.pushMatrix();
-                    if (data.type >= 0 && data.type <= 2) {
-                         this.wing.render(par7);
-                         GlStateManager.scale(-1.0F, 1.0F, 1.0F);
-                         this.wing.render(par7);
-                    }
+               if (itemstack == null || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode == 2)
+            	   return;
 
-                    if (data.type == 3) {
-                         this.wing2.render(par7);
-                         GlStateManager.scale(-1.0F, 1.0F, 1.0F);
-                         this.wing2.render(par7);
-                    }
+                this.preRender(data);
+                GlStateManager.pushMatrix();
+                if (data.type >= 0 && data.type <= 2) {
+                     this.wing.render(par7);
+                     GlStateManager.scale(-1.0F, 1.0F, 1.0F);
+                     this.wing.render(par7);
+                }
 
-                    if (data.type == 4) {
-                         this.wing3.render(this.player, this.player.limbSwing, this.player.limbSwingAmount, (float)this.player.ticksExisted, 0.0F, 0.0F, par7);
-                    }
+                if (data.type == 3) {
+                     this.wing2.render(par7);
+                     GlStateManager.scale(-1.0F, 1.0F, 1.0F);
+                     this.wing2.render(par7);
+                }
 
-                    GlStateManager.popMatrix();
-               }
+                if (data.type == 4) {
+                     this.wing3.render(this.player, this.player.limbSwing, this.player.limbSwingAmount, (float)this.player.ticksExisted, 0.0F, 0.0F, par7);
+                }
+
+                GlStateManager.popMatrix();
           }
      }
 

@@ -17,26 +17,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
+import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
+import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
-public class CommandSkinLoad extends CommandBase {
+public class CommandPropLoad extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) {
-			MorePlayerModels.syncSkinFileNames((EntityPlayerMP) icommandsender);
-			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.SKIN_LOAD_GUI);
-			return;
-		}
+		if (args.length == 0) Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.SKIN_LOAD_GUI);
 
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;
 
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
         if (!dir.exists()) {
               return;
@@ -46,16 +44,19 @@ public class CommandSkinLoad extends CommandBase {
              file = new File(dir, filename);
 
              if (!file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found on the server."));
+            	 icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
             	 return;
              }
 
+             ModelData data = ModelData.get((EntityPlayer) icommandsender);
+
+             PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
+
              NBTTagCompound compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-             if (!compound.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
-            	 return;
+             propGroup.readFromNBT(compound);
 
-             Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
+             data.addPropGroupServer(propGroup);
         } catch (Exception var4) {
              LogWriter.except(var4);
         }
@@ -63,12 +64,12 @@ public class CommandSkinLoad extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "skinload";
+		return "propload";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender arg0) {
-		return "/skinload <name>";
+		return "/propload <name>";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,8 +77,8 @@ public class CommandSkinLoad extends CommandBase {
 	public List getCommandAliases()
 		{
 			return new ArrayList<String>(Arrays.asList(
-				     "skinload",
-				     "sl"
+				     "propload",
+				     "pl"
 				));
 		}
 }

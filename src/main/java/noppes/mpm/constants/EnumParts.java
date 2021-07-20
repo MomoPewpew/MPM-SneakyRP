@@ -22,7 +22,8 @@ public enum EnumParts {
      LEG_LEFT("legleft"),
      LEG_RIGHT("legright"),
      EYES("eyes"),
-     HALO("halo");
+     HALO("halo"),
+     ARMS("arms");
 
      public String name;
      public int patterns = 1;

@@ -1,8 +1,10 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.client.model.part.head.ModelDuckBeak;
@@ -13,7 +15,7 @@ import noppes.mpm.client.model.part.horns.ModelAntlerHorns;
 import noppes.mpm.client.model.part.horns.ModelBullHorns;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerHead extends LayerInterface {
+public class LayerHead extends LayerInterface implements LayerPreRender  {
      private ModelRenderer small;
      private ModelRenderer medium;
      private ModelRenderer large;
@@ -220,5 +222,13 @@ public class LayerHead extends LayerInterface {
                this.beard.rotateAngleX = -head.rotateAngleX;
           }
 
+     }
+
+     @Override
+     public void preRender(AbstractClientPlayer player) {
+          this.player = player;
+          this.playerdata = ModelData.get(player);
+          ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.HEAD);
+          this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0;
      }
 }

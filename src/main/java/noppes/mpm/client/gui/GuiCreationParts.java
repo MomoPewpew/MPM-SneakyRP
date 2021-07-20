@@ -40,7 +40,10 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
         		  new GuiCreationParts.GuiPartTail(),
         		  new GuiCreationParts.GuiPartHalo(),
         		  new GuiCreationParts.GuiPartEyes(),
-        		  new GuiCreationParts.GuiPartParticles()};
+        		  new GuiCreationParts.GuiPartParticles(),
+        		  new GuiCreationParts.GuiPartArms(),
+        		  new GuiCreationParts.GuiPartBody(),
+          		  new GuiCreationParts.GuiPartHead()};
           this.active = 2;
           Arrays.sort(this.parts, (o1, o2) -> {
                String s1 = I18n.translateToLocal("part." + o1.part.name);
@@ -109,6 +112,96 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
      @Override
      public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
      }
+
+     class GuiPartHead extends GuiCreationParts.GuiPart {
+         public GuiPartHead() {
+              super(EnumParts.HEAD);
+              this.types = new String[]{"gui.none", "gui.normal"};
+              this.canBeDeleted = false;
+         }
+
+         @Override
+         public int initGui() {
+              this.hasPlayerOption = false;
+              int y = super.initGui();
+
+              return y;
+         }
+
+         @Override
+         protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
+              super.actionPerformed(btn);
+         }
+    }
+
+     class GuiPartArms extends GuiCreationParts.GuiPart {
+         public GuiPartArms() {
+              super(EnumParts.ARMS);
+              this.types = new String[]{"gui.none", "gui.normal"};
+              this.canBeDeleted = false;
+         }
+
+         @Override
+         public int initGui() {
+              this.hasPlayerOption = false;
+              int y = super.initGui();
+
+              return y;
+         }
+
+         @Override
+         protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
+              super.actionPerformed(btn);
+         }
+    }
+
+     class GuiPartBody extends GuiCreationParts.GuiPart {
+         public GuiPartBody() {
+              super(EnumParts.BODY);
+              this.types = new String[]{"gui.none", "gui.normal"};
+              this.canBeDeleted = false;
+         }
+
+         @Override
+         public int initGui() {
+              this.hasPlayerOption = false;
+              int y = super.initGui();
+
+              return y;
+         }
+
+         @Override
+         protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
+              super.actionPerformed(btn);
+         }
+    }
 
      class GuiPartLegs extends GuiCreationParts.GuiPart {
           public GuiPartLegs() {
@@ -448,6 +541,6 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 	@Override
 	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

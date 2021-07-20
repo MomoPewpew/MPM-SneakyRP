@@ -1,5 +1,6 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -7,13 +8,14 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.client.model.ModelPlaneRenderer;
 import noppes.mpm.client.model.ModelWings;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerBody extends LayerInterface {
+public class LayerBody extends LayerInterface implements LayerPreRender  {
      private Model2DRenderer wing;
      private Model2DRenderer wing2;
      private ModelWings wing3 = new ModelWings();
@@ -227,4 +229,12 @@ public class LayerBody extends LayerInterface {
           var10 = this.skirt;
           var10.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.04F - 0.05F;
      }
+
+	@Override
+	public void preRender(AbstractClientPlayer player) {
+		this.player = player;
+        this.playerdata = ModelData.get(player);
+        ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.BODY);
+        this.model.bipedBody.isHidden = this.model.bipedBodyWear.isHidden = data == null || data.type != 0;
+	}
 }

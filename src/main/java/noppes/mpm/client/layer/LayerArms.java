@@ -1,12 +1,14 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.constants.EnumParts;
 
-public class LayerArms extends LayerInterface {
+public class LayerArms extends LayerInterface implements LayerPreRender  {
      private Model2DRenderer lClaw;
      private Model2DRenderer rClaw;
 
@@ -52,4 +54,12 @@ public class LayerArms extends LayerInterface {
 
      public void rotate(float par2, float par3, float par4, float par5, float par6, float par7) {
      }
+
+	@Override
+	public void preRender(AbstractClientPlayer player) {
+		this.player = player;
+        this.playerdata = ModelData.get(player);
+        ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.ARMS);
+        this.model.bipedLeftArm.isHidden = this.model.bipedRightArm.isHidden = this.model.bipedLeftArmwear.isHidden = this.model.bipedRightArmwear.isHidden = data == null || data.type != 0;
+    }
 }

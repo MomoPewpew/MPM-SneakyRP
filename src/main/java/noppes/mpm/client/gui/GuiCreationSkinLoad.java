@@ -45,7 +45,7 @@ public class GuiCreationSkinLoad extends GuiCreationScreenInterface implements I
           Integer y = MorePlayerModels.fileNamesSkins.size();
 
           for(int n = 0; n < y; ++n) {
-        	  if (MorePlayerModels.fileNamesSkins.get(n).contains(searchString))
+        	  if (MorePlayerModels.fileNamesSkins.get(n).contains(searchString.toLowerCase()))
         		  list.add(MorePlayerModels.fileNamesSkins.get(n));
           }
 
@@ -78,18 +78,14 @@ public class GuiCreationSkinLoad extends GuiCreationScreenInterface implements I
 
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-    	 if (scroll.selected < 0) return;
+    	 if (this.scroll.selected < 0) return;
 
-    	 selected = scroll.selected;
+    	 selected = this.scroll.selected;
 
     	 NBTTagCompound compound = new NBTTagCompound();
     	 compound.setString("skinName", list.get(selected));
 
     	 Client.sendData(EnumPackets.UPDATE_PLAYER_DATA_CLIENT, compound);
-
-    	 this.playerdata = ModelData.get(this.getPlayer());
-
-    	 this.initGui();
      }
 
  	@Override

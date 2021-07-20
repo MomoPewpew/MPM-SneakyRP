@@ -309,7 +309,14 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	            				 break;
 	            	    	 }
 	            		 }
-              }
+              } else if (type == EnumPackets.PROPGROUP_LOAD_CLIENT) {
+            	   ModelData data = ModelData.get(player);
+            	   NBTTagCompound compound = Server.readNBT(buffer);
+
+            	   PropGroup propGroup = new PropGroup(player);
+            	   propGroup.readFromNBT(compound);
+            	   data.propGroups.add(propGroup);
+      	       }
           }
 
      }

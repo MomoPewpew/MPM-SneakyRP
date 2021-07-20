@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
+import noppes.mpm.PropGroup;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
@@ -21,6 +22,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
      private Boolean initiating = false;
      private static String searchString;
      private static ArrayList<String> list;
+     private static ArrayList<String> currentPropGroupNames;
 
      public GuiCreationPropLoad() {
    	  	 this.playerdata = ModelData.get(this.getPlayer());
@@ -28,6 +30,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
          this.xOffset = 140;
          searchString = "";
          list = new ArrayList<String>();
+         currentPropGroupNames = new ArrayList<String>();
     }
 
      @Override
@@ -38,15 +41,27 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
           Client.sendData(EnumPackets.PROPGROUPS_FILENAME_UPDATE);
 
           if (this.scroll == null) {
-               this.scroll = new GuiCustomScroll(this, 0);
+               this.scroll = new GuiCustomScroll(this, 0, true);
+          }
+
+          currentPropGroupNames = new ArrayList<String>();
+
+          if (this.playerdata.propGroups.size() > 0) {
+              for (PropGroup propGroup : this.playerdata.propGroups) {
+            	  currentPropGroupNames.add(propGroup.name.toLowerCase());
+              }
           }
 
           list = new ArrayList<String>();
           Integer y = MorePlayerModels.fileNamesPropGroups.size();
 
           for(int n = 0; n < y; ++n) {
-        	  if (MorePlayerModels.fileNamesPropGroups.get(n).contains(searchString))
+        	  if (MorePlayerModels.fileNamesPropGroups.get(n).contains(searchString.toLowerCase())) {
         		  list.add(MorePlayerModels.fileNamesPropGroups.get(n));
+
+        		  if (currentPropGroupNames.contains(MorePlayerModels.fileNamesPropGroups.get(n)))
+        			  this.scroll.getSelectedList().add(MorePlayerModels.fileNamesPropGroups.get(n));
+        	  }
           }
 
           this.addTextField(new GuiNpcTextField(501, this, this.guiLeft + 1, this.guiTop + 46, 98, 16, searchString.equals("") ? "Search" : searchString));
@@ -78,18 +93,18 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 
      @Override
      public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
-    	 if (scroll.selected < 0) return;
+ 		 if (this.initiating || this.scroll.getHover() < 0) return;
 
-    	 selected = scroll.selected;
+    	 selected = this.scroll.getHover();
 
-    	 NBTTagCompound compound = new NBTTagCompound();
-    	 compound.setString("skinName", list.get(selected));
+         if (this.scroll.getSelectedList().contains(this.scroll.getList().get(selected))) {
+        	 NBTTagCompound compound = new NBTTagCompound();
+        	 compound.setString("propName", list.get(selected));
 
-    	 Client.sendData(EnumPackets.UPDATE_PLAYER_DATA_CLIENT, compound);
-
-    	 this.playerdata = ModelData.get(this.getPlayer());
-
-    	 this.initGui();
+        	 Client.sendData(EnumPackets.PROPGROUP_LOAD_CLIENT, compound);
+         } else {
+        	 this.playerdata.removePropGroupByName(list.get(selected));
+         }
      }
 
  	@Override

@@ -10,6 +10,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,6 +53,9 @@ public class CommandSkinLoad extends CommandBase {
              NBTTagCompound compound = new NBTTagCompound();
 
              compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+
+             if (!compound.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+            	 return;
 
              Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
         } catch (Exception var4) {

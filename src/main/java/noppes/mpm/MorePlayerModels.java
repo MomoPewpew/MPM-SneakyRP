@@ -1,10 +1,16 @@
 package noppes.mpm;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -120,6 +126,7 @@ public class MorePlayerModels {
           info = "Used to register buttons to animations"
      )
      public static boolean hasEntityPermission = true;
+     public static List<UUID> playersEntityDenied;
      public static List<String> fileNamesSkins;
      public static int button5;
      public ConfigLoader configLoader;
@@ -159,6 +166,7 @@ public class MorePlayerModels {
           }, ModelData.class);
 
           fileNamesSkins = new ArrayList<String>();
+          playersEntityDenied = new ArrayList<UUID>();
      }
 
      @EventHandler
@@ -202,7 +210,19 @@ public class MorePlayerModels {
              if (fileEntry.isDirectory()) {
                  continue;
              } else {
+	             NBTTagCompound skinCompound = new NBTTagCompound();
+
+	             try {
+					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
+
+					if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
+		            	 continue;
+				} catch (FileNotFoundException e) {
+				} catch (IOException e) {
+				}
+
             	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
             	 compound.setString(("skinName" + String.valueOf(i)), skinName);
             	 i++;
              }

@@ -45,7 +45,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
         	  this.getButton(1).enabled = false;
           }
           this.addButton(new GuiNpcButton(100, this.guiLeft + 124, this.guiTop, 60, 20, "gui.props"));
-          this.addButton(new GuiNpcButton(400, this.guiLeft + 186, this.guiTop + 23, 60, 20, "gui.skinload"));
+          this.addButton(new GuiNpcButton(400, this.guiLeft + 186, this.guiTop, 60, 20, "gui.skinload"));
           if (this.entity == null) {
                this.addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
           } else {

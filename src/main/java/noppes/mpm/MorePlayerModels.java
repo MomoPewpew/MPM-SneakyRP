@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.ValueType;
@@ -32,6 +34,7 @@ import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumAnimation;
+import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 
 @Mod(
@@ -186,5 +189,25 @@ public class MorePlayerModels {
           button3 = EnumAnimation.CRAWLING.ordinal();
           button4 = EnumAnimation.HUG.ordinal();
           button5 = EnumAnimation.DANCING.ordinal();
+     }
+
+     public static void syncSkinFileNames(EntityPlayerMP player) {
+    	 File dir = null;
+         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+         NBTTagCompound compound = new NBTTagCompound();
+         int i = 0;
+
+         for (final File fileEntry : dir.listFiles()) {
+             if (fileEntry.isDirectory()) {
+                 continue;
+             } else {
+            	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+            	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+            	 i++;
+             }
+         }
+
+         Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
      }
 }

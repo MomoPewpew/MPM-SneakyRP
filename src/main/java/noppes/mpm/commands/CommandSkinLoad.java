@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
@@ -25,6 +26,7 @@ public class CommandSkinLoad extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
 		if (args.length == 0) {
+			MorePlayerModels.syncSkinFileNames((EntityPlayerMP) icommandsender);
 			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.SKIN_LOAD_GUI);
 			return;
 		}

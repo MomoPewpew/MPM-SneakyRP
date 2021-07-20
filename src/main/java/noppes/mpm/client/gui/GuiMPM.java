@@ -50,6 +50,8 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
                this.scroll.setSize(80, 160);
           }
 
+          Client.sendData(EnumPackets.SKIN_FILENAME_UPDATE);
+
           List list = new ArrayList();
           Iterator var2 = PresetController.instance.presets.values().iterator();
 

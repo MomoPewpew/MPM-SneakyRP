@@ -27,6 +27,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import noppes.mpm.client.Client;
+import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
@@ -89,7 +90,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
       	    if (this.player.worldObj.isRemote) {
            	   Minecraft mc = Minecraft.getMinecraft();
            	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
-           		   if (((GuiNPCInterface) mc.currentScreen).hasSubGui()) {
+           		   if (((GuiNPCInterface) mc.currentScreen).hasSubGui() && !(((GuiNPCInterface) mc.currentScreen).getSubGui() instanceof GuiCreationSkinLoad)) {
                		   return;
            		   }
            	   }

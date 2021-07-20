@@ -28,7 +28,7 @@ public class CommandSkinSave extends CommandBase {
              dir.mkdirs();
         }
 
-        String filename = args[0] + ".dat";
+        String filename = args[0].toLowerCase() + ".dat";
 
         try {
              File file = new File(dir, filename);

@@ -3,6 +3,7 @@ package noppes.mpm.client;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class PacketHandlerClient extends PacketHandlerServer {
      @SubscribeEvent
@@ -254,7 +256,28 @@ public class PacketHandlerClient extends PacketHandlerServer {
             	   MorePlayerModels.hasEntityPermission = true;
                } else if (type == EnumPackets.ENTITIES_DISABLE) {
             	   MorePlayerModels.hasEntityPermission = false;
-               }
+               } else if (type == EnumPackets.SKIN_FILENAME_UPDATE) {
+            	   MorePlayerModels.fileNamesSkins = new ArrayList<String>();
+
+            	   NBTTagCompound compound = Server.readNBT(buffer);
+
+             		 for (int i = 0; i < Integer.MAX_VALUE; i++) {
+               			String string = compound.getString(("skinName" + String.valueOf(i)));
+
+               			if (!string.equals("")) {
+               				MorePlayerModels.fileNamesSkins.add(string);
+             	    	 } else {
+             				 break;
+             	    	 }
+             		 }
+               } else if (type == EnumPackets.SKIN_LOAD_GUI) {
+             	   ModelData data = ModelData.get(player);
+             	   NBTTagCompound compound = Server.readNBT(buffer);
+
+             	   data.readFromNBT(compound);
+             	   data.save();
+                   data.lastEdited = System.currentTimeMillis();
+       	       }
           }
 
      }

@@ -25,7 +25,7 @@ public class CommandSkinLoad extends CommandBase {
 
 		if (args.length == 0) return;
 
-		String filename = args[0] + ".dat";
+		String filename = args[0].toLowerCase() + ".dat";
 		File file;
 
 		File dir = null;

@@ -85,7 +85,7 @@ public class GuiCreationSkinLoad extends GuiCreationScreenInterface implements I
     	 NBTTagCompound compound = new NBTTagCompound();
     	 compound.setString("skinName", list.get(selected));
 
-    	 Client.sendData(EnumPackets.SKIN_LOAD_GUI, compound);
+    	 Client.sendData(EnumPackets.UPDATE_PLAYER_DATA_CLIENT, compound);
 
     	 this.playerdata = ModelData.get(this.getPlayer());
 

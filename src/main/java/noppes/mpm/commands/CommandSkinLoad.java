@@ -10,6 +10,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +24,10 @@ public class CommandSkinLoad extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) return;
+		if (args.length == 0) {
+			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.SKIN_LOAD_GUI);
+			return;
+		}
 
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;

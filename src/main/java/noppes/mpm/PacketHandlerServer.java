@@ -168,7 +168,7 @@ public class PacketHandlerServer {
              }
 
              Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
-	     } else if (type == EnumPackets.SKIN_LOAD_GUI) {
+	     } else if (type == EnumPackets.UPDATE_PLAYER_DATA_CLIENT) {
              NBTTagCompound compound = Server.readNBT(buffer);
 
 			String filename = compound.getString("skinName") + ".dat";
@@ -193,7 +193,7 @@ public class PacketHandlerServer {
 	             skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
 	             //Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), skinCompound);
-	             Server.sendData(player, EnumPackets.SKIN_LOAD_GUI, skinCompound);
+	             Server.sendData(player, EnumPackets.UPDATE_PLAYER_DATA_CLIENT, skinCompound);
 	        } catch (Exception var4) {
 	             LogWriter.except(var4);
 	        }

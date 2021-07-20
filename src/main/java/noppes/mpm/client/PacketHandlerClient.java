@@ -22,6 +22,7 @@ import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
+import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
@@ -270,14 +271,22 @@ public class PacketHandlerClient extends PacketHandlerServer {
              				 break;
              	    	 }
              		 }
-               } else if (type == EnumPackets.SKIN_LOAD_GUI) {
+               } else if (type == EnumPackets.UPDATE_PLAYER_DATA_CLIENT) {
              	   ModelData data = ModelData.get(player);
              	   NBTTagCompound compound = Server.readNBT(buffer);
 
              	   data.readFromNBT(compound);
              	   data.save();
                    data.lastEdited = System.currentTimeMillis();
-       	       }
+       	       } else if (type == EnumPackets.SKIN_LOAD_GUI) {
+	       			GuiMPM guiMPM = new GuiMPM();
+	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+	       			try {
+	       				guiMPM.setSubGui((GuiNPCInterface)GuiCreationSkinLoad.GuiSkinLoad.getClass().newInstance());
+	       			} catch (IllegalAccessException | InstantiationException e) {
+
+	       			}
+               }
           }
 
      }

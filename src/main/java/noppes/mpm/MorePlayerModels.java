@@ -1,10 +1,18 @@
 package noppes.mpm;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.ValueType;
@@ -32,6 +40,7 @@ import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumAnimation;
+import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 
 @Mod(
@@ -117,6 +126,7 @@ public class MorePlayerModels {
           info = "Used to register buttons to animations"
      )
      public static boolean hasEntityPermission = true;
+     public static List<UUID> playersEntityDenied;
      public static List<String> fileNamesSkins;
      public static int button5;
      public ConfigLoader configLoader;
@@ -156,6 +166,7 @@ public class MorePlayerModels {
           }, ModelData.class);
 
           fileNamesSkins = new ArrayList<String>();
+          playersEntityDenied = new ArrayList<UUID>();
      }
 
      @EventHandler
@@ -186,5 +197,37 @@ public class MorePlayerModels {
           button3 = EnumAnimation.CRAWLING.ordinal();
           button4 = EnumAnimation.HUG.ordinal();
           button5 = EnumAnimation.DANCING.ordinal();
+     }
+
+     public static void syncSkinFileNames(EntityPlayerMP player) {
+    	 File dir = null;
+         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+         NBTTagCompound compound = new NBTTagCompound();
+         int i = 0;
+
+         for (final File fileEntry : dir.listFiles()) {
+             if (fileEntry.isDirectory()) {
+                 continue;
+             } else {
+	             NBTTagCompound skinCompound = new NBTTagCompound();
+
+	             try {
+					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
+
+					if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
+		            	 continue;
+				} catch (FileNotFoundException e) {
+				} catch (IOException e) {
+				}
+
+            	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
+            	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+            	 i++;
+             }
+         }
+
+         Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
      }
 }

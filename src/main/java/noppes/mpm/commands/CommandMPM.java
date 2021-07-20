@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
@@ -97,8 +98,12 @@ public class CommandMPM extends MpmCommandInterface {
                               this.sendmodel(server, (EntityPlayer)player, args, data);
                          } else if (type.equals("enableentity")) {
                         	 Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.ENTITIES_ENABLE, 100);
+                           	 if (MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+                        		 MorePlayerModels.playersEntityDenied.remove(((EntityPlayer) icommandsender).getUniqueID());
                          } else if (type.equals("disableentity")) {
                         	 Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.ENTITIES_DISABLE, 100);
+                        	 if (!MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+                        		 MorePlayerModels.playersEntityDenied.add(((EntityPlayer) icommandsender).getUniqueID());
                          }
                     }
                }

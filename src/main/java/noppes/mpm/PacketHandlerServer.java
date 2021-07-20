@@ -151,23 +151,7 @@ public class PacketHandlerServer {
                   var6.printStackTrace();
              }
 	     } else if (type == EnumPackets.SKIN_FILENAME_UPDATE) {
-             File dir = null;
-             dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-
-             NBTTagCompound compound = new NBTTagCompound();
-             int i = 0;
-
-             for (final File fileEntry : dir.listFiles()) {
-                 if (fileEntry.isDirectory()) {
-                     continue;
-                 } else {
-                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
-                	 compound.setString(("skinName" + String.valueOf(i)), skinName);
-                	 i++;
-                 }
-             }
-
-             Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
+             MorePlayerModels.syncSkinFileNames(player);
 	     } else if (type == EnumPackets.UPDATE_PLAYER_DATA_CLIENT) {
              NBTTagCompound compound = Server.readNBT(buffer);
 
@@ -192,7 +176,6 @@ public class PacketHandlerServer {
 
 	             skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-	             //Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), skinCompound);
 	             Server.sendData(player, EnumPackets.UPDATE_PLAYER_DATA_CLIENT, skinCompound);
 	        } catch (Exception var4) {
 	             LogWriter.except(var4);

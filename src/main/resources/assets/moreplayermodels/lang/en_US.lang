@@ -96,6 +96,7 @@ part.legleft=Leg Left
 part.legright=Leg Right
 part.eyes=Eyes
 part.particles=Particles
+part.arms=Arms
 
 eye.glint=Glint
 eye.brow=Brow

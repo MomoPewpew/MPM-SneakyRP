@@ -51,6 +51,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
           }
 
           Client.sendData(EnumPackets.SKIN_FILENAME_UPDATE);
+          Client.sendData(EnumPackets.PROPGROUPS_FILENAME_UPDATE);
 
           List list = new ArrayList();
           Iterator var2 = PresetController.instance.presets.values().iterator();

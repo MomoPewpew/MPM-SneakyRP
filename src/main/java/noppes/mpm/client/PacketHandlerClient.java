@@ -20,6 +20,7 @@ import noppes.mpm.PacketHandlerServer;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
+import noppes.mpm.client.gui.GuiCreationPropLoad;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiCreationSkinLoad;
@@ -286,7 +287,29 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	       			} catch (IllegalAccessException | InstantiationException e) {
 
 	       			}
-               }
+               } else if (type == EnumPackets.PROPGROUPS_LOAD_GUI) {
+	       			GuiMPM guiMPM = new GuiMPM();
+	       			Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+	       			try {
+	       				guiMPM.setSubGui((GuiNPCInterface)GuiCreationPropLoad.GuiPropLoad.getClass().newInstance());
+	       			} catch (IllegalAccessException | InstantiationException e) {
+
+	       			}
+              } else if (type == EnumPackets.PROPGROUPS_FILENAME_UPDATE) {
+	           	   MorePlayerModels.fileNamesPropGroups = new ArrayList<String>();
+
+	           	   NBTTagCompound compound = Server.readNBT(buffer);
+
+	            		 for (int i = 0; i < Integer.MAX_VALUE; i++) {
+	              			String string = compound.getString(("propGroupName" + String.valueOf(i)));
+
+	              			if (!string.equals("")) {
+	              				MorePlayerModels.fileNamesPropGroups.add(string);
+	            	    	 } else {
+	            				 break;
+	            	    	 }
+	            		 }
+              }
           }
 
      }

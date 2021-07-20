@@ -128,7 +128,7 @@ public class LayerBody extends LayerInterface implements LayerPreRender  {
           ModelPartData data = this.playerdata.getPartData(EnumParts.WINGS);
           if (data != null) {
                ItemStack itemstack = this.player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-               if (itemstack == null || itemstack.getItem() != Items.ELYTRA || this.playerdata.wingMode == 2)
+               if (itemstack.getItem() == Items.ELYTRA && this.playerdata.wingMode == 2)
             	   return;
 
                 this.preRender(data);

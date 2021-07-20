@@ -1,6 +1,9 @@
 package noppes.mpm;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.GameRules;
@@ -114,6 +117,7 @@ public class MorePlayerModels {
           info = "Used to register buttons to animations"
      )
      public static boolean hasEntityPermission = true;
+     public static List<String> fileNamesSkins;
      public static int button5;
      public ConfigLoader configLoader;
 
@@ -150,6 +154,8 @@ public class MorePlayerModels {
                public void readNBT(Capability capability, Object instance, EnumFacing side, NBTBase nbt) {
                }
           }, ModelData.class);
+
+          fileNamesSkins = new ArrayList<String>();
      }
 
      @EventHandler

@@ -1,14 +1,17 @@
 package noppes.mpm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import noppes.mpm.commands.CommandProp;
@@ -147,6 +150,52 @@ public class PacketHandlerServer {
                   LogWriter.except(var6);
                   var6.printStackTrace();
              }
+	     } else if (type == EnumPackets.SKIN_FILENAME_UPDATE) {
+             File dir = null;
+             dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+             NBTTagCompound compound = new NBTTagCompound();
+             int i = 0;
+
+             for (final File fileEntry : dir.listFiles()) {
+                 if (fileEntry.isDirectory()) {
+                     continue;
+                 } else {
+                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+                	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+                	 i++;
+                 }
+             }
+
+             Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
+	     } else if (type == EnumPackets.SKIN_LOAD_GUI) {
+             NBTTagCompound compound = Server.readNBT(buffer);
+
+			String filename = compound.getString("skinName") + ".dat";
+			File file;
+
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+	        if (!dir.exists()) {
+	              return;
+	         }
+
+	        try {
+	             file = new File(dir, filename);
+
+	             if (!file.exists()) {
+	            	 return;
+	             }
+
+	             NBTTagCompound skinCompound = new NBTTagCompound();
+
+	             compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+
+	             Server.sendData(player, EnumPackets.SKIN_LOAD_GUI, skinCompound);
+	        } catch (Exception var4) {
+	             LogWriter.except(var4);
+	        }
 	     }
 
 

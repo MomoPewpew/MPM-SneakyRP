@@ -55,6 +55,8 @@ gui.prop=Prop
 gui.propgroup=Move to Prop Group
 gui.confirmmove=Confirm Move
 gui.browse=Browse
+gui.skinload=Skins
+gui.refresh=Refresh
 
 animation.sleep=Sleep
 animation.crawl=Crawl

@@ -422,6 +422,14 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
    		}
      }
 
+     public void removePropGroupByName (String name) {
+    		for (int i = 0; i < this.propGroups.size(); i++) {
+    			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+    	   	    	this.propGroups.remove(i);
+    			}
+    		}
+      }
+
      public void removePropGroupServerByName (String name) {
    		for (int i = 0; i < this.propGroups.size(); i++) {
    			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {

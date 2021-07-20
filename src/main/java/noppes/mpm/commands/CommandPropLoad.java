@@ -28,7 +28,11 @@ public class CommandPropLoad extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.SKIN_LOAD_GUI);
+		if (args.length == 0) {
+			MorePlayerModels.syncPropGroupFileNames((EntityPlayerMP) icommandsender);
+			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.PROPGROUPS_LOAD_GUI);
+			return;
+		}
 
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;

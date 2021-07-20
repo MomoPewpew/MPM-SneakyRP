@@ -180,6 +180,34 @@ public class PacketHandlerServer {
 	        } catch (Exception var4) {
 	             LogWriter.except(var4);
 	        }
+	     } else if (type == EnumPackets.PROPGROUP_LOAD_CLIENT) {
+             NBTTagCompound compound = Server.readNBT(buffer);
+
+			String filename = compound.getString("propName") + ".dat";
+			File file;
+
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+
+	        if (!dir.exists()) {
+	              return;
+	         }
+
+	        try {
+	             file = new File(dir, filename);
+
+	             if (!file.exists()) {
+	            	 return;
+	             }
+
+	             NBTTagCompound propCompound = new NBTTagCompound();
+
+	             propCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+
+	             Server.sendData(player, EnumPackets.PROPGROUP_LOAD_CLIENT, propCompound);
+	        } catch (Exception var4) {
+	             LogWriter.except(var4);
+	        }
 	     }
 
 

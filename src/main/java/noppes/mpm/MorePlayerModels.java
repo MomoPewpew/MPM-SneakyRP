@@ -128,9 +128,10 @@ public class MorePlayerModels {
      @ConfigProp(
           info = "Used to register buttons to animations"
      )
-     public static boolean hasEntityPermission = true;
+     public static boolean hasEntityPermission;
      public static List<UUID> playersEntityDenied;
      public static List<String> fileNamesSkins;
+     public static List<String> fileNamesPropGroups;
      public static int button5;
      public ConfigLoader configLoader;
 
@@ -168,6 +169,7 @@ public class MorePlayerModels {
                }
           }, ModelData.class);
 
+          hasEntityPermission = true;
           fileNamesSkins = new ArrayList<String>();
           playersEntityDenied = new ArrayList<UUID>();
      }
@@ -235,5 +237,26 @@ public class MorePlayerModels {
          }
 
          Server.sendData(player, EnumPackets.SKIN_FILENAME_UPDATE, compound);
+     }
+
+     public static void syncPropGroupFileNames(EntityPlayerMP player) {
+    	 File dir = null;
+         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+
+         NBTTagCompound compound = new NBTTagCompound();
+         int i = 0;
+
+         for (final File fileEntry : dir.listFiles()) {
+             if (fileEntry.isDirectory()) {
+                 continue;
+             } else {
+            	 String propGroupName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
+            	 compound.setString(("propGroupName" + String.valueOf(i)), propGroupName);
+            	 i++;
+             }
+         }
+
+         Server.sendData(player, EnumPackets.PROPGROUPS_FILENAME_UPDATE, compound);
      }
 }

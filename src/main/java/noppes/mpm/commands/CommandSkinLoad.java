@@ -47,7 +47,7 @@ public class CommandSkinLoad extends CommandBase {
 
              compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-             Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, compound);
+             Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
         } catch (Exception var4) {
              LogWriter.except(var4);
         }

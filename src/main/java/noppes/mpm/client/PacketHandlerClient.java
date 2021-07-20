@@ -25,6 +25,7 @@ import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class PacketHandlerClient extends PacketHandlerServer {
      @SubscribeEvent
@@ -276,7 +277,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
              	   data.readFromNBT(compound);
              	   data.save();
                    data.lastEdited = System.currentTimeMillis();
-       	     }
+       	       }
           }
 
      }

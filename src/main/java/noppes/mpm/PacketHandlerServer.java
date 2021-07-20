@@ -190,8 +190,9 @@ public class PacketHandlerServer {
 
 	             NBTTagCompound skinCompound = new NBTTagCompound();
 
-	             compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+	             skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
+	             //Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), skinCompound);
 	             Server.sendData(player, EnumPackets.SKIN_LOAD_GUI, skinCompound);
 	        } catch (Exception var4) {
 	             LogWriter.except(var4);

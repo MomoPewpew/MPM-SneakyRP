@@ -211,6 +211,8 @@ public class MorePlayerModels {
     	 File dir = null;
          dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
 
+         if (!dir.exists()) return;
+
          NBTTagCompound compound = new NBTTagCompound();
          int i = 0;
 
@@ -242,6 +244,8 @@ public class MorePlayerModels {
      public static void syncPropGroupFileNames(EntityPlayerMP player) {
     	 File dir = null;
          dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+
+         if (!dir.exists()) return;
 
          NBTTagCompound compound = new NBTTagCompound();
          int i = 0;

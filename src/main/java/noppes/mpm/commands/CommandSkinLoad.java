@@ -73,8 +73,6 @@ public class CommandSkinLoad extends CommandBase {
 		return "/skinload <name>";
 	}
 
-
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List getCommandAliases()

@@ -2,9 +2,9 @@ package noppes.mpm.commands;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandException;
@@ -26,7 +26,7 @@ import noppes.mpm.constants.EnumPackets;
 
 public class CommandProp extends MpmCommandInterface {
 
-	private final List<String> listBodyParts = Lists.newArrayList(
+	private final List<String> listBodyParts = new ArrayList<String>(Arrays.asList(
 	     "hat",
 		 "head",
 		 "model",
@@ -53,53 +53,53 @@ public class CommandProp extends MpmCommandInterface {
 		 "footright",
 		 "rightleg",
 		 "rightfoot"
-	);
+	));
 
-	private final List<String> clearStrings = Lists.newArrayList(
+	private final List<String> clearStrings = new ArrayList<String>(Arrays.asList(
 	     "clear",
 	     "reset",
 	     "cl"
-	);
+	));
 
-	private final List<String> deleteStrings = Lists.newArrayList(
+	private final List<String> deleteStrings = new ArrayList<String>(Arrays.asList(
 	     "undo",
 	     "remove",
 	     "delete",
 	     "del",
 	     "rem"
-	);
+	));
 
-	private final List<String> guiStrings = Lists.newArrayList(
+	private final List<String> guiStrings = new ArrayList<String>(Arrays.asList(
 	     "gui",
 	     "interface",
 	     "ui",
 	     "options"
-	);
+	));
 
-	private final List<String> giveStrings = Lists.newArrayList(
+	private final List<String> giveStrings = new ArrayList<String>(Arrays.asList(
 	     "give"
-	);
+	));
 
-	private final List<String> nameStrings = Lists.newArrayList(
+	private final List<String> nameStrings = new ArrayList<String>(Arrays.asList(
 	     "label",
 	     "name"
-	);
+	));
 
-	private final List<String> hideStrings = Lists.newArrayList(
+	private final List<String> hideStrings = new ArrayList<String>(Arrays.asList(
 	     "hide"
-	);
+	));
 
-	private final List<String> showStrings = Lists.newArrayList(
+	private final List<String> showStrings = new ArrayList<String>(Arrays.asList(
 	     "show"
-	);
+	));
 
-	private final List<String> toggleStrings = Lists.newArrayList(
+	private final List<String> toggleStrings = new ArrayList<String>(Arrays.asList(
 	     "toggle"
-	);
+	));
 
-	private final List<String> groupStrings = Lists.newArrayList(
+	private final List<String> groupStrings = new ArrayList<String>(Arrays.asList(
 	     "group"
-	);
+	));
 
 	@Override
 	public String getCommandName() {

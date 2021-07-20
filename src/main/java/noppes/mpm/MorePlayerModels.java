@@ -23,6 +23,9 @@ import noppes.mpm.commands.CommandLove;
 import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandSing;
+import noppes.mpm.commands.CommandSkinDel;
+import noppes.mpm.commands.CommandSkinLoad;
+import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumAnimation;
@@ -161,6 +164,9 @@ public class MorePlayerModels {
           event.registerServerCommand(new CommandAngry());
           event.registerServerCommand(new CommandMPM());
           event.registerServerCommand(new CommandProp());
+          event.registerServerCommand(new CommandSkinLoad());
+          event.registerServerCommand(new CommandSkinSave());
+          event.registerServerCommand(new CommandSkinDel());
           GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
           if (!rules.hasRule("mpmAllowEntityModels")) {
                rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);

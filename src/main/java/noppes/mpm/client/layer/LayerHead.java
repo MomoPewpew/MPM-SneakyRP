@@ -228,7 +228,7 @@ public class LayerHead extends LayerInterface implements LayerPreRender  {
      public void preRender(AbstractClientPlayer player) {
           this.player = player;
           this.playerdata = ModelData.get(player);
-          ModelPartData data = this.playerdata.getPartData(EnumParts.HEAD);
+          ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.HEAD);
           this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0;
      }
 }

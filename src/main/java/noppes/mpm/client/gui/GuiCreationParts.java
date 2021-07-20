@@ -130,6 +130,15 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
          @Override
          protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
               super.actionPerformed(btn);
          }
     }
@@ -151,6 +160,15 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
          @Override
          protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
               super.actionPerformed(btn);
          }
     }
@@ -172,6 +190,15 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
          @Override
          protected void actionPerformed(GuiButton btn) {
+              if (btn.id == 20) {
+                   int i = ((GuiNpcButton)btn).getValue();
+                   if (i <= 1) {
+                        this.data.playerTexture = true;
+                   } else {
+                        this.data.playerTexture = false;
+                   }
+              }
+
               super.actionPerformed(btn);
          }
     }

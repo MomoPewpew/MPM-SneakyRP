@@ -234,7 +234,7 @@ public class LayerBody extends LayerInterface implements LayerPreRender  {
 	public void preRender(AbstractClientPlayer player) {
 		this.player = player;
         this.playerdata = ModelData.get(player);
-        ModelPartData data = this.playerdata.getPartData(EnumParts.BODY);
+        ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.BODY);
         this.model.bipedBody.isHidden = this.model.bipedBodyWear.isHidden = data == null || data.type != 0;
 	}
 }

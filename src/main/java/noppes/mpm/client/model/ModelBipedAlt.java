@@ -73,6 +73,9 @@ public class ModelBipedAlt extends ModelBiped {
           }
 
           this.bipedLeftLeg.isHidden = this.bipedRightLeg.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
+          this.bipedLeftArm.isHidden = this.bipedRightArm.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
+          this.bipedHead.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
+          this.bipedBody.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
           if (!this.isRiding) {
                this.isRiding = data.animation == EnumAnimation.SITTING;
           }

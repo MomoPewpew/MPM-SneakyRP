@@ -1,11 +1,13 @@
 package noppes.mpm.client.layer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.client.model.Model2DRenderer;
 import noppes.mpm.client.model.part.head.ModelDuckBeak;
 import noppes.mpm.client.model.part.head.ModelHalo;
@@ -230,5 +232,7 @@ public class LayerHead extends LayerInterface implements LayerPreRender  {
           this.playerdata = ModelData.get(player);
           ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.HEAD);
           this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0;
+          //The following code will fix compatibility with RealRender
+          //this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0 || (this.playerdata.player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && !(Minecraft.getMinecraft().currentScreen instanceof GuiNPCInterface));
      }
 }

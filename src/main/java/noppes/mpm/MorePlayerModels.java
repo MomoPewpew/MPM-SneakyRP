@@ -211,7 +211,7 @@ public class MorePlayerModels {
     	 File dir = null;
          dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
 
-         if (!dir.exists()) return;
+         if (!dir.exists()) dir.mkdirs();
 
          NBTTagCompound compound = new NBTTagCompound();
          int i = 0;
@@ -235,6 +235,59 @@ public class MorePlayerModels {
 
             	 compound.setString(("skinName" + String.valueOf(i)), skinName);
             	 i++;
+             }
+         }
+
+         dir = null;
+         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+
+         if (!dir.exists()) dir.mkdirs();
+
+         for (final File fileEntry : dir.listFiles()) {
+             if (fileEntry.isDirectory()) {
+                 continue;
+             } else {
+	             NBTTagCompound skinCompound = new NBTTagCompound();
+
+	             try {
+					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
+				} catch (FileNotFoundException e) {
+				} catch (IOException e) {
+				}
+
+            	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
+            	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+            	 i++;
+             }
+         }
+
+         if (!playersEntityDenied.contains(player.getUniqueID())) {
+        	 dir = null;
+        	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+
+             if (!dir.exists()) dir.mkdirs();
+
+             for (final File fileEntry : dir.listFiles()) {
+                 if (fileEntry.isDirectory()) {
+                     continue;
+                 } else {
+    	             NBTTagCompound skinCompound = new NBTTagCompound();
+
+    	             try {
+    					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
+
+    					if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
+    		            	 continue;
+    				} catch (FileNotFoundException e) {
+    				} catch (IOException e) {
+    				}
+
+                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
+                	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+                	 i++;
+                 }
              }
          }
 

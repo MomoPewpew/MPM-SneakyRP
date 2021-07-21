@@ -18,8 +18,6 @@ public class CommandSkinDel extends CommandBase {
 
 		if (args.length == 0) return;
 
-		NBTTagCompound compound = ModelData.get((EntityPlayer) icommandsender).writeToNBT();
-
         File dir = null;
         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
         if (!dir.exists()) {
@@ -36,7 +34,17 @@ public class CommandSkinDel extends CommandBase {
             	 return;
              }
 
-        	 file.delete();
+             File dirnew = null;
+             dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "archive");
+
+             if (!dirnew.exists()) {
+            	 dirnew.mkdirs();
+            }
+
+             String filenamenew = args[0].toLowerCase() + "-" + System.currentTimeMillis() + ".dat";
+             File filenew = new File(dirnew, filenamenew);
+
+        	 file.renameTo(filenew);
         } catch (Exception var6) {
              LogWriter.except(var6);
              var6.printStackTrace();

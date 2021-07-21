@@ -189,14 +189,37 @@ public class PacketHandlerServer {
 			File file;
 
 			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-
-	        if (!dir.exists()) {
-	              return;
-	         }
 
 	        try {
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "unrestricted");
+
+		        if (!dir.exists()) {
+		              dir.mkdirs();
+		         }
+
 	             file = new File(dir, filename);
+
+	             if (!file.exists()) {
+	            	 dir = null;
+	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+
+	 		        if (!dir.exists()) {
+	 		              dir.mkdirs();
+	 		         }
+
+	 	             file = new File(dir, filename);
+	             }
+
+	             if (!file.exists()) {
+	            	 dir = null;
+	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+
+	 		        if (!dir.exists()) {
+	 		              dir.mkdirs();
+	 		         }
+
+	 	             file = new File(dir, filename);
+	             }
 
 	             if (!file.exists()) {
 	            	 return;

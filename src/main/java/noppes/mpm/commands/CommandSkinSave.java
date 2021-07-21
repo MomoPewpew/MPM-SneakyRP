@@ -35,6 +35,7 @@ public class CommandSkinSave extends CommandBase {
              File file = new File(dir, filename);
 
              if (!file.exists()) {
+            	 dir = null;
                  dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
                  if (!dir.exists()) {
                       dir.mkdirs();
@@ -44,6 +45,7 @@ public class CommandSkinSave extends CommandBase {
              }
 
               if (!file.exists()) {
+            	  dir = null;
             	  dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
                   if (!dir.exists()) {
                        dir.mkdirs();

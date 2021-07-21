@@ -238,6 +238,7 @@ public class MorePlayerModels {
              }
          }
 
+         dir = null;
          dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
 
          if (!dir.exists()) dir.mkdirs();
@@ -262,6 +263,7 @@ public class MorePlayerModels {
          }
 
          if (!playersEntityDenied.contains(player.getUniqueID())) {
+        	 dir = null;
         	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
 
              if (!dir.exists()) dir.mkdirs();

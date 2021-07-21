@@ -49,6 +49,7 @@ public class CommandSkinLoad extends CommandBase {
              NBTTagCompound compound = new NBTTagCompound();
 
              if (!file.exists()) {
+            	 dir = null;
             	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
 
                  if (!dir.exists()) {
@@ -66,6 +67,7 @@ public class CommandSkinLoad extends CommandBase {
              }
 
              if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
+            	 dir = null;
             	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
 
                  if (!dir.exists()) {

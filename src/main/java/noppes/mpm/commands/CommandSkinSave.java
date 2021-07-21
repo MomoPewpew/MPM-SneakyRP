@@ -23,22 +23,41 @@ public class CommandSkinSave extends CommandBase {
 		NBTTagCompound compound = ModelData.get((EntityPlayer) icommandsender).writeToNBT();
 
         File dir = null;
-        dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-        if (!dir.exists()) {
-             dir.mkdirs();
-        }
 
         String filename = args[0].toLowerCase() + ".dat";
 
         try {
+            dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+            if (!dir.exists()) {
+                 dir.mkdirs();
+            }
+
              File file = new File(dir, filename);
 
-             if (file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " already exists. Either /skindel the old version first, or give this one a new name"));
-            	 return;
+             if (!file.exists()) {
+                 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+                 if (!dir.exists()) {
+                      dir.mkdirs();
+                 }
+
+                  file = new File(dir, filename);
              }
 
-             CompressedStreamTools.writeCompressed(compound, new FileOutputStream(file));
+              if (!file.exists()) {
+            	  dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+                  if (!dir.exists()) {
+                       dir.mkdirs();
+                  }
+
+                   file = new File(dir, filename);
+              }
+
+               if (file.exists()) {
+              	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " already exists. Either /skindel the old version first, or give this one a new name"));
+              	 return;
+               }
+
+               CompressedStreamTools.writeCompressed(compound, new FileOutputStream(file));
         } catch (Exception var6) {
              LogWriter.except(var6);
              var6.printStackTrace();

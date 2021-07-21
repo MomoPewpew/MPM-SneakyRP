@@ -231,6 +231,8 @@ public class LayerHead extends LayerInterface implements LayerPreRender  {
           this.player = player;
           this.playerdata = ModelData.get(player);
           ModelPartData data = this.playerdata.getOrCreatePart(EnumParts.HEAD);
-          this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0 || (this.playerdata.player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && !(Minecraft.getMinecraft().currentScreen instanceof GuiNPCInterface));
+          this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0;
+          //The following code will fix compatibility with RealRender
+          //this.model.bipedHead.isHidden = this.model.bipedHeadwear.isHidden = data == null || data.type != 0 || (this.playerdata.player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && !(Minecraft.getMinecraft().currentScreen instanceof GuiNPCInterface));
      }
 }

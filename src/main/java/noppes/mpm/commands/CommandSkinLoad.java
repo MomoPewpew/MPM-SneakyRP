@@ -35,25 +35,46 @@ public class CommandSkinLoad extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;
 
-		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-
-        if (!dir.exists()) {
-              return;
-         }
-
         try {
+    		 File dir = null;
+
+    		 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+
+             if (!dir.exists()) {
+                  dir.mkdirs();
+              }
+
              file = new File(dir, filename);
+
+             if (!file.exists()) {
+            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+                 if (!dir.exists()) {
+                      dir.mkdirs();
+                  }
+
+                 file = new File(dir, filename);
+
+                 NBTTagCompound compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+
+                 if (!compound.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+                	 return;
+             }
+
+             if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
+            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+
+                 if (!dir.exists()) {
+                      dir.mkdirs();
+                  }
+
+                 file = new File(dir, filename);
+             }
 
              if (!file.exists()) {
             	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found on the server."));
             	 return;
              }
-
-             NBTTagCompound compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
-
-             if (!compound.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
-            	 return;
 
              Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
         } catch (Exception var4) {

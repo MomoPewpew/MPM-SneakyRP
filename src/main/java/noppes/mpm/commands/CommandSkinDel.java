@@ -18,8 +18,6 @@ public class CommandSkinDel extends CommandBase {
 
 		if (args.length == 0) return;
 
-		NBTTagCompound compound = ModelData.get((EntityPlayer) icommandsender).writeToNBT();
-
         File dir = null;
         dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
         if (!dir.exists()) {

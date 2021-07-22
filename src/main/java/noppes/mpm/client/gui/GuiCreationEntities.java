@@ -37,7 +37,8 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
                try {
                     Class c = ent.getEntityClass();
                     if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
-                         this.data.put(name, c.asSubclass(EntityLivingBase.class));
+                    	if (!MorePlayerModels.entityNamesRemovedFromGui.contains(name.toLowerCase()))
+                    		this.data.put(name, c.asSubclass(EntityLivingBase.class));
                     }
                } catch (SecurityException var5) {
                     var5.printStackTrace();

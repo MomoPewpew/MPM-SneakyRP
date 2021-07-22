@@ -111,7 +111,7 @@ public class ConfigLoader {
  	               if (strLine.contains("entityNamesRemovedFromGui")) {
 	                  	MorePlayerModels.entityNamesRemovedFromGui.clear();
 	                  	for (int i = 0; i < Integer.MAX_VALUE; i++) {
-	                  		String string = reader.readLine();
+	                  		String string = reader.readLine().toLowerCase();
 	                  		if (string.length() > 0) {
 	                  			MorePlayerModels.entityNamesRemovedFromGui.add(string);
 	              		    } else {

@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import noppes.mpm.MorePlayerModels;
+import noppes.mpm.PropGroup;
+
 public class ConfigLoader {
      private boolean updateFile = false;
      private File dir;
@@ -105,6 +108,28 @@ public class ConfigLoader {
                          } while(strLine.startsWith("#"));
                     } while(strLine.length() == 0);
 
+ 	               if (strLine.contains("entityNamesRemovedFromGui")) {
+	                  	MorePlayerModels.entityNamesRemovedFromGui.clear();
+	                  	for (int i = 0; i < Integer.MAX_VALUE; i++) {
+	                  		String string = reader.readLine();
+	                  		if (string.length() > 0) {
+	                  			MorePlayerModels.entityNamesRemovedFromGui.add(string);
+	              		    } else {
+	              		    	break;
+	              		    }
+	                      }
+	              } else if (strLine.contains("blacklistedPropStrings")) {
+	                  	MorePlayerModels.blacklistedPropStrings.clear();
+	                  	for (int i = 0; i < Integer.MAX_VALUE; i++) {
+	                  		String string = reader.readLine();
+	                  		if (string.length() > 0) {
+	                  			MorePlayerModels.blacklistedPropStrings.add(string);
+	              		    } else {
+	              		    	break;
+	              		    }
+	                  	}
+	               }
+
                     int index = strLine.indexOf("=");
                     if (index > 0 && index != strLine.length()) {
                          String name = strLine.substring(0, index);
@@ -170,6 +195,20 @@ public class ConfigLoader {
                          var9.printStackTrace();
                     }
                }
+
+               out.write("#Entity names that you want removed from the entity GUI" + System.getProperty("line.separator"));
+               out.write("entityNamesRemovedFromGui:" + System.getProperty("line.separator"));
+               for (String string : MorePlayerModels.entityNamesRemovedFromGui) {
+            	   out.write(string + System.getProperty("line.separator"));
+               }
+               out.write(System.getProperty("line.separator"));
+
+               out.write("#Banned terms in propstrings. This will block any prop that contains the listed strings" + System.getProperty("line.separator"));
+               out.write("blacklistedPropStrings:" + System.getProperty("line.separator"));
+               for (String string : MorePlayerModels.blacklistedPropStrings) {
+            	   out.write(string + System.getProperty("line.separator"));
+               }
+               out.write(System.getProperty("line.separator"));
 
                out.close();
           } catch (IOException var10) {

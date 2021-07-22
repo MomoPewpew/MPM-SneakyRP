@@ -118,6 +118,10 @@ public class Prop {
      }
 
      public boolean parsePropString(String propString) {
+    	 for (String string : MorePlayerModels.blacklistedPropStrings) {
+    		 if (propString.contains(string)) return false;
+    	 }
+
     	 String nameSpacedId = "";
     	 short dataValue = 0;
 

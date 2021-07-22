@@ -128,11 +128,13 @@ public class MorePlayerModels {
      @ConfigProp(
           info = "Used to register buttons to animations"
      )
+     public static int button5;
      public static boolean hasEntityPermission;
      public static List<UUID> playersEntityDenied;
      public static List<String> fileNamesSkins;
      public static List<String> fileNamesPropGroups;
-     public static int button5;
+     public static List<String> entityNamesRemovedFromGui;
+     public static List<String> blacklistedPropStrings;
      public ConfigLoader configLoader;
 
      public MorePlayerModels() {
@@ -148,6 +150,9 @@ public class MorePlayerModels {
           if (!MorePlayerModels.dir.exists()) {
                MorePlayerModels.dir.mkdir();
           }
+
+          entityNamesRemovedFromGui = new ArrayList<String>();
+          blacklistedPropStrings = new ArrayList<String>();
 
           this.configLoader = new ConfigLoader(this.getClass(), new File(dir, "config"), "MorePlayerModels");
           this.configLoader.loadConfig();

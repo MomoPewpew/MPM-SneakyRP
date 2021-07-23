@@ -21,7 +21,6 @@ public class GuiCreationPropGroups extends GuiCreationScreenInterface implements
     private static PropGroup selectedPropGroup = null;
     private static int propIndex;
     private Boolean initiating = false;
-    private final int guiOffsetX = this.guiLeft + 158;
     private static boolean newPropGroup = false;
 
     public GuiCreationPropGroups(int index, PropGroup propGroupArg) {
@@ -67,15 +66,17 @@ public class GuiCreationPropGroups extends GuiCreationScreenInterface implements
       	  newPropGroup = false;
         }
 
+        final int guiOffsetX = this.guiLeft + this.scroll.width + 2;
+
         y = this.guiTop + 45;
-        this.addButton(new GuiNpcButton(301, this.guiOffsetX, y, 20, 20, "+"));
+        this.addButton(new GuiNpcButton(301, guiOffsetX, y, 20, 20, "+"));
         if (selected >= 0) {
-        	this.addButton(new GuiNpcButton(302, this.guiOffsetX + 22, y, 20, 20, "-"));
+        	this.addButton(new GuiNpcButton(302, guiOffsetX + 22, y, 20, 20, "-"));
         	y += 22;
-            this.addLabel(new GuiNpcLabel(303, "gui.name", this.guiOffsetX, y + 5, 16777215));
-            this.addTextField(new GuiNpcTextField(303, this, this.guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
+            this.addLabel(new GuiNpcLabel(303, "gui.name", guiOffsetX, y + 5, 16777215));
+            this.addTextField(new GuiNpcTextField(303, this, guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
             y += 22;
-            this.addButton(new GuiNpcButton(304, this.guiOffsetX, y, 100, 20, "gui.confirmmove"));
+            this.addButton(new GuiNpcButton(304, guiOffsetX, y, 100, 20, "gui.confirmmove"));
         }
 
         this.initiating = false;

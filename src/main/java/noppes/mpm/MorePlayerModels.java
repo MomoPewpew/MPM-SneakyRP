@@ -303,7 +303,7 @@ public class MorePlayerModels {
     	 File dir = null;
          dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
-         if (!dir.exists()) return;
+         if (!dir.exists()) dir.mkdirs();
 
          NBTTagCompound compound = new NBTTagCompound();
          int i = 0;

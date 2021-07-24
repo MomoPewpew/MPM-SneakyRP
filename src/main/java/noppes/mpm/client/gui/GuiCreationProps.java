@@ -382,7 +382,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
  	@Override
  	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
         if (scroll.selected >= propGroupAmount) {
-        	this.openGui(new GuiCreationPropRename(selected - propGroupAmount));
+        	this.openGui(new GuiCreationPropRename(prop));
         } else if (scroll.selected >= 0) {
         	this.openGui(new GuiCreationProps(selectedPropGroup));
         }

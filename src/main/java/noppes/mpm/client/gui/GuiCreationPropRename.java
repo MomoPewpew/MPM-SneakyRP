@@ -1,6 +1,5 @@
 package noppes.mpm.client.gui;
 
-import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
@@ -10,10 +9,10 @@ public class GuiCreationPropRename extends GuiCreationScreenInterface implements
     private Boolean initiating = false;
     private static Prop prop;
 
-    public GuiCreationPropRename(int index) {
+    public GuiCreationPropRename(Prop propArg) {
          this.active = -1;
          this.xOffset = 140;
-         prop = ModelData.get(this.getPlayer()).propBase.props.get(index);
+         prop = propArg;
     }
 
     @Override

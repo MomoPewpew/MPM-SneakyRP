@@ -316,10 +316,10 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				PropGroup propGroup = new PropGroup(player);
 				propGroup.readFromNBT(compound);
 				data.propGroups.add(propGroup);
-			// } else if (type == EnumPackets.MESSAGE_DO_EMOTE) {
-			// 	pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-			// 	String emoteName = Server.readString(buffer);
-			// 	ClientTicker.addAction(() -> Quark.proxy.doEmote(playerName, emoteName));
+			} else if (type == EnumPackets.MESSAGE_DO_EMOTE) {
+				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				String emoteName = Server.readString(buffer);
+				EmoteHandler.attemptEmote(pl, emoteName);
 			}
 		}
 

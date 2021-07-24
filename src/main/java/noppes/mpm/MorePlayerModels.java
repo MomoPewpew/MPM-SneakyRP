@@ -35,10 +35,12 @@ import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandPropRem;
+import noppes.mpm.commands.CommandPropRestore;
 import noppes.mpm.commands.CommandPropSave;
 import noppes.mpm.commands.CommandSing;
 import noppes.mpm.commands.CommandSkinDel;
 import noppes.mpm.commands.CommandSkinLoad;
+import noppes.mpm.commands.CommandSkinRestore;
 import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
@@ -194,9 +196,11 @@ public class MorePlayerModels {
           event.registerServerCommand(new CommandSkinLoad());
           event.registerServerCommand(new CommandSkinSave());
           event.registerServerCommand(new CommandSkinDel());
+          event.registerServerCommand(new CommandSkinRestore());
           event.registerServerCommand(new CommandPropLoad());
           event.registerServerCommand(new CommandPropSave());
           event.registerServerCommand(new CommandPropRem());
+          event.registerServerCommand(new CommandPropRestore());
           GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
           if (!rules.hasRule("mpmAllowEntityModels")) {
                rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
@@ -222,7 +226,7 @@ public class MorePlayerModels {
          int i = 0;
 
          for (final File fileEntry : dir.listFiles()) {
-             if (fileEntry.isDirectory()) {
+             if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
                  continue;
              } else {
 	             NBTTagCompound skinCompound = new NBTTagCompound();
@@ -236,7 +240,8 @@ public class MorePlayerModels {
 				} catch (IOException e) {
 				}
 
-            	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+            	 String skinName = new String(fileEntry.getName());
+            	 skinName = skinName.replace(".dat", "");
 
             	 compound.setString(("skinName" + String.valueOf(i)), skinName);
             	 i++;
@@ -249,7 +254,7 @@ public class MorePlayerModels {
          if (!dir.exists()) dir.mkdirs();
 
          for (final File fileEntry : dir.listFiles()) {
-             if (fileEntry.isDirectory()) {
+             if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
                  continue;
              } else {
 	             NBTTagCompound skinCompound = new NBTTagCompound();
@@ -260,7 +265,8 @@ public class MorePlayerModels {
 				} catch (IOException e) {
 				}
 
-            	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+            	 String skinName = new String(fileEntry.getName());
+            	 skinName = skinName.replace(".dat", "");
 
             	 compound.setString(("skinName" + String.valueOf(i)), skinName);
             	 i++;
@@ -274,10 +280,11 @@ public class MorePlayerModels {
              if (!dir.exists()) dir.mkdirs();
 
              for (final File fileEntry : dir.listFiles()) {
-                 if (fileEntry.isDirectory()) {
+                 if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
                      continue;
                  } else {
-                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+                	 String skinName = new String(fileEntry.getName());
+                	 skinName = skinName.replace(".dat", "");
 
                 	 compound.setString(("skinName" + String.valueOf(i)), skinName);
                 	 i++;
@@ -298,10 +305,11 @@ public class MorePlayerModels {
          int i = 0;
 
          for (final File fileEntry : dir.listFiles()) {
-             if (fileEntry.isDirectory()) {
+             if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
                  continue;
              } else {
-            	 String propGroupName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+            	 String propGroupName = new String(fileEntry.getName());
+            	 propGroupName = propGroupName.replace(".dat", "");
 
             	 compound.setString(("propGroupName" + String.valueOf(i)), propGroupName);
             	 i++;
@@ -315,15 +323,17 @@ public class MorePlayerModels {
              if (!dir.exists()) dir.mkdirs();
 
              for (final File fileEntry : dir.listFiles()) {
-                 if (fileEntry.isDirectory()) {
+                 if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
                      continue;
                  } else {
-                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+                	 String propGroupName = new String(fileEntry.getName());
+                	 propGroupName = propGroupName.replace(".dat", "");
 
-                	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+                	 compound.setString(("propGroupName" + String.valueOf(i)), propGroupName);
                 	 i++;
                  }
              }
+         }
 
          Server.sendData(player, EnumPackets.PROPGROUPS_FILENAME_UPDATE, compound);
      }

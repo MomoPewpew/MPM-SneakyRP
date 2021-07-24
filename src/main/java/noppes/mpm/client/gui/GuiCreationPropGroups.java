@@ -66,7 +66,7 @@ public class GuiCreationPropGroups extends GuiCreationScreenInterface implements
       	  newPropGroup = false;
         }
 
-        final int guiOffsetX = this.guiLeft + this.scroll.width + 2;
+        int guiOffsetX = this.guiLeft + this.scroll.xSize + 2;
 
         y = this.guiTop + 45;
         this.addButton(new GuiNpcButton(301, guiOffsetX, y, 20, 20, "+"));

@@ -138,7 +138,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	  y += 22;
               this.addLabel(new GuiNpcLabel(104, "gui.prop", guiOffsetX, y + 5, 16777215));
               this.addTextField(new GuiNpcTextField(104, this, guiOffsetX + 33, y + 1, 145, 18, propString));
-              //this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
+              this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
         	  y += 22;
         	  this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
               this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},

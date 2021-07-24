@@ -1,9 +1,11 @@
 package noppes.mpm.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -19,6 +21,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
+import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
@@ -28,9 +31,12 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     private static List<ItemStack> itemStacks;
     private int tab;
     private String searchString;
-    private static final Integer rowAmount = 10;
-    private static final Integer columnAmount = 10;
-
+    private static final Integer rowAmount = 7;
+    private static final Integer columnAmount = 14;
+    private final Integer yTop = this.guiTop;
+    private final Integer yBot = yTop + 70;
+    private final Integer xLeft = this.guiLeft;
+    private final Integer xRight = xLeft + 140;
 
     public GuiCreationPropPicker(Prop propArg) {
          this.active = -1;
@@ -67,8 +73,8 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
         	 this.getPlayer().addChatMessage(new TextComponentTranslation(itemStack.getDisplayName()));
          }*/
 
-         for (int row = 0; row < Integer.max(10, (int) Math.ceil((((itemStacks.size() - tab * rowAmount * columnAmount)) / 10))); row++) {
-        	 for (int column = 0; column < Integer.max(10, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
+         for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil(((itemStacks.size() - tab * rowAmount * columnAmount)) / 10)); row++) {
+        	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
         		 itemButton(itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column), row, column);
              }
          }
@@ -76,24 +82,25 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          this.initiating = false;
     }
 
-    private static void itemButton(ItemStack itemStack, Integer row, Integer column) {
-    	ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		IBakedModel bakedModeltemp = itemModelMesher.getItemModel(itemStack);
-		IBakedModel bakedModel = bakedModeltemp.getOverrides().handleItemState(bakedModeltemp, itemStack, null, null);
+    private void itemButton(ItemStack itemStack, Integer row, Integer column) {
 
-		GlStateManager.pushMatrix();
-		{
-			GlStateManager.translate(column, row, 150.0F);
-			GlStateManager.scale(16F, -16F, 16F);
-			bakedModel = ForgeHooksClient.handleCameraTransforms(bakedModel, TransformType.GUI, false);
-			GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+		this.addButton(new GuiNpcButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, ""));
 
-			Minecraft minecraft = Minecraft.getMinecraft();
-			RenderItem renderItem = minecraft.getRenderItem();
-			//renderItem.renderModel(bakedModel, itemStack);
-			renderItem.renderItem(itemStack, bakedModel);
-		}
-		GlStateManager.popMatrix();
+/*    	Minecraft mc = Minecraft.getMinecraft();
+
+    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+		RenderHelper.enableGUIStandardItemLighting();
+		this.zLevel = 100.0F;
+		this.itemRender.zLevel = 100.0F;
+		GlStateManager.enableLighting();
+		GlStateManager.enableRescaleNormal();
+		this.itemRender.renderItemAndEffectIntoGUI(itemStack, xPos, yPos);
+		this.itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, itemStack, xPos, yPos, null);
+		GlStateManager.disableLighting();
+		this.itemRender.zLevel = 0.0F;
+		this.zLevel = 0.0F;
+		RenderHelper.disableStandardItemLighting();*/
     }
 
     @Override

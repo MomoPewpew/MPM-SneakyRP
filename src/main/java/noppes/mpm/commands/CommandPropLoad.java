@@ -35,17 +35,29 @@ public class CommandPropLoad extends CommandBase {
 		}
 
 		String filename = args[0].toLowerCase() + ".dat";
-		File file;
-
-		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-
-        if (!dir.exists()) {
-              return;
-         }
 
         try {
+        	File file;
+
+    		File dir = null;
+    		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+
+            if (!dir.exists()) {
+                  dir.mkdirs();
+             }
+
              file = new File(dir, filename);
+
+             if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
+         		dir = null;
+        		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+
+                if (!dir.exists()) {
+                      dir.mkdirs();
+                 }
+
+                 file = new File(dir, filename);
+             }
 
              if (!file.exists()) {
             	 icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));

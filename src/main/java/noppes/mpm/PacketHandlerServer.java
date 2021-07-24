@@ -155,20 +155,43 @@ public class PacketHandlerServer {
 	     } else if (type == EnumPackets.PROPGROUPS_FILENAME_UPDATE) {
              MorePlayerModels.syncPropGroupFileNames(player);
 	     } else if (type == EnumPackets.UPDATE_PLAYER_DATA_CLIENT) {
-             NBTTagCompound compound = Server.readNBT(buffer);
+            NBTTagCompound compound = Server.readNBT(buffer);
 
 			String filename = compound.getString("skinName") + ".dat";
 			File file;
 
 			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-
-	        if (!dir.exists()) {
-	              return;
-	         }
 
 	        try {
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+
+		        if (!dir.exists()) {
+		              dir.mkdirs();
+		         }
+
 	             file = new File(dir, filename);
+
+	             if (!file.exists()) {
+	            	 dir = null;
+	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+	 		        if (!dir.exists()) {
+	 		              dir.mkdirs();
+	 		         }
+
+	 	             file = new File(dir, filename);
+	             }
+
+	             if (!file.exists()) {
+	            	 dir = null;
+	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+
+	 		        if (!dir.exists()) {
+	 		              dir.mkdirs();
+	 		         }
+
+	 	             file = new File(dir, filename);
+	             }
 
 	             if (!file.exists()) {
 	            	 return;
@@ -183,56 +206,45 @@ public class PacketHandlerServer {
 	             LogWriter.except(var4);
 	        }
 	     } else if (type == EnumPackets.PROPGROUP_LOAD_CLIENT) {
-             NBTTagCompound compound = Server.readNBT(buffer);
+	            NBTTagCompound compound = Server.readNBT(buffer);
 
-			String filename = compound.getString("propName") + ".dat";
-			File file;
+				String filename = compound.getString("propName") + ".dat";
+				File file;
 
-			File dir = null;
+				File dir = null;
 
-	        try {
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "unrestricted");
+		        try {
+					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
-		        if (!dir.exists()) {
-		              dir.mkdirs();
-		         }
+			        if (!dir.exists()) {
+			              dir.mkdirs();
+			         }
 
-	             file = new File(dir, filename);
+		             file = new File(dir, filename);
 
-	             if (!file.exists()) {
-	            	 dir = null;
-	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+		             if (!file.exists()) {
+		            	 dir = null;
+		            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
 
-	 		        if (!dir.exists()) {
-	 		              dir.mkdirs();
-	 		         }
+		 		        if (!dir.exists()) {
+		 		              dir.mkdirs();
+		 		         }
 
-	 	             file = new File(dir, filename);
-	             }
+		 	             file = new File(dir, filename);
+		             }
 
-	             if (!file.exists()) {
-	            	 dir = null;
-	            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+		             if (!file.exists()) {
+		            	 return;
+		             }
 
-	 		        if (!dir.exists()) {
-	 		              dir.mkdirs();
-	 		         }
+		             NBTTagCompound propCompound = new NBTTagCompound();
 
-	 	             file = new File(dir, filename);
-	             }
+		             propCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-	             if (!file.exists()) {
-	            	 return;
-	             }
-
-	             NBTTagCompound propCompound = new NBTTagCompound();
-
-	             propCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
-
-	             Server.sendData(player, EnumPackets.PROPGROUP_LOAD_CLIENT, propCompound);
-	        } catch (Exception var4) {
-	             LogWriter.except(var4);
-	        }
+		             Server.sendData(player, EnumPackets.PROPGROUP_LOAD_CLIENT, propCompound);
+		        } catch (Exception var4) {
+		             LogWriter.except(var4);
+		        }
 	     }
 
 

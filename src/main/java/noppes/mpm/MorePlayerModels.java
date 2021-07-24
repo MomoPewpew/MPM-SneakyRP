@@ -277,17 +277,6 @@ public class MorePlayerModels {
                  if (fileEntry.isDirectory()) {
                      continue;
                  } else {
-    	             NBTTagCompound skinCompound = new NBTTagCompound();
-
-    	             try {
-    					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
-
-    					if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
-    		            	 continue;
-    				} catch (FileNotFoundException e) {
-    				} catch (IOException e) {
-    				}
-
                 	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
 
                 	 compound.setString(("skinName" + String.valueOf(i)), skinName);
@@ -318,6 +307,23 @@ public class MorePlayerModels {
             	 i++;
              }
          }
+
+         if (!playersEntityDenied.contains(player.getUniqueID())) {
+        	 dir = null;
+        	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+
+             if (!dir.exists()) dir.mkdirs();
+
+             for (final File fileEntry : dir.listFiles()) {
+                 if (fileEntry.isDirectory()) {
+                     continue;
+                 } else {
+                	 String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+
+                	 compound.setString(("skinName" + String.valueOf(i)), skinName);
+                	 i++;
+                 }
+             }
 
          Server.sendData(player, EnumPackets.PROPGROUPS_FILENAME_UPDATE, compound);
      }

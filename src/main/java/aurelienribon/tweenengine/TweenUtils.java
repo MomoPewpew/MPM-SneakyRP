@@ -44,7 +44,7 @@ public class TweenUtils {
 		}
 
 		for (TweenEquation easing : easings) {
-			if (easingName.equals(easing.toString()))
+			if (easingName.toLowerCase().equals(easing.toString().toLowerCase()))
 				return easing;
 		}
 

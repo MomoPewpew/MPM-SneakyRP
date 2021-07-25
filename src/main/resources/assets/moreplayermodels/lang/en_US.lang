@@ -58,6 +58,16 @@ gui.browse=Browse
 gui.skinload=Skin Load
 gui.propgroupload=Prop Load
 gui.refresh=Refresh
+gui.emoteeditor=Emotes
+gui.emoteload=Emote Load
+gui.intro=Intro
+gui.loop=Loop
+gui.disable=Disable
+gui.enable=Enable
+gui.easing=Easing
+gui.moveup=<
+gui.movedown=>
+
 
 animation.sleep=Sleep
 animation.crawl=Crawl

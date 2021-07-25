@@ -53,7 +53,7 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
           }
 
           list = new ArrayList<String>();
-          Integer y = MorePlayerModels.fileNamesPropGroups.size();
+          Integer y = MorePlayerModels.fileNamesPropGroups.size();//TODO: fix crash here on fresh server
 
           for(int n = 0; n < y; ++n) {
         	  if (MorePlayerModels.fileNamesPropGroups.get(n).contains(searchString.toLowerCase())) {

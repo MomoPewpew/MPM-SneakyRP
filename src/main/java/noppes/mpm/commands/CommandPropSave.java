@@ -29,7 +29,7 @@ public class CommandPropSave extends CommandBase {
             PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
 
             for (PropGroup propGroupTemp : data.propGroups) {
-	           	 if (propGroupTemp.name.equals(args[0])) {
+	           	 if (propGroupTemp.name.toLowerCase().equals(args[0].toLowerCase())) {
 	           		 if (propGroup.name.equals("")) {
 	           			 propGroup.readFromNBT(propGroupTemp.writeToNBT());
 	                    } else {

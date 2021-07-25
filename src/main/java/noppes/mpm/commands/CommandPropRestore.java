@@ -67,7 +67,7 @@ public class CommandPropRestore extends CommandBase {
                  if (fileEntry.isDirectory()) {
                      continue;
                  } else {
-                	 if (fileEntry.getName().startsWith(args[0].toLowerCase() + "-")) {
+                	 if (fileEntry.getName().toLowerCase().startsWith(args[0].toLowerCase() + "-")) {
                 		 String fileName = new String(fileEntry.getName());
                 		 long timeStampTemp = Long.valueOf(fileName.replace(args[0].toLowerCase() + "-", "").replace(".dat", ""));
 

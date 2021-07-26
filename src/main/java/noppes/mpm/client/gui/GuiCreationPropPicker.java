@@ -1,28 +1,18 @@
 package noppes.mpm.client.gui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
-import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
@@ -46,7 +36,23 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          tab = 0;
 
          itemStacks = new ArrayList<ItemStack>();
-         Iterator<Item> var1 = ForgeRegistries.ITEMS.getValues().iterator();
+
+         List<Item> list = ForgeRegistries.ITEMS.getValues();
+
+         TreeMap<Integer, Item> map = new TreeMap<>();
+         for (Item item : list) {
+             map.put(item.getIdFromItem(item), item);
+         }
+         Set<Entry<Integer, Item>> mappings = map.entrySet();
+
+         list = new ArrayList<Item>();
+
+         for(Entry<Integer, Item> mapping : mappings){
+        	 if (mapping.getKey() > 0)
+        		 list.add(mapping.getValue());
+         }
+
+         Iterator<Item> var1 = list.iterator();
 
          while(var1.hasNext()) {
              Item ent = (Item)var1.next();
@@ -70,37 +76,13 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     	 this.initiating = true;
          super.initGui();
 
-/*         for (ItemStack itemStack : itemStacks) {
-        	 this.getPlayer().addChatMessage(new TextComponentTranslation(itemStack.getDisplayName()));
-         }*/
-
          for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil(((itemStacks.size() - tab * rowAmount * columnAmount)) / 10)); row++) {
         	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
-        		 //itemButton(itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column), row, column);
         		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column)));
              }
          }
 
          this.initiating = false;
-    }
-
-    private void itemButton(ItemStack itemStack, Integer row, Integer column) {
-
-		//this.addButton(new GuiNpcButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, ""));
-
-        GlStateManager.disableLighting();
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        this.drawTexturedModalRect(this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, 28, 32);
-        this.zLevel = 100.0F;
-        this.itemRender.zLevel = 100.0F;
-        GlStateManager.enableLighting();
-        GlStateManager.enableRescaleNormal();
-        this.itemRender.renderItemAndEffectIntoGUI(itemStack, this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row);
-        this.itemRender.renderItemOverlays(this.fontRendererObj, itemStack, this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row);
-        GlStateManager.disableLighting();
-        this.itemRender.zLevel = 0.0F;
-        this.zLevel = 0.0F;
     }
 
     @Override

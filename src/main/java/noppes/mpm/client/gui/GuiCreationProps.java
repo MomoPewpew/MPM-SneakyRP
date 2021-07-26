@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
+import noppes.mpm.Prop.EnumType;
 import noppes.mpm.PropGroup;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
@@ -111,7 +112,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
           for(int n = 0; n < y; ++n) {
         	   if (props.get(n).name.equals("NONAME")) {
-                   list.add(props.get(n).itemStack.getDisplayName());
+        		   if (props.get(n).type == EnumType.ITEM) {
+                       list.add(props.get(n).itemStack.getDisplayName());
+        		   } else if (props.get(n).type == EnumType.PARTICLE) {
+                       list.add(props.get(n).particleType.toString().toLowerCase());
+        		   }
         	   } else {
                    list.add(props.get(n).name);
         	   }
@@ -425,7 +430,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 		if (this.initiating) return;
 
 		if (textField.id == 104) {
-			propString = textField.getText();
+			propString = new String(textField.getText()).toLowerCase();
 
 			if (prop.parsePropString(propString)) {
 				prop.propString = propString;

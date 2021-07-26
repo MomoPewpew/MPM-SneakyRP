@@ -1,8 +1,10 @@
 package noppes.mpm;
 
+import net.minecraft.client.particle.Particle;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 
 public class Prop {
@@ -21,6 +23,13 @@ public class Prop {
     public Boolean matchScaling;
     public Boolean hide;
     public String name;
+    public EnumType type;
+    public EnumParticleTypes particleType;
+
+    public enum EnumType {
+        ITEM,
+        PARTICLE
+   }
 
 	public Prop(){}
 
@@ -45,6 +54,7 @@ public class Prop {
 	    this.matchScaling = matchScaling;
 	    this.hide = hide;
 	    this.name = name;
+	    this.particleType = null;
 	}
 
 	public Prop(String propString, String bodyPartName,
@@ -68,6 +78,7 @@ public class Prop {
 		    this.hide = hide;
 		    this.matchScaling = matchScaling;
 		    this.name = name;
+		    this.particleType = null;
 		}
 
      public NBTTagCompound writeToNBT() {
@@ -122,6 +133,9 @@ public class Prop {
     		 if (propString.toLowerCase().contains(string.toLowerCase())) return false;
     	 }
 
+    	 if (propString.startsWith("particle:"))
+    		 return parseParticleString(propString.replace("particle:", ""));
+
     	 String nameSpacedId = "";
     	 short dataValue = 0;
 
@@ -148,7 +162,186 @@ public class Prop {
               return false;
           } else {
               this.itemStack = new ItemStack(item, 1, dataValue);
+              this.type = EnumType.ITEM;
+              this.particleType = null;
               return true;
           }
+     }
+
+     public boolean parseParticleString(String propString) {
+
+    	 EnumParticleTypes particleType = null;
+
+    	 String string = new String (propString).replace("_", "");
+
+    	 switch(string) {
+	     	case "blockcrack":
+	     		particleType = EnumParticleTypes.BLOCK_CRACK;
+	     		break;
+	     	case "waterbubble":
+	     	case "bubble":
+	     		particleType = EnumParticleTypes.WATER_BUBBLE;
+	     		break;
+	     	case "cloud":
+	     		particleType = EnumParticleTypes.CLOUD;
+	     		break;
+	     	case "critical":
+	     	case "crit":
+	     		particleType = EnumParticleTypes.CRIT;
+	     		break;
+	     	case "critmagic":
+	     	case "magiccrit":
+	     		particleType = EnumParticleTypes.CRIT_MAGIC;
+	     		break;
+	     	case "damage":
+	     	case "damageindicator":
+	     		particleType = EnumParticleTypes.DAMAGE_INDICATOR;
+	     		break;
+	     	case "dragonbreath":
+	     		particleType = EnumParticleTypes.DRAGON_BREATH;
+	     		break;
+	     	case "driplava":
+	     		particleType = EnumParticleTypes.DRIP_LAVA;
+	     		break;
+	     	case "dripwater":
+	     		particleType = EnumParticleTypes.DRIP_WATER;
+	     		break;
+	     	case "enchantment":
+	     	case "enchantmenttable":
+	     		particleType = EnumParticleTypes.ENCHANTMENT_TABLE;
+	     		break;
+	     	case "endrod":
+	     		particleType = EnumParticleTypes.END_ROD;
+	     		break;
+	     	case "explosionhuge":
+	     	case "hugeexplosion":
+	     		particleType = EnumParticleTypes.EXPLOSION_HUGE;
+	     		break;
+	     	case "explosionlarge":
+	     	case "largeexplosion":
+	     		particleType = EnumParticleTypes.EXPLOSION_LARGE;
+	     		break;
+	     	case "explosion":
+	     	case "explode":
+	     	case "explosionnormal":
+	     	case "normalexplosion":
+	     		particleType = EnumParticleTypes.EXPLOSION_NORMAL;
+	     		break;
+	     	case "fallingdust":
+	     	case "dust":
+	     		particleType = EnumParticleTypes.FALLING_DUST;
+	     		break;
+	     	case "fireworks":
+	     	case "fireworksspark":
+	     	case "spark":
+	     		particleType = EnumParticleTypes.FIREWORKS_SPARK;
+	     		break;
+	     	case "flame":
+	     		particleType = EnumParticleTypes.FLAME;
+	     		break;
+	     	case "footstep":
+	     		particleType = EnumParticleTypes.FOOTSTEP;
+	     		break;
+	     	case "heart":
+	     		particleType = EnumParticleTypes.HEART;
+	     		break;
+	     	case "itemcrack":
+	     		particleType = EnumParticleTypes.ITEM_CRACK;
+	     		break;
+	     	case "lava":
+	     		particleType = EnumParticleTypes.LAVA;
+	     		break;
+	     	case "mobappearance":
+	     		particleType = EnumParticleTypes.MOB_APPEARANCE;
+	     		break;
+	     	case "note":
+	     	case "music":
+	     	case "musicnote":
+	     		particleType = EnumParticleTypes.NOTE;
+	     		break;
+	     	case "portal":
+	     		particleType = EnumParticleTypes.PORTAL;
+	     		break;
+	     	case "redstone":
+	     		particleType = EnumParticleTypes.REDSTONE;
+	     		break;
+	     	case "slime":
+	     		particleType = EnumParticleTypes.SLIME;
+	     		break;
+	     	case "smokelarge":
+	     	case "largesmoke":
+	     		particleType = EnumParticleTypes.SMOKE_LARGE;
+	     		break;
+	     	case "smoke":
+	     		particleType = EnumParticleTypes.SMOKE_NORMAL;
+	     		break;
+	     	case "snowball":
+	     		particleType = EnumParticleTypes.SNOWBALL;
+	     		break;
+	     	case "snowshovel":
+	     	case "snow":
+	     		particleType = EnumParticleTypes.SNOW_SHOVEL;
+	     		break;
+	     	case "spell":
+	     		particleType = EnumParticleTypes.SPELL;
+	     		break;
+	     	case "spellinstant":
+	     	case "instantspell":
+	     		particleType = EnumParticleTypes.SPELL_INSTANT;
+	     		break;
+	     	case "spellmob":
+	     	case "mobspell":
+	     		particleType = EnumParticleTypes.SPELL_MOB;
+	     		break;
+	     	case "spellmobambient":
+	     		particleType = EnumParticleTypes.SPELL_MOB_AMBIENT;
+	     		break;
+	     	case "spellwitch":
+	     	case "witchspell":
+	     		particleType = EnumParticleTypes.SPELL_WITCH;
+	     		break;
+	     	case "splash":
+	     	case "watersplash":
+	     	case "splashwater":
+	     		particleType = EnumParticleTypes.WATER_SPLASH;
+	     		break;
+	     	case "suspended":
+	     		particleType = EnumParticleTypes.SUSPENDED;
+	     		break;
+	     	case "suspendeddepth":
+	     		particleType = EnumParticleTypes.SUSPENDED_DEPTH;
+	     		break;
+	     	case "sweepattack":
+	     	case "sweep":
+	     	case "attack":
+	     		particleType = EnumParticleTypes.SWEEP_ATTACK;
+	     		break;
+	     	case "townaura":
+	     	case "town":
+	     		particleType = EnumParticleTypes.TOWN_AURA;
+	     		break;
+	     	case "villagerangry":
+	     	case "angryvillager":
+	     		particleType = EnumParticleTypes.VILLAGER_ANGRY;
+	     		break;
+	     	case "villagerhappy":
+	     	case "happyvillager":
+	     		particleType = EnumParticleTypes.VILLAGER_HAPPY;
+	     		break;
+	     	case "wake":
+	     	case "waterwake":
+	     	case "wakewater":
+	     		particleType = EnumParticleTypes.WATER_WAKE;
+	     		break;
+    	 }
+
+    	 if (particleType == null) {
+    		 return false;
+    	 } else {
+        	 this.particleType = particleType;
+        	 this.type = EnumType.PARTICLE;
+        	 this.itemStack = null;
+        	 return true;
+    	 }
      }
 }

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
-import noppes.mpm.client.gui.util.GuiNpcLabel;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
@@ -21,7 +20,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     private Boolean initiating = false;
     private static Prop prop;
     private static List<ItemStack> itemStacks;
-    private int tab;
+    private static int tab;
     private static String searchString;
     private static final Integer rowAmount = 7;
     private static final Integer columnAmount = 14;

@@ -7,13 +7,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
+import noppes.mpm.PropGroup;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcLabel;
@@ -33,11 +32,15 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     private final Integer xLeft = this.guiLeft;
     private final Integer xRight = xLeft + 140;
     private static Set<Entry<Integer, Item>> mappings;
+    private static PropGroup propGroupOld;
+    private static int selectedOld;
 
-    public GuiCreationPropPicker(Prop propArg) {
+    public GuiCreationPropPicker(Prop propArg, PropGroup propGroup, int selected) {
          this.active = -1;
          this.xOffset = 140;
          prop = propArg;
+         propGroupOld = propGroup;
+         selectedOld = selected;
          tab = 0;
          searchString = "";
 
@@ -125,6 +128,8 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
         } else if (btn.id == 904) {
         	tab++;
         	this.initGui();
+        } else if (btn.id == 902) {
+        	this.openGui(new GuiCreationProps(propGroupOld, selectedOld));
         }
     }
 

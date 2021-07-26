@@ -74,6 +74,18 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
          }
      }
 
+     public GuiCreationProps(PropGroup propGroupArg, int selectedArg) {
+   	  	 this.playerdata = ModelData.get(this.getPlayer());
+         this.active = -1;
+         this.xOffset = 140;
+
+         propGroupAmount = 0;
+
+         propGroup = propGroupArg;
+         props = propGroup.props;
+         selected = selectedArg;
+     }
+
      @Override
      public void initGui() {
           this.initiating = true;
@@ -310,7 +322,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
         	 Client.sendData(EnumPackets.PROPGROUP_SAVE, compound);
          } else if (btn.id == 123) {
-        	 this.openGui(new GuiCreationPropPicker(prop));
+        	 this.openGui(new GuiCreationPropPicker(prop, propGroup, selected));
          }
      }
 

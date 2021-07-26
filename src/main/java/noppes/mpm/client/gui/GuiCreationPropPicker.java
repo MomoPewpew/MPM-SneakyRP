@@ -74,6 +74,8 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
              ItemStack itemStack = new ItemStack(ent);
 
+             if (itemStack.getDisplayName().equals("Air")) continue;
+
              if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
     				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
             	 itemStacks.add(itemStack);
@@ -139,6 +141,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
 		if (textField.id == 901) {
 			searchString = new String(textField.getText()).toLowerCase();
+			tab = 0;
 			this.initGui();
 		}
 	}

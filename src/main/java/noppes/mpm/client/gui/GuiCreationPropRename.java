@@ -49,4 +49,10 @@ public class GuiCreationPropRename extends GuiCreationScreenInterface implements
 
 	@Override
 	public void focused(GuiNpcTextField textField) {}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

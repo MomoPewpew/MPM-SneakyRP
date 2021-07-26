@@ -151,4 +151,10 @@ public class GuiCreationPropGroups extends GuiCreationScreenInterface implements
 		if (this.initiating) return;
 
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

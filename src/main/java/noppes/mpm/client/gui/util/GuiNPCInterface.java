@@ -30,6 +30,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
      private HashMap extra = new HashMap();
      protected ResourceLocation background = null;
      public boolean closeOnEsc = false;
+     public boolean closeOnInventory = true;
      public int guiLeft;
      public int guiTop;
      public int xSize;
@@ -149,7 +150,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
                     tf.textboxKeyTyped(c, i);
                }
 
-               if (this.closeOnEsc && (i == 1 || !GuiNpcTextField.isActive() && this.isInventoryKey(i))) {
+               if (this.closeOnEsc && (i == 1 || !GuiNpcTextField.isActive() && this.isInventoryKey(i) && this.closeOnInventory)) {
                     this.close();
                }
           }

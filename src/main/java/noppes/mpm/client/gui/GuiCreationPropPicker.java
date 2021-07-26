@@ -39,6 +39,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          selectedOld = selected;
          tab = 0;
          searchString = "";
+         this.closeOnInventory = false;
 
          TreeMap<Float, ItemStack> map = new TreeMap<>();
 
@@ -132,13 +133,6 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
 	@Override
 	public void unFocused(GuiNpcTextField textField) {
-		if (this.initiating) return;
-
-		if (textField.id == 901) {
-			searchString = new String(textField.getText()).toLowerCase();
-			tab = 0;
-			this.initGui();
-		}
 	}
 
 	@Override
@@ -148,6 +142,24 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 		if (textField.id == 901) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
+		}
+	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		if (this.initiating) return;
+
+		if (textField.id == 901) {
+			searchString = new String(textField.getText()).toLowerCase();
+			tab = 0;
+			int i = textField.getCursorPosition();
+
+			this.initGui();
+
+			if (searchString.equals("")) this.getTextField(901).setText("");
+
+			this.getTextField(901).setFocused(true);
+			this.getTextField(901).setCursorPosition(i);
 		}
 	}
 }

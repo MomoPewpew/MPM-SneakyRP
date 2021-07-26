@@ -53,7 +53,6 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     	 this.initiating = true;
          super.initGui();
 
-
          List<Item> list = new ArrayList<Item>();
 
          for(Entry<Integer, Item> mapping : mappings){

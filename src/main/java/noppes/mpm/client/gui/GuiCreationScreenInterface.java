@@ -144,7 +144,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
      public void openGui(GuiNPCInterface gui) {
           this.parent.setSubGui(gui);
-          if (gui instanceof GuiCreationScreenInterface) {
+          if (gui instanceof GuiCreationScreenInterface && ((GuiCreationScreenInterface) gui).active >= 0) {
                Gui = (GuiCreationScreenInterface)gui;
           }
 

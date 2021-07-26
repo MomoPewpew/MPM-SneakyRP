@@ -76,7 +76,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
              if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
     				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
-            	 itemStacks.add(new ItemStack(ent));
+            	 itemStacks.add(itemStack);
              }
 
              for (short i = 1; i < 1; i++) {

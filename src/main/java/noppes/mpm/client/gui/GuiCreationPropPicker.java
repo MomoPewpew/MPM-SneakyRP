@@ -7,9 +7,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
@@ -56,8 +58,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          List<Item> list = new ArrayList<Item>();
 
          for(Entry<Integer, Item> mapping : mappings){
-        	 if (mapping.getKey() > 0)
-        		 list.add(mapping.getValue());
+    		 list.add(mapping.getValue());
          }
 
          Iterator<Item> var1 = list.iterator();
@@ -69,7 +70,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
              ItemStack itemStack = new ItemStack(ent);
 
              if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-    				 || (searchString.startsWith("@") && itemStack.getUnlocalizedName().contains(searchString.replace("@", "")))) {
+    				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(searchString.replace("@", "")))) {
             	 itemStacks.add(new ItemStack(ent));
              }
 
@@ -79,7 +80,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 	           	  if (itemStack.getDisplayName().equals(new ItemStack(ent).getDisplayName())) {
 	           		  break;
 	           	  } else if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-        				 || (searchString.startsWith("@") && itemStack.getUnlocalizedName().contains(searchString.replace("@", "")))) {
+        				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(searchString.replace("@", "")))) {
 	           		  itemStacks.add(itemStack);
 	           	  }
      		 }
@@ -101,7 +102,14 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
     @Override
     protected void actionPerformed(GuiButton btn) {
+		if (this.initiating) return;
+        super.actionPerformed(btn);
 
+        if (btn.id >= 1000) {
+        	ItemStack itemStack = itemStacks.get(btn.id - 1000);
+        	prop.propString = itemStack.getItem().getRegistryName().toString() + ":" + itemStack.getItemDamage();
+        	prop.parsePropString(prop.propString);
+        }
     }
 
 	@Override

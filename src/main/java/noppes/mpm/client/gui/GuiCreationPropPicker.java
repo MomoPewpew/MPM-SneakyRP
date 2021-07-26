@@ -70,7 +70,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
              ItemStack itemStack = new ItemStack(ent);
 
              if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-    				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(searchString.replace("@", "")))) {
+    				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
             	 itemStacks.add(new ItemStack(ent));
              }
 
@@ -80,7 +80,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 	           	  if (itemStack.getDisplayName().equals(new ItemStack(ent).getDisplayName())) {
 	           		  break;
 	           	  } else if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-        				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(searchString.replace("@", "")))) {
+        				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
 	           		  itemStacks.add(itemStack);
 	           	  }
      		 }
@@ -96,6 +96,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          }
 
          this.addTextField(new GuiNpcTextField(901, this, this.guiLeft + 50, this.guiTop + 200, 200, 16, searchString.equals("") ? "Search" : searchString));
+
 
          this.initiating = false;
     }

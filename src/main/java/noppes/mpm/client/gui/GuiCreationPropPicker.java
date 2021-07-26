@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
+import noppes.mpm.client.gui.util.GuiNpcLabel;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
@@ -21,19 +22,21 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     private static Prop prop;
     private static List<ItemStack> itemStacks;
     private int tab;
-    private String searchString;
+    private static String searchString;
     private static final Integer rowAmount = 7;
     private static final Integer columnAmount = 14;
     private final Integer yTop = this.guiTop;
     private final Integer yBot = yTop + 70;
     private final Integer xLeft = this.guiLeft;
     private final Integer xRight = xLeft + 140;
+    private static Set<Entry<Integer, Item>> mappings;
 
     public GuiCreationPropPicker(Prop propArg) {
          this.active = -1;
          this.xOffset = 140;
          prop = propArg;
          tab = 0;
+         searchString = "";
 
          itemStacks = new ArrayList<ItemStack>();
 
@@ -43,32 +46,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          for (Item item : list) {
              map.put(item.getIdFromItem(item), item);
          }
-         Set<Entry<Integer, Item>> mappings = map.entrySet();
-
-         list = new ArrayList<Item>();
-
-         for(Entry<Integer, Item> mapping : mappings){
-        	 if (mapping.getKey() > 0)
-        		 list.add(mapping.getValue());
-         }
-
-         Iterator<Item> var1 = list.iterator();
-
-         while(var1.hasNext()) {
-             Item ent = (Item)var1.next();
-
-             itemStacks.add(new ItemStack(ent));
-
-             for (short i = 1; i < 1; i++) {
-	           	  ItemStack itemStack = new ItemStack(ent, 1, i);
-
-	           	  if (itemStack.getDisplayName().equals(new ItemStack(ent).getDisplayName())) {
-	           		  break;
-	           	  } else {
-	           		  itemStacks.add(itemStack);
-	           	  }
-     		 }
-        }
+         mappings = map.entrySet();
     }
 
     @Override
@@ -76,11 +54,49 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     	 this.initiating = true;
          super.initGui();
 
+
+         List<Item> list = new ArrayList<Item>();
+
+         for(Entry<Integer, Item> mapping : mappings){
+        	 if (mapping.getKey() > 0)
+        		 list.add(mapping.getValue());
+         }
+
+         Iterator<Item> var1 = list.iterator();
+         itemStacks = new ArrayList<ItemStack>();
+
+         while(var1.hasNext()) {
+             Item ent = (Item)var1.next();
+
+             ItemStack itemStack = new ItemStack(ent);
+
+             if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
+    				 || (searchString.startsWith("@") && itemStack.getUnlocalizedName().contains(searchString.replace("@", "")))) {
+            	 itemStacks.add(new ItemStack(ent));
+             }
+
+             for (short i = 1; i < 1; i++) {
+	           	  itemStack = new ItemStack(ent, 1, i);
+
+	           	  if (itemStack.getDisplayName().equals(new ItemStack(ent).getDisplayName())) {
+	           		  break;
+	           	  } else if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
+        				 || (searchString.startsWith("@") && itemStack.getUnlocalizedName().contains(searchString.replace("@", "")))) {
+	           		  itemStacks.add(itemStack);
+	           	  }
+     		 }
+        }
+
          for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil(((itemStacks.size() - tab * rowAmount * columnAmount)) / 10)); row++) {
         	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
-        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column)));
+
+        		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column);
+
+        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStack));
              }
          }
+
+         this.addTextField(new GuiNpcTextField(901, this, this.guiLeft + 50, this.guiTop + 200, 200, 16, searchString.equals("") ? "Search" : searchString));
 
          this.initiating = false;
     }
@@ -91,12 +107,22 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     }
 
 	@Override
-	public void unFocused(GuiNpcTextField var1) {
+	public void unFocused(GuiNpcTextField textField) {
+		if (this.initiating) return;
 
+		if (textField.id >= 901) {
+			searchString = new String(textField.getText()).toLowerCase();
+			this.initGui();
+		}
 	}
 
 	@Override
-	public void focused(GuiNpcTextField var1) {
+	public void focused(GuiNpcTextField textField) {
+		if (this.initiating) return;
 
+		if (textField.id >= 901) {
+			textField.setCursorPositionZero();
+			textField.setSelectionPos(textField.getText().length());
+		}
 	}
 }

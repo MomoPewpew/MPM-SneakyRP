@@ -116,7 +116,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 	public void unFocused(GuiNpcTextField textField) {
 		if (this.initiating) return;
 
-		if (textField.id >= 901) {
+		if (textField.id == 901) {
 			searchString = new String(textField.getText()).toLowerCase();
 			this.initGui();
 		}
@@ -126,7 +126,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 	public void focused(GuiNpcTextField textField) {
 		if (this.initiating) return;
 
-		if (textField.id >= 901) {
+		if (textField.id == 901) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

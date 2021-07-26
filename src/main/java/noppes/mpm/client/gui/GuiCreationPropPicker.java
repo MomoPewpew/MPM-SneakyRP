@@ -121,7 +121,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
         super.actionPerformed(btn);
 
         if (btn.id >= 1000) {
-        	ItemStack itemStack = itemStacks.get(btn.id - 1000);
+        	ItemStack itemStack = ((GuiItemStackButton) btn).itemStack;
         	prop.propString = itemStack.getItem().getRegistryName().toString() + ":" + itemStack.getItemDamage();
         	prop.parsePropString(prop.propString);
         } else if (btn.id == 903) {

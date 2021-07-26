@@ -22,15 +22,10 @@ import noppes.mpm.client.gui.util.ITextfieldListener;
 public class GuiCreationPropPicker extends GuiCreationScreenInterface implements ITextfieldListener {
     private Boolean initiating = false;
     private static Prop prop;
-    private static List<ItemStack> itemStacks;
     private static int tab;
     private static String searchString;
     private static final Integer rowAmount = 7;
     private static final Integer columnAmount = 14;
-    private final Integer yTop = this.guiTop;
-    private final Integer yBot = yTop + 70;
-    private final Integer xLeft = this.guiLeft;
-    private final Integer xRight = xLeft + 140;
     private static Set<Entry<Integer, Item>> mappings;
     private static PropGroup propGroupOld;
     private static int selectedOld;
@@ -43,8 +38,6 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          selectedOld = selected;
          tab = 0;
          searchString = "";
-
-         itemStacks = new ArrayList<ItemStack>();
 
          List<Item> list = ForgeRegistries.ITEMS.getValues();
 
@@ -67,7 +60,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          }
 
          Iterator<Item> var1 = list.iterator();
-         itemStacks = new ArrayList<ItemStack>();
+         List<ItemStack> itemStacks = new ArrayList<ItemStack>();
 
          while(var1.hasNext()) {
              Item ent = (Item)var1.next();
@@ -94,11 +87,11 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
         }
 
          for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size() - tab * rowAmount * columnAmount)) / columnAmount)); row++) {
-        	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
+        	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * columnAmount)); column++) {
 
-        		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column);
+        		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * columnAmount + column);
 
-        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStack));
+        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * columnAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStack));
              }
          }
 

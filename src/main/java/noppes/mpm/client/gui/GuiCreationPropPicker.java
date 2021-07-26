@@ -91,7 +91,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
      		 }
         }
 
-         for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil(((itemStacks.size() - tab * rowAmount * columnAmount)) / 10)); row++) {
+         for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size() - tab * rowAmount * columnAmount)) / columnAmount)); row++) {
         	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
 
         		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column);

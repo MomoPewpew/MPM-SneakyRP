@@ -15,6 +15,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
+import noppes.mpm.client.gui.util.GuiNpcButton;
+import noppes.mpm.client.gui.util.GuiNpcLabel;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 
@@ -95,8 +97,15 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
              }
          }
 
-         this.addTextField(new GuiNpcTextField(901, this, this.guiLeft + 50, this.guiTop + 200, 200, 16, searchString.equals("") ? "Search" : searchString));
+         this.addButton(new GuiNpcButton(903, this.guiLeft + 108, this.guiTop + 189, 20, 20, "<"));
+         this.addLabel(new GuiNpcLabel(903, String.valueOf(tab), this.guiLeft + 136, this.guiTop + 195, 16777215));
+         this.addButton(new GuiNpcButton(904, this.guiLeft + 148, this.guiTop + 189, 20, 20, ">"));
 
+         if (tab == 0) this.getButton(903).enabled = false;
+         if ((tab + 1) * 100 >= itemStacks.size()) this.getButton(904).enabled = false;
+
+         this.addTextField(new GuiNpcTextField(901, this, this.guiLeft + 50, this.guiTop + 211, 130, 18, searchString.equals("") ? "Search" : searchString));
+         this.addButton(new GuiNpcButton(902, this.guiLeft + 182, this.guiTop + 210, 45, 20, "gui.confirm"));
 
          this.initiating = false;
     }
@@ -110,6 +119,12 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
         	ItemStack itemStack = itemStacks.get(btn.id - 1000);
         	prop.propString = itemStack.getItem().getRegistryName().toString() + ":" + itemStack.getItemDamage();
         	prop.parsePropString(prop.propString);
+        } else if (btn.id == 903) {
+        	tab--;
+        	this.initGui();
+        } else if (btn.id == 904) {
+        	tab++;
+        	this.initGui();
         }
     }
 

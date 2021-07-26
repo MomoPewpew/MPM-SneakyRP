@@ -59,6 +59,7 @@ gui.skinload=Skin Load
 gui.propgroupload=Prop Load
 gui.refresh=Refresh
 gui.picker=Picker
+gui.confirm=Confirm
 
 animation.sleep=Sleep
 animation.crawl=Crawl

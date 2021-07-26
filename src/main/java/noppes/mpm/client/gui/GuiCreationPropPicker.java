@@ -21,6 +21,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.Prop;
+import noppes.mpm.client.gui.util.GuiItemStackButton;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ITextfieldListener;
@@ -75,7 +76,8 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
          for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil(((itemStacks.size() - tab * rowAmount * columnAmount)) / 10)); row++) {
         	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * rowAmount)); column++) {
-        		 itemButton(itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column), row, column);
+        		 //itemButton(itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column), row, column);
+        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStacks.get(tab * rowAmount * columnAmount + row * rowAmount + column)));
              }
          }
 
@@ -84,23 +86,21 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
     private void itemButton(ItemStack itemStack, Integer row, Integer column) {
 
-		this.addButton(new GuiNpcButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, ""));
+		//this.addButton(new GuiNpcButton((1000 + tab * rowAmount * columnAmount + row * rowAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, ""));
 
-/*    	Minecraft mc = Minecraft.getMinecraft();
-
-    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-		RenderHelper.enableGUIStandardItemLighting();
-		this.zLevel = 100.0F;
-		this.itemRender.zLevel = 100.0F;
-		GlStateManager.enableLighting();
-		GlStateManager.enableRescaleNormal();
-		this.itemRender.renderItemAndEffectIntoGUI(itemStack, xPos, yPos);
-		this.itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, itemStack, xPos, yPos, null);
-		GlStateManager.disableLighting();
-		this.itemRender.zLevel = 0.0F;
-		this.zLevel = 0.0F;
-		RenderHelper.disableStandardItemLighting();*/
+        GlStateManager.disableLighting();
+        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+        this.drawTexturedModalRect(this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, 28, 32);
+        this.zLevel = 100.0F;
+        this.itemRender.zLevel = 100.0F;
+        GlStateManager.enableLighting();
+        GlStateManager.enableRescaleNormal();
+        this.itemRender.renderItemAndEffectIntoGUI(itemStack, this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row);
+        this.itemRender.renderItemOverlays(this.fontRendererObj, itemStack, this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row);
+        GlStateManager.disableLighting();
+        this.itemRender.zLevel = 0.0F;
+        this.zLevel = 0.0F;
     }
 
     @Override

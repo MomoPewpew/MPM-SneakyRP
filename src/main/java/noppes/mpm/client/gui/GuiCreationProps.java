@@ -84,6 +84,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
          propGroup = propGroupArg;
          props = propGroup.props;
          selected = selectedArg;
+         propString = prop.propString;
      }
 
      @Override

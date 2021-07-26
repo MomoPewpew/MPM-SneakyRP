@@ -86,15 +86,6 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     				 || (searchString.startsWith("@") && ent.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
             	 itemStacks.add(ent);
              }
-        }
-
-         for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size() - tab * rowAmount * columnAmount)) / columnAmount)); row++) {
-        	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * columnAmount)); column++) {
-
-        		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * columnAmount + column);
-
-        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * columnAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStack));
-             }
          }
 
          this.addButton(new GuiNpcButton(903, this.guiLeft + 108, this.guiTop + 189, 20, 20, "<"));
@@ -106,6 +97,15 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 
          this.addTextField(new GuiNpcTextField(901, this, this.guiLeft + 50, this.guiTop + 211, 130, 18, searchString.equals("") ? "Search" : searchString));
          this.addButton(new GuiNpcButton(902, this.guiLeft + 182, this.guiTop + 210, 45, 20, "gui.confirm"));
+
+         for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size() - tab * rowAmount * columnAmount)) / columnAmount)); row++) {
+        	 for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - tab * rowAmount * columnAmount - row * columnAmount)); column++) {
+
+        		 ItemStack itemStack = itemStacks.get(tab * rowAmount * columnAmount + row * columnAmount + column);
+
+        		 this.addButton(new GuiItemStackButton((1000 + tab * rowAmount * columnAmount + row * columnAmount + column), this.guiLeft + 20 * column, this.guiTop + 46 + 20 * row, 20, 20, "", itemStack));
+             }
+         }
 
          this.initiating = false;
     }

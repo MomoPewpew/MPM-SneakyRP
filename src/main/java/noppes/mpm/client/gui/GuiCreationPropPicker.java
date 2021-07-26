@@ -8,9 +8,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.Item;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.oredict.OreDictionary;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.client.gui.util.GuiItemStackButton;
@@ -26,7 +27,7 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     private static String searchString;
     private static final Integer rowAmount = 7;
     private static final Integer columnAmount = 14;
-    private static Set<Entry<Integer, Item>> mappings;
+    private static Set<Entry<Float, ItemStack>> mappings;
     private static PropGroup propGroupOld;
     private static int selectedOld;
 
@@ -39,12 +40,26 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
          tab = 0;
          searchString = "";
 
-         List<Item> list = ForgeRegistries.ITEMS.getValues();
+         TreeMap<Float, ItemStack> map = new TreeMap<>();
 
-         TreeMap<Integer, Item> map = new TreeMap<>();
-         for (Item item : list) {
-             map.put(item.getIdFromItem(item), item);
-         }
+         for (CreativeTabs creativeTab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+ 			if (creativeTab == CreativeTabs.INVENTORY) {
+ 				continue;
+ 			}
+ 			NonNullList<ItemStack> creativeTabItemStacks = NonNullList.func_191196_a();
+ 			try {
+ 				creativeTab.displayAllRelevantItems(creativeTabItemStacks);
+ 			} catch (RuntimeException | LinkageError e) {
+ 			}
+ 			for (ItemStack itemStack : creativeTabItemStacks) {
+ 				if (itemStack == null) {
+ 				} else if (itemStack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+ 				} else {
+ 		             map.put((((float) (itemStack.getItem().getIdFromItem(itemStack.getItem()))) + (((float) itemStack.getItemDamage()) / 1000)), itemStack);
+ 				}
+ 			}
+ 		}
+
          mappings = map.entrySet();
     }
 
@@ -53,37 +68,24 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
     	 this.initiating = true;
          super.initGui();
 
-         List<Item> list = new ArrayList<Item>();
+         List<ItemStack> list = new ArrayList<ItemStack>();
 
-         for(Entry<Integer, Item> mapping : mappings){
+         for(Entry<Float, ItemStack> mapping : mappings){
     		 list.add(mapping.getValue());
          }
 
-         Iterator<Item> var1 = list.iterator();
+         Iterator<ItemStack> var1 = list.iterator();
          List<ItemStack> itemStacks = new ArrayList<ItemStack>();
 
          while(var1.hasNext()) {
-             Item ent = (Item)var1.next();
+        	 ItemStack ent = (ItemStack)var1.next();
 
-             ItemStack itemStack = new ItemStack(ent);
+             if (ent.getDisplayName().equals("Air")) continue;
 
-             if (itemStack.getDisplayName().equals("Air")) continue;
-
-             if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-    				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
-            	 itemStacks.add(itemStack);
+             if ((!searchString.startsWith("@") && ent.getDisplayName().toLowerCase().contains(searchString))
+    				 || (searchString.startsWith("@") && ent.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
+            	 itemStacks.add(ent);
              }
-
-             for (short i = 1; i < 1; i++) {
-	           	  itemStack = new ItemStack(ent, 1, i);
-
-	           	  if (itemStack.getDisplayName().equals(new ItemStack(ent).getDisplayName())) {
-	           		  break;
-	           	  } else if ((!searchString.startsWith("@") && itemStack.getDisplayName().toLowerCase().contains(searchString))
-        				 || (searchString.startsWith("@") && itemStack.getItem().getRegistryName().toString().contains(new String(searchString).replace("@", "")))) {
-	           		  itemStacks.add(itemStack);
-	           	  }
-     		 }
         }
 
          for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size() - tab * rowAmount * columnAmount)) / columnAmount)); row++) {

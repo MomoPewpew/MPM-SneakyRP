@@ -218,6 +218,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                       this.addSlider(new GuiNpcSlider(this, 117, guiOffsetX, y, 152, 20, ((prop.rotateZ + maxRotation) / (maxRotation * 2.0F))));
                       this.getSlider(117).displayString = "Z";
                   }
+
+                  y += 22;
+            	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", guiOffsetX, y + 5, 16777215));
+                  this.addButton(new GuiNpcButton(118, guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.matchScaling ? 1 : 0));
               } else if (prop.type == EnumType.PARTICLE) {
             	  if (sliders == 106) sliders = 506;
             	  if (sliders == 108) sliders = 508;
@@ -273,9 +277,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
               this.getButton(sliders).enabled = false;
 
-              y += 22;
-        	  this.addLabel(new GuiNpcLabel(118, "gui.matchscaling", guiOffsetX, y + 5, 16777215));
-              this.addButton(new GuiNpcButton(118, guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.matchScaling ? 1 : 0));
               y += 22;
               this.addButton(new GuiNpcButton(122, guiOffsetX, y, 152, 20, "gui.propgroup"));
           } else if (selected >= 0) {

@@ -574,8 +574,8 @@ public class LayerProp extends LayerInterface {
 		    		Double propMotionZPitch = propMotionSpeed * Math.sin(propMotionPitch);
 
 		    		//Apply yaw
-		    		Double propMotionZCorrected = propMotionZPitch * Math.cos(propMotionYaw + this.player.rotationYaw);
-		    		Double propMotionXCorrected = propMotionZPitch * Math.sin(propMotionYaw + this.player.rotationYaw);
+		    		Double propMotionZCorrected = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+		    		Double propMotionXCorrected = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
 
 		    		//Adjust for model yaw
 		    		Float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));

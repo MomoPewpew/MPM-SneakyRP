@@ -1,6 +1,5 @@
 package noppes.mpm;
 
-import net.minecraft.client.particle.Particle;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

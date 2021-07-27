@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
@@ -335,7 +336,7 @@ public class LayerProp extends LayerInterface {
 			Float propScaleX = prop.scaleX;
 			Float propScaleY = prop.scaleY;
 			Float propScaleZ = prop.scaleZ;
-			Float propOffsetX = -prop.offsetX;
+			Float propOffsetX = prop.offsetX;
 			Float propOffsetY = prop.offsetY;
 			Float propOffsetZ = prop.offsetZ;
 			Float propRotateX = -prop.rotateX;
@@ -586,9 +587,9 @@ public class LayerProp extends LayerInterface {
     		}
 
             this.player.worldObj.spawnParticle(propParticleType,
-            		this.player.posX + propOffsetXCorrected2 + partModifierX2,
+            		this.player.posX - propOffsetXCorrected - partModifierX,
             		this.player.posY + propOffsetYCorrected + partModifierY,
-            		this.player.posZ + propOffsetZCorrected2 + partModifierZ2,
+            		this.player.posZ + propOffsetZCorrected + partModifierZ,
             		0, 0, 0);
         }
 	}

@@ -24,7 +24,13 @@ public class Prop {
     public Boolean hide;
     public String name;
     public EnumType type;
-    public EnumParticleTypes particleType;
+    public EnumParticleTypes particleType = null;
+    public Float scatter = 0.0F;
+    public Float frequency = 1.0F;
+    public Float amount = 1.0F;
+    public Float pitch = 0.0F;
+    public Float yaw = 0.0F;
+    public Float speed = 0.0F;
 
     public enum EnumType {
         ITEM,
@@ -54,7 +60,6 @@ public class Prop {
 	    this.matchScaling = matchScaling;
 	    this.hide = hide;
 	    this.name = name;
-	    this.particleType = null;
 	}
 
 	public Prop(String propString, String bodyPartName,
@@ -78,7 +83,6 @@ public class Prop {
 		    this.hide = hide;
 		    this.matchScaling = matchScaling;
 		    this.name = name;
-		    this.particleType = null;
 		}
 
      public NBTTagCompound writeToNBT() {
@@ -119,12 +123,23 @@ public class Prop {
      }
 
      public String getCommand() {
-    	 String command = "/prop " +
-    			 this.propString + " " + this.bodyPartName + " " +
-    			 this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
-    			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
-    			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
-    			 this.matchScaling + " " + this.hide + " " + this.name;
+    	 String command = "";
+    	 if (this.type == EnumType.ITEM) {
+        	 command = "/prop " +
+        			 this.propString + " " + this.bodyPartName + " " +
+        			 this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
+        			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
+        			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
+        			 this.matchScaling + " " + this.hide + " " + this.name;
+    	 } else if (this.type == EnumType.PARTICLE) {
+        	 command = "/prop " +
+        			 this.propString + " " + this.bodyPartName + " " +
+        			 this.scatter + " " + this.frequency + " " + this.amount + " " +
+        			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
+        			 this.pitch + " " + this.yaw + " " + this.speed + " " +
+        			 this.matchScaling + " " + this.hide + " " + this.name;
+    	 }
+
 		return command;
      }
 

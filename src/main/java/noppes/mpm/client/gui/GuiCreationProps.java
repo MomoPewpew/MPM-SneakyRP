@@ -588,7 +588,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
               	    prop.frequency = Math.min(20, value);
 	            } else if (textField.id == 511) {
 					sliderValue = value / maxAmount;
-              	    prop.amount = value;
+              	    prop.amount = (float) Math.floor(value);
 	            }
 			} else if (textField.id >= 512 && textField.id <= 514) {
 	            if (textField.id == 512) {

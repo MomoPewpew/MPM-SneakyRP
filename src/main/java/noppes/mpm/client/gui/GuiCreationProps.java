@@ -229,7 +229,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   if (sliders == 506) {
                       this.addTextField(new GuiNpcTextField(509, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.0f", prop.scatter)));
                       this.addSlider(new GuiNpcSlider(this, 509, guiOffsetX, y, 152, 20, ((prop.scatter + maxRotation) / (maxRotation * 2.0F))));
-                      this.getSlider(509).displayString = "Scatter";
+                      this.getSlider(509).displayString = "Motion Scatter";
                       y += 22;
 
                       this.addTextField(new GuiNpcTextField(510, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.frequency)));

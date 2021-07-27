@@ -576,17 +576,10 @@ public class LayerProp extends LayerInterface {
     		Float partModifierX2;
     		Float partModifierZ2;
 
-    		if (propBodyPart == this.model.bipedHead) {
-        		propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.rotationYaw)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.rotationYaw)));
-    			propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.rotationYaw)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.rotationYaw)));
-    			partModifierX2 = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.rotationYaw)) + partModifierZ * Math.sin(Math.toRadians(-this.player.rotationYaw)));
-    			partModifierZ2 = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.rotationYaw)) + partModifierX * Math.sin(Math.toRadians(-this.player.rotationYaw)));
-    		} else {
-        		propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
-    			propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-    			partModifierX2 = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-    			partModifierZ2 = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-    		}
+    		propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
+			propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+			partModifierX2 = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+			partModifierZ2 = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
             this.player.worldObj.spawnParticle(propParticleType,
             		this.player.posX - propOffsetXCorrected2 - partModifierX2,

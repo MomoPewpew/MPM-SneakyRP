@@ -39,29 +39,6 @@ public class Prop {
 
 	public Prop(){}
 
-	public Prop(String propString, ItemStack itemStack, String bodyPartName,
-	    Float scaleX, Float scaleY, Float scaleZ,
-	    Float offsetX, Float offsetY, Float offsetZ,
-	    Float rotateX, Float rotateY, Float rotateZ,
-	    Boolean matchScaling, Boolean hide, String name)
-	{
-		this.propString = propString;
-	    this.itemStack = itemStack;
-	    this.bodyPartName = bodyPartName;
-	    this.scaleX = scaleX;
-	    this.scaleY = scaleY;
-	    this.scaleZ = scaleZ;
-	    this.offsetX = offsetX;
-	    this.offsetY = offsetY;
-	    this.offsetZ = offsetZ;
-	    this.rotateX = rotateX;
-	    this.rotateY = rotateY;
-	    this.rotateZ = rotateZ;
-	    this.matchScaling = matchScaling;
-	    this.hide = hide;
-	    this.name = name;
-	}
-
 	public Prop(String propString, String bodyPartName,
 		    Float scaleX, Float scaleY, Float scaleZ,
 		    Float offsetX, Float offsetY, Float offsetZ,

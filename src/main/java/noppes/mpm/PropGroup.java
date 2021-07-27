@@ -73,13 +73,13 @@ public class PropGroup {
  		Client.sendData(EnumPackets.PROP_ADD, prop.writeToNBT());
      }
 
-     public void addPropServer(String propString, ItemStack propItemStack, String bodyPartName,
+     public void addPropServer(String propString, String bodyPartName,
 		Float propScaleX, Float propScaleY, Float propScaleZ,
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
 		Boolean propMatchScaling, Boolean hide, String name
 		) {
-    	 Prop prop = new Prop(propString, propItemStack, bodyPartName,
+    	 Prop prop = new Prop(propString, bodyPartName,
     			 propScaleX, propScaleY, propScaleZ,
     			 propOffsetX, propOffsetY, propOffsetZ,
     			 propRotateX, propRotateY, propRotateZ,

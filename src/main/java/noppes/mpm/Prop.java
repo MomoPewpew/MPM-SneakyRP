@@ -26,7 +26,7 @@ public class Prop {
     public EnumParticleTypes particleType = null;
     public Float scatter = 0.0F;
     public Float frequency = 1.0F;
-    public Float amount = 1.0F;
+    public int amount = 1;
     public Float pitch = 0.0F;
     public Float yaw = 0.0F;
     public Float speed = 0.0F;

@@ -456,7 +456,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                       text = String.format(java.util.Locale.US,"%.2f", value);
                   } else if (slider.id == 511) {
                 	  value = (slider.sliderValue * maxAmount);
-                	  prop.amount = (float) Math.floor(value);
+                	  prop.amount = (int) Math.floor(value);
                       text = String.format(java.util.Locale.US,"%.0f", value);
                   }
         	  } else if (slider.id >= 512 && slider.id <= 514) {
@@ -588,7 +588,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
               	    prop.frequency = Math.min(20, value);
 	            } else if (textField.id == 511) {
 					sliderValue = value / maxAmount;
-              	    prop.amount = (float) Math.floor(value);
+              	    prop.amount = (int) Math.floor(value);
 	            }
 			} else if (textField.id >= 512 && textField.id <= 514) {
 	            if (textField.id == 512) {

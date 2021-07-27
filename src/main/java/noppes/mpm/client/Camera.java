@@ -7,8 +7,6 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Mouse;
 
 public class Camera {
-    Minecraft mc = Minecraft.getMinecraft();
-
      public boolean enabled = false;
      public boolean closeupenabled = false;
      public float cameraYaw = 0.0F;
@@ -88,18 +86,23 @@ public class Camera {
           this.playerPitch = 0.0F;
           this.cameraDistance = 4.0F;
 
+          Minecraft mc = Minecraft.getMinecraft();
+
           if ((mc.thePlayer.movementInput instanceof MovementInputAlt))
         	  mc.thePlayer.movementInput = new MovementInputFromOptions(mc.gameSettings);
      }
 
      public void enabled() {
           if (!this.enabled) {
+        	   Minecraft mc = Minecraft.getMinecraft();
                this.cameraYaw = this.playerYaw = mc.thePlayer.rotationYaw;
                this.cameraPitch = mc.thePlayer.rotationPitch;
                this.playerPitch = -this.cameraPitch;
           }
 
           this.enabled = true;
+
+          Minecraft mc = Minecraft.getMinecraft();
 
           if (!(mc.thePlayer.movementInput instanceof MovementInputAlt))
         	  mc.thePlayer.movementInput = new MovementInputAlt(mc.gameSettings, this);

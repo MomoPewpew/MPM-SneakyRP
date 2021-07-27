@@ -78,6 +78,12 @@ public class Prop {
          compound.setBoolean("matchScaling", this.matchScaling);
          compound.setBoolean("hide", this.hide);
          compound.setString("name", this.name);
+         compound.setFloat("scatter", this.scatter);
+         compound.setFloat("frequency", this.frequency);
+         compound.setFloat("amount", this.amount);
+         compound.setFloat("pitch", this.pitch);
+         compound.setFloat("yaw", this.yaw);
+         compound.setFloat("speed", this.speed);
          return compound;
      }
 
@@ -97,6 +103,12 @@ public class Prop {
     	 this.matchScaling = compound.getBoolean("matchScaling");
     	 this.hide = compound.getBoolean("hide");
     	 this.name = compound.getString("name");
+    	 this.scatter = compound.getFloat("scatter");
+    	 this.frequency = compound.getFloat("frequency");
+    	 this.amount = compound.getFloat("amount");
+    	 this.pitch = compound.getFloat("pitch");
+    	 this.yaw = compound.getFloat("yaw");
+    	 this.speed = compound.getFloat("speed");
      }
 
      public String getCommand() {

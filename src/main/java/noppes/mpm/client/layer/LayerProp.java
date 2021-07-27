@@ -337,6 +337,8 @@ public class LayerProp extends LayerInterface {
 					Float propOffsetX = prop.offsetX;
 					Float propOffsetY = prop.offsetY;
 					Float propOffsetZ = prop.offsetZ;
+
+					Float propMotionSpeed = prop.speed;
 					Float propMotionPitch = (float) Math.toRadians((prop.pitch + (2 * prop.scatter * Math.random()) - prop.scatter));
 					Float propMotionYaw = (float) Math.toRadians((prop.yaw + (2 * prop.scatter * Math.random()) - prop.scatter));
 
@@ -566,6 +568,15 @@ public class LayerProp extends LayerInterface {
 			    		propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 		    		}
 
+	    			//Calculate particle motion
+		    		//Apply pitch
+		    		Double propMotionYCorrected = propMotionSpeed * Math.cos(propMotionPitch);
+		    		Double propMotionZPitch = propMotionSpeed * Math.sin(propMotionPitch);
+
+		    		//Apply yaw
+		    		Double propMotionZCorrected = propMotionZPitch * Math.cos(propMotionYaw + this.player.rotationYaw);
+		    		Double propMotionXCorrected = propMotionZPitch * Math.sin(propMotionYaw + this.player.rotationYaw);
+
 		    		//Adjust for model yaw
 		    		Float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
 					Float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
@@ -576,7 +587,7 @@ public class LayerProp extends LayerInterface {
 		            		this.player.posX - propOffsetXCorrected2 - partModifierX2,
 		            		this.player.posY + propOffsetYCorrected + partModifierY,
 		            		this.player.posZ + propOffsetZCorrected2 + partModifierZ2,
-		            		0, 0, 0);
+		            		propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 
 				prop.lastplayed = System.currentTimeMillis();

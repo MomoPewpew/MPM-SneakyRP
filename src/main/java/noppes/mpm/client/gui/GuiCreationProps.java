@@ -404,7 +404,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           super.mouseDragged(slider);
           if (this.initiating) return;
 
-          if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 509 && slider.id <= 517)) {
+          if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 509 && slider.id <= 514)) {
               Float value = 0.0F;
               String text = "";
 
@@ -538,7 +538,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 			selectedPropGroup.name = textField.getText();
 			this.initGui();
-		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 517)) {
+		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514)) {
 			Float value = null;
 			try {
 			    value = Float.parseFloat(textField.getText().replace(',', '.'));
@@ -589,14 +589,14 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 					sliderValue = value / maxAmount;
               	    prop.amount = value;
 	            }
-			} else if (textField.id >= 515 && textField.id <= 517) {
-	            if (textField.id == 515) {
+			} else if (textField.id >= 512 && textField.id <= 514) {
+	            if (textField.id == 512) {
 					sliderValue = (value + maxRotation) / (maxRotation * 2.0F);
 	            	prop.pitch = value;
-	            } else if (textField.id == 516) {
+	            } else if (textField.id == 513) {
 					sliderValue = (value + maxRotation) / (maxRotation * 2.0F);
 	              	prop.yaw = value;
-	            } else if (textField.id == 517) {
+	            } else if (textField.id == 514) {
 					sliderValue = value / maxAmount;
 	              	prop.speed = value;
 	            }
@@ -613,7 +613,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 		if (this.initiating) return;
 
-		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 517)) {
+		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514)) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

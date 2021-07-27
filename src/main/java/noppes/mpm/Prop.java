@@ -80,7 +80,7 @@ public class Prop {
          compound.setString("name", this.name);
          compound.setFloat("scatter", this.scatter);
          compound.setFloat("frequency", this.frequency);
-         compound.setFloat("amount", this.amount);
+         compound.setInteger("amount", this.amount);
          compound.setFloat("pitch", this.pitch);
          compound.setFloat("yaw", this.yaw);
          compound.setFloat("speed", this.speed);
@@ -105,7 +105,7 @@ public class Prop {
     	 this.name = compound.getString("name");
     	 this.scatter = compound.getFloat("scatter");
     	 this.frequency = compound.getFloat("frequency");
-    	 this.amount = compound.getFloat("amount");
+    	 this.amount = compound.getInteger("amount");
     	 this.pitch = compound.getFloat("pitch");
     	 this.yaw = compound.getFloat("yaw");
     	 this.speed = compound.getFloat("speed");

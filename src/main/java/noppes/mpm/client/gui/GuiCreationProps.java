@@ -227,8 +227,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   this.addButton(new GuiNpcButton(508, guiOffsetX + 102, y, 50, 20, "gui.motion"));
                   y += 22;
                   if (sliders == 506) {
-                      this.addTextField(new GuiNpcTextField(509, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.0f", prop.scatter)));
-                      this.addSlider(new GuiNpcSlider(this, 509, guiOffsetX, y, 152, 20, ((prop.scatter + maxRotation) / (maxRotation * 2.0F))));
+                      this.addTextField(new GuiNpcTextField(509, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.1f", prop.scatter)));
+                      this.addSlider(new GuiNpcSlider(this, 509, guiOffsetX, y, 152, 20, (prop.scatter / maxRotation)));
                       this.getSlider(509).displayString = "Motion Scatter";
                       y += 22;
 
@@ -446,9 +446,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   text = String.format(java.util.Locale.US,"%.0f", value);
         	  } else if (slider.id >= 509 && slider.id <= 511) {
                   if (slider.id == 509) {
-            		  value = ((slider.sliderValue - 0.5F) * (maxRotation * 2.0F));
+            		  value = (slider.sliderValue * maxRotation);
                 	  prop.scatter = value;
-                      text = String.format(java.util.Locale.US,"%.0f", value);
+                      text = String.format(java.util.Locale.US,"%.1f", value);
                   } else if (slider.id == 510) {
                 	  value = (slider.sliderValue * maxFrequency);
                 	  prop.frequency = value;
@@ -580,8 +580,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	            }
 			} else if (textField.id >= 509 && textField.id <= 511) {
 	            if (textField.id == 509) {
-					sliderValue = (value + maxRotation) / (maxRotation * 2.0F);
-              	    prop.scatter = value;
+					sliderValue = value / maxRotation;
+              	    prop.scatter = Math.min(180.0F, Math.max(0.0F, value));
 	            } else if (textField.id == 510) {
 					sliderValue = value / maxFrequency;
               	    prop.frequency = Math.min(20, value);

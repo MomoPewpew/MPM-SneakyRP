@@ -337,6 +337,8 @@ public class LayerProp extends LayerInterface {
 					Float propOffsetX = prop.offsetX;
 					Float propOffsetY = prop.offsetY;
 					Float propOffsetZ = prop.offsetZ;
+					Float propMotionPitch = (float) Math.toRadians((prop.pitch + (2 * prop.scatter * Math.random()) - prop.scatter));
+					Float propMotionYaw = (float) Math.toRadians((prop.yaw + (2 * prop.scatter * Math.random()) - prop.scatter));
 
 					Float partModifierX = 0.0F;
 					Float partModifierY = 0.0F;

@@ -334,7 +334,7 @@ public class LayerProp extends LayerInterface {
 					ModelRenderer propBodyPart = null;
 
 					EnumParticleTypes propParticleType = prop.particleType;
-					Float propOffsetX = prop.offsetX;
+					Float propOffsetX = -prop.offsetX;
 					Float propOffsetY = prop.offsetY;
 					Float propOffsetZ = prop.offsetZ;
 

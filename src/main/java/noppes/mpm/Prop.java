@@ -31,6 +31,7 @@ public class Prop {
     public Float pitch = 0.0F;
     public Float yaw = 0.0F;
     public Float speed = 0.0F;
+    public long lastplayed = System.currentTimeMillis();
 
     public enum EnumType {
         ITEM,

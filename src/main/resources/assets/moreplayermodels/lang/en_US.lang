@@ -58,6 +58,7 @@ gui.refresh=Refresh
 gui.picker=Picker
 gui.confirm=Confirm
 gui.motion=Motion
+gui.flipx=Flip <->
 
 animation.sleep=Sleep
 animation.crawl=Crawl

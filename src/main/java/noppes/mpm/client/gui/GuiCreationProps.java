@@ -291,6 +291,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
         	  y += 22;
               this.addButton(new GuiNpcButton(307, guiOffsetX, y, 100, 20, "gui.browse"));
               this.addButton(new GuiNpcButton(308, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, selectedPropGroup.hide ? 1 : 0));
+              y += 22;
+              this.addButton(new GuiNpcButton(310, guiOffsetX, y, 49, 20, "gui.flipx"));
           }
 
           this.initiating = false;
@@ -397,6 +399,23 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
          } else if (btn.id == 508) {
         	 sliders = 508;
              this.initGui();
+         } else if (btn.id == 310) {
+        	 for (Prop p : selectedPropGroup.props) {
+        		 p.offsetX = -p.offsetX;
+
+        		 if (p.bodyPartName.contains("left")) {
+        			 p.bodyPartName = p.bodyPartName.replace("left", "right");
+        		 } else if (p.bodyPartName.contains("right")) {
+        			 p.bodyPartName = p.bodyPartName.replace("right", "left");
+        		 }
+
+        		 if (p.type == EnumType.ITEM) {
+        			 p.rotateY = -p.rotateY;
+        			 p.rotateZ = -p.rotateZ;
+        		 } else if (p.type == EnumType.PARTICLE) {
+        			 p.yaw = -p.yaw;
+        		 }
+        	 }
          }
      }
 

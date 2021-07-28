@@ -1,5 +1,6 @@
 package noppes.mpm;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,22 +8,22 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 
 public class Prop {
-	public String propString;
-    public ItemStack itemStack;
-    public String bodyPartName;
-    public Float scaleX;
-    public Float scaleY;
-    public Float scaleZ;
-    public Float offsetX;
-    public Float offsetY;
-    public Float offsetZ;
-    public Float rotateX;
-    public Float rotateY;
-    public Float rotateZ;
-    public Boolean matchScaling;
-    public Boolean hide;
-    public String name;
-    public EnumType type;
+	public String propString = "";
+    public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
+    public String bodyPartName = "lefthand";
+    public Float scaleX = 1.0F;
+    public Float scaleY = 1.0F;
+    public Float scaleZ = 1.0F;
+    public Float offsetX = 0.0F;
+    public Float offsetY = 0.0F;
+    public Float offsetZ = 0.0F;
+    public Float rotateX = 0.0F;
+    public Float rotateY = 0.0F;
+    public Float rotateZ = 0.0F;
+    public Boolean matchScaling = false;
+    public Boolean hide = false;
+    public String name = "NONAME";
+    public EnumType type = EnumType.ITEM;
     public EnumParticleTypes particleType = null;
     public Float scatter = 0.0F;
     public Float frequency = 1.0F;
@@ -62,7 +63,28 @@ public class Prop {
 		    this.name = name;
 		}
 
-     public NBTTagCompound writeToNBT() {
+     public Prop(String propString, String bodyPartName,
+    		 Float motionScatter, Float frequency, int amount,
+			 Float offsetX, Float offsetY, Float offsetZ,
+			 Float pitch, Float yaw, Float speed,
+			 Boolean hide, String name)
+		{
+			this.propString = propString;
+			this.parsePropString(this.propString);
+			this.scatter = motionScatter;
+			this.frequency = frequency;
+			this.amount = amount;
+		    this.offsetX = offsetX;
+		    this.offsetY = offsetY;
+		    this.offsetZ = offsetZ;
+		    this.pitch = pitch;
+		    this.yaw = yaw;
+		    this.speed = speed;
+		    this.hide = hide;
+		    this.name = name;
+		}
+
+	public NBTTagCompound writeToNBT() {
          NBTTagCompound compound = new NBTTagCompound();
          compound.setString("propString", this.propString);
          compound.setString("bodyPartName", this.bodyPartName);
@@ -126,7 +148,7 @@ public class Prop {
         			 this.scatter + " " + this.frequency + " " + this.amount + " " +
         			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
         			 this.pitch + " " + this.yaw + " " + this.speed + " " +
-        			 this.matchScaling + " " + this.hide + " " + this.name;
+        			 this.hide + " " + this.name;
     	 }
 
 		return command;

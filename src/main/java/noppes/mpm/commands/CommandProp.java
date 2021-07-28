@@ -216,26 +216,51 @@ public class CommandProp extends MpmCommandInterface {
 			}
 		}
 
-		String propString = (args.length > 0) ? args[0] : "minecraft:stained_glass:2";
-		String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
-		Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
-		Float propScaleY = (args.length > 3) ? Float.valueOf(args[3]) : propScaleX;
-		Float propScaleZ = (args.length > 4) ? Float.valueOf(args[4]) : propScaleX;
-		Float propOffsetX = (args.length > 5) ? Float.valueOf(args[5]) : 0.0F;
-		Float propOffsetY = (args.length > 6) ? Float.valueOf(args[6]) : 0.0F;
-		Float propOffsetZ = (args.length > 7) ? Float.valueOf(args[7]) : 0.0F;
-		Float propRotateX = (args.length > 8) ? Float.valueOf(args[8]) : 0.0F;
-		Float propRotateY = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
-		Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
-		Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
-		Boolean propHide = (args.length > 12) ? parseBoolean(args[12]) : false;
-		String propName = (args.length > 13) ? args[13] : "NONAME";
+		Prop prop = null;
 
-		Prop prop = new Prop(propString, bodyPartName,
+		String propString = (args.length > 0) ? args[0] : "minecraft:stained_glass:2";
+
+		if (!propString.startsWith("particle:")) {
+			String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
+			Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
+			Float propScaleY = (args.length > 3) ? Float.valueOf(args[3]) : propScaleX;
+			Float propScaleZ = (args.length > 4) ? Float.valueOf(args[4]) : propScaleX;
+			Float propOffsetX = (args.length > 5) ? Float.valueOf(args[5]) : 0.0F;
+			Float propOffsetY = (args.length > 6) ? Float.valueOf(args[6]) : 0.0F;
+			Float propOffsetZ = (args.length > 7) ? Float.valueOf(args[7]) : 0.0F;
+			Float propRotateX = (args.length > 8) ? Float.valueOf(args[8]) : 0.0F;
+			Float propRotateY = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
+			Float propRotateZ = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
+			Boolean propMatchScaling = (args.length > 11) ? parseBoolean(args[11]) : false;
+			Boolean propHide = (args.length > 12) ? parseBoolean(args[12]) : false;
+			String propName = (args.length > 13) ? args[13] : "NONAME";
+
+			prop = new Prop(propString, bodyPartName,
 				propScaleX, propScaleY, propScaleZ,
 				propOffsetX, propOffsetY, propOffsetZ,
 				propRotateX, propRotateY, propRotateZ,
 				propMatchScaling, propHide, propName);
+		} else {
+			String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
+			Float propMotionScatter = (args.length > 2) ? Float.valueOf(args[2]) : 0.0F;
+			Float propFrequency = (args.length > 3) ? Float.valueOf(args[3]) : 1.0F;
+			int propAmount = (args.length > 4) ? Integer.valueOf(args[4]) : 1;
+			Float propOffsetX = (args.length > 5) ? Float.valueOf(args[5]) : 0.0F;
+			Float propOffsetY = (args.length > 6) ? Float.valueOf(args[6]) : 0.0F;
+			Float propOffsetZ = (args.length > 7) ? Float.valueOf(args[7]) : 0.0F;
+			Float propPitch = (args.length > 8) ? Float.valueOf(args[8]) : 0.0F;
+			Float propYaw = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
+			Float propSpeed = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
+			Boolean propHide = (args.length > 11) ? parseBoolean(args[11]) : false;
+			String propName = (args.length > 12) ? args[12] : "NONAME";
+
+			prop = new Prop(propString, bodyPartName,
+				propMotionScatter, propFrequency, propAmount,
+				propOffsetX, propOffsetY, propOffsetZ,
+				propPitch, propYaw, propSpeed,
+				propHide, propName);
+		}
+
 
 		if (!prop.parsePropString(propString))
 			return;

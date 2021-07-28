@@ -241,7 +241,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                       this.getSlider(510).displayString = "Frequency";
 
                       y += 22;
-                      this.addTextField(new GuiNpcTextField(511, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.0f", prop.amount)));
+                      this.addTextField(new GuiNpcTextField(511, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.0f", (float) prop.amount)));
                       this.addSlider(new GuiNpcSlider(this, 511, guiOffsetX, y, 152, 20, (prop.amount / maxAmount)));
                       this.getSlider(511).displayString = "Amount";
                   } else if (sliders == 107) {

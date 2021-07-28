@@ -71,6 +71,7 @@ public class Prop {
 		{
 			this.propString = propString;
 			this.parsePropString(this.propString);
+			this.bodyPartName = bodyPartName;
 			this.scatter = motionScatter;
 			this.frequency = frequency;
 			this.amount = amount;

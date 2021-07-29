@@ -137,11 +137,11 @@ public class ClientProxy extends CommonProxy {
      }
 
      private static void fixModels(RenderPlayer render, boolean slim, boolean fix) {
-          if (!MorePlayerModels.Compatibility) {
+          // if (!MorePlayerModels.Compatibility) {
                render.mainModel = new ModelPlayerAlt(0.0F, slim);
-          } else if (fix) {
-               render.mainModel = new ModelPlayer(0.0F, slim);
-          }
+          // } else if (fix) {
+          //      render.mainModel = new ModelPlayer(0.0F, slim);
+          // }
 
           Iterator ita = render.layerRenderers.iterator();
 

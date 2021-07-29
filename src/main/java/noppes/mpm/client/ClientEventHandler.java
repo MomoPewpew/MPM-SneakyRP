@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.relauncher.Side;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
@@ -42,6 +44,7 @@ import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.sync.WebApi;
 import noppes.mpm.util.MPMEntityUtil;
+import noppes.mpm.client.ClientEmote;
 
 import org.lwjgl.input.Keyboard;
 
@@ -195,10 +198,26 @@ public class ClientEventHandler {
           }
      }
 
-     @SubscribeEvent
-     public void onRenderTick(RenderTickEvent event) {
-          camera.update(event.phase == Phase.START);
-     }
+     // @SubscribeEvent
+     // public void onRenderTick(RenderTickEvent event) {
+     //      camera.update(event.phase == Phase.START);
+     //      ClientEmote.onRenderTick(event.renderTickTime);
+     // }
+
+	// @SubscribeEvent(priority = EventPriority.HIGHEST)
+	// public void preRenderLiving(RenderLivingEvent.Pre event) {
+	// 	if (event.getEntity() instanceof EntityPlayer) {
+     //           ClientEmote.preRender((EntityPlayer)event.getEntity());
+     //      }
+	// }
+
+	// @SubscribeEvent(priority = EventPriority.LOWEST)
+	// public void postRenderLiving(RenderLivingEvent.Post event) {
+	// 	if (event.getEntity() instanceof EntityPlayer) {
+	// 		ClientEmote.postRender((EntityPlayer) event.getEntity());
+     //      }
+	// }
+
 
      @SubscribeEvent
      public void onClientTick(ClientTickEvent event) {

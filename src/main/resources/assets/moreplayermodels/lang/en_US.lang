@@ -67,6 +67,15 @@ gui.enable=Enable
 gui.easing=Easing
 gui.moveup=<
 gui.movedown=>
+gui.load=Load
+gui.remove=Remove
+gui.areyousure=Confirm Remove
+gui.currentlyediting=Currently Editing:
+gui.leftleg=Left Foot
+gui.rightleg=Right Foot
+gui.leftarm=Left Hand
+gui.rightarm=Right Hand
+gui.reset=Reset
 
 
 animation.sleep=Sleep

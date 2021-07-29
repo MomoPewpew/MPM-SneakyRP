@@ -34,419 +34,420 @@ import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 
 public class ModelData extends ModelDataShared implements ICapabilityProvider {
-     public static ExecutorService saveExecutor = Executors.newFixedThreadPool(1);
-     @CapabilityInject(ModelData.class)
-     public static Capability MODELDATA_CAPABILITY = null;
-     public boolean resourceInit = false;
-     public boolean resourceLoaded = false;
-     public boolean webapiActive = false;
-     public boolean webapiInit = false;
-     public Object textureObject = null;
-     public ItemStack backItem;
-     public int inLove;
-     public int animationTime;
-     public EnumAnimation animation;
-     public EnumAnimation prevAnimation;
-     public int animationStart;
-     public short soundType;
-     public double prevPosX;
-     public double prevPosY;
-     public double prevPosZ;
-     public EntityPlayer player;
-     public long lastEdited;
-     public UUID analyticsUUID;
-     public PropGroup propBase;
-     public List<PropGroup> propGroups;
+	public static ExecutorService saveExecutor = Executors.newFixedThreadPool(1);
+	@CapabilityInject(ModelData.class)
+	public static Capability MODELDATA_CAPABILITY = null;
+	public boolean resourceInit = false;
+	public boolean resourceLoaded = false;
+	public boolean webapiActive = false;
+	public boolean webapiInit = false;
+	public Object textureObject = null;
+	public ItemStack backItem;
+	public int inLove;
+	public int animationTime;
+	public EnumAnimation animation;
+	public EnumAnimation prevAnimation;
+	public int animationStart;
+	public short soundType;
+	public double prevPosX;
+	public double prevPosY;
+	public double prevPosZ;
+	public EntityPlayer player;
+	public long lastEdited;
+	public UUID analyticsUUID;
+	public PropGroup propBase;
+	public List<PropGroup> propGroups;
 
-     public ModelData() {
-          this.backItem = null;
-          this.inLove = 0;
-          this.animationTime = -1;
-          this.animation = EnumAnimation.NONE;
-          this.prevAnimation = EnumAnimation.NONE;
-          this.animationStart = 0;
-          this.soundType = 0;
-          this.player = null;
-          this.lastEdited = System.currentTimeMillis();
-          this.analyticsUUID = UUID.randomUUID();
 
-          this.propBase = new PropGroup(this.player);
-          this.propGroups = new ArrayList<PropGroup>();
-     }
+	public ModelData() {
+		this.backItem = null;
+		this.inLove = 0;
+		this.animationTime = -1;
+		this.animation = EnumAnimation.NONE;
+		this.prevAnimation = EnumAnimation.NONE;
+		this.animationStart = 0;
+		this.soundType = 0;
+		this.player = null;
+		this.lastEdited = System.currentTimeMillis();
+		this.analyticsUUID = UUID.randomUUID();
 
-     @Override
-     public synchronized NBTTagCompound writeToNBT() {
-          NBTTagCompound compound = super.writeToNBT();
-          compound.setShort("SoundType", this.soundType);
-          compound.setInteger("Animation", this.animation.ordinal());
-          compound.setLong("LastEdited", this.lastEdited);
-          compound = this.propsToNBT(compound);
-          return compound;
-     }
+		this.propBase = new PropGroup(this.player);
+		this.propGroups = new ArrayList<PropGroup>();
+	}
 
-     @Override
-     public synchronized void readFromNBT(NBTTagCompound compound) {
-         if (this.player != null) {
-      	    if (this.player.worldObj.isRemote) {
-           	   Minecraft mc = Minecraft.getMinecraft();
-           	   if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
-           		   if (((GuiNPCInterface) mc.currentScreen).hasSubGui() && !(((GuiNPCInterface) mc.currentScreen).getSubGui() instanceof GuiCreationSkinLoad)) {
-               		   return;
-           		   }
-           	   }
-      	    }
-         }
+	@Override
+	public synchronized NBTTagCompound writeToNBT() {
+		NBTTagCompound compound = super.writeToNBT();
+		compound.setShort("SoundType", this.soundType);
+		compound.setInteger("Animation", this.animation.ordinal());
+		compound.setLong("LastEdited", this.lastEdited);
+		compound = this.propsToNBT(compound);
+		return compound;
+	}
 
-          String prevUrl = new String(this.url);
-          super.readFromNBT(compound);
-          this.soundType = compound.getShort("SoundType");
-          this.lastEdited = compound.getLong("LastEdited");
-          if (this.player != null) {
-               this.player.refreshDisplayName();
-               if (this.entityClass == null) {
-                    this.player.getEntityData().removeTag("MPMModel");
-               } else {
-                    this.player.getEntityData().setString("MPMModel", this.entityClass.getCanonicalName());
-               }
-          }
+	@Override
+	public synchronized void readFromNBT(NBTTagCompound compound) {
+		if (this.player != null) {
+			if (this.player.worldObj.isRemote) {
+				Minecraft mc = Minecraft.getMinecraft();
+				if (this.player == mc.thePlayer && mc.currentScreen instanceof GuiNPCInterface) {
+					if (((GuiNPCInterface) mc.currentScreen).hasSubGui() && !(((GuiNPCInterface) mc.currentScreen).getSubGui() instanceof GuiCreationSkinLoad)) {
+						return;
+					}
+				}
+			}
+		}
 
-          this.setAnimation(compound.getInteger("Animation"));
-          if (!prevUrl.equals(this.url)) {
-               this.resourceInit = false;
-               this.resourceLoaded = false;
-          }
+		String prevUrl = new String(this.url);
+		super.readFromNBT(compound);
+		this.soundType = compound.getShort("SoundType");
+		this.lastEdited = compound.getLong("LastEdited");
+		if (this.player != null) {
+			this.player.refreshDisplayName();
+			if (this.entityClass == null) {
+				this.player.getEntityData().removeTag("MPMModel");
+			} else {
+				this.player.getEntityData().setString("MPMModel", this.entityClass.getCanonicalName());
+			}
+		}
 
-          this.propsFromNBT(compound);
-     }
+		this.setAnimation(compound.getInteger("Animation"));
+		if (!prevUrl.equals(this.url)) {
+			this.resourceInit = false;
+			this.resourceLoaded = false;
+		}
 
-     public void setAnimation(int i) {
-          if (i < EnumAnimation.values().length) {
-               this.animation = EnumAnimation.values()[i];
-          } else {
-               this.animation = EnumAnimation.NONE;
-          }
+		this.propsFromNBT(compound);
+	}
 
-          this.setAnimation(this.animation);
-     }
+	public void setAnimation(int i) {
+		if (i < EnumAnimation.values().length) {
+			this.animation = EnumAnimation.values()[i];
+		} else {
+			this.animation = EnumAnimation.NONE;
+		}
 
-     public void setAnimation(EnumAnimation ani) {
-          this.animationTime = -1;
-          this.animation = ani;
-          this.lastEdited = System.currentTimeMillis();
-          if (this.animation == EnumAnimation.WAVING) {
-               this.animationTime = 80;
-          }
+		this.setAnimation(this.animation);
+	}
 
-          if (this.animation == EnumAnimation.YES || this.animation == EnumAnimation.NO) {
-               this.animationTime = 60;
-          }
+	public void setAnimation(EnumAnimation ani) {
+		this.animationTime = -1;
+		this.animation = ani;
+		this.lastEdited = System.currentTimeMillis();
+		if (this.animation == EnumAnimation.WAVING) {
+			this.animationTime = 80;
+		}
 
-          if (this.player != null && ani != EnumAnimation.NONE) {
-               this.animationStart = this.player.ticksExisted;
-          } else {
-               this.animationStart = -1;
-          }
+		if (this.animation == EnumAnimation.YES || this.animation == EnumAnimation.NO) {
+			this.animationTime = 60;
+		}
 
-     }
+		if (this.player != null && ani != EnumAnimation.NONE) {
+			this.animationStart = this.player.ticksExisted;
+		} else {
+			this.animationStart = -1;
+		}
 
-     public EntityLivingBase getEntity(EntityPlayer player) {
-          if (this.entityClass == null) {
-               return null;
-          } else {
-               if (this.entity == null) {
-                    try {
-                         this.entity = (EntityLivingBase)this.entityClass.getConstructor(World.class).newInstance(player.worldObj);
-                         if (PixelmonHelper.isPixelmon(this.entity) && player.worldObj.isRemote && !this.extra.hasKey("Name")) {
-                              this.extra.setString("Name", "Abra");
-                         }
+	}
 
-                         this.entity.readEntityFromNBT(this.extra);
-                         this.entity.setEntityInvulnerable(true);
-                         this.entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)player.getMaxHealth());
-                         if (this.entity instanceof EntityLiving) {
-                              EntityLiving living = (EntityLiving)this.entity;
-                              living.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, player.getHeldItemMainhand());
-                              living.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, player.getHeldItemOffhand());
-                              living.setItemStackToSlot(EntityEquipmentSlot.HEAD, player.inventory.armorItemInSlot(3));
-                              living.setItemStackToSlot(EntityEquipmentSlot.CHEST, player.inventory.armorItemInSlot(2));
-                              living.setItemStackToSlot(EntityEquipmentSlot.LEGS, player.inventory.armorItemInSlot(1));
-                              living.setItemStackToSlot(EntityEquipmentSlot.FEET, player.inventory.armorItemInSlot(0));
-                         }
-                    } catch (Exception var3) {
-                    }
-               }
+	public EntityLivingBase getEntity(EntityPlayer player) {
+		if (this.entityClass == null) {
+			return null;
+		} else {
+			if (this.entity == null) {
+				try {
+					this.entity = (EntityLivingBase)this.entityClass.getConstructor(World.class).newInstance(player.worldObj);
+					if (PixelmonHelper.isPixelmon(this.entity) && player.worldObj.isRemote && !this.extra.hasKey("Name")) {
+						this.extra.setString("Name", "Abra");
+					}
 
-               return this.entity;
-          }
-     }
+					this.entity.readEntityFromNBT(this.extra);
+					this.entity.setEntityInvulnerable(true);
+					this.entity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)player.getMaxHealth());
+					if (this.entity instanceof EntityLiving) {
+						EntityLiving living = (EntityLiving)this.entity;
+						living.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, player.getHeldItemMainhand());
+						living.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, player.getHeldItemOffhand());
+						living.setItemStackToSlot(EntityEquipmentSlot.HEAD, player.inventory.armorItemInSlot(3));
+						living.setItemStackToSlot(EntityEquipmentSlot.CHEST, player.inventory.armorItemInSlot(2));
+						living.setItemStackToSlot(EntityEquipmentSlot.LEGS, player.inventory.armorItemInSlot(1));
+						living.setItemStackToSlot(EntityEquipmentSlot.FEET, player.inventory.armorItemInSlot(0));
+					}
+				} catch (Exception var3) {
+				}
+			}
 
-     public ModelData copy() {
-          ModelData data = new ModelData();
-          data.readFromNBT(this.writeToNBT());
-          data.resourceLoaded = this.resourceLoaded;
-          data.player = this.player;
-          return data;
-     }
+			return this.entity;
+		}
+	}
 
-     public boolean isSleeping() {
-          return this.isSleeping(this.animation);
-     }
+	public ModelData copy() {
+		ModelData data = new ModelData();
+		data.readFromNBT(this.writeToNBT());
+		data.resourceLoaded = this.resourceLoaded;
+		data.player = this.player;
+		return data;
+	}
 
-     private boolean isSleeping(EnumAnimation animation) {
-          return animation == EnumAnimation.SLEEPING_EAST || animation == EnumAnimation.SLEEPING_NORTH || animation == EnumAnimation.SLEEPING_SOUTH || animation == EnumAnimation.SLEEPING_WEST;
-     }
+	public boolean isSleeping() {
+		return this.isSleeping(this.animation);
+	}
 
-     public boolean animationEquals(EnumAnimation animation2) {
-          return animation2 == this.animation || this.isSleeping() && this.isSleeping(animation2);
-     }
+	private boolean isSleeping(EnumAnimation animation) {
+		return animation == EnumAnimation.SLEEPING_EAST || animation == EnumAnimation.SLEEPING_NORTH || animation == EnumAnimation.SLEEPING_SOUTH || animation == EnumAnimation.SLEEPING_WEST;
+	}
 
-     public float getOffsetCamera(EntityPlayer player) {
-          if (!MorePlayerModels.EnablePOV) {
-               return 0.0F;
-          } else {
-               float offset = -this.offsetY();
-               if (this.animation == EnumAnimation.SITTING) {
-                    offset += 0.5F - this.getLegsY();
-               }
+	public boolean animationEquals(EnumAnimation animation2) {
+		return animation2 == this.animation || this.isSleeping() && this.isSleeping(animation2);
+	}
 
-               if (this.isSleeping()) {
-                    offset = 1.18F;
-               }
+	public float getOffsetCamera(EntityPlayer player) {
+		if (!MorePlayerModels.EnablePOV) {
+			return 0.0F;
+		} else {
+			float offset = -this.offsetY();
+			if (this.animation == EnumAnimation.SITTING) {
+				offset += 0.5F - this.getLegsY();
+			}
 
-               if (this.animation == EnumAnimation.CRAWLING) {
-                    offset = 0.8F;
-               }
+			if (this.isSleeping()) {
+				offset = 1.18F;
+			}
 
-               if (offset < -0.2F && this.isBlocked(player)) {
-                    offset = -0.2F;
-               }
+			if (this.animation == EnumAnimation.CRAWLING) {
+				offset = 0.8F;
+			}
 
-               return offset;
-          }
-     }
+			if (offset < -0.2F && this.isBlocked(player)) {
+				offset = -0.2F;
+			}
 
-     private boolean isBlocked(EntityPlayer player) {
-          return !player.worldObj.isAirBlock((new BlockPos(player)).up(2));
-     }
+			return offset;
+		}
+	}
 
-     public void setExtra(EntityLivingBase entity, String key, String value) {
-          key = key.toLowerCase();
-          if (key.equals("breed") && EntityList.getEntityString(entity).equals("tgvstyle.Dog")) {
-               try {
-                    Method method = entity.getClass().getMethod("getBreedID");
-                    Enum breed = (Enum)method.invoke(entity);
-                    method = entity.getClass().getMethod("setBreedID", breed.getClass());
-                    method.invoke(entity, ((Enum[])breed.getClass().getEnumConstants())[Integer.parseInt(value)]);
-                    NBTTagCompound comp = new NBTTagCompound();
-                    entity.writeEntityToNBT(comp);
-                    this.extra.setString("EntityData21", comp.getString("EntityData21"));
-               } catch (Exception var7) {
-                    var7.printStackTrace();
-               }
-          }
+	private boolean isBlocked(EntityPlayer player) {
+		return !player.worldObj.isAirBlock((new BlockPos(player)).up(2));
+	}
 
-          if (key.equalsIgnoreCase("name") && PixelmonHelper.isPixelmon(entity)) {
-               this.extra.setString("Name", value);
-          }
+	public void setExtra(EntityLivingBase entity, String key, String value) {
+		key = key.toLowerCase();
+		if (key.equals("breed") && EntityList.getEntityString(entity).equals("tgvstyle.Dog")) {
+			try {
+				Method method = entity.getClass().getMethod("getBreedID");
+				Enum breed = (Enum)method.invoke(entity);
+				method = entity.getClass().getMethod("setBreedID", breed.getClass());
+				method.invoke(entity, ((Enum[])breed.getClass().getEnumConstants())[Integer.parseInt(value)]);
+				NBTTagCompound comp = new NBTTagCompound();
+				entity.writeEntityToNBT(comp);
+				this.extra.setString("EntityData21", comp.getString("EntityData21"));
+			} catch (Exception var7) {
+				var7.printStackTrace();
+			}
+		}
 
-          this.clearEntity();
-     }
+		if (key.equalsIgnoreCase("name") && PixelmonHelper.isPixelmon(entity)) {
+			this.extra.setString("Name", value);
+		}
 
-     public void save() {
-          if (this.player != null) {
-               EntityPlayer player = this.player;
-               saveExecutor.submit(() -> {
-                    try {
-                         String filename = player.getUniqueID().toString().toLowerCase();
-                         if (filename.isEmpty()) {
-                              filename = "noplayername";
-                         }
+		this.clearEntity();
+	}
 
-                         filename = filename + ".dat";
-                         File file = new File(MorePlayerModels.dir, filename + "_new");
-                         File file1 = new File(MorePlayerModels.dir, filename + "_old");
-                         File file2 = new File(MorePlayerModels.dir, filename);
-                         CompressedStreamTools.writeCompressed(this.writeToNBT(), new FileOutputStream(file));
-                         if (file1.exists()) {
-                              file1.delete();
-                         }
+	public void save() {
+		if (this.player != null) {
+			EntityPlayer player = this.player;
+			saveExecutor.submit(() -> {
+				try {
+					String filename = player.getUniqueID().toString().toLowerCase();
+					if (filename.isEmpty()) {
+						filename = "noplayername";
+					}
 
-                         file2.renameTo(file1);
-                         if (file2.exists()) {
-                              file2.delete();
-                         }
+					filename = filename + ".dat";
+					File file = new File(MorePlayerModels.dir, filename + "_new");
+					File file1 = new File(MorePlayerModels.dir, filename + "_old");
+					File file2 = new File(MorePlayerModels.dir, filename);
+					CompressedStreamTools.writeCompressed(this.writeToNBT(), new FileOutputStream(file));
+					if (file1.exists()) {
+						file1.delete();
+					}
 
-                         file.renameTo(file2);
-                         if (file.exists()) {
-                              file.delete();
-                         }
-                    } catch (Exception var6) {
-                         LogWriter.except(var6);
-                    }
+					file2.renameTo(file1);
+					if (file2.exists()) {
+						file2.delete();
+					}
 
-               });
-          }
-     }
+					file.renameTo(file2);
+					if (file.exists()) {
+						file.delete();
+					}
+				} catch (Exception var6) {
+					LogWriter.except(var6);
+				}
 
-     public static ModelData get(EntityPlayer player) {
-          ModelData data = (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
-          if (data.player == null) {
-               data.player = player;
-               NBTTagCompound compound = loadPlayerData(player.getUniqueID());
-               if (compound != null) {
-                    data.readFromNBT(compound);
-               }
-          }
+			});
+		}
+	}
 
-          return data;
-     }
+	public static ModelData get(EntityPlayer player) {
+		ModelData data = (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
+		if (data.player == null) {
+			data.player = player;
+			NBTTagCompound compound = loadPlayerData(player.getUniqueID());
+			if (compound != null) {
+				data.readFromNBT(compound);
+			}
+		}
 
-     private static NBTTagCompound loadPlayerData(UUID id) {
-          String filename = id.toString();
-          if (filename.isEmpty()) {
-               filename = "noplayername";
-          }
+		return data;
+	}
 
-          filename = filename + ".dat";
+	private static NBTTagCompound loadPlayerData(UUID id) {
+		String filename = id.toString();
+		if (filename.isEmpty()) {
+			filename = "noplayername";
+		}
 
-          File file;
-          try {
-               file = new File(MorePlayerModels.dir, filename);
-               return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
-          } catch (Exception var4) {
-               LogWriter.except(var4);
+		filename = filename + ".dat";
 
-               try {
-                    file = new File(MorePlayerModels.dir, filename + "_old");
-                    return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
-               } catch (Exception var3) {
-                    LogWriter.except(var3);
-                    return null;
-               }
-          }
-     }
+		File file;
+		try {
+			file = new File(MorePlayerModels.dir, filename);
+			return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
+		} catch (Exception var4) {
+			LogWriter.except(var4);
 
-     @Override
-     public boolean hasCapability(Capability capability, EnumFacing facing) {
-          return capability == MODELDATA_CAPABILITY;
-     }
+			try {
+				file = new File(MorePlayerModels.dir, filename + "_old");
+				return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
+			} catch (Exception var3) {
+				LogWriter.except(var3);
+				return null;
+			}
+		}
+	}
 
-     @Override
-     public Object getCapability(Capability capability, EnumFacing facing) {
-          return this.hasCapability(capability, facing) ? this : null;
-     }
+	@Override
+	public boolean hasCapability(Capability capability, EnumFacing facing) {
+		return capability == MODELDATA_CAPABILITY;
+	}
 
-     public void update() {
-     }
+	@Override
+	public Object getCapability(Capability capability, EnumFacing facing) {
+		return this.hasCapability(capability, facing) ? this : null;
+	}
 
-     public void clearPropsServer() {
-    	this.propBase = new PropGroup(this.player);
-    	this.propGroups = new ArrayList<PropGroup>();
-    	Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
- 	}
+	public void update() {
+	}
 
-     public void syncPropsClient() {
-        NBTTagCompound compound = new NBTTagCompound();
- 		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
-     }
+	public void clearPropsServer() {
+		this.propBase = new PropGroup(this.player);
+		this.propGroups = new ArrayList<PropGroup>();
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
+	}
 
-     public void syncPropsServer() {
-         NBTTagCompound compound = new NBTTagCompound();
-    	Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
-     }
+	public void syncPropsClient() {
+		NBTTagCompound compound = new NBTTagCompound();
+		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
+	}
 
-     public NBTTagCompound propsToNBT(NBTTagCompound compound) {
+	public void syncPropsServer() {
+		NBTTagCompound compound = new NBTTagCompound();
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
+	}
 
-    	compound.setTag("propBase", this.propBase.writeToNBT());
+	public NBTTagCompound propsToNBT(NBTTagCompound compound) {
 
-  		for (int i = 0; i < this.propGroups.size(); i++) {
-	    	 compound.setTag(("propGroup" + String.valueOf(i)), this.propGroups.get(i).writeToNBT());
+		compound.setTag("propBase", this.propBase.writeToNBT());
+
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			compound.setTag(("propGroup" + String.valueOf(i)), this.propGroups.get(i).writeToNBT());
 		}
 
 		return compound;
-     }
+	}
 
-     public void propsFromNBT(NBTTagCompound compound) {
+	public void propsFromNBT(NBTTagCompound compound) {
 
-    	 this.propBase = new PropGroup(this.player);
-         this.propBase.readFromNBT(compound.getCompoundTag("propBase"));
+		this.propBase = new PropGroup(this.player);
+		this.propBase.readFromNBT(compound.getCompoundTag("propBase"));
 
-    	 this.propGroups = new ArrayList<PropGroup>();
+		this.propGroups = new ArrayList<PropGroup>();
 
-   		 for (int i = 0; i < Integer.MAX_VALUE; i++) {
-  			PropGroup propGroup = new PropGroup(this.player);
-  			propGroup.readFromNBT(compound.getCompoundTag("propGroup" + String.valueOf(i)));
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			PropGroup propGroup = new PropGroup(this.player);
+			propGroup.readFromNBT(compound.getCompoundTag("propGroup" + String.valueOf(i)));
 
-  			if (!propGroup.name.equals("")) {
-  				this.propGroups.add(propGroup);
-	    	 } else {
-				 break;
-	    	 }
-		 }
-     }
+			if (!propGroup.name.equals("")) {
+				this.propGroups.add(propGroup);
+			} else {
+				break;
+			}
+		}
+	}
 
-     public void showPropGroupServerByName (String name) {
-   		for (int i = 0; i < this.propGroups.size(); i++) {
-   			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.propGroups.get(i).hide = false;
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
-
-     public void hidePropGroupServer(int i) {
-    	 this.propGroups.get(i).hide = true;
-    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
-     }
-
-     public void hidePropGroupServerByName (String name) {
+	public void showPropGroupServerByName (String name) {
 		for (int i = 0; i < this.propGroups.size(); i++) {
-   			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.propGroups.get(i).hide = true;
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.get(i).hide = false;
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
+			}
+		}
+	}
 
-     public void togglePropGroupServerByName (String name) {
-   		for (int i = 0; i < this.propGroups.size(); i++) {
-   			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   				if (this.propGroups.get(i).hide == true) {
-   	   	   	    	this.propGroups.get(i).hide = false;
-   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
-   				} else {
-   	   	   	    	this.propGroups.get(i).hide = true;
-   	   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
-   				}
-   			}
-   		}
-     }
+	public void hidePropGroupServer(int i) {
+		this.propGroups.get(i).hide = true;
+		Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+	}
 
-     public void removePropGroupByName (String name) {
-    		for (int i = 0; i < this.propGroups.size(); i++) {
-    			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-    	   	    	this.propGroups.remove(i);
-    			}
-    		}
-      }
+	public void hidePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.get(i).hide = true;
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+			}
+		}
+	}
 
-     public void removePropGroupServerByName (String name) {
-   		for (int i = 0; i < this.propGroups.size(); i++) {
-   			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-   	   	    	this.propGroups.remove(i);
-   	   	     	Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);
-   			}
-   		}
-     }
+	public void togglePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				if (this.propGroups.get(i).hide == true) {
+					this.propGroups.get(i).hide = false;
+					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
+				} else {
+					this.propGroups.get(i).hide = true;
+					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+				}
+			}
+		}
+	}
 
-     public void addPropGroupServer(PropGroup propGroup) {
-    	 NBTTagCompound compound = propGroup.writeToNBT();
+	public void removePropGroupByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.remove(i);
+			}
+		}
+	}
 
-    	 PropGroup propGroupTemp = new PropGroup(this.player);
-    	 propGroupTemp.readFromNBT(compound);
+	public void removePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.remove(i);
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);
+			}
+		}
+	}
 
-    	 this.propGroups.add(propGroupTemp);
+	public void addPropGroupServer(PropGroup propGroup) {
+		NBTTagCompound compound = propGroup.writeToNBT();
 
-    	 Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
-     }
+		PropGroup propGroupTemp = new PropGroup(this.player);
+		propGroupTemp.readFromNBT(compound);
+
+		this.propGroups.add(propGroupTemp);
+
+		Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
+	}
 }

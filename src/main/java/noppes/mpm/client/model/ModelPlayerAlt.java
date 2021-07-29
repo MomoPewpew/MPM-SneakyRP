@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
 import noppes.mpm.client.model.animation.AniBow;
@@ -22,14 +23,75 @@ import noppes.mpm.client.model.animation.AniNo;
 import noppes.mpm.client.model.animation.AniPoint;
 import noppes.mpm.client.model.animation.AniWaving;
 import noppes.mpm.client.model.animation.AniYes;
+import noppes.mpm.client.ClientEmote;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
+import noppes.mpm.LogWriter;
+
+// import noppes.mpm.client.model.ModelAccessor;
+import noppes.mpm.Emote;
+import aurelienribon.tweenengine.Timeline;
 
 public class ModelPlayerAlt extends ModelPlayer {
      private ModelRenderer cape;
      private ModelRenderer dmhead;
      private ModelData playerdata;
      private Map map = new HashMap();
+
+	// public float[] animStates = new float[ModelAccessor.STATE_COUNT];
+	public Emote curEmote = null;
+	public Timeline curEmoteTimeline = null;
+     public long lastTime = -1;
+     public float wastedTime = 0;
+     public float[] states = new float[ModelAccessor.STATE_COUNT];
+     public boolean doAnimModel = false;
+
+     public void endCurEmote() {
+          if(this.curEmoteTimeline != null) {
+               this.curEmoteTimeline.free();
+               this.curEmoteTimeline = null;
+               this.curEmote = null;
+               // this.lastTime = -1;
+               this.wastedTime = 0;
+               this.doAnimModel = false;
+               for(int i = 0; i < ModelAccessor.STATE_COUNT; i++) {
+                    states[i] = 0;
+               }
+               resetModel();
+          }
+     }
+     public void startEmote(Emote emote, EntityPlayer player) {
+		this.endCurEmote();
+          Timeline timeline = ClientEmote.createTimeline(emote, this);
+		timeline.start(player);
+		this.curEmote = emote;
+		this.curEmoteTimeline = timeline;
+          this.lastTime = System.currentTimeMillis();
+     }
+
+
+	private void resetModel() {
+          resetPart(this.bipedHead);
+          resetPart(this.bipedHeadwear);
+          resetPart(this.bipedBody);
+          resetPart(this.bipedLeftArm);
+          resetPart(this.bipedRightArm);
+          resetPart(this.bipedLeftLeg);
+          resetPart(this.bipedRightLeg);
+          resetPart(this.bipedBodyWear);
+          resetPart(this.bipedLeftArmwear);
+          resetPart(this.bipedRightArmwear);
+          resetPart(this.bipedLeftLegwear);
+          resetPart(this.bipedRightLegwear);
+          resetPart(ModelAccessor.getEarsModel(this));
+	}
+
+	private static void resetPart(ModelRenderer part) {
+		if(part != null)
+			part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+	}
+
+
 
      public ModelPlayerAlt(float scale, boolean bo) {
           super(scale, bo);
@@ -52,6 +114,9 @@ public class ModelPlayerAlt extends ModelPlayer {
           this.bipedHeadwear = this.createScale(this.bipedHeadwear, EnumParts.HEAD);
           this.bipedBody = this.createScale(this.bipedBody, EnumParts.BODY);
           this.bipedBodyWear = this.createScale(this.bipedBodyWear, EnumParts.BODY);
+          for(int i = 0; i < ModelAccessor.STATE_COUNT; i++) {
+               states[i] = 0;
+          }
      }
 
      private ModelScaleRenderer createScale(ModelRenderer renderer, EnumParts part) {
@@ -73,7 +138,7 @@ public class ModelPlayerAlt extends ModelPlayer {
      }
 
      @Override
-     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
+     public void setRotationAngles(float par1, float par2, float ageInTicks, float par4, float par5, float par6, Entity entity) {
           EntityPlayer player = (EntityPlayer)entity;
           this.playerdata = ModelData.get(player);
           if (this.playerdata.isSleeping()) {
@@ -106,45 +171,86 @@ public class ModelPlayerAlt extends ModelPlayer {
                this.isSneak = false;
           }
 
-          this.bipedBody.rotationPointX = this.bipedBody.rotationPointY = this.bipedBody.rotationPointZ = 0.0F;
-          this.bipedBody.rotateAngleX = this.bipedBody.rotateAngleY = this.bipedBody.rotateAngleZ = 0.0F;
-          this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.0F;
-          this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ = 0.0F;
-          this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX = 0.0F;
-          this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY = 0.0F;
-          this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ = 0.0F;
-          this.bipedLeftLeg.rotateAngleX = 0.0F;
-          this.bipedLeftLeg.rotateAngleY = 0.0F;
-          this.bipedLeftLeg.rotateAngleZ = 0.0F;
-          this.bipedRightLeg.rotateAngleX = 0.0F;
-          this.bipedRightLeg.rotateAngleY = 0.0F;
-          this.bipedRightLeg.rotateAngleZ = 0.0F;
-          this.bipedLeftArm.rotationPointX = 0.0F;
-          this.bipedLeftArm.rotationPointY = 2.0F;
-          this.bipedLeftArm.rotationPointZ = 0.0F;
-          this.bipedRightArm.rotationPointX = 0.0F;
-          this.bipedRightArm.rotationPointY = 2.0F;
-          this.bipedRightArm.rotationPointZ = 0.0F;
-          super.setRotationAngles(par1, par2, par3, par4, par5, par6, entity);
-          if (!this.playerdata.isSleeping() && !player.isPlayerSleeping()) {
+          // this.bipedBody.rotationPointX = this.bipedBody.rotationPointY = this.bipedBody.rotationPointZ = 0.0F;
+          // this.bipedBody.rotateAngleX = this.bipedBody.rotateAngleY = this.bipedBody.rotateAngleZ = 0.0F;
+          // this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.0F;
+          // this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ = 0.0F;
+          // this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX = 0.0F;
+          // this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY = 0.0F;
+          // this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ = 0.0F;
+          // this.bipedLeftLeg.rotateAngleX = 0.0F;
+          // this.bipedLeftLeg.rotateAngleY = 0.0F;
+          // this.bipedLeftLeg.rotateAngleZ = 0.0F;
+          // this.bipedRightLeg.rotateAngleX = 0.0F;
+          // this.bipedRightLeg.rotateAngleY = 0.0F;
+          // this.bipedRightLeg.rotateAngleZ = 0.0F;
+          // this.bipedLeftArm.rotationPointX = 0.0F;
+          // this.bipedLeftArm.rotationPointY = 2.0F;
+          // this.bipedLeftArm.rotationPointZ = 0.0F;
+          // this.bipedRightArm.rotationPointX = 0.0F;
+          // this.bipedRightArm.rotationPointY = 2.0F;
+          // this.bipedRightArm.rotationPointZ = 0.0F;
+          super.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity);
+          if(this.curEmoteTimeline != null) {
+               long curTime = System.currentTimeMillis();
+               float delta = (curTime - this.lastTime)/1000F;
+               if(delta > 0) {
+                    this.curEmoteTimeline.update(delta - this.wastedTime, (Entity)player);
+                    this.wastedTime = 0;
+                    // if (!playerWalks.containsKey(name) || e.getDistance(e.prevPosX, e.prevPosY, e.prevPosZ) > 0) we could make walking only emotes or vice versa
+                    // LogWriter.warn("pnmw " + delta);
+                    this.lastTime = curTime;
+               } else {
+                    this.wastedTime += .00001F;
+                    this.curEmoteTimeline.update(.00001F, (Entity)player);
+               }
+               if(this.doAnimModel) {
+                    float height = player.height;
+                    float offsetX = (this.states[ModelAccessor.MODEL_OFF_X]);
+                    float offsetY = (this.states[ModelAccessor.MODEL_OFF_Y]);
+                    float offsetZ = (this.states[ModelAccessor.MODEL_OFF_Z]);
+                    float rotX = this.states[ModelAccessor.MODEL_X];
+                    float rotY = this.states[ModelAccessor.MODEL_Y];
+                    float rotZ = this.states[ModelAccessor.MODEL_Z];
+                    // LogWriter.warn("doc " + height);
+
+
+                    GlStateManager.translate(0, height / 2, 0);
+
+                    GlStateManager.translate(offsetX/height, offsetY/height, offsetZ/height);
+
+                    if (rotY != 0)
+                         GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
+                    if (rotX != 0)
+                         GlStateManager.rotate(rotX * 90.0F/(float)Math.PI, 1, 0, 0);
+                    if (rotZ != 0)
+                         GlStateManager.rotate(rotZ * 90.0F/(float)Math.PI, 0, 0, 1);
+
+                    GlStateManager.translate(0, -height / 2, 0);
+               }
+               if(this.curEmoteTimeline.isFinished()) {
+                    this.endCurEmote();
+               }
+               // LogWriter.warn("sdzp " + curTime);
+          } else if (!this.playerdata.isSleeping() && !player.isPlayerSleeping()) {
                if (this.playerdata.animation == EnumAnimation.CRY) {
                     this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.7F;
                } else if (this.playerdata.animation == EnumAnimation.HUG) {
-                    AniHug.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this);
+                    AniHug.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
                } else if (this.playerdata.animation == EnumAnimation.CRAWLING) {
-                    AniCrawling.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this);
+                    AniCrawling.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
                } else if (this.playerdata.animation == EnumAnimation.WAVING) {
-                    AniWaving.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this);
+                    AniWaving.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
                } else if (this.playerdata.animation == EnumAnimation.DANCING) {
-                    AniDancing.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this);
+                    AniDancing.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
                } else if (this.playerdata.animation == EnumAnimation.BOW) {
-                    AniBow.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this, this.playerdata);
+                    AniBow.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
                } else if (this.playerdata.animation == EnumAnimation.YES) {
-                    AniYes.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this, this.playerdata);
+                    AniYes.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
                } else if (this.playerdata.animation == EnumAnimation.NO) {
-                    AniNo.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this, this.playerdata);
+                    AniNo.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
                } else if (this.playerdata.animation == EnumAnimation.POINT) {
-                    AniPoint.setRotationAngles(par1, par2, par3, par4, par5, par6, entity, this);
+                    AniPoint.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
                } else if (this.isSneak) {
                     this.bipedBody.rotateAngleX = 0.5F / this.playerdata.getPartConfig(EnumParts.BODY).scaleY;
                }

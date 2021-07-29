@@ -5,8 +5,10 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Collections;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,12 +19,16 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PacketHandlerServer;
+import noppes.mpm.Emote;
+import noppes.mpm.client.ClientEmote;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.client.gui.GuiCreationPropLoad;
 import noppes.mpm.client.gui.GuiCreationProps;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
+import noppes.mpm.client.gui.GuiCreationEmotes;
+import noppes.mpm.client.gui.GuiCreationEmoteLoad;
 import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
@@ -30,6 +36,7 @@ import noppes.mpm.constants.EnumPackets;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class PacketHandlerClient extends PacketHandlerServer {
+	static EnumPackets[] cachedEnums = EnumPackets.values();
 	@SubscribeEvent
 	public void onPacketData(ClientCustomPacketEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -38,7 +45,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 			EnumPackets en = null;
 
 			try {
-				en = EnumPackets.values()[buf.readInt()];
+				en = cachedEnums[buf.readInt()];
 				this.handlePacket(buf, player, en);
 			} catch (Exception var5) {
 				LogWriter.error("Packet error: " + en, var5);
@@ -48,6 +55,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayer player, EnumPackets type) throws Exception {
+		LogWriter.warn("ClientPacket: " + type);
 		int animation;
 		if (type == EnumPackets.PING) {
 			animation = buffer.readInt();
@@ -316,12 +324,49 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				PropGroup propGroup = new PropGroup(player);
 				propGroup.readFromNBT(compound);
 				data.propGroups.add(propGroup);
-			// } else if (type == EnumPackets.MESSAGE_DO_EMOTE) {
-			// 	pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-			// 	String emoteName = Server.readString(buffer);
-			// 	EmoteHandler.attemptEmote(pl, emoteName);
+			} else if (type == EnumPackets.EMOTE_FILENAME_UPDATE) {
+				ArrayList<String> names = Server.readArray(buffer);
+				if(names == null) return;
+				Collections.sort(names);
+				if(!ClientEmote.cachedEmoteFileNames.equals(names)) {
+					ClientEmote.cachedEmoteFileNames = names;
+					GuiCreationEmoteLoad.hasCachedEmoteFileNamesChanged = true;
+				}
+			} else if (type == EnumPackets.EMOTE_LOAD) {
+				// String emoteName = Server.readString(buffer);
+				// if(emoteName == null) return;
+				// LogWriter.warn("ocuw " + emoteName);
+				Emote emote = Emote.readEmote(buffer);
+				if(emote == null) return;
+				LogWriter.warn("ymwd ");
+
+				GuiCreationEmotes.resetAndReplaceEmote(emote);
+				// GuiCreationEmotes.curEmoteName = emoteName;
+				GuiCreationEmotes.ischangedfromserver = false;
+			} else if (type == EnumPackets.EMOTE_DO) {
+				String playerName = Server.readString(buffer);
+				if(playerName == null) return;
+				Emote emote = Emote.readEmote(buffer);
+				if(emote == null) return;
+
+				World world = Minecraft.getMinecraft().theWorld;
+				EntityPlayer target = world.getPlayerEntityByName(playerName);
+				if(target != null) {
+					boolean succ = ClientEmote.attemptEmote(target, emote);
+					LogWriter.warn("dwsc " + succ);
+				}
+				LogWriter.warn("fh ");
+			} else if (type == EnumPackets.EMOTE_END) {
+				String playerName = Server.readString(buffer);
+				if(playerName == null) return;
+
+				World world = Minecraft.getMinecraft().theWorld;
+				EntityPlayer target = world.getPlayerEntityByName(playerName);
+				if(target != null) {
+					ClientEmote.endEmote(target);
+					LogWriter.warn("sedm ");
+				}
 			}
 		}
-
 	}
 }

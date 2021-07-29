@@ -3,8 +3,11 @@ package noppes.mpm;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -19,6 +22,7 @@ import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 
 public class PacketHandlerServer {
+	static EnumPackets[] cachedEnums = EnumPackets.values();
 	@SubscribeEvent
 	public void onPacketData(ServerCustomPacketEvent event) {
 		EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).playerEntity;
@@ -27,7 +31,8 @@ public class PacketHandlerServer {
 			EnumPackets type = null;
 
 			try {
-				type = EnumPackets.values()[buf.readInt()];
+				int t = buf.readInt();
+				type = cachedEnums[t];
 				this.handlePacket(buf, player, type);
 			} catch (Exception var5) {
 				LogWriter.error("Error with EnumPackets." + type, var5);
@@ -37,6 +42,7 @@ public class PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayerMP player, EnumPackets type) throws Exception {
+		LogWriter.warn("ServerPacket: " + type);
 		if (type == EnumPackets.PING) {
 			int version = buffer.readInt();
 			if (version == MorePlayerModels.Version) {
@@ -233,8 +239,134 @@ public class PacketHandlerServer {
 			} catch (Exception var4) {
 				LogWriter.except(var4);
 			}
+		} else if (type == EnumPackets.EMOTE_FILENAME_UPDATE) {
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
 
+			if (!dir.exists()) dir.mkdirs();
+
+			ArrayList<String> list = new ArrayList<String>();
+			for (final File fileEntry : dir.listFiles()) {
+				if (fileEntry.isDirectory()) {
+					continue;
+				} else {
+					String emoteName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+					list.add(emoteName);
+				}
+			}
+
+			Server.sendData(player, EnumPackets.EMOTE_FILENAME_UPDATE, list);
+		} else if (type == EnumPackets.EMOTE_LOAD) {
+			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
+			if(emoteName == null) return;
+
+			String filename = emoteName + ".dat";
+
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+
+			if (!dir.exists()) {//can only throw a security error
+				dir.mkdirs();
+				return;
+			}
+
+			File file = new File(dir, filename);
+			if (!file.exists()) return;//can only throw a security error
+
+			ByteBuf sendBuffer = Unpooled.buffer();
+			sendBuffer.writeInt(EnumPackets.EMOTE_LOAD.ordinal());
+			// Server.writeString(buffer, emoteName);
+			sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
+
+			Server.sendData(player, sendBuffer);
+			// } catch (Exception var4) {
+			// 	LogWriter.except(var4);
+			// }
+		} else if (type == EnumPackets.EMOTE_SAVE) {
+			// LogWriter.warn("aew");
+			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
+			if(emoteName == null) return;
+			// LogWriter.warn("hg " + emoteName);
+			Emote emote = Emote.readEmote(buffer);
+			if(emote == null) return;
+
+			String filename = emoteName + ".dat";
+
+			// LogWriter.warn("we" + filename);
+			// try {
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+
+			if (!dir.exists()) {
+				dir.mkdirs();
+				return;
+			}
+
+			// LogWriter.warn("r" + filename);
+			File file = new File(dir, filename);
+			if(file.exists()) {//save copy
+				File archive = null;
+				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
+				if (!archive.exists()) {
+					archive.mkdirs();
+				}
+				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
+				File filenew = new File(archive, filenamenew);
+
+				file.renameTo(filenew);
+			}
+
+			// LogWriter.warn("0");
+			FileOutputStream out = new FileOutputStream(file);
+			ByteBuf filedata = Unpooled.buffer();
+			try {
+				Emote.writeEmote(filedata, emote);
+				byte[] rawdata = filedata.array();
+				// LogWriter.warn("2 " + filedata.capacity());
+				out.write(rawdata);
+			} finally {
+				filedata.release();
+			}
+				// LogWriter.warn("1");
+			// } catch (Exception var4) {
+			// 	LogWriter.except(var4);
+			// }
+		} else if (type == EnumPackets.EMOTE_REMOVE) {
+			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
+			if(emoteName == null) return;
+
+			String filename = emoteName + ".dat";
+
+			// try {
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+			LogWriter.warn("ozf " + filename);
+
+			if (!dir.exists()) {
+				dir.mkdirs();
+				return;
+			}
+
+
+			File file = new File(dir, filename);
+			if(file.exists()) {//save copy
+				LogWriter.warn("sfe ");
+				File archive = null;
+				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
+				if (!archive.exists()) {
+					archive.mkdirs();
+				}
+				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
+				File filenew = new File(archive, filenamenew);
+
+				boolean succ = file.renameTo(filenew);
+				LogWriter.warn("iznre " + succ);
+			}
+			// } catch (Exception var4) {
+			// 	LogWriter.except(var4);
+			// }
+		} else {
+			LogWriter.warn("bad packet: " + type.ordinal());
 		}
-
 	}
 }

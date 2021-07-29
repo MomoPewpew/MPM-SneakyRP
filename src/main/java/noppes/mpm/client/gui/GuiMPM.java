@@ -21,6 +21,7 @@ import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.client.gui.util.GuiNpcButton;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISubGuiListener;
+import noppes.mpm.client.gui.GuiConfig;
 import noppes.mpm.constants.EnumPackets;
 
 public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, ISubGuiListener {

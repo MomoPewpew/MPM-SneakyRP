@@ -34,6 +34,7 @@ import noppes.mpm.commands.CommandLove;
 import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
+import noppes.mpm.commands.CommandEmote;
 import noppes.mpm.commands.CommandPropRem;
 import noppes.mpm.commands.CommandPropSave;
 import noppes.mpm.commands.CommandSing;
@@ -135,6 +136,8 @@ public class MorePlayerModels {
 	public static List<String> fileNamesPropGroups;
 	public static List<String> entityNamesRemovedFromGui;
 	public static List<String> blacklistedPropStrings;
+
+	public static List<String> fileNamesEmotes;
 	public ConfigLoader configLoader;
 
 	public MorePlayerModels() {
@@ -197,6 +200,7 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandPropLoad());
 		event.registerServerCommand(new CommandPropSave());
 		event.registerServerCommand(new CommandPropRem());
+		event.registerServerCommand(new CommandEmote());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
@@ -320,5 +324,23 @@ public class MorePlayerModels {
 		}
 
 		Server.sendData(player, EnumPackets.PROPGROUPS_FILENAME_UPDATE, compound);
+	}
+
+	public static String validateFileName(String name) {
+		if(name == null) return null;
+		if(name.length() > 55) return null;
+		if(name.length() < 1) return null;
+		name = name.toLowerCase();
+		for(int i = 0; i < name.length(); i++) {
+			char ch = name.charAt(i);
+			if('a' <= ch && ch <= 'z') {
+			} else if('0' <= ch && ch <= '9') {
+			} else if(ch == '-') {
+			} else if(ch == '_') {
+			} else {
+				return null;
+			}
+		}
+		return name;
 	}
 }

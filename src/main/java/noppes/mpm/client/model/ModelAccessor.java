@@ -8,37 +8,44 @@
  *
  * File Created @ [26/03/2016, 21:37:50 (GMT)]
  */
-package noppes.mpm.client;
+package noppes.mpm.client.model;
 
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import noppes.mpm.client.model.ModelBipedAlt;
+import noppes.mpm.client.model.ModelPlayerAlt;
 import aurelienribon.tweenengine.TweenAccessor;
+// import noppes.mpm.LogWriter;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
 @SideOnly(Side.CLIENT)
-public class ModelAccessor implements TweenAccessor<ModelBiped> {
+public class ModelAccessor implements TweenAccessor<ModelPlayerAlt> {
 
 	public static final ModelAccessor INSTANCE = new ModelAccessor();
 
-	private static final int ROT_X = 0;
-	private static final int ROT_Y = 1;
-	private static final int ROT_Z = 2;
-	private static final int OFF_X = 3;
-	private static final int OFF_Y = 4;
-	private static final int OFF_Z = 5;
+	public static final int ROT_X = 0;
+	public static final int ROT_Y = 1;
+	public static final int ROT_Z = 2;
+	public static final int OFF_X = 3;
+	public static final int OFF_Y = 4;
+	public static final int OFF_Z = 5;
 
-	protected static final int MODEL_PROPS = 6;
-	protected static final int BODY_PARTS = 7;
-	protected static final int STATE_COUNT = MODEL_PROPS * BODY_PARTS;
+	public static final int MODEL_PROPS = 6;
+	public static final int BODY_PARTS = 7;
+	public static final int STATE_COUNT = MODEL_PROPS * BODY_PARTS;
 
 	public static final int HEAD = 0;
 	public static final int BODY = MODEL_PROPS;
@@ -94,54 +101,89 @@ public class ModelAccessor implements TweenAccessor<ModelBiped> {
 	public static final int MODEL_OFF_Y = MODEL + OFF_Y;
 	public static final int MODEL_OFF_Z = MODEL + OFF_Z;
 
-	private final Map<ModelBiped, float[]> MODEL_VALUES = new WeakHashMap<>();
+	// private static final Map<ModelPlayerAlt, float[]> MODEL_VALUES = new WeakHashMap<>();
+
+	// public static void preRenderStep(EntityPlayer player) {
+	// 	ModelPlayerAlt model;
+	// 	{//get player model
+	// 		Minecraft mc = Minecraft.getMinecraft();
+	// 		RenderManager manager = mc.getRenderManager();
+	// 		RenderPlayer render = manager.getSkinMap().get(((AbstractClientPlayer) player).getSkinType());
+	// 		model = render.getMainModel();
+	// 	}
+
+	// 	float[] modelValues = MODEL_VALUES.get(model);
+	// 	if (modelValues == null) return;
+
+	// 	float offsetX = (modelValues[MODEL_OFF_X] * ModelBipedAlt.getPartConfigScale((Entity) player, 30, 4));
+	// 	float offsetY = (modelValues[MODEL_OFF_Y] * ModelBipedAlt.getPartConfigScale((Entity) player, 30, 4));
+	// 	float offsetZ = (modelValues[MODEL_OFF_Z] * ModelBipedAlt.getPartConfigScale((Entity) player, 30, 4));
+	// 	float rotX = modelValues[MODEL_X];
+	// 	float rotY = modelValues[MODEL_Y];
+	// 	float rotZ = modelValues[MODEL_Z];
+
+	// 	float height = player.height;
+
+	// 	GlStateManager.translate(0, height / 2, 0);
+
+	// 	GlStateManager.translate(offsetX, offsetY, offsetZ);
+
+	// 	if (rotY != 0)
+	// 		GlStateManager.rotate(rotY * 180 / (float)Math.PI, 0, 1, 0);
+	// 	if (rotX != 0)
+	// 		GlStateManager.rotate(rotX * 180 / (float)Math.PI, 1, 0, 0);
+	// 	if (rotZ != 0)
+	// 		GlStateManager.rotate(rotZ * 180 / (float)Math.PI, 0, 0, 1);
+
+	// 	GlStateManager.translate(0, -height / 2, 0);
+	// }
+
 
 	public static ModelRenderer getEarsModel(ModelPlayer model) {
 		return model.boxList.get(model.boxList.indexOf(model.bipedLeftArm) - 2);
 	}
 
-	public void resetModel(ModelBiped model) {
-		MODEL_VALUES.remove(model);
-	}
-
 	@Override
-	public int getValues(ModelBiped target, int tweenType, float[] returnValues, Entity entity) {
-		int axis = tweenType % MODEL_PROPS;
-		int bodyPart = tweenType - axis;
+	public int getValues(ModelPlayerAlt target, int tweenType, float[] returnValues, Entity entity) {
+		// int axis = tweenType % MODEL_PROPS;
+		// int bodyPart = tweenType - axis;
 
-		if (bodyPart == MODEL) {
-			if (!MODEL_VALUES.containsKey(target)) {
-				returnValues[0] = 0;
-				return 1;
-			}
-
-			float[] values = MODEL_VALUES.get(target);
-			returnValues[0] = values[axis];
-			return 1;
-		}
-
-		ModelRenderer model = getBodyPart(target, bodyPart);
-		if(model == null)
-			return 0;
-
-		switch(axis) {
-			case ROT_X:
-				returnValues[0] = model.rotateAngleX; break;
-			case ROT_Y:
-				returnValues[0] = model.rotateAngleY; break;
-			case ROT_Z:
-				returnValues[0] = model.rotateAngleZ; break;
-			case OFF_X:
-				returnValues[0] = (model.offsetX / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
-			case OFF_Y:
-				returnValues[0] = (model.offsetY / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
-			case OFF_Z:
-				returnValues[0] = (model.offsetZ / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
-		}
+		returnValues[0] = target.states[tweenType];
 		return 1;
+
+		// if (bodyPart == MODEL) {
+		// 	if (!MODEL_VALUES.containsKey(target)) {
+		// 		returnValues[0] = 0;
+		// 		return 1;
+		// 	}
+
+		// 	float[] values = MODEL_VALUES.get(target);
+		// 	returnValues[0] = values[axis];
+		// 	return 1;
+		// }
+
+		// ModelRenderer model = getBodyPart(target, bodyPart);
+		// if(model == null)
+		// 	return 0;
+
+		// switch(axis) {
+		// 	case ROT_X:
+		// 		returnValues[0] = model.rotateAngleX; break;
+		// 	case ROT_Y:
+		// 		returnValues[0] = model.rotateAngleY; break;
+		// 	case ROT_Z:
+		// 		returnValues[0] = model.rotateAngleZ; break;
+		// 	case OFF_X:
+		// 		returnValues[0] = (model.offsetX / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+		// 	case OFF_Y:
+		// 		returnValues[0] = (model.offsetY / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+		// 	case OFF_Z:
+		// 		returnValues[0] = (model.offsetZ / ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+		// }
+		// return 1;
 	}
 
-	private ModelRenderer getBodyPart(ModelBiped model, int part) {
+	private ModelRenderer getBodyPart(ModelPlayerAlt model, int part) {
 		switch(part) {
 			case HEAD : return model.bipedHead;
 			case BODY : return model.bipedBody;
@@ -154,29 +196,44 @@ public class ModelAccessor implements TweenAccessor<ModelBiped> {
 	}
 
 	@Override
-	public void setValues(ModelBiped target, int tweenType, float[] newValues, Entity entity) {
+	public void setValues(ModelPlayerAlt target, int tweenType, float[] newValues, Entity entity) {
+        // LogWriter.warn("ics " + tweenType + " - " + newValues[0]);
 		int axis = tweenType % MODEL_PROPS;
 		int bodyPart = tweenType - axis;
 
+		target.states[tweenType] = newValues[0];
+
 		if (bodyPart == MODEL) {
-			float[] values = MODEL_VALUES.get(target);
-			if (values == null)
-				MODEL_VALUES.put(target, values = new float[MODEL_PROPS]);
-
-			values[axis] = newValues[0];
-
-			return;
+			// float val = newValues[0];
+			// switch(axis) {
+			// 	case ROT_X:
+			// 		target.modelRotateX = val; break;
+			// 	case ROT_Y:
+			// 		target.modelRotateY = val; break;
+			// 	case ROT_Z:
+			// 		target.modelRotateZ = val; break;
+			// 	case OFF_X:
+			// 		target.modelOffsetX = (val); break;
+			// 	case OFF_Y:
+			// 		target.modelOffsetY = (val); break;
+			// 	case OFF_Z:
+			// 		target.modelOffsetZ = (val); break;
+			// }
+			target.doAnimModel = true;
+		} else {
+			ModelRenderer model = getBodyPart(target, bodyPart);
+			messWithModel(target, model, axis, newValues[0], bodyPart, entity);
 		}
+		// target.animStates[tweenType] = newValues[0];
 
-		ModelRenderer model = getBodyPart(target, bodyPart);
-		messWithModel(target, model, axis, newValues[0], bodyPart, entity);
+		// LogWriter.warn("sesd " + tweenType + " - " + newValues[0]);
 	}
 
-	private void messWithModel(ModelBiped biped, ModelRenderer part, int axis, float val, int bodyPart, Entity entity) {
+	private void messWithModel(ModelPlayerAlt biped, ModelRenderer part, int axis, float val, int bodyPart, Entity entity) {
 		setPartAxis(part, axis, val, bodyPart, entity);
 
-		if(biped instanceof ModelPlayer)
-			messWithPlayerModel((ModelPlayer) biped, part, axis, val, bodyPart, entity);
+		// if(biped instanceof ModelPlayer)
+		messWithPlayerModel((ModelPlayer) biped, part, axis, val, bodyPart, entity);
 	}
 
 	private void messWithPlayerModel(ModelPlayer biped, ModelRenderer part, int axis, float val, int bodyPart, Entity entity) {
@@ -221,11 +278,11 @@ public class ModelAccessor implements TweenAccessor<ModelBiped> {
 			case ROT_Z:
 				part.rotateAngleZ = val; break;
 			case OFF_X:
-				part.offsetX = (val * ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+				part.offsetX = (val); break;
 			case OFF_Y:
-				part.offsetY = (val * ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+				part.offsetY = (val); break;
 			case OFF_Z:
-				part.offsetZ = (val * ModelBipedAlt.getPartConfigScale(entity, BODY, OFF_Y)); break;
+				part.offsetZ = (val); break;
 		}
 	}
 }

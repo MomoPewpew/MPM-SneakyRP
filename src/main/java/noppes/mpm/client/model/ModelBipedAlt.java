@@ -22,7 +22,7 @@ import noppes.mpm.client.model.animation.AniWaving;
 import noppes.mpm.client.model.animation.AniYes;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
-import vazkii.quark.vanity.client.emotes.ModelAccessor;
+import noppes.mpm.client.model.ModelAccessor;
 
 public class ModelBipedAlt extends ModelBiped {
      private Map map = new HashMap();

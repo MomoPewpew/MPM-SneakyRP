@@ -46,8 +46,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 		}
 		this.addButton(new GuiNpcButton(100, this.guiLeft + 124, this.guiTop, 60, 20, "gui.props"));
 		this.addButton(new GuiNpcButton(450, this.guiLeft + 124, this.guiTop + 23, 60, 20, "gui.propgroupload"));
-		this.addButton(new GuiNpcButton(400, this.guiLeft + 186, this.guiTop, 60, 20, "gui.skinload"));
-		this.addButton(new GuiNpcButton(500, this.guiLeft + 186, this.guiTop + 23, 60, 20, "gui.emoteeditor"));
+		this.addButton(new GuiNpcButton(400, this.guiLeft + 248, this.guiTop, 60, 20, "gui.skinload"));
+		this.addButton(new GuiNpcButton(601, this.guiLeft + 186, this.guiTop, 60, 20, "gui.emoteeditor"));
+		this.addButton(new GuiNpcButton(651, this.guiLeft + 186, this.guiTop + 23, 60, 20, "gui.emoteload"));
 		if (this.entity == null) {
 			this.addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
 		} else {
@@ -113,8 +114,11 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 			this.openGui(new GuiCreationPropLoad());
 		}
 
-		else if (btn.id == 500) {
+		else if (btn.id == 601) {
 			this.openGui(new GuiCreationEmotes());
+		}
+		else if (btn.id == 651) {
+			this.openGui(new GuiCreationEmoteLoad());
 		}
 	}
 

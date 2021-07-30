@@ -497,10 +497,14 @@ public class LayerProp extends LayerInterface {
 
 					 if (this.player.isSneaking()) {
 						 if (propBodyPart == this.model.bipedLeftLeg || propBodyPart == this.model.bipedRightLeg) {
-		    				 partModifierY += 0.1875F;
+		    				 partModifierY -= 0.125F;
 		    				 partModifierZ -= 0.25F;
 						 } else if (propBodyPart == this.model.bipedHead) {
-		    				 partModifierY -= 0.0625F;
+		    				 partModifierY -= 0.375F;
+						 } else if (propBodyPart == this.model.bipedLeftArm || propBodyPart == this.model.bipedRightArm) {
+		    				 partModifierY -= 0.375F;
+						 } else if (propBodyPart == this.model.bipedBody) {
+		    				 partModifierY -= 0.375F;
 						 }
 					 }
 

@@ -31,7 +31,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
 public class WebApi {
-     private final String baseUrl = "http://vps.nopapi.nl";
+     /*private final String baseUrl = "http://vps.nopapi.nl";
      private final HttpClient client = HttpClientBuilder.create().build();
      private final JsonParser parser = new JsonParser();
      private long playerLastUpdated = 0L;
@@ -177,5 +177,5 @@ public class WebApi {
                var8.printStackTrace();
           }
 
-     }
+     }*/
 }

@@ -217,7 +217,7 @@ public class ClientEventHandler {
                     ++RenderEvent.lastSkinTick;
                     if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
                          playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
-                         WebApi.instance.run();
+                         //WebApi.instance.run();
                     }
 
                }

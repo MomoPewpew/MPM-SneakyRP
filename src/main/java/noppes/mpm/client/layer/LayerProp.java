@@ -40,7 +40,7 @@ public class LayerProp extends LayerInterface {
 	private void renderProp(Prop prop, float par7) {
 		if (prop.type == EnumType.ITEM) {
 			renderItemProp(prop, par7);
-		} else if (prop.type == EnumType.PARTICLE && this.player == Minecraft.getMinecraft().thePlayer) {
+		} else if (prop.type == EnumType.PARTICLE) {
 			renderParticleProp(prop, par7);
 		}
 	}

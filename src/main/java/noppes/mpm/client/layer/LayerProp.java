@@ -445,7 +445,7 @@ public class LayerProp extends LayerInterface {
 			    		 case "leftleg":
 			    			 propBodyPart = this.model.bipedLeftLeg;
 			    			 partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
-			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
+			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.125);
 
 			    			 enumPart = EnumParts.LEG_LEFT;
 
@@ -458,19 +458,19 @@ public class LayerProp extends LayerInterface {
 			    		 case "leftfoot":
 			    			 propBodyPart = this.model.bipedLeftLeg;
 			    			 partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
-			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
+			    			 partModifierY = (float) (0.875 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.125);
 
 			    			 enumPart = EnumParts.LEG_LEFT;
 
 			    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-							 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
+							 propOffsetY = (propOffsetY - 0.75F) * this.playerdata.getPartConfig(enumPart).scaleY;
 			    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
 			    			 break;
 			    		 case "legright":
 			    		 case "rightleg":
 			    			 propBodyPart = this.model.bipedRightLeg;
 			    			 partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
-			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY + 0.125);
 
 			    			 enumPart = EnumParts.LEG_RIGHT;
 
@@ -482,12 +482,12 @@ public class LayerProp extends LayerInterface {
 			    		 case "rightfoot":
 			    			 propBodyPart = this.model.bipedRightLeg;
 			    			 partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
-			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+			    			 partModifierY = (float) (0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY + 0.125);
 
 			    			 enumPart = EnumParts.LEG_RIGHT;
 
 			    			 propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-							 propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
+							 propOffsetY = (propOffsetY - 0.75F) * this.playerdata.getPartConfig(enumPart).scaleY;
 			    			 propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
 			    			 break;
 		    		 }

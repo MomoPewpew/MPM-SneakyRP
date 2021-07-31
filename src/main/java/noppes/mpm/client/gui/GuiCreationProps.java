@@ -284,7 +284,22 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   }
                   this.getButton(sliders).enabled = false;
         	  } else {
-        		  this.addLabel(new GuiNpcLabel(126, "gui.postprocessingoffset", guiOffsetX, y + 5, 16777215));
+        		  this.addLabel(new GuiNpcLabel(125, "gui.postprocessingoffset", guiOffsetX, y + 5, 16777215));
+
+                  y += 22;
+                  this.addTextField(new GuiNpcTextField(126, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.ppOffsetX)));
+                  this.addSlider(new GuiNpcSlider(this, 126, guiOffsetX, y, 152, 20, ((prop.ppOffsetX + maxOffset) / (maxOffset * 2.0F))));
+                  this.getSlider(126).displayString = "X";
+
+                  y += 22;
+                  this.addTextField(new GuiNpcTextField(127, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.ppOffsetY)));
+                  this.addSlider(new GuiNpcSlider(this, 127, guiOffsetX, y, 152, 20, ((prop.ppOffsetY + maxOffset) / (maxOffset * 2.0F))));
+                  this.getSlider(127).displayString = "Y";
+
+                  y += 22;
+                  this.addTextField(new GuiNpcTextField(128, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.ppOffsetZ)));
+                  this.addSlider(new GuiNpcSlider(this, 128, guiOffsetX, y, 152, 20, ((prop.ppOffsetZ + maxOffset) / (maxOffset * 2.0F))));
+                  this.getSlider(128).displayString = "Z";
         	  }
 
           } else if (selected >= 0) {
@@ -310,7 +325,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
      protected void actionPerformed(GuiButton btn) {
           super.actionPerformed(btn);
           if (btn.id == 101) {
-        	   props.add(new Prop("minecraft:stained_glass:2", "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, false, false, "NONAME"));
+        	   props.add(new Prop("minecraft:stained_glass:2", "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, false, false, "NONAME", 0.0F, 0.0F, 0.0F));
                newProp = true;
          	   advanced = false;
                this.initGui();
@@ -436,7 +451,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
           super.mouseDragged(slider);
           if (this.initiating) return;
 
-          if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 509 && slider.id <= 514)) {
+          if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 126 && slider.id <= 128) || (slider.id >= 509 && slider.id <= 514)) {
               Float value = 0.0F;
               String text = "";
 
@@ -506,6 +521,18 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                       text = String.format(java.util.Locale.US,"%.2f", value);
                   }
 
+        	  } else if (slider.id >= 126 && slider.id <= 128) {
+        		  value = ((slider.sliderValue - 0.5F) * (maxOffset * 2.0F));
+
+                  if (slider.id == 126) {
+                	  prop.ppOffsetX = value;
+                  } else if (slider.id == 127) {
+                	  prop.ppOffsetY = value;
+                  } else if (slider.id == 128) {
+                	  prop.ppOffsetZ = value;
+                  }
+
+                  text = String.format(java.util.Locale.US,"%.2f", value);
         	  }
 
         	  this.getTextField(slider.id).setText(text);
@@ -571,7 +598,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 			selectedPropGroup.name = textField.getText();
 			this.initGui();
-		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514)) {
+		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 126 && textField.id <= 128) || (textField.id >= 509 && textField.id <= 514)) {
 			Float value = null;
 			try {
 			    value = Float.parseFloat(textField.getText().replace(',', '.'));
@@ -632,6 +659,16 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	            } else if (textField.id == 514) {
 					sliderValue = value / maxAmount;
 	              	prop.speed = value;
+	            }
+			} else if (textField.id >= 126 && textField.id <= 128) {
+				sliderValue = (value + maxOffset) / (maxOffset * 2.0F);
+
+				if (textField.id == 126) {
+              	    prop.ppOffsetX = value;
+	            } else if (textField.id == 127) {
+              	    prop.ppOffsetY = value;
+	            } else if (textField.id == 128) {
+              	    prop.ppOffsetZ = value;
 	            }
 			}
 

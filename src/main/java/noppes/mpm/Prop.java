@@ -32,6 +32,9 @@ public class Prop {
     public Float yaw = 0.0F;
     public Float speed = 0.0F;
     public long lastplayed = System.currentTimeMillis();
+    public Float ppOffsetX = 0.0F;
+    public Float ppOffsetY = 0.0F;
+    public Float ppOffsetZ = 0.0F;
 
     public enum EnumType {
         ITEM,
@@ -44,7 +47,8 @@ public class Prop {
 		    Float scaleX, Float scaleY, Float scaleZ,
 		    Float offsetX, Float offsetY, Float offsetZ,
 		    Float rotateX, Float rotateY, Float rotateZ,
-		    Boolean matchScaling, Boolean hide, String name)
+		    Boolean matchScaling, Boolean hide, String name,
+		    Float ppOffsetX, Float ppOffsetY, Float ppOffsetZ)
 		{
 			this.propString = propString;
 			this.parsePropString(this.propString);
@@ -61,6 +65,9 @@ public class Prop {
 		    this.hide = hide;
 		    this.matchScaling = matchScaling;
 		    this.name = name;
+		    this.ppOffsetX = ppOffsetX;
+		    this.ppOffsetY = ppOffsetY;
+		    this.ppOffsetZ = ppOffsetZ;
 		}
 
      public Prop(String propString, String bodyPartName,
@@ -107,6 +114,9 @@ public class Prop {
          compound.setFloat("pitch", this.pitch);
          compound.setFloat("yaw", this.yaw);
          compound.setFloat("speed", this.speed);
+         compound.setFloat("ppOffsetX", this.ppOffsetX);
+         compound.setFloat("ppOffsetY", this.ppOffsetY);
+         compound.setFloat("ppOffsetZ", this.ppOffsetZ);
          return compound;
      }
 
@@ -132,6 +142,9 @@ public class Prop {
     	 this.pitch = compound.getFloat("pitch");
     	 this.yaw = compound.getFloat("yaw");
     	 this.speed = compound.getFloat("speed");
+    	 this.ppOffsetX = compound.getFloat("ppOffsetX");
+    	 this.ppOffsetY = compound.getFloat("ppOffsetY");
+    	 this.ppOffsetZ = compound.getFloat("ppOffsetZ");
      }
 
      public String getCommand() {
@@ -142,7 +155,8 @@ public class Prop {
         			 this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
         			 this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
         			 this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
-        			 this.matchScaling + " " + this.hide + " " + this.name;
+        			 this.matchScaling + " " + this.hide + " " + this.name + " " +
+        			 this.ppOffsetX + " " + this.ppOffsetY + " " + this.ppOffsetZ;
     	 } else if (this.type == EnumType.PARTICLE) {
         	 command = "/prop " +
         			 this.propString + " " + this.bodyPartName + " " +

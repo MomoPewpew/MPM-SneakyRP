@@ -61,8 +61,7 @@ gui.motion=Motion
 gui.flipx=Flip <->
 gui.advanced=Advanced
 gui.simple=Simple
-gui.lockrotation=Lock rotation. The prop will not follow the rotation of the bodypart it is attached to.
-gui.postprocessingoffset=Post-processing offset. These are offset values that will not affect how the prop rotates.
+gui.postprocessingoffset=Post-processing offset
 
 animation.sleep=Sleep
 animation.crawl=Crawl

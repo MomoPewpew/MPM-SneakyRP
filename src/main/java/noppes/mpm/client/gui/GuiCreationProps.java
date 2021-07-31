@@ -227,7 +227,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                           this.addButton(new GuiNpcButton(118, guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.matchScaling ? 1 : 0));
                           y += 22;
                           this.addButton(new GuiNpcButton(122, guiOffsetX, y, 96, 20, "gui.propgroup"));
-                          //this.addButton(new GuiNpcButton(124, guiOffsetX + 98, y, 55, 20, new String[]{"gui.advanced", "gui.simple"}, advanced ? 1 : 0));
+                          this.addButton(new GuiNpcButton(124, guiOffsetX + 98, y, 55, 20, new String[]{"gui.advanced", "gui.simple"}, advanced ? 1 : 0));
                   } else if (prop.type == EnumType.PARTICLE) {
                 	  if (sliders == 106) sliders = 506;
                 	  if (sliders == 108) sliders = 508;
@@ -284,9 +284,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   }
                   this.getButton(sliders).enabled = false;
         	  } else {
-        		  this.addLabel(new GuiNpcLabel(125, "gui.lockrotation", guiOffsetX, y + 5, 16777215));
-        		  y += 22;
-        		  y += 22;
         		  this.addLabel(new GuiNpcLabel(126, "gui.postprocessingoffset", guiOffsetX, y + 5, 16777215));
         	  }
 
@@ -345,10 +342,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
              this.initGui();
          } else if (btn.id == 118) {
         	 prop.matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
-             this.initGui();
          } else if (btn.id == 121) {
         	 prop.hide = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
-             this.initGui();
          } else if (btn.id == 119) {
         	 Prop propTemp = new Prop();
         	 propTemp.readFromNBT(prop.writeToNBT());

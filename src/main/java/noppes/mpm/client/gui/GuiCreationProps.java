@@ -300,6 +300,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
                   this.addTextField(new GuiNpcTextField(128, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.ppOffsetZ)));
                   this.addSlider(new GuiNpcSlider(this, 128, guiOffsetX, y, 152, 20, ((prop.ppOffsetZ + maxOffset) / (maxOffset * 2.0F))));
                   this.getSlider(128).displayString = "Z";
+
+                  y += 88;
+                  this.addButton(new GuiNpcButton(124, guiOffsetX + 98, y, 55, 20, new String[]{"gui.advanced", "gui.simple"}, advanced ? 1 : 0));
         	  }
 
           } else if (selected >= 0) {

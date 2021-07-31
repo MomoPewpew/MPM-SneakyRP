@@ -74,7 +74,7 @@ public class RenderEvent {
 
      @SubscribeEvent
      public void pre(Pre event) {
-          if (event.getEntity() instanceof AbstractClientPlayer) {
+          if (event.getEntity() instanceof AbstractClientPlayer && !event.isCanceled()) {
                AbstractClientPlayer player = (AbstractClientPlayer)event.getEntity();
                Minecraft mc = Minecraft.getMinecraft();
                GlStateManager.pushMatrix();

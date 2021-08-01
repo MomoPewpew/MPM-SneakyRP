@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,12 +27,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
+// import noppes.mpm.client.model.ModelAccessor;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
+import aurelienribon.tweenengine.*;
 
 public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static ExecutorService saveExecutor = Executors.newFixedThreadPool(1);
@@ -39,8 +47,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static Capability MODELDATA_CAPABILITY = null;
 	public boolean resourceInit = false;
 	public boolean resourceLoaded = false;
-	public boolean webapiActive = false;
-	public boolean webapiInit = false;
 	public Object textureObject = null;
 	public ItemStack backItem;
 	public int inLove;
@@ -54,9 +60,23 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public double prevPosZ;
 	public EntityPlayer player;
 	public long lastEdited;
-	public UUID analyticsUUID;
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
+
+	//this is data to track server emotes that are synced between all players
+	public Emote curEmote = null;
+	public Timeline curEmoteTimeline = null;
+	public long lastTime = 0;
+	public float[] animStates = new float[Emote.STATE_COUNT];
+	public float curEmoteSpeed = 1.0F;
+	public long curEmoteTempId = 0;
+
+	//and this is data to track clientside emote previews shown when creating emotes
+	public Emote previewEmote = null;
+	public Timeline previewTimeline = null;
+	public long previewLastTime = 0;
+	public float[] previewStates = new float[Emote.STATE_COUNT];
+	public long previewTempId = 0;
 
 
 	public ModelData() {
@@ -69,7 +89,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		this.soundType = 0;
 		this.player = null;
 		this.lastEdited = System.currentTimeMillis();
-		this.analyticsUUID = UUID.randomUUID();
 
 		this.propBase = new PropGroup(this.player);
 		this.propGroups = new ArrayList<PropGroup>();
@@ -337,8 +356,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		return this.hasCapability(capability, facing) ? this : null;
 	}
 
-	public void update() {
-	}
+	// public void update() {
+	// }
 
 	public void clearPropsServer() {
 		this.propBase = new PropGroup(this.player);
@@ -449,5 +468,396 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		this.propGroups.add(propGroupTemp);
 
 		Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
+	}
+
+
+
+	//Emotes
+
+
+	public static class ModelAccessor implements TweenAccessor<float[]> {
+		public static final ModelAccessor INSTANCE = new ModelAccessor();
+		@Override
+		public int getValues(float[] target, int tweenType, float[] returnValues, Entity entity) {
+			returnValues[0] = target[tweenType];
+			return 1;
+		}
+
+		@Override
+		public void setValues(float[] target, int tweenType, float[] newValues, Entity entity) {
+			target[tweenType] = newValues[0];
+		}
+	}
+	static {
+		Tween.registerAccessor(float[].class, ModelAccessor.INSTANCE);
+	}
+
+	public void startEmote(Emote emote, float speed, EntityPlayer player) {
+		this.endCurEmote();
+		Timeline timeline = createTimeline(emote, this.animStates);
+
+		timeline.start(player);
+		this.curEmote = emote;
+		this.curEmoteTimeline = timeline;
+		this.curEmoteSpeed = speed;
+		this.lastTime = System.currentTimeMillis();
+		this.curEmoteTempId = this.lastTime;
+	}
+	public void startPreviewEmote(Emote emote, EntityPlayer player, boolean isintro) {
+		this.endPreviewEmote();
+		Timeline timeline = createPreviewTimeline(emote, this.previewStates, isintro);
+
+		timeline.start(player);
+		this.previewEmote = emote;
+		this.previewTimeline = timeline;
+		this.previewLastTime = System.currentTimeMillis();
+		this.previewTempId = this.previewLastTime;
+	}
+	public static Timeline createTimeline(Emote emote, float[] states) {
+		Timeline intro = null;
+		Timeline loop = null;
+		for(int partId = 0; partId < Emote.PART_COUNT; partId++) {
+			Timeline t;
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.INTRO_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
+			if(t != null) {
+				if(intro == null) intro = Timeline.createParallel();
+				intro.push(t);
+			}
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.INTRO_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
+			if(t != null) {
+				if(intro == null) intro = Timeline.createParallel();
+				intro.push(t);
+			}
+
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
+			if(t != null) {
+				if(loop == null) loop = Timeline.createParallel();
+				loop.push(t);
+			}
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
+			if(t != null) {
+				if(loop == null) loop = Timeline.createParallel();
+				loop.push(t);
+			}
+		}
+		if(loop == null) {
+			if(intro == null) {
+				return Timeline.createParallel();
+			} else {
+				return intro;
+			}
+		} else if(intro == null) {
+			return loop.repeat(60*60*24, 0);
+		} else {
+			Timeline timeline = Timeline.createSequence();
+			timeline.push(intro);
+			timeline.push(loop.repeat(60*60*24, 0));
+			return timeline;
+		}
+	}
+	public static Timeline createPreviewTimeline(Emote emote, float[] states, boolean isintro) {
+		Timeline timeline = Timeline.createParallel();
+		int a1 = (isintro ? Emote.INTRO_OFFSET : Emote.LOOP_OFFSET);
+		int a2 = (isintro ? Emote.INTRO_ROTATE : Emote.LOOP_ROTATE);
+		for(int partId = 0; partId < Emote.PART_COUNT; partId++) {
+			Timeline t;
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + a1), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
+			if(t != null) {
+				timeline.push(t);
+			}
+			t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + a2), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
+			if(t != null) {
+				timeline.push(t);
+			}
+		}
+		return timeline.repeat(60*60*24, isintro? 1.0F : 0);
+	}
+	public static Timeline createTimelineFromEmotePartCommandList(ArrayList<Emote.PartCommand> list, int tweenId, float[] states) {
+		if(list == null) return null;
+		float prex = Float.MAX_VALUE;
+		float prey = Float.MAX_VALUE;
+		float prez = Float.MAX_VALUE;
+		int totalDisabled = 0;
+		Timeline timeline = Timeline.createSequence();
+		for(int i = 0; i < list.size(); i++) {
+			Emote.PartCommand command = list.get(i);
+			if(command.disabled) {
+				totalDisabled += 1;
+			} else {
+				boolean isx = Math.abs(command.x - prex) > 0.0001F;
+				boolean isy = Math.abs(command.y - prey) > 0.0001F;
+				boolean isz = Math.abs(command.z - prez) > 0.0001F;
+				prex = command.x;
+				prey = command.y;
+				prez = command.z;
+				int total = (isx ? 1 : 0) + (isy ? 1 : 0) + (isz ? 1 : 0);
+				if(total == 0) {
+					timeline.pushPause(command.duration);
+				} else if(total == 1) {
+					Tween tween;
+					//NOTE: this is highly specific to ModelAccessor
+					if(isx) {
+						tween = Tween.to(states, tweenId + 0, command.duration).target(command.x);
+					} else if(isy) {
+						tween = Tween.to(states, tweenId + 1, command.duration).target(command.y);
+					} else {
+						tween = Tween.to(states, tweenId + 2, command.duration).target(command.z);
+					}
+					tween.ease(TweenUtils.easings[command.easing]);
+					timeline.push(tween);
+				} else {
+					Timeline par = Timeline.createParallel();
+					TweenEquation eq = TweenUtils.easings[command.easing];
+					if(isx) {
+						Tween tween = Tween.to(states, tweenId + 0, command.duration).target(command.x);
+						tween.ease(eq);
+						par.push(tween);
+					}
+					if(isy) {
+						Tween tween = Tween.to(states, tweenId + 1, command.duration).target(command.y);
+						tween.ease(eq);
+						par.push(tween);
+					}
+					if(isz) {
+						Tween tween = Tween.to(states, tweenId + 2, command.duration).target(command.z);
+						tween.ease(eq);
+						par.push(tween);
+					}
+					timeline.push(par);
+				}
+			}
+		}
+		if(list.size() == totalDisabled) return null;
+		return timeline;
+	}
+
+	public void endCurEmote() {
+		if(this.curEmoteTempId > 0) {
+			this.curEmoteTimeline.free();
+			this.curEmoteTimeline = null;
+			this.curEmote = null;
+			this.curEmoteTempId = 0;
+			for(int i = 0; i < Emote.STATE_COUNT; i++) {
+				this.animStates[i] = 0.0F;
+			}
+		}
+	}
+	public void endPreviewEmote() {
+		if(this.previewTempId > 0) {
+			this.previewTimeline.free();
+			this.previewTimeline = null;
+			this.previewTempId = 0;
+			for(int i = 0; i < Emote.STATE_COUNT; i++) {
+				this.previewStates[i] = 0.0F;
+			}
+		}
+	}
+
+	public void updateAnim() {
+		if(this.curEmoteTempId > 0) {
+			long curTime = System.currentTimeMillis();
+			float delta = (curTime - this.lastTime)/1000F;
+			if(delta > .001) {
+				this.curEmoteTimeline.update(this.curEmoteSpeed*delta, (Entity)this.player);
+				this.lastTime = curTime;
+				if(this.curEmoteTimeline.isFinished()) {
+					this.endCurEmote();
+				}
+			}
+		}
+		if(this.previewTempId > 0) {
+			long curTime = System.currentTimeMillis();
+			float delta = (curTime - this.previewLastTime)/1000F;
+			if(delta > .001) {
+				this.previewTimeline.update(delta, (Entity)this.player);
+				this.previewLastTime = curTime;
+				if(this.previewTimeline.isFinished()) {
+					this.endPreviewEmote();
+				}
+			}
+		}
+	}
+	public long getPlayingEmoteId() {
+		if(this.previewTempId > 0) {
+			return this.previewTempId;
+		} else {
+			return this.curEmoteTempId;
+		}
+	}
+
+
+	public static ModelRenderer getEarsModel(ModelPlayer model) {
+		return model.boxList.get(model.boxList.indexOf(model.bipedLeftArm) - 2);
+	}
+	public void animModelPlayer(ModelPlayer biped) {
+		if(this.previewTempId > 0) {
+			animModelPlayerFromStates(biped, this.previewStates, this.previewEmote, this.player.height);
+		} else if(this.curEmoteTempId > 0) {
+			animModelPlayerFromStates(biped, this.animStates, this.curEmote, this.player.height);
+		}
+	}
+	public void animModelBiped(ModelBiped biped) {
+		if(this.previewTempId > 0) {
+			animModelBipedFromStates(biped, this.previewStates, this.previewEmote);
+		} else if(this.curEmoteTempId > 0) {
+			animModelBipedFromStates(biped, this.animStates, this.curEmote);
+		}
+	}
+
+	public static void animModelPlayerFromStates(ModelPlayer biped, float[] states, Emote emote, float playerHeight) {
+		if(emote.partIsOffset(Emote.HEAD)) {
+			setPartOffset(biped.bipedHead, Emote.HEAD, states);
+			setPartOffset(biped.bipedHeadwear, Emote.HEAD, states);
+			setPartOffset(getEarsModel(biped), Emote.HEAD, states);
+		}
+		if(emote.partIsRotate(Emote.HEAD)) {
+			setPartRotate(biped.bipedHead, Emote.HEAD, states);
+			setPartRotate(biped.bipedHeadwear, Emote.HEAD, states);
+		}
+		if(emote.partIsOffset(Emote.RIGHT_ARM)) {
+			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+			setPartOffset(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
+		}
+		if(emote.partIsRotate(Emote.RIGHT_ARM)) {
+			setPartRotate(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+			setPartRotate(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
+		}
+		if(emote.partIsOffset(Emote.LEFT_ARM)) {
+			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+			setPartOffset(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
+		}
+		if(emote.partIsRotate(Emote.LEFT_ARM)) {
+			setPartRotate(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+			setPartRotate(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
+		}
+		if(emote.partIsOffset(Emote.RIGHT_LEG)) {
+			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+			setPartOffset(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
+		}
+		if(emote.partIsRotate(Emote.RIGHT_LEG)) {
+			setPartRotate(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+			setPartRotate(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
+		}
+		if(emote.partIsOffset(Emote.LEFT_LEG)) {
+			setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+			setPartOffset(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
+		}
+		if(emote.partIsRotate(Emote.LEFT_LEG)) {
+			setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+			setPartRotate(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
+		}
+
+		if(emote.partIsUsed(Emote.BODY)) {
+			setPartAxis(biped.bipedBody, Emote.BODY, states);
+			setPartAxis(biped.bipedBodyWear, Emote.BODY, states);
+		}
+		if(emote.partIsUsed(Emote.MODEL)) {
+			float offsetX = (states[Emote.MODEL + Emote.OFF_X]);
+			float offsetY = (states[Emote.MODEL + Emote.OFF_Y]);
+			float offsetZ = (states[Emote.MODEL + Emote.OFF_Z]);
+			float rotX = states[Emote.MODEL + Emote.ROT_X];
+			float rotY = states[Emote.MODEL + Emote.ROT_Y];
+			float rotZ = states[Emote.MODEL + Emote.ROT_Z];
+
+			GlStateManager.translate(0, playerHeight / 2, 0);
+
+			GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
+
+			if (rotY != 0)
+				GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
+			if (rotX != 0)
+				GlStateManager.rotate(rotX * 90.0F/(float)Math.PI, 1, 0, 0);
+			if (rotZ != 0)
+				GlStateManager.rotate(rotZ * 90.0F/(float)Math.PI, 0, 0, 1);
+
+			GlStateManager.translate(0, -playerHeight / 2, 0);
+		}
+	}
+	public static void animModelBipedFromStates(ModelBiped biped, float[] states, Emote emote) {
+		if(emote.partIsOffset(Emote.HEAD)) {
+			setPartOffset(biped.bipedHead, Emote.HEAD, states);
+		}
+		if(emote.partIsRotate(Emote.HEAD)) {
+			setPartRotate(biped.bipedHead, Emote.HEAD, states);
+		}
+		if(emote.partIsOffset(Emote.RIGHT_ARM)) {
+			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+		}
+		if(emote.partIsRotate(Emote.RIGHT_ARM)) {
+			setPartRotate(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+		}
+		if(emote.partIsOffset(Emote.LEFT_ARM)) {
+			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+		}
+		if(emote.partIsRotate(Emote.LEFT_ARM)) {
+			setPartRotate(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+		}
+		if(emote.partIsOffset(Emote.RIGHT_LEG)) {
+			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+		}
+		if(emote.partIsRotate(Emote.RIGHT_LEG)) {
+			setPartRotate(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+		}
+		if(emote.partIsOffset(Emote.LEFT_LEG)) {
+			setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+		}
+		if(emote.partIsRotate(Emote.LEFT_LEG)) {
+			setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+		}
+
+		if(emote.partIsUsed(Emote.BODY)) {
+			setPartAxis(biped.bipedBody, Emote.BODY, states);
+		}
+	}
+	public static void setPartOffset(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.offsetX = states[partId + Emote.OFF_X];
+		part.offsetY = states[partId + Emote.OFF_Y];
+		part.offsetZ = states[partId + Emote.OFF_Z];
+	}
+	public static void setPartRotate(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.rotateAngleX = states[partId + Emote.ROT_X];
+		part.rotateAngleY = states[partId + Emote.ROT_Y];
+		part.rotateAngleZ = states[partId + Emote.ROT_Z];
+	}
+	public static void setPartAxis(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.offsetX = states[partId + Emote.OFF_X];
+		part.offsetY = states[partId + Emote.OFF_Y];
+		part.offsetZ = states[partId + Emote.OFF_Z];
+		part.rotateAngleX = states[partId + Emote.ROT_X];
+		part.rotateAngleY = states[partId + Emote.ROT_Y];
+		part.rotateAngleZ = states[partId + Emote.ROT_Z];
+	}
+
+	public static void resetModelPlayerAfterEmote(ModelPlayer biped) {
+		resetPart(biped.bipedHead);
+		resetPart(biped.bipedHeadwear);
+		resetPart(biped.bipedBody);
+		resetPart(biped.bipedLeftArm);
+		resetPart(biped.bipedRightArm);
+		resetPart(biped.bipedLeftLeg);
+		resetPart(biped.bipedRightLeg);
+		resetPart(biped.bipedBodyWear);
+		resetPart(biped.bipedLeftArmwear);
+		resetPart(biped.bipedRightArmwear);
+		resetPart(biped.bipedLeftLegwear);
+		resetPart(biped.bipedRightLegwear);
+		resetPart(getEarsModel(biped));
+	}
+	public static void resetModelBipedAfterEmote(ModelBiped biped) {
+		resetPart(biped.bipedHead);
+		resetPart(biped.bipedBody);
+		resetPart(biped.bipedLeftArm);
+		resetPart(biped.bipedRightArm);
+		resetPart(biped.bipedLeftLeg);
+		resetPart(biped.bipedRightLeg);
+		// resetPart(getEarsModel(biped));
+	}
+
+	public static void resetPart(ModelRenderer part) {
+		if(part != null)
+			part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
 }

@@ -3,12 +3,11 @@ package noppes.mpm;
 import aurelienribon.tweenengine.*;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
-import noppes.mpm.client.model.ModelAccessor;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.client.renderer.GlStateManager;
+// import net.minecraft.client.model.ModelBiped;
+// import net.minecraft.entity.player.EntityPlayer;
+// import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
@@ -25,6 +24,50 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 public class Emote {
+	public static final int HEAD = 0;
+	public static final int BODY = 1;
+	public static final int RIGHT_ARM = 2;
+	public static final int LEFT_ARM = 3;
+	public static final int RIGHT_LEG = 4;
+	public static final int LEFT_LEG = 5;
+	public static final int MODEL = 6;
+
+	public static final int OFF_X = 0;
+	public static final int OFF_Y = 1;
+	public static final int OFF_Z = 2;
+	public static final int ROT_X = 3;
+	public static final int ROT_Y = 4;
+	public static final int ROT_Z = 5;
+
+	public static final int INTRO_OFFSET = 0;
+	public static final int INTRO_ROTATE = 1;
+	public static final int LOOP_OFFSET = 2;
+	public static final int LOOP_ROTATE = 3;
+
+	public static final int AXIS_COUNT = 6;
+	public static final int PART_COUNT = 7;
+	public static final int STATE_COUNT = AXIS_COUNT*PART_COUNT;
+	public static final int COMMAND_LIST_COUNT = 4;
+
+	public static final String[] BODY_PARTS = {
+		"head", "body", "rightarm", "leftarm", "rightleg", "leftleg", "model"
+	};
+
+	public static final float maxOffset = 1000F;
+	public static final float maxRotate = (float)Math.toRadians(36000F);
+	// public static final float maxTotalDuration = 60*60;
+	public static final float maxDuration = 60*60;
+
+	public ArrayList<ArrayList<PartCommand>> commands;
+
+	public Emote() {
+		this.commands = new ArrayList<ArrayList<PartCommand>>(COMMAND_LIST_COUNT*PART_COUNT);
+		for(int i = 0; i < COMMAND_LIST_COUNT*PART_COUNT; i++) {
+			this.commands.add(null);
+		}
+	}
+	///////////////////
+	// commands = {head_intro_offset, head_intro_rotate, head_loop_offset, head_loop_rotate, body_intro_offset, ...}
 
 	public static class PartCommand {
 		public float x = 0.0F;
@@ -46,62 +89,51 @@ public class Emote {
 		}
 	}
 
-	public static class PartCommands {
-		public ArrayList<PartCommand> intro_offset = new ArrayList<PartCommand>();
-		public ArrayList<PartCommand> intro_rotate = new ArrayList<PartCommand>();
-		public ArrayList<PartCommand> loop_offset = new ArrayList<PartCommand>();
-		public ArrayList<PartCommand> loop_rotate = new ArrayList<PartCommand>();
-
-		public ArrayList<PartCommand> getCommandList(boolean isintro, boolean isoffset) {//in c I could do this trivially and efficiently with a union
-			if(isintro) {
-				if(isoffset) {
-					return this.intro_offset;
-				} else {
-					return this.intro_rotate;
-				}
-			} else {
-				if(isoffset) {
-					return this.loop_offset;
-				} else {
-					return this.loop_rotate;
-				}
-			}
-		}
+	public boolean partIsUsed(int partId) {
+		partId *= COMMAND_LIST_COUNT;
+		return this.commands.get(partId + 0) != null || this.commands.get(partId + 1) != null || this.commands.get(partId + 2) != null || this.commands.get(partId + 3) != null;
 	}
-
-	public static final float maxOffset = 1000F;
-	public static final float maxRotate = (float)Math.toRadians(36000F);
-	// public static final float maxTotalDuration = 60*60;
-	public static final float maxDuration = 60*60;
-	public static final int maxPartNameLength = 500;
-
-	public HashMap<String, PartCommands> commands = new HashMap<String, PartCommands>();
-
-	public static final String[] bipedParts = {
-		"leftarm", "rightarm", "head", "body", "leftleg", "rightleg", "model"
-	};
+	public boolean partIsRotate(int partId) {
+		partId *= COMMAND_LIST_COUNT;
+		return this.commands.get(partId + INTRO_ROTATE) != null || this.commands.get(partId + LOOP_ROTATE) != null;
+	}
+	public boolean partIsOffset(int partId) {
+		partId *= COMMAND_LIST_COUNT;
+		return this.commands.get(partId + INTRO_OFFSET) != null || this.commands.get(partId + LOOP_OFFSET) != null;
+	}
 
 	public static void writeEmote(ByteBuf buffer, Emote emote) {
 		buffer.writeInt(1);//encoding version number
-		buffer.writeInt(emote.commands.size());
-		for(Map.Entry<String, PartCommands> entry : emote.commands.entrySet()) {
-			Server.writeString(buffer, entry.getKey());
-			PartCommands partCommands = entry.getValue();
-			writePartCommandList(buffer, partCommands.intro_offset);
-			writePartCommandList(buffer, partCommands.intro_rotate);
-			writePartCommandList(buffer, partCommands.loop_offset);
-			writePartCommandList(buffer, partCommands.loop_rotate);
+		int size = 0;
+		for(int i = 0; i < PART_COUNT; i++) {
+			if(emote.partIsUsed(i)) {
+				size += 1;
+			}
+		}
+		buffer.writeInt(size);
+		for(int i = 0; i < PART_COUNT; i++) {
+			if(emote.partIsUsed(i)) {
+				buffer.writeInt(i);
+				writePartCommandList(buffer, emote.commands.get(COMMAND_LIST_COUNT*i + INTRO_OFFSET));
+				writePartCommandList(buffer, emote.commands.get(COMMAND_LIST_COUNT*i + INTRO_ROTATE));
+				writePartCommandList(buffer, emote.commands.get(COMMAND_LIST_COUNT*i + LOOP_OFFSET));
+				writePartCommandList(buffer, emote.commands.get(COMMAND_LIST_COUNT*i + LOOP_ROTATE));
+			}
 		}
 	}
 	public static void writePartCommandList(ByteBuf buffer, ArrayList<PartCommand> list) {
-		buffer.writeInt(list.size());
-		for(int i = 0; i < list.size(); i++) {
-			PartCommand command = list.get(i);
-			buffer.writeFloat(command.x);
-			buffer.writeFloat(command.y);
-			buffer.writeFloat(command.z);
-			buffer.writeFloat(command.duration);
-			buffer.writeInt(2*command.easing + (command.disabled ? 1 : 0));
+		if(list == null) {
+			buffer.writeInt(0);
+		} else {
+			buffer.writeInt(list.size());
+			for(int i = 0; i < list.size(); i++) {
+				PartCommand command = list.get(i);
+				buffer.writeFloat(command.x);
+				buffer.writeFloat(command.y);
+				buffer.writeFloat(command.z);
+				buffer.writeFloat(command.duration);
+				buffer.writeInt(2*command.easing + (command.disabled ? 1 : 0));
+			}
 		}
 	}
 	public static Emote readEmote(ByteBuf buffer) {
@@ -109,15 +141,16 @@ public class Emote {
 			if(buffer.readInt() != 1) return null;//verify version number
 			Emote emote = new Emote();
 			int size = buffer.readInt();
+			if(size > PART_COUNT) return null;//verify parts total
 			for(int i = 0; i < size; i++) {
-				String key = Server.readString(buffer);
-				if(key == null) return null;
-				PartCommands partCommands = new PartCommands();
-				partCommands.intro_offset = readPartCommandList(buffer);
-				partCommands.intro_rotate = readPartCommandList(buffer);
-				partCommands.loop_offset = readPartCommandList(buffer);
-				partCommands.loop_rotate = readPartCommandList(buffer);
-				emote.commands.put(key, partCommands);
+				int partId = buffer.readInt();
+				if(partId >= PART_COUNT) return null;
+
+				partId *= COMMAND_LIST_COUNT;
+				emote.commands.set(partId + INTRO_OFFSET, readPartCommandList(buffer));
+				emote.commands.set(partId + INTRO_ROTATE, readPartCommandList(buffer));
+				emote.commands.set(partId + LOOP_OFFSET, readPartCommandList(buffer));
+				emote.commands.set(partId + LOOP_ROTATE, readPartCommandList(buffer));
 			}
 			if(isValidEmote(emote)) {
 				return emote;
@@ -130,6 +163,7 @@ public class Emote {
 	}
 	public static ArrayList<PartCommand> readPartCommandList(ByteBuf buffer) {
 		int size = buffer.readInt();
+		if(size == 0) return null;
 		ArrayList<PartCommand> list = new ArrayList<PartCommand>(size);
 		for(int i = 0; i < size; i++) {
 			PartCommand command = new PartCommand();
@@ -145,18 +179,18 @@ public class Emote {
 		return list;
 	}
 
-	public static boolean isValidEmote(Emote emote) {//TODO: make this a mandatory check
-		for(Map.Entry<String, PartCommands> entry : emote.commands.entrySet()) {
-			if(entry.getKey().length() >= maxPartNameLength) return false;
-			PartCommands partCommands = entry.getValue();
-			if(!isValidPartCommandList(partCommands.intro_offset, maxOffset)) return false;
-			if(!isValidPartCommandList(partCommands.intro_rotate, maxRotate)) return false;
-			if(!isValidPartCommandList(partCommands.loop_offset, maxOffset)) return false;
-			if(!isValidPartCommandList(partCommands.loop_rotate, maxRotate)) return false;
+	public static boolean isValidEmote(Emote emote) {
+		for(int i = 0; i < PART_COUNT; i++) {
+			if(!isValidPartCommandList(emote.commands.get(COMMAND_LIST_COUNT*i + INTRO_OFFSET), maxOffset)) return false;
+			if(!isValidPartCommandList(emote.commands.get(COMMAND_LIST_COUNT*i + INTRO_ROTATE), maxRotate)) return false;
+			if(!isValidPartCommandList(emote.commands.get(COMMAND_LIST_COUNT*i + LOOP_OFFSET), maxOffset)) return false;
+			if(!isValidPartCommandList(emote.commands.get(COMMAND_LIST_COUNT*i + LOOP_ROTATE), maxRotate)) return false;
 		}
 		return true;
 	}
 	public static boolean isValidPartCommandList(ArrayList<PartCommand> list, float maxCoordRange) {
+		if(list == null) return true;
+		if(list.size() == 0) return false;
 		// float totalDuration = 0;
 		for(int i = 0; i < list.size(); i++) {
 			PartCommand command = list.get(i);
@@ -171,7 +205,7 @@ public class Emote {
 		return true;
 	}
 
-	public static boolean serverDoEmote(MinecraftServer server, String emoteName, String playerName) {
+	public static boolean serverDoEmote(MinecraftServer server, String emoteName, String playerName, float emoteSpeed) {
 		String filename = emoteName + ".dat";
 
 		try {
@@ -188,6 +222,7 @@ public class Emote {
 
 			ByteBuf sendBuffer = Unpooled.buffer();
 			sendBuffer.writeInt(EnumPackets.EMOTE_DO.ordinal());
+			sendBuffer.writeFloat(emoteSpeed);
 			Server.writeString(sendBuffer, playerName);
 			sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
 

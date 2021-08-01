@@ -79,14 +79,17 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	protected void actionPerformed(GuiButton btn) {
 		super.actionPerformed(btn);
 		if (btn.id == 0) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationOptions());
 		}
 
 		else if (btn.id == 1) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationEntities());
 		}
 
 		else if (btn.id == 2) {
+			this.playerdata.endPreviewEmote();
 			if (this.entity == null) {
 				this.openGui(new GuiCreationParts());
 			} else {
@@ -95,6 +98,7 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 		}
 
 		else if (btn.id == 3) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationScale());
 		}
 
@@ -103,14 +107,17 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 		}
 
 		else if (btn.id == 100) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationProps());
 		}
 
 		else if (btn.id == 400) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationSkinLoad());
 		}
 
 		else if (btn.id == 450) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationPropLoad());
 		}
 
@@ -156,7 +163,6 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 		if (gui instanceof GuiCreationScreenInterface) {
 			Gui = (GuiCreationScreenInterface)gui;
 		}
-
 	}
 
 	@Override
@@ -183,5 +189,12 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
 	public EntityPlayer getPlayer() {
 		return player;
+	}
+
+
+	@Override
+	public void close() {
+		super.close();
+		this.playerdata.endPreviewEmote();
 	}
 }

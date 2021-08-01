@@ -25,7 +25,6 @@ public class CommandEmote extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
-		//TODO: add error messages
 		if (args.length == 0) {
 			Server.sendToAll(server, EnumPackets.EMOTE_END, icommandsender.getName());
 			return;
@@ -35,8 +34,18 @@ public class CommandEmote extends CommandBase {
 			icommandsender.addChatMessage(new TextComponentTranslation("Invalid Emote Name."));
 			return;
 		}
+		float speed = 1.0f;
+		if (args.length >= 2) {
+			try {
+				speed = Float.parseFloat(args[1].replace(',', '.'));
+				speed = Math.max(.0001F, Math.min(10000F, speed));
+			} catch (NumberFormatException e) {
+				speed = 1.0f;
+			}
+		}
 
-		if(!Emote.serverDoEmote(icommandsender.getServer(), emoteName, icommandsender.getName())) {
+		if(!Emote.serverDoEmote(icommandsender.getServer(), emoteName, icommandsender.getName(), speed)) {
+			//TODO: check for and report corrupted emotes
 			icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " was not found on the server."));
 		}
 	}

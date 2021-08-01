@@ -12,7 +12,6 @@ import net.minecraft.client.gui.GuiButton;
 
 import noppes.mpm.ModelData;
 import noppes.mpm.Emote;
-import noppes.mpm.client.ClientEmote;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
@@ -32,7 +31,6 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public static final Float maxOffset = 2.0F;
 	public static final Float maxRotation = (float)Math.toRadians(360.0F);
 	public static final Float maxDuration = 2.0F;
-	// public static GuiCreationEmotes instance = new GuiCreationEmotes();
 
 
 	public GuiCustomScroll scroll;
@@ -40,7 +38,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 
 	public static Emote curEmote = new Emote();
 	public static String curEmoteName = "";
-	public static String curPart = "head";
+	public static int curPart = Emote.HEAD;
 	public static boolean iseditingintro = true;
 	public static boolean iseditingoffset = true;
 	public static boolean ischangedfromserver = true;
@@ -53,18 +51,29 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		this.playerdata = ModelData.get(this.getPlayer());
 		this.active = 601;
 		this.xOffset = 140;
+
+		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 	}
 
 	public static void resetAndReplaceEmote(Emote emote) {
 		curEmote = emote;
-		curPart = "head";
+		curPart = Emote.HEAD;
 		iseditingintro = true;
 		iseditingoffset = true;
 		selected = -1;
-		// curEmoteName = emoteName;
-		// ischangedfromserver = false;
 		//NOTE: does not reset the clipboardCommand
 		// clipboardCommand = null;
+	}
+
+	public static ArrayList<Emote.PartCommand> getCommandList(Emote emote, int partId, boolean intro, boolean offset) {
+		return emote.commands.get(4*curPart + (intro?0:2) + (offset?0:1));
+	}
+	public static void setCommandList(Emote emote, int partId, boolean intro, boolean offset, ArrayList<Emote.PartCommand> s) {
+		emote.commands.set(4*curPart + (intro?0:2) + (offset?0:1), s);
+	}
+	public void onEmoteChange() {
+		ischangedfromserver = true;
+		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 	}
 
 
@@ -73,11 +82,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		this.initiating = true;
 		super.initGui();
 
-		Emote.PartCommands cur_part_commands = curEmote.commands.get(curPart);
-		ArrayList<Emote.PartCommand> cur_command_list = null;
-		if(cur_part_commands != null) {
-			cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
-		}
+		ArrayList<Emote.PartCommand> cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
 
 		//start at top left of menu
 		int x = this.guiLeft;
@@ -98,7 +103,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			this.getButton(605).enabled = false;
 		}
 		y += 22;
-		this.addButton(new GuiNpcButton(606, x, y, 100, 20, "gui." + curPart));
+		this.addButton(new GuiNpcButton(606, x, y, 100, 20, "gui." + Emote.BODY_PARTS[curPart]));
 		y += 22;
 
 
@@ -108,19 +113,19 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 
 		ArrayList<String> command_display_names = new ArrayList<String>();
 		this.scroll.colorlist = new ArrayList<Integer>();
-		if(cur_part_commands != null) {
-			if(cur_command_list.size() > 0) {
+		if(curEmote.partIsUsed(curPart)) {
+			if(cur_command_list != null) {
 				for(int i = 0; i < cur_command_list.size(); i++) {
 					Emote.PartCommand command = cur_command_list.get(i);
 
 					if(command.disabled) {
-					this.scroll.colorlist.add(8421504);
+						this.scroll.colorlist.add(8421504);
 					} else {
-					this.scroll.colorlist.add(16777215);
+						this.scroll.colorlist.add(16777215);
 					}
 					String str;
 					if(iseditingoffset) {
-						str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, (command.y == 0) ? 0 : -command.y, command.z);
+						str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, command.y, command.z);
 					} else {
 						str = String.format(java.util.Locale.US, "%.1f, %.1f, %.1f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
 					}
@@ -155,7 +160,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		x += this.scroll.xSize + 2;
 		this.addButton(new GuiNpcButton(607, x, y, 20, 20, "+"));
 
-		if(cur_part_commands != null && selected >= 0) {
+		if(cur_command_list != null && selected >= 0) {
 			Emote.PartCommand cur_command = cur_command_list.get(selected);
 
 			this.addButton(new GuiNpcButton(608, x + 22,  y, 20, 20, "-"));
@@ -182,8 +187,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				this.getSlider(615).displayString = "X";
 
 				y += 22;
-				this.addTextField(new GuiNpcTextField(616, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.2f", (cur_command.y == 0) ? 0 : -cur_command.y)));
-				this.addSlider(new GuiNpcSlider(this, 616, x, y, 152, 20, Math.max(0.0F, Math.min(1.0F, (-cur_command.y + maxOffset) / (maxOffset * 2.0F)))));
+				this.addTextField(new GuiNpcTextField(616, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.2f", cur_command.y)));
+				this.addSlider(new GuiNpcSlider(this, 616, x, y, 152, 20, Math.max(0.0F, Math.min(1.0F, (cur_command.y + maxOffset) / (maxOffset * 2.0F)))));
 				this.getSlider(616).displayString = "Y";
 
 				y += 22;
@@ -225,29 +230,26 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		super.actionPerformed(btn);
 		if(this.initiating) return;
 
-		Emote.PartCommands cur_part_commands = curEmote.commands.get(curPart);
-		ArrayList<Emote.PartCommand> cur_command_list = null;
-		if(cur_part_commands != null) {
-			cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
-		}
+		ArrayList<Emote.PartCommand> cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
 
 		if(btn.id == 607) {//add anim command
 			Emote.PartCommand command = new Emote.PartCommand();
-			if(cur_part_commands == null) {
-				cur_part_commands = new Emote.PartCommands();
-				cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
-				curEmote.commands.put(curPart, cur_part_commands);
+			if(cur_command_list == null) {
+				setCommandList(curEmote, curPart, iseditingintro, iseditingoffset, new ArrayList<Emote.PartCommand>());
+				cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
 			}
 			selected = cur_command_list.size();
 			cur_command_list.add(command);
-			ischangedfromserver = true;
+			onEmoteChange();
 			this.initGui();
 		} else if(btn.id == 602) {//goto intro commands
 			iseditingintro = true;
+			this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 			selected = -1;
 			this.initGui();
 		} else if(btn.id == 603) {//goto loop commands
 			iseditingintro = false;
+			this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 			selected = -1;
 			this.initGui();
 		} else if(btn.id == 604) {//goto offset commands
@@ -259,40 +261,35 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			selected = -1;
 			this.initGui();
 		} else if(btn.id == 606) {//change and goto part commands
-			for(int i = 0; i < Emote.bipedParts.length; i++) {
-				if(Emote.bipedParts[i].equals(curPart)) {
-					curPart = Emote.bipedParts[(i + 1)%Emote.bipedParts.length];
-					break;
-				}
-			}
+			curPart = (curPart + 1)%Emote.BODY_PARTS.length;
 			this.initGui();
-		} else if(cur_part_commands != null && selected >= 0) {
+		} else if(cur_command_list != null && selected >= 0) {
 			Emote.PartCommand cur_command = cur_command_list.get(selected);
 
 			if(btn.id == 608) {//remove anim command
 				cur_command_list.remove(selected);
 				if(selected == cur_command_list.size()) selected--;
-				if(cur_part_commands.intro_offset.size() == 0 && cur_part_commands.intro_rotate.size() == 0 && cur_part_commands.loop_offset.size() == 0 && cur_part_commands.loop_rotate.size() == 0) {
-					curEmote.commands.remove(curPart);
+				if(cur_command_list.size() == 0) {
+					setCommandList(curEmote, curPart, iseditingintro, iseditingoffset, null);
 				}
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.initGui();
 			} else if(btn.id == 609) {//copy anim command
 				clipboardCommand = cur_command.clone();
 			} else if(btn.id == 610) {//paste anim command
 				cur_command_list.set(selected, clipboardCommand.clone());
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.initGui();
 			} else if(btn.id == 611) {//duplicate anim command
 				cur_command_list.add(selected++, cur_command.clone());
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.initGui();
 			} else if(btn.id == 612) {//move anim command up
 				if(selected > 0) {
 					cur_command_list.set(selected, cur_command_list.get(selected - 1));
 					cur_command_list.set(selected - 1, cur_command);
 					selected -= 1;
-					ischangedfromserver = true;
+					onEmoteChange();
 					this.initGui();
 				}
 			} else if(btn.id == 613) {//move anim command down
@@ -300,12 +297,12 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					cur_command_list.set(selected, cur_command_list.get(selected + 1));
 					cur_command_list.set(selected + 1, cur_command);
 					selected += 1;
-					ischangedfromserver = true;
+					onEmoteChange();
 					this.initGui();
 				}
 			} else if(btn.id == 614) {//toggle disable anim command
 				cur_command.disabled = !cur_command.disabled;
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.initGui();
 			}
 		}
@@ -316,10 +313,9 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		super.mouseDragged(slider);
 		if(this.initiating) return;
 
-		Emote.PartCommands cur_part_commands = curEmote.commands.get(curPart);
+		ArrayList<Emote.PartCommand> cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
 
-		if(cur_part_commands != null && selected >= 0) {
-			ArrayList<Emote.PartCommand> cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
+		if(cur_command_list != null && selected >= 0) {
 			Emote.PartCommand cur_command = cur_command_list.get(selected);
 
 			if(615 <= slider.id && slider.id <= 620 || slider.id == 621) {
@@ -332,7 +328,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					if(slider.id == 615) {
 						cur_command.x = value;
 					} else if(slider.id == 616) {
-						cur_command.y = -value;
+						cur_command.y = value;
 					} else if(slider.id == 617) {
 						cur_command.z = value;
 					}
@@ -358,7 +354,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					text = String.format(java.util.Locale.US, "%.2f", value);
 				}
 
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.getTextField(slider.id).setText(text);
 
 				if(slider.id != 621) {//update command name in scroll
@@ -368,7 +364,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 
 						String str;
 						if(iseditingoffset) {
-							str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, (command.y == 0) ? 0 : -command.y, command.z);
+							str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, command.y, command.z);
 						} else {
 							str = String.format(java.util.Locale.US, "%.1f, %.1f, %.1f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
 						}
@@ -384,9 +380,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public void scrollClicked(int i, int j, int k, GuiCustomScroll scroll) {
 		int pre_selected = selected;
 
-		Emote.PartCommands cur_part_commands = curEmote.commands.get(curPart);
-		if(cur_part_commands != null) {
-			ArrayList<Emote.PartCommand> cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
+		ArrayList<Emote.PartCommand> cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
+		if(cur_command_list != null) {
 
 			if(0 <= this.scroll.selected && this.scroll.selected < cur_command_list.size()) {
 				selected = this.scroll.selected;
@@ -413,10 +408,9 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public void unFocused(GuiNpcTextField textField) {
 		if(this.initiating) return;
 
-		Emote.PartCommands cur_part_commands = curEmote.commands.get(curPart);
+		ArrayList<Emote.PartCommand> cur_command_list = getCommandList(curEmote, curPart, iseditingintro, iseditingoffset);
 
-		if(cur_part_commands != null && selected >= 0) {
-			ArrayList<Emote.PartCommand> cur_command_list = cur_part_commands.getCommandList(iseditingintro, iseditingoffset);
+		if(cur_command_list != null && selected >= 0) {
 			Emote.PartCommand cur_command = cur_command_list.get(selected);
 
 			if(615 <= textField.id && textField.id <= 620 || textField.id == 621) {
@@ -436,7 +430,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					if(textField.id == 615) {
 						cur_command.x = value;
 					} else if(textField.id == 616) {
-						cur_command.y = -value;
+						cur_command.y = value;
 					} else if(textField.id == 617) {
 						cur_command.z = value;
 					}
@@ -453,7 +447,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 						cur_command.z = value;
 					}
 				} else if(textField.id == 621) {//set duration
-					value = Math.min(Emote.maxDuration, Math.max(-Emote.maxDuration, value));
+					value = Math.min(Emote.maxDuration, Math.max(0, value));
 					sliderValue = (value) / (maxDuration);
 
 					cur_command.duration = value;
@@ -462,13 +456,13 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				// textField.setCursorPositionZero();
 				// textField.setSelectionPos(0);
 				// this.getSlider(textField.id).sliderValue = sliderValue;
-				ischangedfromserver = true;
+				onEmoteChange();
 				this.initGui();
 			} else if(textField.id == 623) {//change and set easing
 				int easing = TweenUtils.parseEasingToEnum(textField.getText());
 				if(easing >= 0) {
 					cur_command.easing = easing;
-					ischangedfromserver = true;
+					onEmoteChange();
 				}
 
 				this.initGui();

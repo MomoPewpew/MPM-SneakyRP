@@ -20,7 +20,6 @@ import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PacketHandlerServer;
 import noppes.mpm.Emote;
-import noppes.mpm.client.ClientEmote;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
@@ -55,7 +54,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayer player, EnumPackets type) throws Exception {
-		LogWriter.warn("ClientPacket: " + type);
+		// LogWriter.warn("ClientPacket: " + type);
 		int animation;
 		if (type == EnumPackets.PING) {
 			animation = buffer.readInt();
@@ -328,22 +327,21 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ArrayList<String> names = Server.readArray(buffer);
 				if(names == null) return;
 				Collections.sort(names);
-				if(!ClientEmote.cachedEmoteFileNames.equals(names)) {
-					ClientEmote.cachedEmoteFileNames = names;
+				if(!GuiCreationEmoteLoad.cachedEmoteFileNames.equals(names)) {
+					GuiCreationEmoteLoad.cachedEmoteFileNames = names;
 					GuiCreationEmoteLoad.hasCachedEmoteFileNamesChanged = true;
 				}
 			} else if (type == EnumPackets.EMOTE_LOAD) {
 				// String emoteName = Server.readString(buffer);
 				// if(emoteName == null) return;
-				// LogWriter.warn("ocuw " + emoteName);
 				Emote emote = Emote.readEmote(buffer);
 				if(emote == null) return;
-				LogWriter.warn("ymwd ");
 
 				GuiCreationEmotes.resetAndReplaceEmote(emote);
 				// GuiCreationEmotes.curEmoteName = emoteName;
 				GuiCreationEmotes.ischangedfromserver = false;
 			} else if (type == EnumPackets.EMOTE_DO) {
+				Float speed = buffer.readFloat();
 				String playerName = Server.readString(buffer);
 				if(playerName == null) return;
 				Emote emote = Emote.readEmote(buffer);
@@ -352,10 +350,9 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				World world = Minecraft.getMinecraft().theWorld;
 				EntityPlayer target = world.getPlayerEntityByName(playerName);
 				if(target != null) {
-					boolean succ = ClientEmote.attemptEmote(target, emote);
-					LogWriter.warn("dwsc " + succ);
+					ModelData data = ModelData.get(target);
+					data.startEmote(emote, speed, target);
 				}
-				LogWriter.warn("fh ");
 			} else if (type == EnumPackets.EMOTE_END) {
 				String playerName = Server.readString(buffer);
 				if(playerName == null) return;
@@ -363,8 +360,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				World world = Minecraft.getMinecraft().theWorld;
 				EntityPlayer target = world.getPlayerEntityByName(playerName);
 				if(target != null) {
-					ClientEmote.endEmote(target);
-					LogWriter.warn("sedm ");
+					ModelData data = ModelData.get(target);
+					data.endCurEmote();
 				}
 			}
 		}

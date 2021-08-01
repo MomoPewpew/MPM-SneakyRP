@@ -42,9 +42,7 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
-import noppes.mpm.sync.WebApi;
 import noppes.mpm.util.MPMEntityUtil;
-import noppes.mpm.client.ClientEmote;
 
 import org.lwjgl.input.Keyboard;
 
@@ -198,26 +196,10 @@ public class ClientEventHandler {
           }
      }
 
-     // @SubscribeEvent
-     // public void onRenderTick(RenderTickEvent event) {
-     //      camera.update(event.phase == Phase.START);
-     //      ClientEmote.onRenderTick(event.renderTickTime);
-     // }
-
-	// @SubscribeEvent(priority = EventPriority.HIGHEST)
-	// public void preRenderLiving(RenderLivingEvent.Pre event) {
-	// 	if (event.getEntity() instanceof EntityPlayer) {
-     //           ClientEmote.preRender((EntityPlayer)event.getEntity());
-     //      }
-	// }
-
-	// @SubscribeEvent(priority = EventPriority.LOWEST)
-	// public void postRenderLiving(RenderLivingEvent.Post event) {
-	// 	if (event.getEntity() instanceof EntityPlayer) {
-	// 		ClientEmote.postRender((EntityPlayer) event.getEntity());
-     //      }
-	// }
-
+     @SubscribeEvent
+     public void onRenderTick(RenderTickEvent event) {
+          camera.update(event.phase == Phase.START);
+     }
 
      @SubscribeEvent
      public void onClientTick(ClientTickEvent event) {
@@ -236,7 +218,7 @@ public class ClientEventHandler {
                     ++RenderEvent.lastSkinTick;
                     if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
                          playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
-                         WebApi.instance.run();
+                         // WebApi.instance.run();
                     }
 
                }
@@ -295,6 +277,7 @@ public class ClientEventHandler {
                     entity.onUpdate();
                     MPMEntityUtil.Copy(player, entity);
                } else {
+
                     if (!MorePlayerModels.HasServerSide) {
                          data.eyes.update(player);
                     }

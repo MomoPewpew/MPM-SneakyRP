@@ -63,7 +63,7 @@ public class GuiConfig extends GuiNPCInterface {
                     List players = this.mc.theWorld.playerEntities;
 
                     ModelData data;
-                    for(Iterator var4 = players.iterator(); var4.hasNext(); data.webapiInit = false) {
+                    for(Iterator var4 = players.iterator(); var4.hasNext(); ) {
                          EntityPlayer player = (EntityPlayer)var4.next();
                          data = ModelData.get(player);
                          data.resourceLoaded = false;

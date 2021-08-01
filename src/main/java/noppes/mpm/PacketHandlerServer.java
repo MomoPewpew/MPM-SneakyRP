@@ -42,7 +42,7 @@ public class PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayerMP player, EnumPackets type) throws Exception {
-		LogWriter.warn("ServerPacket: " + type);
+		// LogWriter.warn("ServerPacket: " + type);
 		if (type == EnumPackets.PING) {
 			int version = buffer.readInt();
 			if (version == MorePlayerModels.Version) {
@@ -191,7 +191,7 @@ public class PacketHandlerServer {
 		} else if (type == EnumPackets.PROPGROUP_LOAD_CLIENT) {
 			NBTTagCompound compound = Server.readNBT(buffer);
 
-			String filename = compound.getString("propName") + ".dat";
+			String filename = MorePlayerModels.validateFileName(compound.getString("propName")) + ".dat";
 			File file;
 
 			File dir = null;
@@ -283,17 +283,13 @@ public class PacketHandlerServer {
 			// 	LogWriter.except(var4);
 			// }
 		} else if (type == EnumPackets.EMOTE_SAVE) {
-			// LogWriter.warn("aew");
 			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
 			if(emoteName == null) return;
-			// LogWriter.warn("hg " + emoteName);
 			Emote emote = Emote.readEmote(buffer);
 			if(emote == null) return;
 
 			String filename = emoteName + ".dat";
 
-			// LogWriter.warn("we" + filename);
-			// try {
 			File dir = null;
 			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
 
@@ -302,7 +298,6 @@ public class PacketHandlerServer {
 				return;
 			}
 
-			// LogWriter.warn("r" + filename);
 			File file = new File(dir, filename);
 			if(file.exists()) {//save copy
 				File archive = null;
@@ -316,21 +311,15 @@ public class PacketHandlerServer {
 				file.renameTo(filenew);
 			}
 
-			// LogWriter.warn("0");
 			FileOutputStream out = new FileOutputStream(file);
 			ByteBuf filedata = Unpooled.buffer();
 			try {
 				Emote.writeEmote(filedata, emote);
 				byte[] rawdata = filedata.array();
-				// LogWriter.warn("2 " + filedata.capacity());
 				out.write(rawdata);
 			} finally {
 				filedata.release();
 			}
-				// LogWriter.warn("1");
-			// } catch (Exception var4) {
-			// 	LogWriter.except(var4);
-			// }
 		} else if (type == EnumPackets.EMOTE_REMOVE) {
 			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
 			if(emoteName == null) return;
@@ -340,7 +329,6 @@ public class PacketHandlerServer {
 			// try {
 			File dir = null;
 			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
-			LogWriter.warn("ozf " + filename);
 
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -350,7 +338,6 @@ public class PacketHandlerServer {
 
 			File file = new File(dir, filename);
 			if(file.exists()) {//save copy
-				LogWriter.warn("sfe ");
 				File archive = null;
 				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
 				if (!archive.exists()) {
@@ -360,7 +347,6 @@ public class PacketHandlerServer {
 				File filenew = new File(archive, filenamenew);
 
 				boolean succ = file.renameTo(filenew);
-				LogWriter.warn("iznre " + succ);
 			}
 			// } catch (Exception var4) {
 			// 	LogWriter.except(var4);

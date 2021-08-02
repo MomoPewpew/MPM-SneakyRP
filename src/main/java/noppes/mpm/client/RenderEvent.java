@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -121,6 +122,14 @@ public class RenderEvent {
                     event.setCanceled(true);
                     if (PixelmonHelper.isPixelmon(entity)) {
                          entity.setSneaking(true);
+                    }
+
+                    if (entity instanceof EntityTameable) {
+                        if (player.isSneaking()) {
+                        	((EntityTameable) entity).setSitting(true);
+                        } else {
+                        	((EntityTameable) entity).setSitting(false);
+                        }
                     }
 
                     if (data.textureObject != null) {

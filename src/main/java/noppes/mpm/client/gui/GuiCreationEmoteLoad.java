@@ -147,6 +147,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			Emote.writeEmote(buffer, GuiCreationEmotes.curEmote);
 			Client.sendData(buffer);
 			GuiCreationEmotes.ischangedfromserver = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
+			this.initGui();
 		} else if(btn.id == 658) {//reset local emote
 			GuiCreationEmotes.resetAndReplaceEmote(new Emote());
 			GuiCreationEmotes.curEmoteName = "";

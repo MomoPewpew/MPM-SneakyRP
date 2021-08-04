@@ -56,6 +56,7 @@ import noppes.mpm.client.layer.LayerLegs;
 import noppes.mpm.client.layer.LayerProp;
 import noppes.mpm.client.model.ModelBipedAlt;
 import noppes.mpm.client.model.ModelPlayerAlt;
+import noppes.mpm.client.gui.GuiCreationEmotes;
 
 public class ClientProxy extends CommonProxy {
 	public static KeyBinding Screen;
@@ -104,6 +105,7 @@ public class ClientProxy extends CommonProxy {
 		ClientCommandHandler.instance.registerCommand(new CommandWave());
 		ClientCommandHandler.instance.registerCommand(new CommandYes());
 		ClientCommandHandler.instance.registerCommand(new CommandNames());
+
 	}
 
 	@Override

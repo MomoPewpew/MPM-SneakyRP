@@ -8,6 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import net.minecraft.client.gui.GuiButton;
 
 import noppes.mpm.ModelData;
@@ -36,7 +42,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public GuiCustomScroll scroll;
 	public boolean initiating = false;
 
-	public static Emote curEmote = new Emote();
+	public static Emote curEmote = null;
 	public static String curEmoteName = "";
 	public static int curPart = Emote.HEAD;
 	public static boolean iseditingintro = true;
@@ -45,13 +51,35 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	// public static boolean isloadingnewemote = false;
 	public static int selected = -1;
 	public static Emote.PartCommand clipboardCommand = null;
+	public static File autosaveFile;
 
+	public static void load() {
+		File dir = null;
+		autosaveFile = new File(dir, "moreplayermodels" + File.separator + "emote-autosave.dat");
+
+		ByteBuf buffer = Unpooled.buffer();
+		try {
+			if(autosaveFile.exists()) {
+				buffer.writeBytes(new FileInputStream(autosaveFile), (int)autosaveFile.length());
+
+				curEmote = Emote.readEmote(buffer);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			buffer.release();
+			if(curEmote == null) {
+				curEmote = new Emote();
+			}
+		}
+	}
 
 	public GuiCreationEmotes() {
 		this.playerdata = ModelData.get(this.getPlayer());
 		this.active = 601;
 		this.xOffset = 140;
 
+		load();//should this be here?
 		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 	}
 
@@ -65,15 +93,29 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		// clipboardCommand = null;
 	}
 
+
 	public static ArrayList<Emote.PartCommand> getCommandList(Emote emote, int partId, boolean intro, boolean offset) {
 		return emote.commands.get(4*curPart + (intro?0:2) + (offset?0:1));
 	}
 	public static void setCommandList(Emote emote, int partId, boolean intro, boolean offset, ArrayList<Emote.PartCommand> s) {
 		emote.commands.set(4*curPart + (intro?0:2) + (offset?0:1), s);
 	}
+
 	public void onEmoteChange() {
 		ischangedfromserver = true;
 		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
+
+		ByteBuf filedata = Unpooled.buffer();
+		try {
+			FileOutputStream out = new FileOutputStream(autosaveFile);
+			Emote.writeEmote(filedata, curEmote);
+			byte[] rawdata = filedata.array();
+			out.write(rawdata);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			filedata.release();
+		}
 	}
 
 
@@ -219,7 +261,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			y += 22;
 
 			this.addLabel(new GuiNpcLabel(622, "gui.easing", x + 2,  y + 5, 16777215));
-			this.addTextField(new GuiNpcTextField(623, this, x + 40, y + 1, 151, 18, TweenUtils.easings[cur_command.easing].toString().toLowerCase()));
+			this.addTextField(new GuiNpcTextField(623, this, x + 40, y + 1, 151, 18, TweenUtils.easings[cur_command.easing].toString()));
 		}
 
 		this.initiating = false;

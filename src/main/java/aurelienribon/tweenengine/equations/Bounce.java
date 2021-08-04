@@ -16,7 +16,7 @@ public abstract class Bounce extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Bounce.IN";
+			return "easeInBounce";
 		}
 	};
 
@@ -36,7 +36,7 @@ public abstract class Bounce extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Bounce.OUT";
+			return "easeOutBounce";
 		}
 	};
 
@@ -49,7 +49,7 @@ public abstract class Bounce extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Bounce.INOUT";
+			return "easeInOutBounce";
 		}
 	};
 }

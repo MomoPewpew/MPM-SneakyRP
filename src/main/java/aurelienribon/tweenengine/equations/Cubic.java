@@ -16,7 +16,7 @@ public abstract class Cubic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Cubic.IN";
+			return "easeInCubic";
 		}
 	};
 
@@ -28,7 +28,7 @@ public abstract class Cubic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Cubic.OUT";
+			return "easeOutCubic";
 		}
 	};
 
@@ -41,7 +41,7 @@ public abstract class Cubic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Cubic.INOUT";
+			return "easeInOutCubic";
 		}
 	};
 }

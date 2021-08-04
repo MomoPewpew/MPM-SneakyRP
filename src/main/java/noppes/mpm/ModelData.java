@@ -32,10 +32,10 @@ import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 
+import noppes.mpm.LogWriter;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
-// import noppes.mpm.client.model.ModelAccessor;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
@@ -538,12 +538,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
 				if(t != null) {
 					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t);
+					loop.push(t.repeat(60*60*24, 0));
 				}
 				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
 				if(t != null) {
 					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t);
+					loop.push(t.repeat(60*60*24, 0));
 				}
 			}
 			if(loop == null) {
@@ -553,11 +553,11 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 					return intro;
 				}
 			} else if(intro == null) {
-				return loop.repeat(60*60*24, 0);
+				return loop;
 			} else {
 				Timeline timeline = Timeline.createSequence();
 				timeline.push(intro);
-				timeline.push(loop.repeat(60*60*24, 0));
+				timeline.push(loop);
 				return timeline;
 			}
 		}
@@ -601,7 +601,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 						timeline.pushPause(command.duration);
 					} else if(total == 1) {
 						Tween tween;
-						//NOTE: this is highly specific to ModelAccessor
 						if(isx) {
 							tween = Tween.to(states, tweenId + 0, command.duration).target(command.x);
 						} else if(isy) {
@@ -758,12 +757,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				setPartAxis(biped.bipedBodyWear, Emote.BODY, states);
 			}
 			if(emote.partIsUsed(Emote.MODEL)) {
-				float offsetX = (states[Emote.MODEL + Emote.OFF_X]);
-				float offsetY = (states[Emote.MODEL + Emote.OFF_Y]);
-				float offsetZ = (states[Emote.MODEL + Emote.OFF_Z]);
-				float rotX = states[Emote.MODEL + Emote.ROT_X];
-				float rotY = states[Emote.MODEL + Emote.ROT_Y];
-				float rotZ = states[Emote.MODEL + Emote.ROT_Z];
+				int id = Emote.AXIS_COUNT*Emote.MODEL;
+				float offsetX = states[id + Emote.OFF_X];
+				float offsetY = states[id + Emote.OFF_Y];
+				float offsetZ = states[id + Emote.OFF_Z];
+				float rotX = states[id + Emote.ROT_X];
+				float rotY = states[id + Emote.ROT_Y];
+				float rotZ = states[id + Emote.ROT_Z];
 
 				GlStateManager.translate(0, playerHeight / 2, 0);
 

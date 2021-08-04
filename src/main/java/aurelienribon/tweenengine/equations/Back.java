@@ -17,7 +17,7 @@ public abstract class Back extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Back.IN";
+			return "easeInBack";
 		}
 	};
 
@@ -30,7 +30,7 @@ public abstract class Back extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Back.OUT";
+			return "easeOutBack";
 		}
 	};
 
@@ -44,7 +44,7 @@ public abstract class Back extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Back.INOUT";
+			return "easeInOutBack";
 		}
 	};
 

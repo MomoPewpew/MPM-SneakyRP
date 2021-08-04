@@ -5,9 +5,6 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 import net.minecraft.server.MinecraftServer;
-// import net.minecraft.client.model.ModelBiped;
-// import net.minecraft.entity.player.EntityPlayer;
-// import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
@@ -191,7 +188,6 @@ public class Emote {
 	public static boolean isValidPartCommandList(ArrayList<PartCommand> list, float maxCoordRange) {
 		if(list == null) return true;
 		if(list.size() == 0) return false;
-		// float totalDuration = 0;
 		for(int i = 0; i < list.size(); i++) {
 			PartCommand command = list.get(i);
 			if(Math.abs(command.x) >= maxCoordRange) return false;
@@ -199,9 +195,7 @@ public class Emote {
 			if(Math.abs(command.z) >= maxCoordRange) return false;
 			if(command.duration < 0 || command.duration >= maxDuration) return false;
 			if(command.easing < 0 || command.easing >= TweenUtils.easings.length) return false;
-			// totalDuration += command.duration;
 		}
-		// return (totalDuration <= maxTotalDuration);
 		return true;
 	}
 
@@ -229,7 +223,6 @@ public class Emote {
 			Server.sendToAll(server, sendBuffer);
 			return true;
 		} catch (Exception var4) {
-			// LogWriter.except(var4);
 			return false;
 		}
 	}

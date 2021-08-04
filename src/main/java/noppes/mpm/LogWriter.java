@@ -17,7 +17,7 @@ import java.util.logging.StreamHandler;
 
 public class LogWriter {
      private static final String name = "MorePlayerModels";
-     private static final Logger logger = Logger.getLogger("MorePlayerModels");
+     private static final Logger logger = Logger.getLogger(name);
      private static final SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm:ss");
      private static Handler handler;
 

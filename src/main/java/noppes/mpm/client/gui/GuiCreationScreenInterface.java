@@ -46,7 +46,9 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 		}
 		this.addButton(new GuiNpcButton(100, this.guiLeft + 124, this.guiTop, 60, 20, "gui.props"));
 		this.addButton(new GuiNpcButton(450, this.guiLeft + 124, this.guiTop + 23, 60, 20, "gui.propgroupload"));
-		this.addButton(new GuiNpcButton(400, this.guiLeft + 186, this.guiTop, 60, 20, "gui.skinload"));
+		this.addButton(new GuiNpcButton(400, this.guiLeft + 248, this.guiTop, 60, 20, "gui.skinload"));
+		this.addButton(new GuiNpcButton(601, this.guiLeft + 186, this.guiTop, 60, 20, "gui.emoteeditor"));
+		this.addButton(new GuiNpcButton(651, this.guiLeft + 186, this.guiTop + 23, 60, 20, "gui.emoteload"));
 		if (this.entity == null) {
 			this.addButton(new GuiNpcButton(2, this.guiLeft, this.guiTop + 23, 60, 20, "gui.parts"));
 		} else {
@@ -77,14 +79,17 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	protected void actionPerformed(GuiButton btn) {
 		super.actionPerformed(btn);
 		if (btn.id == 0) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationOptions());
 		}
 
-		if (btn.id == 1) {
+		else if (btn.id == 1) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationEntities());
 		}
 
-		if (btn.id == 2) {
+		else if (btn.id == 2) {
+			this.playerdata.endPreviewEmote();
 			if (this.entity == null) {
 				this.openGui(new GuiCreationParts());
 			} else {
@@ -92,24 +97,35 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 			}
 		}
 
-		if (btn.id == 3) {
+		else if (btn.id == 3) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationScale());
 		}
 
-		if (btn.id == 66) {
+		else if (btn.id == 66) {
 			this.close();
 		}
 
-		if (btn.id == 100) {
+		else if (btn.id == 100) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationProps());
 		}
 
-		if (btn.id == 400) {
+		else if (btn.id == 400) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationSkinLoad());
 		}
 
-		if (btn.id == 450) {
+		else if (btn.id == 450) {
+			this.playerdata.endPreviewEmote();
 			this.openGui(new GuiCreationPropLoad());
+		}
+
+		else if (btn.id == 601) {
+			this.openGui(new GuiCreationEmotes());
+		}
+		else if (btn.id == 651) {
+			this.openGui(new GuiCreationEmoteLoad());
 		}
 	}
 
@@ -174,5 +190,12 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 
 	public EntityPlayer getPlayer() {
 		return player;
+	}
+
+
+	@Override
+	public void close() {
+		super.close();
+		this.playerdata.endPreviewEmote();
 	}
 }

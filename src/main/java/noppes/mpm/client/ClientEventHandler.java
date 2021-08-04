@@ -29,6 +29,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.relauncher.Side;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
@@ -41,7 +43,6 @@ import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
-import noppes.mpm.sync.WebApi;
 import noppes.mpm.util.MPMEntityUtil;
 
 import org.lwjgl.input.Keyboard;
@@ -218,7 +219,6 @@ public class ClientEventHandler {
                     ++RenderEvent.lastSkinTick;
                     if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
                          playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
-                         //WebApi.instance.run();
                     }
 
                }
@@ -277,6 +277,7 @@ public class ClientEventHandler {
                     entity.onUpdate();
                     MPMEntityUtil.Copy(player, entity);
                } else {
+
                     if (!MorePlayerModels.HasServerSide) {
                          data.eyes.update(player);
                     }

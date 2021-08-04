@@ -162,7 +162,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
           GuiNpcTextField.unfocus();
      }
 
-     public final void close() {
+     public void close() {
           if (this.parent != null) {
                this.parent.closeSubGui(this);
           } else {

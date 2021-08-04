@@ -314,12 +314,12 @@ public class GuiCustomScroll extends GuiScreen {
      }
 
      public void setUnsortedList(List list) {
-          if (!this.isSameList(list)) {
-               this.isSorted = false;
-               this.scrollY = 0;
-               this.list = list;
-               this.setSize(this.xSize, this.ySize);
-          }
+          // if (!this.isSameList(list)) {//why was this here? this is sorted equality which defeats the purpose of this function
+          this.isSorted = false;
+          this.scrollY = 0;
+          this.list = list;
+          this.setSize(this.xSize, this.ySize);
+          // }
      }
 
      private boolean isSameList(List list) {

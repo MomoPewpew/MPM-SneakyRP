@@ -53,7 +53,10 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
           }
 
           list = new ArrayList<String>();
-          Integer y = MorePlayerModels.fileNamesPropGroups.size();
+          Integer y = 0;
+          if(MorePlayerModels.fileNamesPropGroups != null) {
+               y = MorePlayerModels.fileNamesPropGroups.size();
+          }
 
           for(int n = 0; n < y; ++n) {
         	  if (MorePlayerModels.fileNamesPropGroups.get(n).contains(searchString.toLowerCase())) {

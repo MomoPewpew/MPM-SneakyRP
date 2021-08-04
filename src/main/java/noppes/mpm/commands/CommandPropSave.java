@@ -23,55 +23,55 @@ public class CommandPropSave extends CommandBase {
 
 		ModelData data = ModelData.get((EntityPlayer) icommandsender);
 
-        String filename = args[0].toLowerCase() + ".dat";
+		String filename = args[0].toLowerCase() + ".dat";
 
-        try {
-            PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
+		try {
+			PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
 
-            for (PropGroup propGroupTemp : data.propGroups) {
-	           	 if (propGroupTemp.name.toLowerCase().equals(args[0].toLowerCase())) {
-	           		 if (propGroup.name.equals("")) {
-	           			 propGroup.readFromNBT(propGroupTemp.writeToNBT());
-	                    } else {
-	                   	 icommandsender.addChatMessage(new TextComponentTranslation("Multiple PropGroups named " + args[0] + " were found on your model. Please delete or rename one of them."));
-	                   	 return;
-	                    }
-	           	 }
-            }
+			for (PropGroup propGroupTemp : data.propGroups) {
+				if (propGroupTemp.name.toLowerCase().equals(args[0].toLowerCase())) {
+					if (propGroup.name.equals("")) {
+						propGroup.readFromNBT(propGroupTemp.writeToNBT());
+					} else {
+						icommandsender.addChatMessage(new TextComponentTranslation("Multiple PropGroups named " + args[0] + " were found on your model. Please delete or rename one of them."));
+						return;
+					}
+				}
+			}
 
-            if (propGroup.name.equals("")) {
-	           	 icommandsender.addChatMessage(new TextComponentTranslation("No PropGroup named " + args[0] + " was found on your model. Please make sure that the prop is grouped and check the group name."));
-	           	 return;
-            }
+			if (propGroup.name.equals("")) {
+				icommandsender.addChatMessage(new TextComponentTranslation("No PropGroup named " + args[0] + " was found on your model. Please make sure that the prop is grouped and check the group name."));
+				return;
+			}
 
-        	File dir = null;
-            dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
-            if (!dir.exists()) {
-                 dir.mkdirs();
-            }
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
 
-             File file = new File(dir, filename);
+			File file = new File(dir, filename);
 
-             if (!file.exists()) {
-                 dir = null;
-                 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-                 if (!dir.exists()) {
-                     dir.mkdirs();
-                }
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
-             }
+				file = new File(dir, filename);
+			}
 
-             if (file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The prop " + args[0] + " already exists. Either /proprem the old version first, or give this one a new name"));
-            	 return;
-             }
+			if (file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The prop " + args[0] + " already exists. Either /proprem the old version first, or give this one a new name"));
+				return;
+			}
 
-             CompressedStreamTools.writeCompressed(propGroup.writeToNBT(), new FileOutputStream(file));
-        } catch (Exception var6) {
-             LogWriter.except(var6);
-             var6.printStackTrace();
-        }
+			CompressedStreamTools.writeCompressed(propGroup.writeToNBT(), new FileOutputStream(file));
+		} catch (Exception var6) {
+			LogWriter.except(var6);
+			var6.printStackTrace();
+		}
 	}
 
 	@Override

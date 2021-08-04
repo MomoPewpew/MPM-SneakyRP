@@ -12,9 +12,9 @@ public abstract class MpmCommandInterface extends CommandBase {
 	}
 
 	@Override
-    public int getRequiredPermissionLevel(){
-        return 0;
-    }
+	public int getRequiredPermissionLevel(){
+		return 0;
+	}
 
 
 	public boolean isPlayerOp(ICommandSender player){

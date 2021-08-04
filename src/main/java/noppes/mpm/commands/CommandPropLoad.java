@@ -36,46 +36,46 @@ public class CommandPropLoad extends CommandBase {
 
 		String filename = args[0].toLowerCase() + ".dat";
 
-        try {
-        	File file;
+		try {
+			File file;
 
-    		File dir = null;
-    		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+			File dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
-            if (!dir.exists()) {
-                  dir.mkdirs();
-             }
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
 
-             file = new File(dir, filename);
+			file = new File(dir, filename);
 
-             if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
-         		dir = null;
-        		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+			if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
 
-                if (!dir.exists()) {
-                      dir.mkdirs();
-                 }
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
-             }
+				file = new File(dir, filename);
+			}
 
-             if (!file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
-            	 return;
-             }
+			if (!file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
+				return;
+			}
 
-             ModelData data = ModelData.get((EntityPlayer) icommandsender);
+			ModelData data = ModelData.get((EntityPlayer) icommandsender);
 
-             PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
+			PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
 
-             NBTTagCompound compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+			NBTTagCompound compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-             propGroup.readFromNBT(compound);
+			propGroup.readFromNBT(compound);
 
-             data.addPropGroupServer(propGroup);
-        } catch (Exception var4) {
-             LogWriter.except(var4);
-        }
+			data.addPropGroupServer(propGroup);
+		} catch (Exception var4) {
+			LogWriter.except(var4);
+		}
 	}
 
 	@Override
@@ -91,10 +91,10 @@ public class CommandPropLoad extends CommandBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List getCommandAliases()
-		{
-			return new ArrayList<String>(Arrays.asList(
-				     "propload",
-				     "pl"
-				));
-		}
+	{
+		return new ArrayList<String>(Arrays.asList(
+		"propload",
+		"pl"
+		));
+	}
 }

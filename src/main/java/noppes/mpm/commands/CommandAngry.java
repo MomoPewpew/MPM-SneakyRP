@@ -16,7 +16,7 @@ public class CommandAngry extends MpmCommandInterface {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
 		if(icommandsender instanceof EntityPlayerMP == false)
-			return;
+		return;
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		Server.sendAssociatedData(player, EnumPackets.PARTICLE, 2, player.getUniqueID());
 	}

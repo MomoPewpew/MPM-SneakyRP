@@ -41,20 +41,20 @@ public class TextBlockClient{
 		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 		for(String word : words){
 			if(word.isEmpty())
-				continue;
+			continue;
 			if(word.length() == 1){
 				char c = word.charAt(0);
 				if(c == '\r' || c == '\n'){
-	        		addLine(line);
+					addLine(line);
 					line = "";
 					continue;
 				}
 			}
 			String newLine;
 			if(line.isEmpty())
-				newLine = word;
+			newLine = word;
 			else
-				newLine = line + " " + word;
+			newLine = line + " " + word;
 
 			if(font.getStringWidth(newLine) > lineWidth){
 				addLine(line);
@@ -65,7 +65,7 @@ public class TextBlockClient{
 			}
 		}
 		if(!line.isEmpty())
-			addLine(line);
+		addLine(line);
 	}
 	private void addLine(String text){
 		TextComponentString line = new TextComponentString(text);

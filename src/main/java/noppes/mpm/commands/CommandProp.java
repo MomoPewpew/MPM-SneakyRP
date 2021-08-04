@@ -27,78 +27,78 @@ import noppes.mpm.constants.EnumPackets;
 public class CommandProp extends MpmCommandInterface {
 
 	private final List<String> listBodyParts = new ArrayList<String>(Arrays.asList(
-	     "hat",
-		 "head",
-		 "model",
-		 "body",
-		 "torso",
-		 "back",
-		 "arm",
-		 "hand",
-		 "armleft",
-		 "handleft",
-		 "leftarm",
-		 "lefthand",
-		 "armright",
-		 "handright",
-		 "rightarm",
-		 "righthand",
-		 "leg",
-		 "foot",
-		 "legleft",
-		 "footleft",
-		 "leftleg",
-		 "leftfoot",
-		 "legright",
-		 "footright",
-		 "rightleg",
-		 "rightfoot"
+	"hat",
+	"head",
+	"model",
+	"body",
+	"torso",
+	"back",
+	"arm",
+	"hand",
+	"armleft",
+	"handleft",
+	"leftarm",
+	"lefthand",
+	"armright",
+	"handright",
+	"rightarm",
+	"righthand",
+	"leg",
+	"foot",
+	"legleft",
+	"footleft",
+	"leftleg",
+	"leftfoot",
+	"legright",
+	"footright",
+	"rightleg",
+	"rightfoot"
 	));
 
 	private final List<String> clearStrings = new ArrayList<String>(Arrays.asList(
-	     "clear",
-	     "reset",
-	     "cl"
+	"clear",
+	"reset",
+	"cl"
 	));
 
 	private final List<String> deleteStrings = new ArrayList<String>(Arrays.asList(
-	     "undo",
-	     "remove",
-	     "delete",
-	     "del",
-	     "rem"
+	"undo",
+	"remove",
+	"delete",
+	"del",
+	"rem"
 	));
 
 	private final List<String> guiStrings = new ArrayList<String>(Arrays.asList(
-	     "gui",
-	     "interface",
-	     "ui",
-	     "options"
+	"gui",
+	"interface",
+	"ui",
+	"options"
 	));
 
 	private final List<String> giveStrings = new ArrayList<String>(Arrays.asList(
-	     "give"
+	"give"
 	));
 
 	private final List<String> nameStrings = new ArrayList<String>(Arrays.asList(
-	     "label",
-	     "name"
+	"label",
+	"name"
 	));
 
 	private final List<String> hideStrings = new ArrayList<String>(Arrays.asList(
-	     "hide"
+	"hide"
 	));
 
 	private final List<String> showStrings = new ArrayList<String>(Arrays.asList(
-	     "show"
+	"show"
 	));
 
 	private final List<String> toggleStrings = new ArrayList<String>(Arrays.asList(
-	     "toggle"
+	"toggle"
 	));
 
 	private final List<String> groupStrings = new ArrayList<String>(Arrays.asList(
-	     "group"
+	"group"
 	));
 
 	@Override
@@ -109,7 +109,7 @@ public class CommandProp extends MpmCommandInterface {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 		if(icommandsender instanceof EntityPlayerMP == false)
-			return;
+		return;
 
 		if (args.length == 0 || (args.length > 0 && guiStrings.contains(args[0]))) {
 			Server.sendData((EntityPlayerMP) icommandsender, EnumPackets.PROP_GUI_OPEN);
@@ -143,17 +143,17 @@ public class CommandProp extends MpmCommandInterface {
 				if (args.length == 0) {
 					giveProp(target, (data.propBase.props.size() - 1), (EntityPlayerMP) icommandsender);
 				} else if (args.length > 1) {
-			   		for (int i = 0; i < data.propBase.props.size(); i++) {
-			   			if (data.propBase.props.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
+					for (int i = 0; i < data.propBase.props.size(); i++) {
+						if (data.propBase.props.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
 							giveProp(target, i, (EntityPlayerMP) icommandsender);
-			   			}
-			   		}
+						}
+					}
 
-			   		for (int i = 0; i < data.propGroups.size(); i++) {
-			   			if (data.propGroups.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
+					for (int i = 0; i < data.propGroups.size(); i++) {
+						if (data.propGroups.get(i).name.toLowerCase().equals(args[1].toLowerCase())) {
 							givePropGroup(target, i, (EntityPlayerMP) icommandsender);
-			   			}
-			   		}
+						}
+					}
 				}
 				return;
 			} else if (hideStrings.contains(args[0])) {
@@ -193,23 +193,23 @@ public class CommandProp extends MpmCommandInterface {
 					File dir = null;
 					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroups");
 
-		            if (!dir.exists()) {
-		                  return;
-		             }
+					if (!dir.exists()) {
+						return;
+					}
 
-		            NBTTagCompound compound = new NBTTagCompound();
+					NBTTagCompound compound = new NBTTagCompound();
 
-			        try {
-			             file = new File(dir, filename);
-			             compound = !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
+					try {
+						file = new File(dir, filename);
+						compound = !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-			             PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
-			             propGroup.readFromNBT(compound);
+						PropGroup propGroup = new PropGroup((EntityPlayer) icommandsender);
+						propGroup.readFromNBT(compound);
 
-			             data.addPropGroupServer(propGroup);
-			        } catch (Exception var4) {
-			             LogWriter.except(var4);
-		            }
+						data.addPropGroupServer(propGroup);
+					} catch (Exception var4) {
+						LogWriter.except(var4);
+					}
 
 					return;
 				}
@@ -239,11 +239,11 @@ public class CommandProp extends MpmCommandInterface {
 			Float ppOffsetZ = (args.length > 16) ? Float.valueOf(args[16]) : 0.0F;
 
 			prop = new Prop(propString, bodyPartName,
-				propScaleX, propScaleY, propScaleZ,
-				propOffsetX, propOffsetY, propOffsetZ,
-				propRotateX, propRotateY, propRotateZ,
-				propMatchScaling, propHide, propName,
-				ppOffsetX, ppOffsetY, ppOffsetZ);
+			propScaleX, propScaleY, propScaleZ,
+			propOffsetX, propOffsetY, propOffsetZ,
+			propRotateX, propRotateY, propRotateZ,
+			propMatchScaling, propHide, propName,
+			ppOffsetX, ppOffsetY, ppOffsetZ);
 		} else {
 			String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
 			Float propMotionScatter = (args.length > 2) ? Float.valueOf(args[2]) : 0.0F;
@@ -259,15 +259,15 @@ public class CommandProp extends MpmCommandInterface {
 			String propName = (args.length > 12) ? args[12] : "NONAME";
 
 			prop = new Prop(propString, bodyPartName,
-				propMotionScatter, propFrequency, propAmount,
-				propOffsetX, propOffsetY, propOffsetZ,
-				propPitch, propYaw, propSpeed,
-				propHide, propName);
+			propMotionScatter, propFrequency, propAmount,
+			propOffsetX, propOffsetY, propOffsetZ,
+			propPitch, propYaw, propSpeed,
+			propHide, propName);
 		}
 
 
 		if (!prop.parsePropString(propString))
-			return;
+		return;
 
 		data.propBase.addPropServer(prop);
 	}
@@ -279,21 +279,21 @@ public class CommandProp extends MpmCommandInterface {
 
 	private static EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {
 		EntityPlayerMP closest = null;
-	    double closestDistance = 0;
+		double closestDistance = 0;
 
-	    for (EntityPlayerMP entity : player.getEntityWorld().getEntities(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING)) {
-	        if (entity == player || !(entity instanceof EntityPlayerMP)) {
-	            continue;
-	        }
+		for (EntityPlayerMP entity : player.getEntityWorld().getEntities(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING)) {
+			if (entity == player || !(entity instanceof EntityPlayerMP)) {
+				continue;
+			}
 
-	        double distance = entity.getPosition().distanceSq(player.getPosition());
-	        if ((closest == null || distance < closestDistance) && Math.sqrt(distance) <= 3) {
-	            closest = entity;
-	            closestDistance = distance;
-	        }
-	    }
+			double distance = entity.getPosition().distanceSq(player.getPosition());
+			if ((closest == null || distance < closestDistance) && Math.sqrt(distance) <= 3) {
+				closest = entity;
+				closestDistance = distance;
+			}
+		}
 
-	    return closest;
+		return closest;
 	}
 
 	public static void giveProp(EntityPlayerMP target, Integer index, EntityPlayerMP sender) {

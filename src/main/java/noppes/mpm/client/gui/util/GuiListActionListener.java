@@ -1,7 +1,7 @@
 package noppes.mpm.client.gui.util;
 
 public interface GuiListActionListener {
-     void elementClicked();
+	void elementClicked();
 
-     void doubleClicked();
+	void doubleClicked();
 }

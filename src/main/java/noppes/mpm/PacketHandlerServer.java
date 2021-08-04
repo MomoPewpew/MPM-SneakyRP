@@ -291,79 +291,79 @@ public class PacketHandlerServer {
 
 			Server.sendData(player, sendBuffer);
 			// } catch (Exception var4) {
-			// 	LogWriter.except(var4);
-			// }
-		} else if (type == EnumPackets.EMOTE_SAVE) {
-			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
-			if(emoteName == null) return;
-			Emote emote = Emote.readEmote(buffer);
-			if(emote == null) return;
+				// 	LogWriter.except(var4);
+				// }
+			} else if (type == EnumPackets.EMOTE_SAVE) {
+				String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
+				if(emoteName == null) return;
+				Emote emote = Emote.readEmote(buffer);
+				if(emote == null) return;
 
-			String filename = emoteName + ".dat";
+				String filename = emoteName + ".dat";
 
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+				File dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
 
-			if (!dir.exists()) {
-				dir.mkdirs();
-				return;
-			}
-
-			File file = new File(dir, filename);
-			if(file.exists()) {//save copy
-				File archive = null;
-				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
-				if (!archive.exists()) {
-					archive.mkdirs();
+				if (!dir.exists()) {
+					dir.mkdirs();
+					return;
 				}
-				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
-				File filenew = new File(archive, filenamenew);
 
-				file.renameTo(filenew);
-			}
+				File file = new File(dir, filename);
+				if(file.exists()) {//save copy
+					File archive = null;
+					archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
+					if (!archive.exists()) {
+						archive.mkdirs();
+					}
+					String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
+					File filenew = new File(archive, filenamenew);
 
-			FileOutputStream out = new FileOutputStream(file);
-			ByteBuf filedata = Unpooled.buffer();
-			try {
-				Emote.writeEmote(filedata, emote);
-				byte[] rawdata = filedata.array();
-				out.write(rawdata);
-			} finally {
-				filedata.release();
-			}
-		} else if (type == EnumPackets.EMOTE_REMOVE) {
-			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
-			if(emoteName == null) return;
-
-			String filename = emoteName + ".dat";
-
-			// try {
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
-
-			if (!dir.exists()) {
-				dir.mkdirs();
-				return;
-			}
-
-
-			File file = new File(dir, filename);
-			if(file.exists()) {//save copy
-				File archive = null;
-				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
-				if (!archive.exists()) {
-					archive.mkdirs();
+					file.renameTo(filenew);
 				}
-				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
-				File filenew = new File(archive, filenamenew);
 
-				boolean succ = file.renameTo(filenew);
+				FileOutputStream out = new FileOutputStream(file);
+				ByteBuf filedata = Unpooled.buffer();
+				try {
+					Emote.writeEmote(filedata, emote);
+					byte[] rawdata = filedata.array();
+					out.write(rawdata);
+				} finally {
+					filedata.release();
+				}
+			} else if (type == EnumPackets.EMOTE_REMOVE) {
+				String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
+				if(emoteName == null) return;
+
+				String filename = emoteName + ".dat";
+
+				// try {
+					File dir = null;
+					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+
+					if (!dir.exists()) {
+						dir.mkdirs();
+						return;
+					}
+
+
+					File file = new File(dir, filename);
+					if(file.exists()) {//save copy
+						File archive = null;
+						archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
+						if (!archive.exists()) {
+							archive.mkdirs();
+						}
+						String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
+						File filenew = new File(archive, filenamenew);
+
+						boolean succ = file.renameTo(filenew);
+					}
+					// } catch (Exception var4) {
+						// 	LogWriter.except(var4);
+						// }
+					} else {
+						LogWriter.warn("bad packet: " + type.ordinal());
+					}
+				}
 			}
-			// } catch (Exception var4) {
-			// 	LogWriter.except(var4);
-			// }
-		} else {
-			LogWriter.warn("bad packet: " + type.ordinal());
-		}
-	}
-}

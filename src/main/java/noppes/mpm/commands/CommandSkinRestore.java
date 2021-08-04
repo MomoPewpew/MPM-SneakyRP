@@ -31,85 +31,85 @@ public class CommandSkinRestore extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;
 
-        try {
-    		 File dir = null;
+		try {
+			File dir = null;
 
-    		 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
 
-             if (!dir.exists()) {
-                  dir.mkdirs();
-              }
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
 
-             file = new File(dir, filename);
+			file = new File(dir, filename);
 
-             if (!file.exists()) {
-            	 dir = null;
-            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
 
-                 if (!dir.exists()) {
-                      dir.mkdirs();
-                  }
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
+				file = new File(dir, filename);
 
-                 if (file.exists()) {
-                	 NBTTagCompound temp = CompressedStreamTools.readCompressed(new FileInputStream(file));
+				if (file.exists()) {
+					NBTTagCompound temp = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-                     if (!temp.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
-                    	 return;
-                 }
-             }
+					if (!temp.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+					return;
+				}
+			}
 
-             if (!file.exists()) {
-            	 dir = null;
-            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
 
-                 if (!dir.exists()) {
-                      dir.mkdirs();
-                  }
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
-             }
+				file = new File(dir, filename);
+			}
 
-             if (file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " is still present on the server."));
-            	 return;
-             }
+			if (file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " is still present on the server."));
+				return;
+			}
 
-             dir = null;
-        	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "archive");
+			dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "archive");
 
-        	 long timeStamp = 0;
+			long timeStamp = 0;
 
-             for (final File fileEntry : dir.listFiles()) {
-                 if (fileEntry.isDirectory()) {
-                     continue;
-                 } else {
-                	 if (fileEntry.getName().startsWith(args[0].toLowerCase() + "-")) {
-                		 String fileName = new String(fileEntry.getName());
-                		 long timeStampTemp = Long.valueOf(fileName.replace(args[0].toLowerCase() + "-", "").replace(".dat", ""));
+			for (final File fileEntry : dir.listFiles()) {
+				if (fileEntry.isDirectory()) {
+					continue;
+				} else {
+					if (fileEntry.getName().startsWith(args[0].toLowerCase() + "-")) {
+						String fileName = new String(fileEntry.getName());
+						long timeStampTemp = Long.valueOf(fileName.replace(args[0].toLowerCase() + "-", "").replace(".dat", ""));
 
-                		 if (timeStampTemp > timeStamp) {
-                    		 timeStamp = timeStampTemp;
-                    		 file = fileEntry;
-                		 }
-                	 }
-                 }
-             }
+						if (timeStampTemp > timeStamp) {
+							timeStamp = timeStampTemp;
+							file = fileEntry;
+						}
+					}
+				}
+			}
 
-             if (file.exists()) {
-            	 File dirnew = null;
-            	 dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-                 File filenew = new File(dirnew, filename);
-            	 file.renameTo(filenew);
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was restored. If this was not the right skin, please contact a developer."));
-             } else {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found in the archive. Please check the spelling or contact a developer."));
-             }
+			if (file.exists()) {
+				File dirnew = null;
+				dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+				File filenew = new File(dirnew, filename);
+				file.renameTo(filenew);
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was restored. If this was not the right skin, please contact a developer."));
+			} else {
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found in the archive. Please check the spelling or contact a developer."));
+			}
 
-        } catch (Exception var4) {
-             LogWriter.except(var4);
-        }
+		} catch (Exception var4) {
+			LogWriter.except(var4);
+		}
 	}
 
 	@Override

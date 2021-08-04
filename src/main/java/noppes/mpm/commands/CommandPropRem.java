@@ -18,37 +18,37 @@ public class CommandPropRem extends CommandBase {
 
 		if (args.length == 0) return;
 
-        File dir = null;
-        dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-        if (!dir.exists()) {
-             dir.mkdirs();
-        }
+		File dir = null;
+		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
 
-        String filename = args[0].toLowerCase() + ".dat";
+		String filename = args[0].toLowerCase() + ".dat";
 
-        try {
-             File file = new File(dir, filename);
+		try {
+			File file = new File(dir, filename);
 
-             if (!file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
-            	 return;
-             }
+			if (!file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
+				return;
+			}
 
-             File dirnew = null;
-             dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "archive");
+			File dirnew = null;
+			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "archive");
 
-             if (!dirnew.exists()) {
-            	 dirnew.mkdirs();
-            }
+			if (!dirnew.exists()) {
+				dirnew.mkdirs();
+			}
 
-             String filenamenew = args[0].toLowerCase() + "-" + System.currentTimeMillis() + ".dat";
-             File filenew = new File(dirnew, filenamenew);
+			String filenamenew = args[0].toLowerCase() + "-" + System.currentTimeMillis() + ".dat";
+			File filenew = new File(dirnew, filenamenew);
 
-        	 file.renameTo(filenew);
-        } catch (Exception var6) {
-             LogWriter.except(var6);
-             var6.printStackTrace();
-        }
+			file.renameTo(filenew);
+		} catch (Exception var6) {
+			LogWriter.except(var6);
+			var6.printStackTrace();
+		}
 	}
 
 	@Override

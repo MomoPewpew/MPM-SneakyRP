@@ -18,7 +18,7 @@ public class CommandSing extends MpmCommandInterface {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
 		if(icommandsender instanceof EntityPlayerMP == false)
-			return;
+		return;
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 
 		int note = player.getRNG().nextInt(25);
@@ -26,12 +26,12 @@ public class CommandSing extends MpmCommandInterface {
 			try{
 				int n = Integer.parseInt(var2[0]);
 				if(n >= 0 && n < 25)
-					note = n;
+				note = n;
 			}
 			catch(NumberFormatException ex){}
 		}
-        float var7 = (float)Math.pow(2.0D, (double)(note - 12) / 12.0D);
-        player.worldObj.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.PLAYERS, 3.0F, var7);
+		float var7 = (float)Math.pow(2.0D, (double)(note - 12) / 12.0D);
+		player.worldObj.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.PLAYERS, 3.0F, var7);
 
 		Server.sendAssociatedData(player, EnumPackets.PARTICLE, 1, player.posX, player.posY + 2, player.posZ, note / 24d);
 	}

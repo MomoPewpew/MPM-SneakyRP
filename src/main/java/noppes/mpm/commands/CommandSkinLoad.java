@@ -35,59 +35,59 @@ public class CommandSkinLoad extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;
 
-        try {
-    		 File dir = null;
+		try {
+			File dir = null;
 
-    		 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
 
-             if (!dir.exists()) {
-                  dir.mkdirs();
-              }
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
 
-             file = new File(dir, filename);
+			file = new File(dir, filename);
 
-             NBTTagCompound compound = new NBTTagCompound();
+			NBTTagCompound compound = new NBTTagCompound();
 
-             if (!file.exists()) {
-            	 dir = null;
-            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
 
-                 if (!dir.exists()) {
-                      dir.mkdirs();
-                  }
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
+				file = new File(dir, filename);
 
-                 if (file.exists()) {
-                	 NBTTagCompound temp = CompressedStreamTools.readCompressed(new FileInputStream(file));
+				if (file.exists()) {
+					NBTTagCompound temp = CompressedStreamTools.readCompressed(new FileInputStream(file));
 
-                     if (!temp.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
-                    	 return;
-                 }
-             }
+					if (!temp.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
+					return;
+				}
+			}
 
-             if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
-            	 dir = null;
-            	 dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+			if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
 
-                 if (!dir.exists()) {
-                      dir.mkdirs();
-                  }
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
-                 file = new File(dir, filename);
-             }
+				file = new File(dir, filename);
+			}
 
-             if (!file.exists()) {
-            	 icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found on the server."));
-            	 return;
-             } else {
-            	 compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
-             }
+			if (!file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found on the server."));
+				return;
+			} else {
+				compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+			}
 
-             Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
-        } catch (Exception var4) {
-             LogWriter.except(var4);
-        }
+			Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
+		} catch (Exception var4) {
+			LogWriter.except(var4);
+		}
 	}
 
 	@Override
@@ -103,10 +103,10 @@ public class CommandSkinLoad extends CommandBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List getCommandAliases()
-		{
-			return new ArrayList<String>(Arrays.asList(
-				     "skinload",
-				     "sl"
-				));
-		}
+	{
+		return new ArrayList<String>(Arrays.asList(
+		"skinload",
+		"sl"
+		));
+	}
 }

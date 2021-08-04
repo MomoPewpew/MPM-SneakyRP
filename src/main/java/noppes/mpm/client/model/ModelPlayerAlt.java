@@ -162,19 +162,19 @@ public class ModelPlayerAlt extends ModelPlayer {
 	@Override
 	public ModelRenderer getRandomModelBox(Random random) {
 		switch(random.nextInt(5)) {
-		case 0:
+			case 0:
 			return this.bipedHead;
-		case 1:
+			case 1:
 			return this.bipedBody;
-		case 2:
+			case 2:
 			return this.bipedLeftArm;
-		case 3:
+			case 3:
 			return this.bipedRightArm;
-		case 4:
+			case 4:
 			return this.bipedLeftLeg;
-		case 5:
+			case 5:
 			return this.bipedRightLeg;
-		default:
+			default:
 			return this.bipedHead;
 		}
 	}

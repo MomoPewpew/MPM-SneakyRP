@@ -21,117 +21,117 @@ import org.apache.logging.log4j.Logger;
 
 @SideOnly(Side.CLIENT)
 public class ImageDownloadAlt extends SimpleTexture {
-     private static final Logger logger = LogManager.getLogger();
-     private static final AtomicInteger threadDownloadCounter = new AtomicInteger(0);
-     private final File cacheFile;
-     private final String imageUrl;
-     private final IImageBuffer imageBuffer;
-     private BufferedImage bufferedImage;
-     private Thread imageThread;
-     private boolean textureUploaded;
+	private static final Logger logger = LogManager.getLogger();
+	private static final AtomicInteger threadDownloadCounter = new AtomicInteger(0);
+	private final File cacheFile;
+	private final String imageUrl;
+	private final IImageBuffer imageBuffer;
+	private BufferedImage bufferedImage;
+	private Thread imageThread;
+	private boolean textureUploaded;
 
-     public ImageDownloadAlt(File file, String url, ResourceLocation resource, IImageBuffer buffer) {
-          super(resource);
-          this.cacheFile = file;
-          this.imageUrl = url;
-          this.imageBuffer = buffer;
-     }
+	public ImageDownloadAlt(File file, String url, ResourceLocation resource, IImageBuffer buffer) {
+		super(resource);
+		this.cacheFile = file;
+		this.imageUrl = url;
+		this.imageBuffer = buffer;
+	}
 
-     private void checkTextureUploaded() {
-          if (!this.textureUploaded && this.bufferedImage != null) {
-               this.textureUploaded = true;
-               if (this.textureLocation != null) {
-                    this.deleteGlTexture();
-               }
+	private void checkTextureUploaded() {
+		if (!this.textureUploaded && this.bufferedImage != null) {
+			this.textureUploaded = true;
+			if (this.textureLocation != null) {
+				this.deleteGlTexture();
+			}
 
-               TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
-          }
+			TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
+		}
 
-     }
+	}
 
-     @Override
-     public int getGlTextureId() {
-          this.checkTextureUploaded();
-          return super.getGlTextureId();
-     }
+	@Override
+	public int getGlTextureId() {
+		this.checkTextureUploaded();
+		return super.getGlTextureId();
+	}
 
-     public void setBufferedImage(BufferedImage p_147641_1_) {
-          this.bufferedImage = p_147641_1_;
-          if (this.imageBuffer != null) {
-               this.imageBuffer.skinAvailable();
-          }
+	public void setBufferedImage(BufferedImage p_147641_1_) {
+		this.bufferedImage = p_147641_1_;
+		if (this.imageBuffer != null) {
+			this.imageBuffer.skinAvailable();
+		}
 
-     }
+	}
 
-     @Override
-     public void loadTexture(IResourceManager resourceManager) throws IOException {
-          if (this.bufferedImage == null && this.textureLocation != null) {
-               super.loadTexture(resourceManager);
-          }
+	@Override
+	public void loadTexture(IResourceManager resourceManager) throws IOException {
+		if (this.bufferedImage == null && this.textureLocation != null) {
+			super.loadTexture(resourceManager);
+		}
 
-          if (this.imageThread == null) {
-               if (this.cacheFile != null && this.cacheFile.isFile()) {
-                    logger.debug("Loading http texture from local cache ({})", new Object[]{this.cacheFile});
+		if (this.imageThread == null) {
+			if (this.cacheFile != null && this.cacheFile.isFile()) {
+				logger.debug("Loading http texture from local cache ({})", new Object[]{this.cacheFile});
 
-                    try {
-                         this.bufferedImage = ImageIO.read(this.cacheFile);
-                         if (this.imageBuffer != null) {
-                              this.setBufferedImage(this.imageBuffer.parseUserSkin(this.bufferedImage));
-                         }
-                    } catch (IOException var3) {
-                         logger.error("Couldn't load skin " + this.cacheFile, var3);
-                         this.loadTextureFromServer();
-                    }
-               } else {
-                    this.loadTextureFromServer();
-               }
-          }
+				try {
+					this.bufferedImage = ImageIO.read(this.cacheFile);
+					if (this.imageBuffer != null) {
+						this.setBufferedImage(this.imageBuffer.parseUserSkin(this.bufferedImage));
+					}
+				} catch (IOException var3) {
+					logger.error("Couldn't load skin " + this.cacheFile, var3);
+					this.loadTextureFromServer();
+				}
+			} else {
+				this.loadTextureFromServer();
+			}
+		}
 
-     }
+	}
 
-     protected void loadTextureFromServer() {
-          this.imageThread = new Thread("Texture Downloader #" + threadDownloadCounter.incrementAndGet()) {
-               private static final String __OBFID = "CL_00001050";
+	protected void loadTextureFromServer() {
+		this.imageThread = new Thread("Texture Downloader #" + threadDownloadCounter.incrementAndGet()) {
+			private static final String __OBFID = "CL_00001050";
 
-               public void run() {
-                    HttpURLConnection connection = null;
-                    ImageDownloadAlt.logger.debug("Downloading http texture from {} to {}", new Object[]{ImageDownloadAlt.this.imageUrl, ImageDownloadAlt.this.cacheFile});
+			public void run() {
+				HttpURLConnection connection = null;
+				ImageDownloadAlt.logger.debug("Downloading http texture from {} to {}", new Object[]{ImageDownloadAlt.this.imageUrl, ImageDownloadAlt.this.cacheFile});
 
-                    try {
-                         connection = (HttpURLConnection)(new URL(ImageDownloadAlt.this.imageUrl)).openConnection(Minecraft.getMinecraft().getProxy());
-                         connection.setDoInput(true);
-                         connection.setDoOutput(false);
-                         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
-                         connection.connect();
-                         if (connection.getResponseCode() / 100 != 2) {
-                              return;
-                         }
+				try {
+					connection = (HttpURLConnection)(new URL(ImageDownloadAlt.this.imageUrl)).openConnection(Minecraft.getMinecraft().getProxy());
+					connection.setDoInput(true);
+					connection.setDoOutput(false);
+					connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 5.1; rv:19.0) Gecko/20100101 Firefox/19.0");
+					connection.connect();
+					if (connection.getResponseCode() / 100 != 2) {
+						return;
+					}
 
-                         BufferedImage bufferedimage;
-                         if (ImageDownloadAlt.this.cacheFile != null) {
-                              FileUtils.copyInputStreamToFile(connection.getInputStream(), ImageDownloadAlt.this.cacheFile);
-                              bufferedimage = ImageIO.read(ImageDownloadAlt.this.cacheFile);
-                         } else {
-                              bufferedimage = TextureUtil.readBufferedImage(connection.getInputStream());
-                         }
+					BufferedImage bufferedimage;
+					if (ImageDownloadAlt.this.cacheFile != null) {
+						FileUtils.copyInputStreamToFile(connection.getInputStream(), ImageDownloadAlt.this.cacheFile);
+						bufferedimage = ImageIO.read(ImageDownloadAlt.this.cacheFile);
+					} else {
+						bufferedimage = TextureUtil.readBufferedImage(connection.getInputStream());
+					}
 
-                         if (ImageDownloadAlt.this.imageBuffer != null) {
-                              bufferedimage = ImageDownloadAlt.this.imageBuffer.parseUserSkin(bufferedimage);
-                         }
+					if (ImageDownloadAlt.this.imageBuffer != null) {
+						bufferedimage = ImageDownloadAlt.this.imageBuffer.parseUserSkin(bufferedimage);
+					}
 
-                         ImageDownloadAlt.this.setBufferedImage(bufferedimage);
-                    } catch (Exception var6) {
-                         ImageDownloadAlt.logger.error("Couldn't download http texture", var6);
-                    } finally {
-                         if (connection != null) {
-                              connection.disconnect();
-                         }
+					ImageDownloadAlt.this.setBufferedImage(bufferedimage);
+				} catch (Exception var6) {
+					ImageDownloadAlt.logger.error("Couldn't download http texture", var6);
+				} finally {
+					if (connection != null) {
+						connection.disconnect();
+					}
 
-                    }
+				}
 
-               }
-          };
-          this.imageThread.setDaemon(true);
-          this.imageThread.start();
-     }
+			}
+		};
+		this.imageThread.setDaemon(true);
+		this.imageThread.start();
+	}
 }

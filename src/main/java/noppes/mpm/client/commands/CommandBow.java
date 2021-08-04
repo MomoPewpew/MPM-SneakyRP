@@ -13,7 +13,7 @@ public class CommandBow extends MpmCommandInterface {
 	public String getCommandName() {
 		return "bow";
 	}
-
+	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] var2) {
 		ClientEventHandler.processAnimation(EnumAnimation.BOW.ordinal());

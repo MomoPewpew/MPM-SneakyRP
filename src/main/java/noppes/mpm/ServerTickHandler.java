@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import noppes.mpm.client.AnalyticsTracking;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 
@@ -80,7 +79,6 @@ public class ServerTickHandler {
 			}
 
 			ModelData data = ModelData.get(event.player);
-			//AnalyticsTracking.sendData(data.analyticsUUID, "join", serverName);
 		}
 	}
 }

@@ -229,4 +229,9 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			textField.setSelectionPos(textField.getText().length());
 		}
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField var1) {
+
+	}
 }

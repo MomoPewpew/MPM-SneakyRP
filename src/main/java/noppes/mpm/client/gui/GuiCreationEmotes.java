@@ -479,4 +479,10 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			textField.setSelectionPos(textField.getText().length());
 		}
 	}
+
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField var1) {
+
+	}
 }

@@ -40,7 +40,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public static String curEmoteName = "";
 	public static int curPart = Emote.HEAD;
 	public static boolean iseditingintro = true;
-	public static boolean iseditingoffset = true;
+	public static boolean iseditingoffset = false;
 	public static boolean ischangedfromserver = true;
 	// public static boolean isloadingnewemote = false;
 	public static int selected = -1;
@@ -59,7 +59,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		curEmote = emote;
 		curPart = Emote.HEAD;
 		iseditingintro = true;
-		iseditingoffset = true;
+		iseditingoffset = false;
 		selected = -1;
 		//NOTE: does not reset the clipboardCommand
 		// clipboardCommand = null;
@@ -95,8 +95,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			this.getButton(603).enabled = false;
 		}
 		y += 22;
-		this.addButton(new GuiNpcButton(604, x,      y, 50, 20, "gui.offset"));
-		this.addButton(new GuiNpcButton(605, x + 50, y, 50, 20, "gui.rotate"));
+		this.addButton(new GuiNpcButton(605, x,      y, 50, 20, "gui.rotate"));
+		this.addButton(new GuiNpcButton(604, x + 50, y, 50, 20, "gui.offset"));
 		if(iseditingoffset) {
 			this.getButton(604).enabled = false;
 		} else {
@@ -262,6 +262,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			this.initGui();
 		} else if(btn.id == 606) {//change and goto part commands
 			curPart = (curPart + 1)%Emote.BODY_PARTS.length;
+			selected = -1;
 			this.initGui();
 		} else if(cur_command_list != null && selected >= 0) {
 			Emote.PartCommand cur_command = cur_command_list.get(selected);

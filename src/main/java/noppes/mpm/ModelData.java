@@ -505,7 +505,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		}
 		public void startPreviewEmote(Emote emote, EntityPlayer player, boolean isintro) {
 			this.endPreviewEmote();
-			Timeline timeline = createPreviewTimeline(emote, this.previewStates, isintro);
+
+			Timeline timeline;
+			if(isintro) {
+				timeline = createPreviewTimeline(emote, this.previewStates, isintro);
+			} else {
+				timeline = createTimeline(emote, this.previewStates);
+			}
 
 			timeline.start(player);
 			this.previewEmote = emote;

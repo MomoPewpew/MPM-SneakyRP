@@ -139,4 +139,10 @@ public class GuiModelColor extends GuiNPCInterface implements ITextfieldListener
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

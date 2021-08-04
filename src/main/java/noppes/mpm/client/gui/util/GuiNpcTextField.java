@@ -3,6 +3,7 @@ package noppes.mpm.client.gui.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.ChatAllowedCharacters;
 
 public class GuiNpcTextField extends GuiTextField {
      public boolean enabled = true;
@@ -51,7 +52,122 @@ public class GuiNpcTextField extends GuiTextField {
 
      @Override
      public boolean textboxKeyTyped(char c, int i) {
-          return !this.charAllowed(c, i) ? false : super.textboxKeyTyped(c, i);
+    	 if (this.listener == null ) {
+    		 return !this.charAllowed(c, i) ? false : super.textboxKeyTyped(c, i);
+    	 } else {
+        	 if (!this.charAllowed(c, i))
+        		 return false;
+
+    		 if (!this.isFocused()) {
+                 return false;
+            } else if (GuiScreen.isKeyComboCtrlA(i)) {
+                 this.setCursorPositionEnd();
+                 this.setSelectionPos(0);
+                 return true;
+            } else if (GuiScreen.isKeyComboCtrlC(i)) {
+                 GuiScreen.setClipboardString(this.getSelectedText());
+                 return true;
+            } else if (GuiScreen.isKeyComboCtrlV(i)) {
+                 if (this.enabled) {
+                      this.writeText(GuiScreen.getClipboardString());
+                 }
+
+                 listener.textboxKeyTyped(this);
+                 return true;
+            } else if (GuiScreen.isKeyComboCtrlX(i)) {
+                 GuiScreen.setClipboardString(this.getSelectedText());
+                 if (this.enabled) {
+                      this.writeText("");
+                 }
+
+                 listener.textboxKeyTyped(this);
+                 return true;
+            } else {
+                 switch(i) {
+                 case 14:
+                      if (GuiScreen.isCtrlKeyDown()) {
+                           if (this.enabled) {
+                                this.deleteWords(-1);
+                           }
+                      } else if (this.enabled) {
+                           this.deleteFromCursor(-1);
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 case 199:
+                      if (GuiScreen.isShiftKeyDown()) {
+                           this.setSelectionPos(0);
+                      } else {
+                           this.setCursorPositionZero();
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 case 203:
+                      if (GuiScreen.isShiftKeyDown()) {
+                           if (GuiScreen.isCtrlKeyDown()) {
+                                this.setSelectionPos(this.getNthWordFromPos(-1, this.getSelectionEnd()));
+                           } else {
+                                this.setSelectionPos(this.getSelectionEnd() - 1);
+                           }
+                      } else if (GuiScreen.isCtrlKeyDown()) {
+                           this.setCursorPosition(this.getNthWordFromCursor(-1));
+                      } else {
+                           this.moveCursorBy(-1);
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 case 205:
+                      if (GuiScreen.isShiftKeyDown()) {
+                           if (GuiScreen.isCtrlKeyDown()) {
+                                this.setSelectionPos(this.getNthWordFromPos(1, this.getSelectionEnd()));
+                           } else {
+                                this.setSelectionPos(this.getSelectionEnd() + 1);
+                           }
+                      } else if (GuiScreen.isCtrlKeyDown()) {
+                           this.setCursorPosition(this.getNthWordFromCursor(1));
+                      } else {
+                           this.moveCursorBy(1);
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 case 207:
+                      if (GuiScreen.isShiftKeyDown()) {
+                           this.setSelectionPos(this.getText().length());
+                      } else {
+                           this.setCursorPositionEnd();
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 case 211:
+                      if (GuiScreen.isCtrlKeyDown()) {
+                           if (this.enabled) {
+                                this.deleteWords(1);
+                           }
+                      } else if (this.enabled) {
+                           this.deleteFromCursor(1);
+                      }
+
+                      listener.textboxKeyTyped(this);
+                      return true;
+                 default:
+                      if (ChatAllowedCharacters.isAllowedCharacter(c)) {
+                           if (this.enabled) {
+                                this.writeText(Character.toString(c));
+                           }
+
+                           listener.textboxKeyTyped(this);
+                           return true;
+                      } else {
+                           return false;
+                      }
+                 }
+            }
+    	 }
      }
 
      public boolean isEmpty() {

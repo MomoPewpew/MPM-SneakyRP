@@ -141,4 +141,10 @@ public class GuiCreationPropLoad extends GuiCreationScreenInterface implements I
 			textField.setSelectionPos(textField.getText().length());
 		}
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

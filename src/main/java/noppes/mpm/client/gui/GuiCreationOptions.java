@@ -53,4 +53,10 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

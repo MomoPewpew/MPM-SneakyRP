@@ -36,10 +36,12 @@ import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
 import noppes.mpm.commands.CommandPropRem;
+import noppes.mpm.commands.CommandPropRestore;
 import noppes.mpm.commands.CommandPropSave;
 import noppes.mpm.commands.CommandSing;
 import noppes.mpm.commands.CommandSkinDel;
 import noppes.mpm.commands.CommandSkinLoad;
+import noppes.mpm.commands.CommandSkinRestore;
 import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
@@ -137,7 +139,6 @@ public class MorePlayerModels {
 	public static List<String> entityNamesRemovedFromGui;
 	public static List<String> blacklistedPropStrings;
 
-	public static List<String> fileNamesEmotes;
 	public ConfigLoader configLoader;
 
 	public MorePlayerModels() {
@@ -197,9 +198,11 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandSkinLoad());
 		event.registerServerCommand(new CommandSkinSave());
 		event.registerServerCommand(new CommandSkinDel());
+		event.registerServerCommand(new CommandSkinRestore());
 		event.registerServerCommand(new CommandPropLoad());
 		event.registerServerCommand(new CommandPropSave());
 		event.registerServerCommand(new CommandPropRem());
+		event.registerServerCommand(new CommandPropRestore());
 		event.registerServerCommand(new CommandEmote());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
@@ -226,7 +229,7 @@ public class MorePlayerModels {
 		int i = 0;
 
 		for (final File fileEntry : dir.listFiles()) {
-			if (fileEntry.isDirectory()) {
+			if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
 				continue;
 			} else {
 				NBTTagCompound skinCompound = new NBTTagCompound();
@@ -240,7 +243,8 @@ public class MorePlayerModels {
 				} catch (IOException e) {
 				}
 
-				String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+				String skinName = new String(fileEntry.getName());
+				skinName = skinName.replace(".dat", "");
 
 				compound.setString(("skinName" + String.valueOf(i)), skinName);
 				i++;
@@ -253,7 +257,7 @@ public class MorePlayerModels {
 		if (!dir.exists()) dir.mkdirs();
 
 		for (final File fileEntry : dir.listFiles()) {
-			if (fileEntry.isDirectory()) {
+			if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
 				continue;
 			} else {
 				NBTTagCompound skinCompound = new NBTTagCompound();
@@ -264,7 +268,8 @@ public class MorePlayerModels {
 				} catch (IOException e) {
 				}
 
-				String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+				String skinName = new String(fileEntry.getName());
+				skinName = skinName.replace(".dat", "");
 
 				compound.setString(("skinName" + String.valueOf(i)), skinName);
 				i++;
@@ -278,21 +283,11 @@ public class MorePlayerModels {
 			if (!dir.exists()) dir.mkdirs();
 
 			for (final File fileEntry : dir.listFiles()) {
-				if (fileEntry.isDirectory()) {
+				if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
 					continue;
 				} else {
-					NBTTagCompound skinCompound = new NBTTagCompound();
-
-					try {
-						skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
-
-						if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
-						continue;
-					} catch (FileNotFoundException e) {
-					} catch (IOException e) {
-					}
-
-					String skinName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+					String skinName = new String(fileEntry.getName());
+					skinName = skinName.replace(".dat", "");
 
 					compound.setString(("skinName" + String.valueOf(i)), skinName);
 					i++;
@@ -307,19 +302,39 @@ public class MorePlayerModels {
 		File dir = null;
 		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
-		if (!dir.exists()) return;
+		if (!dir.exists()) dir.mkdirs();
 
 		NBTTagCompound compound = new NBTTagCompound();
 		int i = 0;
 
 		for (final File fileEntry : dir.listFiles()) {
-			if (fileEntry.isDirectory()) {
+			if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
 				continue;
 			} else {
-				String propGroupName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+				String propGroupName = new String(fileEntry.getName());
+				propGroupName = propGroupName.replace(".dat", "");
 
 				compound.setString(("propGroupName" + String.valueOf(i)), propGroupName);
 				i++;
+			}
+		}
+
+		if (!playersEntityDenied.contains(player.getUniqueID())) {
+			dir = null;
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+
+			if (!dir.exists()) dir.mkdirs();
+
+			for (final File fileEntry : dir.listFiles()) {
+				if (fileEntry.isDirectory() || !fileEntry.getName().contains(".dat")) {
+					continue;
+				} else {
+					String propGroupName = new String(fileEntry.getName());
+					propGroupName = propGroupName.replace(".dat", "");
+
+					compound.setString(("propGroupName" + String.valueOf(i)), propGroupName);
+					i++;
+				}
 			}
 		}
 

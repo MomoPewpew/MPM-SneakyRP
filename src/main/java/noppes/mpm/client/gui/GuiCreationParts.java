@@ -543,4 +543,10 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
+		// TODO Auto-generated method stub
+
+	}
 }

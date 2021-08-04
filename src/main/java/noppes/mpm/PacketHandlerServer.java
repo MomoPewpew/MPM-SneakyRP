@@ -167,14 +167,37 @@ public class PacketHandlerServer {
 			File file;
 
 			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-
-			if (!dir.exists()) {
-				return;
-			}
 
 			try {
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
 				file = new File(dir, filename);
+
+				if (!file.exists()) {
+					dir = null;
+					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+
+					file = new File(dir, filename);
+				}
+
+				if (!file.exists()) {
+					dir = null;
+					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+
+					file = new File(dir, filename);
+				}
 
 				if (!file.exists()) {
 					return;
@@ -191,30 +214,19 @@ public class PacketHandlerServer {
 		} else if (type == EnumPackets.PROPGROUP_LOAD_CLIENT) {
 			NBTTagCompound compound = Server.readNBT(buffer);
 
-			String filename = MorePlayerModels.validateFileName(compound.getString("propName")) + ".dat";
+			String filename = compound.getString("propName") + ".dat";
 			File file;
 
 			File dir = null;
 
 			try {
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "unrestricted");
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
 
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
 
 				file = new File(dir, filename);
-
-				if (!file.exists()) {
-					dir = null;
-					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-
-					if (!dir.exists()) {
-						dir.mkdirs();
-					}
-
-					file = new File(dir, filename);
-				}
 
 				if (!file.exists()) {
 					dir = null;
@@ -259,7 +271,6 @@ public class PacketHandlerServer {
 		} else if (type == EnumPackets.EMOTE_LOAD) {
 			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
 			if(emoteName == null) return;
-
 			String filename = emoteName + ".dat";
 
 			File dir = null;

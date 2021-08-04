@@ -34,6 +34,7 @@ import noppes.mpm.client.commands.CommandCry;
 import noppes.mpm.client.commands.CommandDance;
 import noppes.mpm.client.commands.CommandDeath;
 import noppes.mpm.client.commands.CommandHug;
+import noppes.mpm.client.commands.CommandNames;
 import noppes.mpm.client.commands.CommandNo;
 import noppes.mpm.client.commands.CommandPoint;
 import noppes.mpm.client.commands.CommandSit;
@@ -102,6 +103,7 @@ public class ClientProxy extends CommonProxy {
           ClientCommandHandler.instance.registerCommand(new CommandWag());
           ClientCommandHandler.instance.registerCommand(new CommandWave());
           ClientCommandHandler.instance.registerCommand(new CommandYes());
+          ClientCommandHandler.instance.registerCommand(new CommandNames());
      }
 
      @Override

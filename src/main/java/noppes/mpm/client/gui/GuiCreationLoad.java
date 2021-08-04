@@ -58,7 +58,7 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
           this.scroll.guiTop = this.guiTop + 33;
           this.scroll.setSize(100, 144);
           this.addScroll(this.scroll);
-          this.addTextField(new GuiNpcTextField(0, this, this.guiLeft + 4, this.guiTop + 12, 172, 20, "gui.new"));
+          this.addTextField(new GuiNpcTextField(0, this, this.guiLeft + 4, this.guiTop + 12, 172, 20, "New"));
           this.addButton(new GuiNpcButton(10, this.guiLeft + 4, this.guiTop + this.ySize - 46, 86, 20, "gui.done"));
           this.addButton(new GuiNpcButton(11, this.guiLeft + 92, this.guiTop + this.ySize - 46, 86, 20, "gui.cancel"));
      }
@@ -122,6 +122,6 @@ public class GuiCreationLoad extends GuiNPCInterface implements ICustomScrollLis
 	@Override
 	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

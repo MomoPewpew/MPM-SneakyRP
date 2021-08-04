@@ -19,6 +19,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent.Pre;
 import net.minecraftforge.event.CommandEvent;
@@ -218,7 +219,6 @@ public class ClientEventHandler {
                     ++RenderEvent.lastSkinTick;
                     if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
                          playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
-                         // WebApi.instance.run();
                     }
 
                }
@@ -348,4 +348,15 @@ public class ClientEventHandler {
 
           }
      }
+
+    @SubscribeEvent
+ 	public void onRenderLiving(RenderLivingEvent.Specials.Pre event) {
+ 		if (event.getEntity() instanceof EntityPlayer) {
+ 			if (event.isCancelable()) {
+ 				if (MorePlayerModels.HidePlayerNames) {
+ 					event.setCanceled(true);
+ 				}
+ 			}
+ 		}
+ 	}
 }

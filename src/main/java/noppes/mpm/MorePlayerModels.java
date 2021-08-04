@@ -35,6 +35,7 @@ import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
+import noppes.mpm.commands.CommandCE;
 import noppes.mpm.commands.CommandPropRem;
 import noppes.mpm.commands.CommandPropRestore;
 import noppes.mpm.commands.CommandPropSave;
@@ -63,8 +64,8 @@ public class MorePlayerModels {
 	@ConfigProp
 	public static int Tooltips = 2;
 	@SidedProxy(
-	clientSide = "noppes.mpm.client.ClientProxy",
-	serverSide = "noppes.mpm.CommonProxy"
+		clientSide = "noppes.mpm.client.ClientProxy",
+		serverSide = "noppes.mpm.CommonProxy"
 	)
 	public static CommonProxy proxy;
 	public static FMLEventChannel Channel;
@@ -204,6 +205,7 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandPropRem());
 		event.registerServerCommand(new CommandPropRestore());
 		event.registerServerCommand(new CommandEmote());
+		event.registerServerCommand(new CommandCE());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);

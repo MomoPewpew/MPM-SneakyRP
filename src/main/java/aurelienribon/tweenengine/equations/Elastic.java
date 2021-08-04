@@ -24,7 +24,7 @@ public abstract class Elastic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Elastic.IN";
+			return "eaeInElastic";
 		}
 	};
 
@@ -42,7 +42,7 @@ public abstract class Elastic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Elastic.OUT";
+			return "easeOutElastic";
 		}
 	};
 
@@ -61,7 +61,7 @@ public abstract class Elastic extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Elastic.INOUT";
+			return "easeInOutElastic";
 		}
 	};
 

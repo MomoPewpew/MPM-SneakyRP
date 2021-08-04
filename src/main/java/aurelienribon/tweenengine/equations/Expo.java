@@ -16,7 +16,7 @@ public abstract class Expo extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Expo.IN";
+			return "easeInExpo";
 		}
 	};
 
@@ -28,7 +28,7 @@ public abstract class Expo extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Expo.OUT";
+			return "easeOutExpo";
 		}
 	};
 
@@ -43,7 +43,7 @@ public abstract class Expo extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Expo.INOUT";
+			return "easeInOutExpo";
 		}
 	};
 }

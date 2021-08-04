@@ -16,7 +16,7 @@ public abstract class Quad extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Quad.IN";
+			return "easeInQuad";
 		}
 	};
 
@@ -28,7 +28,7 @@ public abstract class Quad extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Quad.OUT";
+			return "easeOutQuad";
 		}
 	};
 
@@ -41,7 +41,7 @@ public abstract class Quad extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Quad.INOUT";
+			return "easeInOutQuad";
 		}
 	};
 }

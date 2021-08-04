@@ -9,7 +9,6 @@ import aurelienribon.tweenengine.TweenEquation;
  */
 public abstract class Sine extends TweenEquation {
 	private static final float PI = 3.14159265f;
-
 	public static final Sine IN = new Sine() {
 		@Override
 		public final float compute(float t) {
@@ -18,7 +17,7 @@ public abstract class Sine extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Sine.IN";
+			return "easeInSine";
 		}
 	};
 
@@ -30,7 +29,7 @@ public abstract class Sine extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Sine.OUT";
+			return "easeOutSine";
 		}
 	};
 
@@ -42,7 +41,7 @@ public abstract class Sine extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Sine.INOUT";
+			return "easeInOutSine";
 		}
 	};
 }

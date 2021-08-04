@@ -5,9 +5,6 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 import net.minecraft.server.MinecraftServer;
-// import net.minecraft.client.model.ModelBiped;
-// import net.minecraft.entity.player.EntityPlayer;
-// import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;

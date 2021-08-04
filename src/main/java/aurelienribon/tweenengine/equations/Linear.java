@@ -16,7 +16,7 @@ public abstract class Linear extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Linear.INOUT";
+			return "easeInOutLinear";
 		}
 	};
 }

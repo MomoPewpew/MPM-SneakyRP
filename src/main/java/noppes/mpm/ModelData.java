@@ -538,12 +538,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
 				if(t != null) {
 					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t);
+					loop.push(t.repeat(60*60*24, 0));
 				}
 				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
 				if(t != null) {
 					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t);
+					loop.push(t.repeat(60*60*24, 0));
 				}
 			}
 			if(loop == null) {
@@ -553,11 +553,11 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 					return intro;
 				}
 			} else if(intro == null) {
-				return loop.repeat(60*60*24, 0);
+				return loop;
 			} else {
 				Timeline timeline = Timeline.createSequence();
 				timeline.push(intro);
-				timeline.push(loop.repeat(60*60*24, 0));
+				timeline.push(loop);
 				return timeline;
 			}
 		}

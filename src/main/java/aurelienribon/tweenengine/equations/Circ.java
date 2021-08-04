@@ -16,7 +16,7 @@ public abstract class Circ extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Circ.IN";
+			return "easeInCirc";
 		}
 	};
 
@@ -28,7 +28,7 @@ public abstract class Circ extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Circ.OUT";
+			return "easeOutCirc";
 		}
 	};
 
@@ -41,7 +41,7 @@ public abstract class Circ extends TweenEquation {
 
 		@Override
 		public String toString() {
-			return "Circ.INOUT";
+			return "easeInOutCirc";
 		}
 	};
 }

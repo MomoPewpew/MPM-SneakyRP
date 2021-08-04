@@ -73,6 +73,8 @@ gui.rightleg=Right Leg
 gui.leftarm=Left Arm
 gui.rightarm=Right Arm
 gui.reset=Reset
+gui.copy=Copy
+gui.paste=Paste
 
 gui.picker=Picker
 gui.confirm=Confirm

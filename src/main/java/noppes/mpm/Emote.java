@@ -52,8 +52,9 @@ public class Emote {
 
 	public static final float maxOffset = 1000F;
 	public static final float maxRotate = (float)Math.toRadians(36000F);
-	// public static final float maxTotalDuration = 60*60;
+	public static final int infDuration = 7*24*60*60;
 	public static final float maxDuration = 60*60;
+	public static final float minDuration = .000001;//NOTE: we can't enforce this just yet for backwards compatibility
 
 	public ArrayList<ArrayList<PartCommand>> commands;
 

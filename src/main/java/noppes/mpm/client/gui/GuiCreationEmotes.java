@@ -169,7 +169,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					if(iseditingoffset) {
 						str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, command.y, command.z);
 					} else {
-						str = String.format(java.util.Locale.US, "%.1f, %.1f, %.1f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
+						str = String.format(java.util.Locale.US, "%.0f, %.0f, %.0f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
 					}
 					command_display_names.add(str);
 				}
@@ -239,17 +239,17 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				this.getSlider(617).displayString = "Z";
 
 			} else {
-				this.addTextField(new GuiNpcTextField(618, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.1f", Math.toDegrees(cur_command.x))));
+				this.addTextField(new GuiNpcTextField(618, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.0f", Math.toDegrees(cur_command.x))));
 				this.addSlider(new GuiNpcSlider(this, 618, x, y, 152, 20, Math.max(0.0F, Math.min(1.0F, (cur_command.x + maxRotation) / (maxRotation * 2.0F)))));
 				this.getSlider(618).displayString = "X";
 
 				y += 22;
-				this.addTextField(new GuiNpcTextField(619, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.1f", Math.toDegrees(cur_command.y))));
+				this.addTextField(new GuiNpcTextField(619, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.0f", Math.toDegrees(cur_command.y))));
 				this.addSlider(new GuiNpcSlider(this, 619, x, y, 152, 20, Math.max(0.0F, Math.min(1.0F, (cur_command.y + maxRotation) / (maxRotation * 2.0F)))));
 				this.getSlider(619).displayString = "Y";
 
 				y += 22;
-				this.addTextField(new GuiNpcTextField(620, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.1f", Math.toDegrees(cur_command.z))));
+				this.addTextField(new GuiNpcTextField(620, this, x + 155, y + 1, 36, 18, String.format(java.util.Locale.US, "%.0f", Math.toDegrees(cur_command.z))));
 				this.addSlider(new GuiNpcSlider(this, 620, x, y, 152, 20, Math.max(0.0F, Math.min(1.0F, (cur_command.z + maxRotation) / (maxRotation * 2.0F)))));
 				this.getSlider(620).displayString = "Z";
 			}
@@ -365,14 +365,18 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				Float value = 0.0F;
 				String text = "";
 
+				boolean hasChanged = false;
 				if(615 <= slider.id && slider.id <= 617) {//set offset
 					value = ((slider.sliderValue - 0.5F) * (maxOffset * 2.0F));
 
 					if(slider.id == 615) {
+						hasChanged = Math.abs(cur_command.x - value) > .0001;
 						cur_command.x = value;
 					} else if(slider.id == 616) {
+						hasChanged = Math.abs(cur_command.y - value) > .0001;
 						cur_command.y = value;
 					} else if(slider.id == 617) {
+						hasChanged = Math.abs(cur_command.z - value) > .0001;
 						cur_command.z = value;
 					}
 
@@ -381,23 +385,27 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 					value = ((slider.sliderValue - 0.5F) * (maxRotation * 2.0F));
 
 					if(slider.id == 618) {
+						hasChanged = Math.abs(cur_command.x - value) > .0001;
 						cur_command.x = value;
 					} else if(slider.id == 619) {
+						hasChanged = Math.abs(cur_command.y - value) > .0001;
 						cur_command.y = value;
 					} else if(slider.id == 620) {
+						hasChanged = Math.abs(cur_command.z - value) > .0001;
 						cur_command.z = value;
 					}
 
-					text = String.format(java.util.Locale.US, "%.1f", Math.toDegrees(value));
+					text = String.format(java.util.Locale.US, "%.0f", Math.toDegrees(value));
 				} else if(slider.id == 621) {//set duration
-					value = ((slider.sliderValue) * (maxDuration));
+					value = Math.max(Emote.minDuration, (slider.sliderValue) * (maxDuration));
 
+					hasChanged = Math.abs(cur_command.duration - value) > .0001;
 					cur_command.duration = value;
 
 					text = String.format(java.util.Locale.US, "%.2f", value);
 				}
 
-				onEmoteChange();
+				if(hasChanged) onEmoteChange();
 				this.getTextField(slider.id).setText(text);
 
 				if(slider.id != 621) {//update command name in scroll
@@ -409,7 +417,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 						if(iseditingoffset) {
 							str = String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, command.y, command.z);
 						} else {
-							str = String.format(java.util.Locale.US, "%.1f, %.1f, %.1f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
+							str = String.format(java.util.Locale.US, "%.0f, %.0f, %.0f", Math.toDegrees(command.x), Math.toDegrees(command.y), Math.toDegrees(command.z));
 						}
 						command_display_names.add(str);
 					}
@@ -485,7 +493,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 						cur_command.z = value;
 					}
 				} else if(textField.id == 621) {//set duration
-					value = Math.min(Emote.maxDuration, Math.max(0, value));
+					value = Math.min(Emote.maxDuration, Math.max(Emote.minDuration, value));
 					sliderValue = (value) / (maxDuration);
 
 					cur_command.duration = value;

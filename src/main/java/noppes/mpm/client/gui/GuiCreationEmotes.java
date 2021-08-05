@@ -73,6 +73,20 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			}
 		}
 	}
+	public static void writeAutosave() {
+
+		ByteBuf filedata = Unpooled.buffer();
+		try {
+			FileOutputStream out = new FileOutputStream(autosaveFile);
+			Emote.writeEmote(filedata, curEmote);
+			byte[] rawdata = filedata.array();
+			out.write(rawdata);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			filedata.release();
+		}
+	}
 
 	public GuiCreationEmotes() {
 		this.playerdata = ModelData.get(this.getPlayer());
@@ -91,6 +105,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		selected = -1;
 		//NOTE: does not reset the clipboardCommand
 		// clipboardCommand = null;
+		writeAutosave();
 	}
 
 
@@ -104,18 +119,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 	public void onEmoteChange() {
 		ischangedfromserver = true;
 		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
-
-		ByteBuf filedata = Unpooled.buffer();
-		try {
-			FileOutputStream out = new FileOutputStream(autosaveFile);
-			Emote.writeEmote(filedata, curEmote);
-			byte[] rawdata = filedata.array();
-			out.write(rawdata);
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			filedata.release();
-		}
+		writeAutosave();
 	}
 
 

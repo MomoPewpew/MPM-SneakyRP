@@ -78,10 +78,12 @@ public class Server {
 
 					while(var4.hasNext()) {
 						EntityPlayerMP player = (EntityPlayerMP)var4.next();
-						MorePlayerModels.Channel.sendTo(new FMLProxyPacket(new PacketBuffer(buf), "MorePlayerModels"), player);
+						MorePlayerModels.Channel.sendTo(new FMLProxyPacket(new PacketBuffer(buf.copy()), "MorePlayerModels"), player);
 					}
 				} catch (Exception var6) {
 					LogWriter.except(var6);
+				} finally {
+					buf.release();
 				}
 
 			});
@@ -105,12 +107,13 @@ public class Server {
 
 					while(var4.hasNext()) {
 						EntityPlayerMP player = (EntityPlayerMP)var4.next();
-						MorePlayerModels.Channel.sendTo(new FMLProxyPacket(new PacketBuffer(buf), "MorePlayerModels"), player);
+						MorePlayerModels.Channel.sendTo(new FMLProxyPacket(new PacketBuffer(buf.copy()), "MorePlayerModels"), player);
 					}
 				} catch (Exception var6) {
 					LogWriter.except(var6);
+				} finally {
+					buf.release();
 				}
-
 			});
 		}
 	}
@@ -143,8 +146,8 @@ public class Server {
 							buffer.writeInt(value);
 							writeString(buffer, s);
 						}
-					} else if (ob instanceof MerchantRecipeList) {
-						((MerchantRecipeList)ob).writeToBuf(new PacketBuffer(buffer));
+					// } else if (ob instanceof MerchantRecipeList) {
+					// 	((MerchantRecipeList)ob).writeToBuf(new PacketBuffer(buffer));
 					} else if (ob instanceof List) {
 						List list = (List)ob;
 						buffer.writeInt(list.size());

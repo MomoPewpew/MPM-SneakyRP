@@ -324,9 +324,11 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			} else if(btn.id == 609) {//copy anim command
 				clipboardCommand = cur_command.clone();
 			} else if(btn.id == 610) {//paste anim command
-				cur_command_list.set(selected, clipboardCommand.clone());
-				onEmoteChange();
-				this.initGui();
+				if(clipboardCommand != null) {
+					cur_command_list.set(selected, clipboardCommand.clone());
+					onEmoteChange();
+					this.initGui();
+				}
 			} else if(btn.id == 611) {//duplicate anim command
 				cur_command_list.add(selected++, cur_command.clone());
 				onEmoteChange();

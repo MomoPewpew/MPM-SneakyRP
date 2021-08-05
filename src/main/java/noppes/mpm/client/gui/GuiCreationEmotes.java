@@ -93,7 +93,7 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		this.active = 601;
 		this.xOffset = 140;
 
-		load();//should this be here?
+		load();//should this be here? maybe loading once on init would be better
 		this.playerdata.startPreviewEmote(curEmote, this.getPlayer(), iseditingintro);
 	}
 

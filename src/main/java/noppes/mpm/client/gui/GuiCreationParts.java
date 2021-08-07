@@ -41,7 +41,10 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 			new GuiCreationParts.GuiPartHalo(),
 			new GuiCreationParts.GuiPartEyes(),
 			new GuiCreationParts.GuiPartParticles(),
-			new GuiCreationParts.GuiPartArms(),
+			new GuiCreationParts.GuiPartArmLeft(),
+			new GuiCreationParts.GuiPartArmRight(),
+			new GuiCreationParts.GuiPartLegLeft(),
+			new GuiCreationParts.GuiPartLegRight(),
 			new GuiCreationParts.GuiPartBody(),
 			new GuiCreationParts.GuiPartHead()};
 			this.active = 2;
@@ -143,9 +146,9 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 			}
 		}
 
-		class GuiPartArms extends GuiCreationParts.GuiPart {
-			public GuiPartArms() {
-				super(EnumParts.ARMS);
+		class GuiPartArmLeft extends GuiCreationParts.GuiPart {
+			public GuiPartArmLeft() {
+				super(EnumParts.ARM_LEFT);
 				this.types = new String[]{"gui.none", "gui.normal"};
 				this.canBeDeleted = false;
 			}
@@ -168,8 +171,34 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						this.data.playerTexture = false;
 					}
 				}
+			}
+		}
 
-				super.actionPerformed(btn);
+		class GuiPartArmRight extends GuiCreationParts.GuiPart {
+			public GuiPartArmRight() {
+				super(EnumParts.ARM_RIGHT);
+				this.types = new String[]{"gui.none", "gui.normal"};
+				this.canBeDeleted = false;
+			}
+
+			@Override
+			public int initGui() {
+				this.hasPlayerOption = false;
+				int y = super.initGui();
+
+				return y;
+			}
+
+			@Override
+			protected void actionPerformed(GuiButton btn) {
+				if (btn.id == 20) {
+					int i = ((GuiNpcButton)btn).getValue();
+					if (i <= 1) {
+						this.data.playerTexture = true;
+					} else {
+						this.data.playerTexture = false;
+					}
+				}
 			}
 		}
 
@@ -200,6 +229,62 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 				}
 
 				super.actionPerformed(btn);
+			}
+		}
+
+		class GuiPartLegLeft extends GuiCreationParts.GuiPart {
+			public GuiPartLegLeft() {
+				super(EnumParts.LEG_LEFT);
+				this.types = new String[]{"gui.none", "gui.normal"};
+				this.canBeDeleted = false;
+			}
+
+			@Override
+			public int initGui() {
+				this.hasPlayerOption = false;
+				int y = super.initGui();
+
+				return y;
+			}
+
+			@Override
+			protected void actionPerformed(GuiButton btn) {
+				if (btn.id == 20) {
+					int i = ((GuiNpcButton)btn).getValue();
+					if (i <= 1) {
+						this.data.playerTexture = true;
+					} else {
+						this.data.playerTexture = false;
+					}
+				}
+			}
+		}
+
+		class GuiPartLegRight extends GuiCreationParts.GuiPart {
+			public GuiPartLegRight() {
+				super(EnumParts.LEG_RIGHT);
+				this.types = new String[]{"gui.none", "gui.normal"};
+				this.canBeDeleted = false;
+			}
+
+			@Override
+			public int initGui() {
+				this.hasPlayerOption = false;
+				int y = super.initGui();
+
+				return y;
+			}
+
+			@Override
+			protected void actionPerformed(GuiButton btn) {
+				if (btn.id == 20) {
+					int i = ((GuiNpcButton)btn).getValue();
+					if (i <= 1) {
+						this.data.playerTexture = true;
+					} else {
+						this.data.playerTexture = false;
+					}
+				}
 			}
 		}
 

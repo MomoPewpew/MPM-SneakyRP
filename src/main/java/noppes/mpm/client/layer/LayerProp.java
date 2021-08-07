@@ -603,7 +603,7 @@ public class LayerProp extends LayerInterface {
 						}
 
 						Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
-						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ;
+						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ - this.playerdata.modelOffsetZ;
 
 						//Apply roll
 						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
@@ -619,7 +619,7 @@ public class LayerProp extends LayerInterface {
 							hyp = (float) (Xyaw / Math.sin(anglePrev));
 						}
 
-						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX;
+						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX - this.playerdata.modelOffsetX;
 						propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 					}
 
@@ -639,10 +639,10 @@ public class LayerProp extends LayerInterface {
 					Float partModifierZ2 = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
 					this.player.worldObj.spawnParticle(propParticleType,
-					this.player.posX - propOffsetXCorrected2 - partModifierX2,
-					this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY,
-					this.player.posZ + propOffsetZCorrected2 + partModifierZ2,
-					propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
+						this.player.posX - propOffsetXCorrected2 - partModifierX2,
+						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - this.playerdata.modelOffsetY,
+						this.player.posZ + propOffsetZCorrected2 + partModifierZ2,
+						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 
 				prop.lastplayed = System.currentTimeMillis();

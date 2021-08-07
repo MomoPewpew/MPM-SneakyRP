@@ -171,6 +171,8 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						this.data.playerTexture = false;
 					}
 				}
+
+				super.actionPerformed(btn);
 			}
 		}
 
@@ -199,6 +201,8 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						this.data.playerTexture = false;
 					}
 				}
+
+				super.actionPerformed(btn);
 			}
 		}
 
@@ -257,6 +261,8 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						this.data.playerTexture = false;
 					}
 				}
+
+				super.actionPerformed(btn);
 			}
 		}
 
@@ -285,6 +291,8 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						this.data.playerTexture = false;
 					}
 				}
+
+				super.actionPerformed(btn);
 			}
 		}
 

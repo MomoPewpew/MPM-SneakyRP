@@ -254,7 +254,12 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
 	public void preRender(AbstractClientPlayer player) {
 		this.player = player;
 		this.playerdata = ModelData.get(player);
+
 		ModelPartData data = this.playerdata.getPartData(EnumParts.LEGS);
-		this.model.bipedLeftLeg.isHidden = this.model.bipedRightLeg.isHidden = this.model.bipedLeftLegwear.isHidden = this.model.bipedRightLegwear.isHidden = data == null || data.type != 0;
+		ModelPartData dataLeftLeg = this.playerdata.getOrCreatePart(EnumParts.LEG_LEFT);
+		ModelPartData dataRightLeg = this.playerdata.getOrCreatePart(EnumParts.LEG_RIGHT);
+
+		this.model.bipedLeftLeg.isHidden = this.model.bipedLeftLegwear.isHidden = data == null || data.type != 0 || dataLeftLeg.type != 0;
+		this.model.bipedRightLeg.isHidden = this.model.bipedRightLegwear.isHidden = data == null || data.type != 0 || dataRightLeg.type != 0;
 	}
 }

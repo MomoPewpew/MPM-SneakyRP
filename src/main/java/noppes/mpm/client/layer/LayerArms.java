@@ -63,7 +63,7 @@ public class LayerArms extends LayerInterface implements LayerPreRender  {
 		ModelPartData dataLeftArm = this.playerdata.getOrCreatePart(EnumParts.ARM_LEFT);
 		ModelPartData dataRightArm = this.playerdata.getOrCreatePart(EnumParts.ARM_RIGHT);
 
-		this.model.bipedLeftArm.isHidden = this.model.bipedLeftArmwear.isHidden = dataLeftArm == null || dataLeftArm.type != 0;
-		this.model.bipedRightArm.isHidden = this.model.bipedRightArmwear.isHidden = dataRightArm == null || dataRightArm.type != 0;
+		this.model.bipedLeftArm.isHidden = this.model.bipedLeftArmwear.isHidden = dataLeftArm.type != 0;
+		this.model.bipedRightArm.isHidden = this.model.bipedRightArmwear.isHidden = dataRightArm.type != 0;
 	}
 }

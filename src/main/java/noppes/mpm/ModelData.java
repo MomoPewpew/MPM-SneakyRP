@@ -78,12 +78,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public float[] previewStates = new float[Emote.STATE_COUNT];
 	public long previewTempId = 0;
 
-	//These variables track your model offset for model emotes, so particle props have a way of tracking your position during these
-	public float modelOffsetX = 0.0F;
-	public float modelOffsetY = 0.0F;
-	public float modelOffsetZ = 0.0F;
-
-
 	public ModelData() {
 		this.backItem = null;
 		this.inLove = 0;
@@ -650,10 +644,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				for(int i = 0; i < Emote.STATE_COUNT; i++) {
 					this.animStates[i] = 0.0F;
 				}
-
-				this.modelOffsetX = 0.0F;
-				this.modelOffsetY = 0.0F;
-				this.modelOffsetZ = 0.0F;
 			}
 		}
 		public void endPreviewEmote() {
@@ -705,9 +695,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		}
 		public void animModelPlayer(ModelPlayer biped) {
 			if(this.previewTempId > 0) {
-				animModelPlayerFromStates(biped, this.previewStates, this.previewEmote, this.player.height, this);
+				animModelPlayerFromStates(biped, this.previewStates, this.previewEmote, this.player.height);
 			} else if(this.curEmoteTempId > 0) {
-				animModelPlayerFromStates(biped, this.animStates, this.curEmote, this.player.height, this);
+				animModelPlayerFromStates(biped, this.animStates, this.curEmote, this.player.height);
 			}
 		}
 		public void animModelBiped(ModelBiped biped) {
@@ -718,7 +708,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 
-		public static void animModelPlayerFromStates(ModelPlayer biped, float[] states, Emote emote, float playerHeight, ModelData data) {
+		public static void animModelPlayerFromStates(ModelPlayer biped, float[] states, Emote emote, float playerHeight) {
 			if(emote.partIsOffset(Emote.HEAD)) {
 				setPartOffset(biped.bipedHead, Emote.HEAD, states);
 				setPartOffset(biped.bipedHeadwear, Emote.HEAD, states);
@@ -777,10 +767,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				GlStateManager.translate(0, playerHeight / 2, 0);
 
 				GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
-
-				data.modelOffsetX = offsetX;
-				data.modelOffsetY = offsetY;
-				data.modelOffsetZ = offsetZ;
 
 				if (rotY != 0)
 				GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);

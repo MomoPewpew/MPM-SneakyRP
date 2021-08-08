@@ -626,12 +626,74 @@ public class LayerProp extends LayerInterface {
 
 					//Calculate particle motion
 					//Apply pitch
-					Double propMotionYCorrected = propMotionSpeed * Math.cos(propMotionPitch);
+					Double propMotionY = propMotionSpeed * Math.cos(propMotionPitch);
 					Double propMotionZPitch = propMotionSpeed * Math.sin(propMotionPitch);
 
 					//Apply yaw
-					Double propMotionZCorrected = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
-					Double propMotionXCorrected = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+					Double propMotionZ = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+					Double propMotionX = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+
+					Double propMotionXCorrected = null;
+					Double propMotionYCorrected = null;
+					Double propMotionZCorrected = null;
+					if (prop.bodyPartName.equals("model")) {
+						propMotionXCorrected = propMotionX;
+						propMotionYCorrected = propMotionY;
+						propMotionZCorrected = propMotionZ;
+					} else {
+						Float anglePrev;
+						Double hyp;
+						//Apply pitch
+						if (propMotionZ == 0) {
+							if (propMotionY <= 0) {
+								anglePrev = 0.0F;
+								hyp = propMotionY;
+							} else {
+								anglePrev = (float) Math.PI;
+								hyp = -propMotionY;
+							}
+						} else {
+							anglePrev = (float) Math.atan2(propMotionZ, propMotionY);
+							hyp = (propMotionZ / Math.sin(anglePrev));
+						}
+
+						Double Zpitch = (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
+						Double Ypitch = (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
+
+						//Apply yaw
+						if (propMotionX == 0) {
+							if (Zpitch >= 0) {
+								anglePrev = 0.0F;
+								hyp = Zpitch;
+							} else {
+								anglePrev = (float) Math.PI;
+								hyp = -Zpitch;
+							}
+						} else {
+							anglePrev = (float) Math.atan2(propMotionX, Zpitch);
+							hyp = (propMotionX / Math.sin(anglePrev));
+						}
+
+						Double Xyaw = (Math.sin(anglePrev - propBodyPart.rotateAngleY) * hyp);
+						propMotionZCorrected = (Math.cos(anglePrev - propBodyPart.rotateAngleY) * hyp);
+
+						//Apply roll
+						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
+							if (Ypitch <= 0) {
+								anglePrev = 0.0F;
+								hyp = Ypitch;
+							} else {
+								anglePrev = (float) Math.PI;
+								hyp = -Ypitch;
+							}
+						} else {
+							anglePrev = (float) Math.atan2(Xyaw, Ypitch);
+							hyp = (Xyaw / Math.sin(anglePrev));
+						}
+
+						propMotionXCorrected = (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
+						propMotionYCorrected = (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
+					}
 
 					//Adjust for model yaw
 					Float propOffsetXCorrectedCorrected = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));

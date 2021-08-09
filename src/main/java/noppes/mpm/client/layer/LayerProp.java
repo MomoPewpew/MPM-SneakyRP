@@ -640,11 +640,8 @@ public class LayerProp extends LayerInterface {
 						Float anglePrev;
 						Double hyp;
 						//Apply pitch
-						anglePrev = 0.0F;
-						hyp = propMotionSpeed;
-
-						Double Zpitch = (Math.sin(anglePrev + propBodyPart.rotateAngleX + propMotionPitch) * hyp);
-						Double Ypitch = (Math.cos(anglePrev + propBodyPart.rotateAngleX + propMotionPitch) * hyp);
+						Double Zpitch = (Math.sin(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
+						Double Ypitch = (Math.cos(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
 
 						//Apply roll
 						if (Ypitch >= 0) {

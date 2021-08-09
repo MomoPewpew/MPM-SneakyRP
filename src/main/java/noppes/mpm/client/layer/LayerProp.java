@@ -644,16 +644,8 @@ public class LayerProp extends LayerInterface {
 						Double Ypitch = (Math.cos(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
 
 						//Apply roll
-						if (Ypitch >= 0) {
-							anglePrev = 0.0F;
-							hyp = Ypitch;
-						} else {
-							anglePrev = (float) Math.PI;
-							hyp = -Ypitch;
-						}
-
-						Double Xroll = (Math.sin(anglePrev + propBodyPart.rotateAngleZ) * hyp);
-						propMotionYCorrected = (Math.cos(anglePrev + propBodyPart.rotateAngleZ) * hyp);
+						Double Xroll = (Math.sin(propBodyPart.rotateAngleZ) * Ypitch);
+						propMotionYCorrected = (Math.cos(propBodyPart.rotateAngleZ) * Ypitch);
 
 						//Apply yaw
 						if (Xroll > -0.0001 && Xroll < 0.0001) {

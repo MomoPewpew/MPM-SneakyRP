@@ -254,7 +254,7 @@ public class CommandProp extends MpmCommandInterface {
 			Float propOffsetZ = (args.length > 7) ? Float.valueOf(args[7]) : 0.0F;
 			Float propPitch = (args.length > 8) ? Float.valueOf(args[8]) : 0.0F;
 			Float propYaw = (args.length > 9) ? Float.valueOf(args[9]) : 0.0F;
-			Float propSpeed = (args.length > 10) ? Float.valueOf(args[10]) : 0.0F;
+			Double propSpeed = (args.length > 10) ? Double.valueOf(args[10]) : 0.0F;
 			Boolean propHide = (args.length > 11) ? parseBoolean(args[11]) : false;
 			String propName = (args.length > 12) ? args[12] : "NONAME";
 

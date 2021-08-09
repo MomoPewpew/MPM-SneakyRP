@@ -276,7 +276,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 						y += 22;
 						this.addTextField(new GuiNpcTextField(514, this, guiOffsetX + 155, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", prop.speed)));
-						this.addSlider(new GuiNpcSlider(this, 514, guiOffsetX, y, 152, 20, (prop.speed / maxSpeed)));
+						this.addSlider(new GuiNpcSlider(this, 514, guiOffsetX, y, 152, 20, (float) (prop.speed / maxSpeed)));
 						this.getSlider(514).displayString = "Speed";
 					}
 					y += 22;
@@ -520,7 +520,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 					text = String.format(java.util.Locale.US,"%.0f", value);
 				} else if (slider.id == 514) {
 					value = (slider.sliderValue * maxSpeed);
-					prop.speed = value;
+					prop.speed = (double) value;
 					text = String.format(java.util.Locale.US,"%.2f", value);
 				}
 
@@ -661,7 +661,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 					prop.yaw = value;
 				} else if (textField.id == 514) {
 					sliderValue = value / maxAmount;
-					prop.speed = value;
+					prop.speed = (double) value;
 				}
 			} else if (textField.id >= 126 && textField.id <= 128) {
 				sliderValue = (value + maxOffset) / (maxOffset * 2.0F);

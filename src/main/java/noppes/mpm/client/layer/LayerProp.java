@@ -666,15 +666,15 @@ public class LayerProp extends LayerInterface {
 					}
 
 					//Adjust for model yaw
-					Float propOffsetXCorrectedCorrected = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
-					Float propOffsetZCorrectedCorrected = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					Float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
+					Float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 					Float partModifierXCorrected = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 					Float partModifierZCorrected = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
 					this.player.worldObj.spawnParticle(propParticleType,
-						this.player.posX - propOffsetXCorrectedCorrected - partModifierXCorrected,
+						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
 						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y],
-						this.player.posZ + propOffsetZCorrectedCorrected + partModifierZCorrected,
+						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
 						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 

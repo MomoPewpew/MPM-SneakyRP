@@ -412,7 +412,10 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				}
 
 				if(hasChanged) onEmoteChange();
-				this.getTextField(slider.id).setText(text);
+				GuiNpcTextField textField = this.getTextField(slider.id);
+				textField.setSelectionPos(0);
+				textField.setCursorPositionZero();
+				textField.setText(text);
 
 				if(slider.id != 621) {//update command name in scroll
 					ArrayList<String> command_display_names = new ArrayList<String>();

@@ -53,8 +53,8 @@ public class GuiCreationExtra extends GuiCreationScreenInterface implements ICus
 			this.selected = (GuiCreationExtra.GuiType)this.data.get(this.scroll.getSelected());
 			if (this.selected != null) {
 				this.scroll.guiLeft = this.guiLeft;
-				this.scroll.guiTop = this.guiTop + 46;
-				this.scroll.setSize(100, this.ySize - 74);
+				this.scroll.guiTop = this.guiTop + 45;
+				this.scroll.setSize(100, this.ySize - 52);
 				this.addScroll(this.scroll);
 				this.selected.initGui();
 			}

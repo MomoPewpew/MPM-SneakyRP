@@ -73,8 +73,8 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 				}
 
 				this.scroll.guiLeft = this.guiLeft;
-				this.scroll.guiTop = this.guiTop + 46;
-				this.scroll.setSize(100, this.ySize - 50);
+				this.scroll.guiTop = this.guiTop + 45;
+				this.scroll.setSize(100, this.ySize - 52);
 				this.addScroll(this.scroll);
 				if (this.parts[selected] != null) {
 					this.scroll.setSelected(I18n.translateToLocal("part." + this.parts[selected].part.name));

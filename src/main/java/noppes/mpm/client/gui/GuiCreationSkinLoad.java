@@ -53,8 +53,8 @@ public class GuiCreationSkinLoad extends GuiCreationScreenInterface implements I
 		this.scroll.selected = selected;
 		this.scroll.setUnsortedList(list);
 		this.scroll.guiLeft = this.guiLeft;
-		this.scroll.guiTop = this.guiTop + 67;
-		this.scroll.setSize(100, this.ySize - 74);
+		this.scroll.guiTop = this.guiTop + 45 + 22;
+		this.scroll.setSize(100, this.ySize - 52 - 22);
 		this.addScroll(this.scroll);
 
 		int guiOffsetX = this.guiLeft + this.scroll.xSize + 2;

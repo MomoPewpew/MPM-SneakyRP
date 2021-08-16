@@ -304,108 +304,108 @@ public class GuiCustomScroll extends GuiScreen {
 	}
 
 	public void setList(List list) {
-		if (!this.isSameList(list)) {
+		// if (!this.isSameList(list)) {
 			this.isSorted = true;
-			this.scrollY = 0;
 			Collections.sort(list, new NaturalOrderComparator());
 			this.list = list;
 			this.setSize(this.xSize, this.ySize);
-		}
+			this.scrollY = Math.min(Math.max(0, this.maxScrollY), this.scrollY);
+		// }
 	}
 
 	public void setUnsortedList(List list) {
-		// if (!this.isSameList(list)) {//why was this here? this is sorted equality which defeats the purpose of this function
+		// if (!this.isSameList(list)) {
 			this.isSorted = false;
-			this.scrollY = 0;
 			this.list = list;
 			this.setSize(this.xSize, this.ySize);
-			// }
-		}
+			this.scrollY = Math.min(Math.max(0, this.maxScrollY), this.scrollY);
+		// }
+	}
 
-		private boolean isSameList(List list) {
-			if (this.list.size() != list.size()) {
-				return false;
-			} else {
-				Iterator var2 = this.list.iterator();
+	private boolean isSameList(List list) {
+		if (this.list.size() != list.size()) {
+			return false;
+		} else {
+			Iterator var2 = this.list.iterator();
 
-				String s;
-				do {
-					if (!var2.hasNext()) {
-						return true;
-					}
-
-					s = (String)var2.next();
-				} while(list.contains(s));
-
-				return false;
-			}
-		}
-
-		public void replace(String old, String name) {
-			String select = this.getSelected();
-			this.list.remove(old);
-			this.list.add(name);
-			if (this.isSorted) {
-				Collections.sort(this.list, new NaturalOrderComparator());
-			}
-
-			if (old.equals(select)) {
-				select = name;
-			}
-
-			this.selected = this.list.indexOf(select);
-			this.setSize(this.xSize, this.ySize);
-		}
-
-		public void setSelected(String name) {
-			this.selected = this.list.indexOf(name);
-		}
-
-		public void clear() {
-			this.list = new ArrayList();
-			this.selected = -1;
-			this.scrollY = 0;
-			this.setSize(this.xSize, this.ySize);
-		}
-
-		public List getList() {
-			return this.list;
-		}
-
-		public HashSet getSelectedList() {
-			return this.selectedList;
-		}
-
-		public void setSelectedList(HashSet selectedList) {
-			this.selectedList = selectedList;
-		}
-
-		public GuiCustomScroll setUnselectable() {
-			this.selectable = false;
-			return this;
-		}
-
-		public void scrollTo(String name) {
-			int i = this.list.indexOf(name);
-			if (i >= 0 && this.scrollHeight < this.ySize - 8) {
-				int pos = (int)(1.0F * (float)i / (float)this.list.size() * (float)this.listHeight);
-				if (pos > this.maxScrollY) {
-					pos = this.maxScrollY;
+			String s;
+			do {
+				if (!var2.hasNext()) {
+					return true;
 				}
 
-				this.scrollY = pos;
-			}
-		}
+				s = (String)var2.next();
+			} while(list.contains(s));
 
-		public boolean isMouseOver(int x, int y) {
-			return x >= this.guiLeft && x <= this.guiLeft + this.xSize && y >= this.guiTop && y <= this.guiTop + this.ySize;
-		}
-
-		public int getHover() {
-			return hover;
-		}
-
-		public void setHover(int hover) {
-			this.hover = hover;
+			return false;
 		}
 	}
+
+	public void replace(String old, String name) {
+		String select = this.getSelected();
+		this.list.remove(old);
+		this.list.add(name);
+		if (this.isSorted) {
+			Collections.sort(this.list, new NaturalOrderComparator());
+		}
+
+		if (old.equals(select)) {
+			select = name;
+		}
+
+		this.selected = this.list.indexOf(select);
+		this.setSize(this.xSize, this.ySize);
+	}
+
+	public void setSelected(String name) {
+		this.selected = this.list.indexOf(name);
+	}
+
+	public void clear() {
+		this.list = new ArrayList();
+		this.selected = -1;
+		this.scrollY = 0;
+		this.setSize(this.xSize, this.ySize);
+	}
+
+	public List getList() {
+		return this.list;
+	}
+
+	public HashSet getSelectedList() {
+		return this.selectedList;
+	}
+
+	public void setSelectedList(HashSet selectedList) {
+		this.selectedList = selectedList;
+	}
+
+	public GuiCustomScroll setUnselectable() {
+		this.selectable = false;
+		return this;
+	}
+
+	public void scrollTo(String name) {
+		int i = this.list.indexOf(name);
+		if (i >= 0 && this.scrollHeight < this.ySize - 8) {
+			int pos = (int)(1.0F * (float)i / (float)this.list.size() * (float)this.listHeight);
+			if (pos > this.maxScrollY) {
+				pos = this.maxScrollY;
+			}
+
+			this.scrollY = pos;
+		}
+	}
+
+	public boolean isMouseOver(int x, int y) {
+		return x >= this.guiLeft && x <= this.guiLeft + this.xSize && y >= this.guiTop && y <= this.guiTop + this.ySize;
+	}
+
+	public int getHover() {
+		return hover;
+	}
+
+	public void setHover(int hover) {
+		this.hover = hover;
+	}
+}

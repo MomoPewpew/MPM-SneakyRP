@@ -93,7 +93,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		this.scroll.setUnsortedList(scrollList);
 		this.scroll.guiLeft = x;
 		this.scroll.guiTop = y;
-		this.scroll.setSize(100, this.ySize - 74);
+		this.scroll.setSize(100, this.ySize - 52 - 22);
 		this.addScroll(this.scroll);
 
 		x += this.scroll.xSize + 2;

@@ -60,8 +60,8 @@ public class GuiCreationScale extends GuiCreationScreenInterface implements ISli
 		this.scroll.setUnsortedList(list);
 		this.scroll.setSelected(I18n.translateToLocal("part." + selected.name));
 		this.scroll.guiLeft = this.guiLeft;
-		this.scroll.guiTop = this.guiTop + 46;
-		this.scroll.setSize(100, this.ySize - 74);
+		this.scroll.guiTop = this.guiTop + 45;
+		this.scroll.setSize(100, this.ySize - 52);
 		this.addScroll(this.scroll);
 		ModelPartConfig config = this.playerdata.getPartConfig(selected);
 		y = this.guiTop + 65;

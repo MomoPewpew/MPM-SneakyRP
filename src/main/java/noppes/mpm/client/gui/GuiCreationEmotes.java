@@ -190,8 +190,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		this.scroll.selected = selected;
 		this.scroll.setUnsortedList(command_display_names);
 		this.scroll.guiLeft = x;
-		this.scroll.guiTop = y + 1;
-		this.scroll.setSize(100, this.ySize - 74 - 3*22);
+		this.scroll.guiTop = y;
+		this.scroll.setSize(100, this.ySize - 52 - 3*22);
 		this.addScroll(this.scroll);
 
 		//////////////////

@@ -643,26 +643,26 @@ public class LayerProp extends LayerInterface {
 						Double Zpitch = (Math.sin(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
 						Double Ypitch = (Math.cos(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
 
-						//Apply roll
-						Double Xroll = (Math.sin(propBodyPart.rotateAngleZ) * Ypitch);
-						propMotionYCorrected = (Math.cos(propBodyPart.rotateAngleZ) * Ypitch);
-
 						//Apply yaw
-						if (Xroll > -0.0001 && Xroll < 0.0001) {
-							if (Zpitch <= 0) {
+						Double Xyaw = (Math.sin(-propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * Zpitch);
+						propMotionZCorrected = (Math.cos(-propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * Zpitch);
+
+						//Apply roll
+						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
+							if (Ypitch <= 0) {
 								anglePrev = 0.0F;
-								hyp = Zpitch;
+								hyp = Ypitch;
 							} else {
 								anglePrev = (float) Math.PI;
-								hyp = -Zpitch;
+								hyp = -Ypitch;
 							}
 						} else {
-							anglePrev = (float) Math.atan2(Xroll, Zpitch);
-							hyp = (Xroll / Math.sin(anglePrev));
+							anglePrev = (float) Math.atan2(Xyaw, Ypitch);
+							hyp = (Xyaw / Math.sin(anglePrev));
 						}
 
-						propMotionXCorrected = (Math.sin(anglePrev - propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * hyp);
-						propMotionZCorrected = (Math.cos(anglePrev - propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * hyp);
+						propMotionXCorrected = (Math.sin(anglePrev + propBodyPart.rotateAngleZ) * hyp);
+						propMotionYCorrected = (Math.cos(anglePrev + propBodyPart.rotateAngleZ) * hyp);
 					}
 
 					//Adjust for model yaw

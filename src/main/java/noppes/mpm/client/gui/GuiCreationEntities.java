@@ -69,8 +69,8 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		}
 
 		this.scroll.guiLeft = this.guiLeft;
-		this.scroll.guiTop = this.guiTop + 68;
-		this.scroll.setSize(100, this.ySize - 70);
+		this.scroll.guiTop = this.guiTop + 45 + 22;
+		this.scroll.setSize(100, this.ySize - 52 - 22);
 		String selected = I18n.translateToLocal("gui.player");
 		if (this.entity != null) {
 			Iterator var2 = this.data.entrySet().iterator();

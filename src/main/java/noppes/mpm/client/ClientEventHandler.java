@@ -79,25 +79,6 @@ public class ClientEventHandler {
 			}
 
 			if (mc.inGameHasFocus) {
-				if (ClientProxy.MPM1.isPressed()) {
-					processAnimation(MorePlayerModels.button1);
-				}
-
-				if (ClientProxy.MPM2.isPressed()) {
-					processAnimation(MorePlayerModels.button2);
-				}
-
-				if (ClientProxy.MPM3.isPressed()) {
-					processAnimation(MorePlayerModels.button3);
-				}
-
-				if (ClientProxy.MPM4.isPressed()) {
-					processAnimation(MorePlayerModels.button4);
-				}
-
-				if (ClientProxy.MPM5.isPressed()) {
-					processAnimation(MorePlayerModels.button5);
-				}
 
 				if (ClientProxy.Camera.isKeyDown() && mc.gameSettings.thirdPersonView == 1) {
 					long time = System.currentTimeMillis();

@@ -112,19 +112,14 @@ public class ModelPlayerAlt extends ModelPlayer {
 			this.isSneak = false;
 		}
 
-		this.playerdata.updateAnim();
-
-		long t = this.playerdata.getPlayingEmoteId();
-		if(this.emoteId != t) {//currently playing emote has changed
-			this.emoteId = t;
-			ModelData.resetModelPlayerAfterEmote(this);
-		}
+		ModelData.resetModelPlayerForEmote(this);
 
 		super.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity);
 
-		if(t > 0) {
-			this.playerdata.animModelPlayer(this);
-		} else if (!this.playerdata.isSleeping() && !player.isPlayerSleeping()) {
+		this.playerdata.updateAnim();
+		this.playerdata.animModelPlayer(this, par4, par5);
+
+		if (!this.playerdata.isSleeping() && !player.isPlayerSleeping()) {
 			if (this.playerdata.animation == EnumAnimation.CRY) {
 				this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.7F;
 			} else if (this.playerdata.animation == EnumAnimation.HUG) {
@@ -146,17 +141,23 @@ public class ModelPlayerAlt extends ModelPlayer {
 			} else if (this.isSneak) {
 				this.bipedBody.rotateAngleX = 0.5F / this.playerdata.getPartConfig(EnumParts.BODY).scaleY;
 			}
+			copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
+			copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
+			copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
+			copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
+			copyModelAngles(this.bipedBody, this.bipedBodyWear);
+			copyModelAngles(this.bipedHead, this.bipedHeadwear);
 		} else if (this.bipedHead.rotateAngleX < 0.0F) {
 			this.bipedHead.rotateAngleX = 0.0F;
 			this.bipedHeadwear.rotateAngleX = 0.0F;
+			copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
+			copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
+			copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
+			copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
+			copyModelAngles(this.bipedBody, this.bipedBodyWear);
+			copyModelAngles(this.bipedHead, this.bipedHeadwear);
 		}
 
-		copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
-		copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
-		copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
-		copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
-		copyModelAngles(this.bipedBody, this.bipedBodyWear);
-		copyModelAngles(this.bipedHead, this.bipedHeadwear);
 	}
 
 	@Override

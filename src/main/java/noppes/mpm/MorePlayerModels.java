@@ -29,8 +29,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import noppes.mpm.commands.CommandAngry;
-import noppes.mpm.commands.CommandLove;
 import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
@@ -116,23 +114,23 @@ public class MorePlayerModels {
 	@ConfigProp(
 	info = "Used to register buttons to animations"
 	)
-	public static int button1;
-	@ConfigProp(
-	info = "Used to register buttons to animations"
-	)
-	public static int button2;
-	@ConfigProp(
-	info = "Used to register buttons to animations"
-	)
-	public static int button3;
-	@ConfigProp(
-	info = "Used to register buttons to animations"
-	)
-	public static int button4;
-	@ConfigProp(
-	info = "Used to register buttons to animations"
-	)
-	public static int button5;
+	// public static int button1;
+	// @ConfigProp(
+	// info = "Used to register buttons to animations"
+	// )
+	// public static int button2;
+	// @ConfigProp(
+	// info = "Used to register buttons to animations"
+	// )
+	// public static int button3;
+	// @ConfigProp(
+	// info = "Used to register buttons to animations"
+	// )
+	// public static int button4;
+	// @ConfigProp(
+	// info = "Used to register buttons to animations"
+	// )
+	// public static int button5;
 	public static boolean hasEntityPermission;
 	public static List<UUID> playersEntityDenied;
 	public static List<String> fileNamesSkins;
@@ -191,9 +189,9 @@ public class MorePlayerModels {
 
 	@EventHandler
 	public void serverstart(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandLove());
-		event.registerServerCommand(new CommandSing());
-		event.registerServerCommand(new CommandAngry());
+		// event.registerServerCommand(new CommandLove());
+		// event.registerServerCommand(new CommandSing());
+		// event.registerServerCommand(new CommandAngry());
 		event.registerServerCommand(new CommandMPM());
 		event.registerServerCommand(new CommandProp());
 		event.registerServerCommand(new CommandSkinLoad());
@@ -214,11 +212,11 @@ public class MorePlayerModels {
 	}
 
 	static {
-		button1 = EnumAnimation.SLEEPING_SOUTH.ordinal();
-		button2 = EnumAnimation.SITTING.ordinal();
-		button3 = EnumAnimation.CRAWLING.ordinal();
-		button4 = EnumAnimation.HUG.ordinal();
-		button5 = EnumAnimation.DANCING.ordinal();
+		// button1 = EnumAnimation.SLEEPING_SOUTH.ordinal();
+		// button2 = EnumAnimation.SITTING.ordinal();
+		// button3 = EnumAnimation.CRAWLING.ordinal();
+		// button4 = EnumAnimation.HUG.ordinal();
+		// button5 = EnumAnimation.DANCING.ordinal();
 	}
 
 	public static void syncSkinFileNames(EntityPlayerMP player) {

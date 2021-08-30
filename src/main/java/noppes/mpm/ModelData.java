@@ -63,20 +63,51 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
 
-	//this is data to track server emotes that are synced between all players
-	public Emote curEmote = null;
-	public Timeline curEmoteTimeline = null;
-	public long lastTime = 0;
-	public float[] animStates = new float[Emote.STATE_COUNT];
-	public float curEmoteSpeed = 1.0F;
-	public long curEmoteTempId = 0;
+	public static final byte SECTION_NONE = 0;
+	public static final byte SECTION_INTRO = 1;
+	public static final byte SECTION_LOOP = 2;
+	public static final byte SECTION_OUTRO = 3;
+	public static final byte SECTION_PREVIEW_PAUSE = 4;
 
-	//and this is data to track clientside emote previews shown when creating emotes
-	public Emote previewEmote = null;
-	public Timeline previewTimeline = null;
-	public long previewLastTime = 0;
+	public static final float RATE_MIN = .75f;
+	public static final float PREVIEW_PAUSE_TIME = .5f;//NOTE: must be >0
+
+	//this is data to track server emotes
+	public ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
+	public final int[] emotePartUsages = new int[2*Emote.PART_COUNT];
+	public final byte[] emoteCommandSections = new byte[2*Emote.PART_COUNT];
+	public final int[] emoteCommandIndices = new int[2*Emote.PART_COUNT];
+	public final float[] emoteCommandTimes = new float[2*Emote.PART_COUNT];
+	public final float[] emoteSpeeds = new float[2*Emote.PART_COUNT];
+	public final float[] emoteMovements = new float[Emote.STATE_COUNT];
+	public final float[] emoteStates = new float[Emote.STATE_COUNT];
+
+	public long emoteLastTime = 0;
+	public boolean emoteIsPlaying = false;
+
+	public Emote queuedEmote;
+	public boolean queuedOutroAllFirst;
+	public float queuedSpeed;
+
+	//TODO: allocate these jit
+	public ArrayList<ArrayList<Emote.PartCommand>> previewCommands = Emote.createCommandsList();
+	public int[] previewPartUsages = new int[2*Emote.PART_COUNT];
+	public byte[] previewCommandSections = new byte[2*Emote.PART_COUNT];
+	public int[] previewCommandIndices = new int[2*Emote.PART_COUNT];
+	public float[] previewCommandTimes = new float[2*Emote.PART_COUNT];
+	public float[] previewMovements = new float[Emote.STATE_COUNT];
 	public float[] previewStates = new float[Emote.STATE_COUNT];
-	public long previewTempId = 0;
+
+	public int previewRepetitions = 4;
+	public long previewLastTime = 0;
+	public boolean previewIsPlaying = false;
+
+
+	//the following arrays will point to the emote, the preview, or null, depending on which takes precedence for current animation
+	//These arrays are for convenient external use, refer to only these if possible
+	public float[] animStates = null;
+	public int[] animPartUsages = null;
+
 
 	public ModelData() {
 		this.backItem = null;
@@ -224,16 +255,20 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			return 0.0F;
 		} else {
 			float offset = -this.offsetY();
-			if (this.animation == EnumAnimation.SITTING) {
-				offset += 0.5F - this.getLegsY();
-			}
+			if(this.animPartUsages != null && (this.animPartUsages[2*Emote.MODEL + 0]&Emote.FLAG_CAMERA_FOLLOWS_MODEL_OFFSET) > 0) {
+				offset += this.animStates[6*Emote.MODEL + Emote.OFF_Y];
+			} else {
+				if (this.animation == EnumAnimation.SITTING) {
+					offset += 0.5F - this.getLegsY();
+				}
 
-			if (this.isSleeping()) {
-				offset = 1.18F;
-			}
+				if (this.isSleeping()) {
+					offset = 1.18F;
+				}
 
-			if (this.animation == EnumAnimation.CRAWLING) {
-				offset = 0.8F;
+				if (this.animation == EnumAnimation.CRAWLING) {
+					offset = 0.8F;
+				}
 			}
 
 			if (offset < -0.2F && this.isBlocked(player)) {
@@ -355,514 +390,942 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		return this.hasCapability(capability, facing) ? this : null;
 	}
 
-	// public void update() {
-		// }
+	public void clearPropsServer() {
+		this.propBase = new PropGroup(this.player);
+		this.propGroups = new ArrayList<PropGroup>();
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
+	}
 
-		public void clearPropsServer() {
-			this.propBase = new PropGroup(this.player);
-			this.propGroups = new ArrayList<PropGroup>();
-			Server.sendAssociatedData(this.player, EnumPackets.PROP_CLEAR, this.player.getUniqueID());
+	public void syncPropsClient() {
+		NBTTagCompound compound = new NBTTagCompound();
+		Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
+	}
+
+	public void syncPropsServer() {
+		NBTTagCompound compound = new NBTTagCompound();
+		Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
+	}
+
+	public NBTTagCompound propsToNBT(NBTTagCompound compound) {
+
+		compound.setTag("propBase", this.propBase.writeToNBT());
+
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			compound.setTag(("propGroup" + String.valueOf(i)), this.propGroups.get(i).writeToNBT());
 		}
 
-		public void syncPropsClient() {
-			NBTTagCompound compound = new NBTTagCompound();
-			Client.sendData(EnumPackets.PROP_SYNC, this.propsToNBT(compound));
-		}
+		return compound;
+	}
 
-		public void syncPropsServer() {
-			NBTTagCompound compound = new NBTTagCompound();
-			Server.sendAssociatedData(this.player, EnumPackets.PROP_SYNC, this.player.getUniqueID(), this.propsToNBT(compound));
-		}
+	public void propsFromNBT(NBTTagCompound compound) {
 
-		public NBTTagCompound propsToNBT(NBTTagCompound compound) {
+		this.propBase = new PropGroup(this.player);
+		this.propBase.readFromNBT(compound.getCompoundTag("propBase"));
 
-			compound.setTag("propBase", this.propBase.writeToNBT());
+		this.propGroups = new ArrayList<PropGroup>();
 
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				compound.setTag(("propGroup" + String.valueOf(i)), this.propGroups.get(i).writeToNBT());
-			}
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			PropGroup propGroup = new PropGroup(this.player);
+			propGroup.readFromNBT(compound.getCompoundTag("propGroup" + String.valueOf(i)));
 
-			return compound;
-		}
-
-		public void propsFromNBT(NBTTagCompound compound) {
-
-			this.propBase = new PropGroup(this.player);
-			this.propBase.readFromNBT(compound.getCompoundTag("propBase"));
-
-			this.propGroups = new ArrayList<PropGroup>();
-
-			for (int i = 0; i < Integer.MAX_VALUE; i++) {
-				PropGroup propGroup = new PropGroup(this.player);
-				propGroup.readFromNBT(compound.getCompoundTag("propGroup" + String.valueOf(i)));
-
-				if (!propGroup.name.equals("")) {
-					this.propGroups.add(propGroup);
-				} else {
-					break;
-				}
+			if (!propGroup.name.equals("")) {
+				this.propGroups.add(propGroup);
+			} else {
+				break;
 			}
 		}
+	}
 
-		public void showPropGroupServerByName (String name) {
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+	public void showPropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.get(i).hide = false;
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
+			}
+		}
+	}
+
+	public void hidePropGroupServer(int i) {
+		this.propGroups.get(i).hide = true;
+		Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+	}
+
+	public void hidePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.get(i).hide = true;
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
+			}
+		}
+	}
+
+	public void togglePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				if (this.propGroups.get(i).hide == true) {
 					this.propGroups.get(i).hide = false;
 					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
-				}
-			}
-		}
-
-		public void hidePropGroupServer(int i) {
-			this.propGroups.get(i).hide = true;
-			Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
-		}
-
-		public void hidePropGroupServerByName (String name) {
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				} else {
 					this.propGroups.get(i).hide = true;
 					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
 				}
 			}
 		}
+	}
 
-		public void togglePropGroupServerByName (String name) {
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-					if (this.propGroups.get(i).hide == true) {
-						this.propGroups.get(i).hide = false;
-						Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
-					} else {
-						this.propGroups.get(i).hide = true;
-						Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
-					}
-				}
+	public void removePropGroupByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.remove(i);
 			}
 		}
+	}
 
-		public void removePropGroupByName (String name) {
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-					this.propGroups.remove(i);
-				}
+	public void removePropGroupServerByName (String name) {
+		for (int i = 0; i < this.propGroups.size(); i++) {
+			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+				this.propGroups.remove(i);
+				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);
 			}
 		}
+	}
 
-		public void removePropGroupServerByName (String name) {
-			for (int i = 0; i < this.propGroups.size(); i++) {
-				if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-					this.propGroups.remove(i);
-					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);
-				}
+	public void addPropGroupServer(PropGroup propGroup) {
+		NBTTagCompound compound = propGroup.writeToNBT();
+
+		PropGroup propGroupTemp = new PropGroup(this.player);
+		propGroupTemp.readFromNBT(compound);
+
+		this.propGroups.add(propGroupTemp);
+
+		Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
+	}
+
+
+	////////////////////////////
+	// Emotes
+
+
+	public static final void runCommand(ModelData data, String str) {
+		// send command or text to server. For the time being it is
+		// not possible to execute client-only commands.
+		if(!str.equals("")) {
+			Minecraft mc = Minecraft.getMinecraft();
+			if(data.player == mc.thePlayer) {
+				mc.thePlayer.sendChatMessage(str);
 			}
 		}
+	}
 
-		public void addPropGroupServer(PropGroup propGroup) {
-			NBTTagCompound compound = propGroup.writeToNBT();
+	public static final boolean updateEmoteStates(
+		ModelData data,
+		ArrayList<ArrayList<Emote.PartCommand>> commands,
+		int[] partUsages,
+		float[] partSpeeds,
+		byte[] commandSections,
+		int[] commandIndices,
+		float[] commandTimes,
+		float[] movements,
+		float[] states,
+		float movementRate,
+		float delta
+	) {
+		boolean runsNextFrame = false;
+		for(int partId = 0; partId < Emote.PART_COUNT; partId += 1) {
+			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
+				final int meta_i = 2*partId + isRotate;
 
-			PropGroup propGroupTemp = new PropGroup(this.player);
-			propGroupTemp.readFromNBT(compound);
+				if(commandSections[meta_i] == SECTION_NONE) continue;
 
-			this.propGroups.add(propGroupTemp);
+				int usage = partUsages[meta_i];
+				float remainingDelta = partSpeeds[meta_i]*delta;
 
-			Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_ADD, this.player.getUniqueID(), compound);
-		}
-
-
-
-		//Emotes
-
-
-		public static class ModelAccessor implements TweenAccessor<float[]> {
-			public static final ModelAccessor INSTANCE = new ModelAccessor();
-			@Override
-			public int getValues(float[] target, int tweenType, float[] returnValues, Entity entity) {
-				returnValues[0] = target[tweenType];
-				return 1;
-			}
-
-			@Override
-			public void setValues(float[] target, int tweenType, float[] newValues, Entity entity) {
-				target[tweenType] = newValues[0];
-			}
-		}
-		static {
-			Tween.registerAccessor(float[].class, ModelAccessor.INSTANCE);
-		}
-
-		public void startEmote(Emote emote, float speed, EntityPlayer player) {
-			this.endCurEmote();
-			Timeline timeline = createTimeline(emote, this.animStates);
-
-			timeline.start(player);
-			this.curEmote = emote;
-			this.curEmoteTimeline = timeline;
-			this.curEmoteSpeed = speed;
-			this.lastTime = System.currentTimeMillis();
-			this.curEmoteTempId = this.lastTime;
-		}
-		public void startPreviewEmote(Emote emote, EntityPlayer player, boolean isintro) {
-			this.endPreviewEmote();
-
-			Timeline timeline;
-			if(isintro) {
-				timeline = createPreviewTimeline(emote, this.previewStates, isintro);
-			} else {
-				timeline = createTimeline(emote, this.previewStates);
-			}
-
-			timeline.start(player);
-			this.previewEmote = emote;
-			this.previewTimeline = timeline;
-			this.previewLastTime = System.currentTimeMillis();
-			this.previewTempId = this.previewLastTime;
-		}
-		public static Timeline createTimeline(Emote emote, float[] states) {
-			Timeline intro = null;
-			Timeline loop = null;
-			for(int partId = 0; partId < Emote.PART_COUNT; partId++) {
-				Timeline t;
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.INTRO_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
-				if(t != null) {
-					if(intro == null) intro = Timeline.createParallel();
-					intro.push(t);
+				boolean play_outro = false;
+				boolean play_outro_at_loop_boundary = false;
+				boolean pause_at_loop_boundary = false;
+				float m = movementRate;
+				if((usage&Emote.FLAG_INVERT_MOVEMENT) > 0) {
+					m = Math.max(0.0f, 1.0f - m);
 				}
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.INTRO_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
-				if(t != null) {
-					if(intro == null) intro = Timeline.createParallel();
-					intro.push(t);
-				}
-
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_OFFSET), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
-				if(t != null) {
-					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t.repeat(Emote.infDuration, 0));
-				}
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + Emote.LOOP_ROTATE), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
-				if(t != null) {
-					if(loop == null) loop = Timeline.createParallel();
-					loop.push(t.repeat(Emote.infDuration, 0));
-				}
-			}
-			if(loop == null) {
-				if(intro == null) {
-					return Timeline.createParallel();
-				} else {
-					return intro;
-				}
-			} else if(intro == null) {
-				return loop;
-			} else {
-				Timeline timeline = Timeline.createSequence();
-				timeline.push(intro);
-				timeline.push(loop);
-				return timeline;
-			}
-		}
-		public static Timeline createPreviewTimeline(Emote emote, float[] states, boolean isintro) {
-			Timeline timeline = Timeline.createParallel();
-			int a1 = (isintro ? Emote.INTRO_OFFSET : Emote.LOOP_OFFSET);
-			int a2 = (isintro ? Emote.INTRO_ROTATE : Emote.LOOP_ROTATE);
-			for(int partId = 0; partId < Emote.PART_COUNT; partId++) {
-				Timeline t;
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + a1), Emote.AXIS_COUNT*partId + Emote.OFF_X, states);
-				if(t != null) {
-					timeline.push(t);
-				}
-				t = createTimelineFromEmotePartCommandList(emote.commands.get(4*partId + a2), Emote.AXIS_COUNT*partId + Emote.ROT_X, states);
-				if(t != null) {
-					timeline.push(t);
-				}
-			}
-			return timeline.repeat(Emote.infDuration, isintro? 1.0F : 0);
-		}
-		public static Timeline createTimelineFromEmotePartCommandList(ArrayList<Emote.PartCommand> list, int tweenId, float[] states) {
-			if(list == null) return null;
-			float prex = Float.MAX_VALUE;
-			float prey = Float.MAX_VALUE;
-			float prez = Float.MAX_VALUE;
-			int totalDisabled = 0;
-			Timeline timeline = Timeline.createSequence();
-			for(int i = 0; i < list.size(); i++) {
-				Emote.PartCommand command = list.get(i);
-				if(command.disabled) {
-					totalDisabled += 1;
-				} else {
-					boolean isx = Math.abs(command.x - prex) > 0.0001F;
-					boolean isy = Math.abs(command.y - prey) > 0.0001F;
-					boolean isz = Math.abs(command.z - prez) > 0.0001F;
-					prex = command.x;
-					prey = command.y;
-					prez = command.z;
-					int total = (isx ? 1 : 0) + (isy ? 1 : 0) + (isz ? 1 : 0);
-					if(total == 0) {
-						timeline.pushPause(command.duration);
-					} else if(total == 1) {
-						Tween tween;
-						if(isx) {
-							tween = Tween.to(states, tweenId + 0, command.duration).target(command.x);
-						} else if(isy) {
-							tween = Tween.to(states, tweenId + 1, command.duration).target(command.y);
+				if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
+					if(commandSections[meta_i] != SECTION_OUTRO) {
+						if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
+							play_outro_at_loop_boundary = true;
 						} else {
-							tween = Tween.to(states, tweenId + 2, command.duration).target(command.z);
+							fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
 						}
-						tween.ease(TweenUtils.easings[command.easing]);
-						timeline.push(tween);
+					}
+				} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0) {
+					if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
+						if(m <= RATE_MIN) {
+							play_outro_at_loop_boundary = true;
+							remainingDelta *= RATE_MIN;
+						} else {
+							remainingDelta *= m;
+						}
 					} else {
-						Timeline par = Timeline.createParallel();
-						TweenEquation eq = TweenUtils.easings[command.easing];
-						if(isx) {
-							Tween tween = Tween.to(states, tweenId + 0, command.duration).target(command.x);
-							tween.ease(eq);
-							par.push(tween);
+						if(m <= RATE_MIN) {
+							remainingDelta *= RATE_MIN;
+							fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
+						} else {
+							remainingDelta *= m;
 						}
-						if(isy) {
-							Tween tween = Tween.to(states, tweenId + 1, command.duration).target(command.y);
-							tween.ease(eq);
-							par.push(tween);
+					}
+				} else if((usage&Emote.FLAG_LOOP_PAUSES_WHEN_STILL) > 0) {
+					if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
+						if(m <= RATE_MIN) {
+							pause_at_loop_boundary = true;
+							remainingDelta *= RATE_MIN;
+						} else {
+							remainingDelta *= m;
 						}
-						if(isz) {
-							Tween tween = Tween.to(states, tweenId + 2, command.duration).target(command.z);
-							tween.ease(eq);
-							par.push(tween);
-						}
-						timeline.push(par);
+					} else {
+						remainingDelta *= m;
 					}
 				}
+
+				final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+				final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+				final int loop_i = intro_i + 1;
+				final int outro_i = loop_i + 1;
+
+				Emote.PartCommand initCommand = null;
+				while(remainingDelta > 0) {
+					Emote.PartCommand commandToApply = null;
+					if(commandSections[meta_i] == SECTION_INTRO) {
+						ArrayList<Emote.PartCommand> section = commands.get(intro_i);
+						int section_size = section == null ? 0 : section.size();
+						if(commandIndices[meta_i] < section_size) {
+							commandToApply = section.get(commandIndices[meta_i]);
+						} else {
+							commandSections[meta_i] = SECTION_LOOP;
+							commandIndices[meta_i] = 0;
+						}
+					}
+					if(commandSections[meta_i] == SECTION_LOOP) {
+						ArrayList<Emote.PartCommand> section = commands.get(loop_i);
+						int section_size = section == null ? 0 : section.size();
+						boolean is_at_loop_boundary = commandIndices[meta_i] >= section_size || (commandIndices[meta_i] == 0 && commandTimes[meta_i] == 0);
+						if(is_at_loop_boundary) {
+							if(section_size == 0 || play_outro_at_loop_boundary) {
+								commandSections[meta_i] = SECTION_OUTRO;
+								commandIndices[meta_i] = 0;
+							} else {
+								if(!pause_at_loop_boundary) {
+									commandToApply = section.get(0);
+								}
+								// commandSections[meta_i] = SECTION_LOOP;
+								commandIndices[meta_i] = 0;
+							}
+						} else {
+							commandToApply = section.get(commandIndices[meta_i]);
+						}
+					}
+					if(commandSections[meta_i] == SECTION_OUTRO) {
+						ArrayList<Emote.PartCommand> section = commands.get(outro_i);
+						ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
+						int section_size = section == null ? 0 : section.size();
+						if(commandIndices[meta_i] < section_size) {
+							commandToApply = section.get(commandIndices[meta_i]);
+						} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0 && (usage&Emote.ANIMFLAG_END_EMOTE) == 0) {//restart for walkcycle
+							if(m <= RATE_MIN) {//hold at outro end
+								remainingDelta = 0;
+								partUsages[meta_i] &= ~Emote.FLAG_USED;
+							} else if(loop != null && loop.size() >= 0) {
+								//NOTE: if this code is reached but all sections of the emote are empty, this will crash, this is why we check if the loop is nonempty
+								partUsages[meta_i] |= Emote.FLAG_USED;
+								commandSections[meta_i] = SECTION_INTRO;
+								commandIndices[meta_i] = 0;
+								states[state_i + Emote.OFF_X] = 0;
+								states[state_i + Emote.OFF_Y] = 0;
+								states[state_i + Emote.OFF_Z] = 0;
+								continue;
+							} else {//finished
+								setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
+							}
+						} else {//finished
+							setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
+						}
+					}
+					if(commandToApply == null) break;
+					//prevent the same command from being run more than once a frame (stops infinite loops)
+					if(initCommand == null) {
+						initCommand = commandToApply;
+					} else if(initCommand == commandToApply) {
+						break;
+					}
+
+					remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+					if(remainingDelta == 0) break;
+					//command is finished, prepare next command
+					commandIndices[meta_i] += 1;
+					commandTimes[meta_i] = 0;
+				}
+				if(commandSections[meta_i] != SECTION_NONE) {
+					runsNextFrame = true;
+				}
 			}
-			if(list.size() == totalDisabled) return null;
-			return timeline;
+		}
+		return runsNextFrame;
+	}
+	public static final boolean updatePreviewStates(
+		ArrayList<ArrayList<Emote.PartCommand>> commands,
+		int[] partUsages,
+		byte[] commandSections,
+		int[] commandIndices,
+		float[] commandTimes,
+		float[] movements,
+		float[] states,
+		int previewRepetitions,
+		float delta
+	) {
+		boolean runsNextFrame = false;
+		boolean do_end = false;
+		boolean end_preview_pause = true;
+		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+			if(commandSections[meta_i] == SECTION_NONE) continue;
+			if(commandSections[meta_i] != SECTION_PREVIEW_PAUSE || commandIndices[meta_i] == 0) {
+				end_preview_pause = false;
+				break;
+			}
+		}
+		if(end_preview_pause) {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				// if(commandSections[meta_i] == SECTION_NONE) continue;
+				partUsages[meta_i] &= ~Emote.ANIMFLAG_END_EMOTE;
+			}
 		}
 
-		public void endCurEmote() {
-			if(this.curEmoteTempId > 0) {
-				this.curEmoteTimeline.free();
-				this.curEmoteTimeline = null;
-				this.curEmote = null;
-				this.curEmoteTempId = 0;
-				for(int i = 0; i < Emote.STATE_COUNT; i++) {
-					this.animStates[i] = 0.0F;
-				}
-			}
-		}
-		public void endPreviewEmote() {
-			if(this.previewTempId > 0) {
-				this.previewTimeline.free();
-				this.previewTimeline = null;
-				this.previewTempId = 0;
-				for(int i = 0; i < Emote.STATE_COUNT; i++) {
-					this.previewStates[i] = 0.0F;
-				}
-			}
-		}
+		for(int partId = 0; partId < Emote.PART_COUNT; partId += 1) {
+			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
+				final int meta_i = 2*partId + isRotate;
 
-		public void updateAnim() {
-			if(this.curEmoteTempId > 0) {
-				long curTime = System.currentTimeMillis();
-				float delta = (curTime - this.lastTime)/1000F;
-				if(delta > .001) {
-					this.curEmoteTimeline.update(this.curEmoteSpeed*delta, (Entity)this.player);
-					this.lastTime = curTime;
-					if(this.curEmoteTimeline.isFinished()) {
-						this.endCurEmote();
+				if(commandSections[meta_i] == SECTION_NONE) continue;
+				runsNextFrame = true;
+
+				int usage = partUsages[meta_i];
+				float remainingDelta = delta;
+
+				boolean play_outro_at_loop_boundary = false;
+				if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
+					if(commandSections[meta_i] < SECTION_OUTRO) {
+						if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
+							play_outro_at_loop_boundary = true;
+						} else {
+							fastForwardCommands(null, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
+						}
 					}
 				}
+				if(remainingDelta <= 0) continue;
+
+				final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+				final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+				final int loop_i = intro_i + 1;
+				final int outro_i = loop_i + 1;
+
+				Emote.PartCommand initCommand = null;
+				while(true) {
+					Emote.PartCommand commandToApply = null;
+					if(commandSections[meta_i] == SECTION_INTRO) {
+						ArrayList<Emote.PartCommand> section = commands.get(intro_i);
+						int section_size = section == null ? 0 : section.size();
+						if(commandIndices[meta_i] < section_size) {
+							commandToApply = section.get(commandIndices[meta_i]);
+						} else {
+							commandSections[meta_i] = SECTION_LOOP;
+							commandIndices[meta_i] = 0;
+						}
+					}
+					if(commandSections[meta_i] == SECTION_LOOP) {
+						ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
+						ArrayList<Emote.PartCommand> intro = commands.get(intro_i);
+						ArrayList<Emote.PartCommand> outro = commands.get(outro_i);
+						int loop_size = loop == null ? 0 : loop.size();
+						int intro_size = intro == null ? 0 : intro.size();
+						int outro_size = outro == null ? 0 : outro.size();
+						if(loop_size == 0 || commandIndices[meta_i]%loop_size == 0) {
+							if(loop_size > 0 && !play_outro_at_loop_boundary) {
+								if(commandIndices[meta_i] >= previewRepetitions*loop_size && (intro_size > 0 || outro_size > 0)) {
+									do_end = true;
+								}
+								commandToApply = loop.get(0);
+							} else {
+								commandSections[meta_i] = SECTION_OUTRO;
+								commandIndices[meta_i] = 0;
+							}
+						} else {
+							commandToApply = loop.get(commandIndices[meta_i]%loop_size);
+						}
+					}
+					if(commandSections[meta_i] == SECTION_OUTRO) {
+						ArrayList<Emote.PartCommand> section = commands.get(outro_i);
+						int section_size = section == null ? 0 : section.size();
+						if(commandIndices[meta_i] < section_size) {
+							commandToApply = section.get(commandIndices[meta_i]);
+						} else {//pause
+							commandSections[meta_i] = SECTION_PREVIEW_PAUSE;
+							commandIndices[meta_i] = 0;
+						}
+					}
+					if(commandSections[meta_i] == SECTION_PREVIEW_PAUSE) {
+						if(commandTimes[meta_i] + remainingDelta > PREVIEW_PAUSE_TIME) {
+							remainingDelta -= PREVIEW_PAUSE_TIME - commandTimes[meta_i];
+							if(end_preview_pause) {
+								commandSections[meta_i] = SECTION_INTRO;
+								commandIndices[meta_i] = 0;
+								commandTimes[meta_i] = 0;
+								states[state_i + Emote.OFF_X] = 0;
+								states[state_i + Emote.OFF_Y] = 0;
+								states[state_i + Emote.OFF_Z] = 0;
+								continue;
+							} else {
+								commandIndices[meta_i] = 1;
+								commandTimes[meta_i] = PREVIEW_PAUSE_TIME;
+								break;
+							}
+						} else {
+							commandTimes[meta_i] += remainingDelta;
+							remainingDelta = 0;
+
+							break;
+						}
+					}
+					if(commandToApply == null) break;
+					//prevent the same command from being run more than once a frame (stops infinite loops)
+					if(initCommand == null) {
+						initCommand = commandToApply;
+					} else if(initCommand == commandToApply) {
+						break;
+					}
+
+					remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+					if(remainingDelta <= 0) break;
+					//command is finished, prepare next command
+					commandIndices[meta_i] += 1;
+					commandTimes[meta_i] = 0;
+				}
 			}
-			if(this.previewTempId > 0) {
-				long curTime = System.currentTimeMillis();
-				float delta = (curTime - this.previewLastTime)/1000F;
-				if(delta > .001) {
-					this.previewTimeline.update(delta, (Entity)this.player);
-					this.previewLastTime = curTime;
-					if(this.previewTimeline.isFinished()) {
-						this.endPreviewEmote();
+		}
+		if(do_end) {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				if(commandSections[meta_i] == SECTION_NONE) continue;
+				partUsages[meta_i] |= Emote.ANIMFLAG_END_EMOTE;
+			}
+
+		}
+		return runsNextFrame;
+	}
+
+	public static final float applyCommand(
+		ModelData data,
+		float[] commandTimes,
+		float[] movements,
+		float[] states,
+		int meta_i,
+		int state_i,
+		Emote.PartCommand commandToApply,
+		float delta
+	) {
+		//run the command and subtract from delta
+		if(!commandToApply.disabled) {
+			if(commandToApply.consoleCommand == null) {
+				if(commandTimes[meta_i] == 0) {//NOTE: all commands must start at exactly 0 time for this to work
+					movements[state_i + Emote.OFF_X] = states[state_i + Emote.OFF_X] - commandToApply.x;
+					movements[state_i + Emote.OFF_Y] = states[state_i + Emote.OFF_Y] - commandToApply.y;
+					movements[state_i + Emote.OFF_Z] = states[state_i + Emote.OFF_Z] - commandToApply.z;
+				}
+				if(commandTimes[meta_i] + delta > commandToApply.duration) {
+					delta -= commandToApply.duration - commandTimes[meta_i];
+
+					states[state_i + Emote.OFF_X] = commandToApply.x;
+					states[state_i + Emote.OFF_Y] = commandToApply.y;
+					states[state_i + Emote.OFF_Z] = commandToApply.z;
+				} else {
+					commandTimes[meta_i] += delta;
+					delta = 0;
+
+					TweenEquation eq = TweenUtils.easings[commandToApply.easing];
+					float t = 1 - eq.compute((commandTimes[meta_i] + delta)/commandToApply.duration);
+					states[state_i + Emote.OFF_X] = commandToApply.x + t*movements[state_i + Emote.OFF_X];
+					states[state_i + Emote.OFF_Y] = commandToApply.y + t*movements[state_i + Emote.OFF_Y];
+					states[state_i + Emote.OFF_Z] = commandToApply.z + t*movements[state_i + Emote.OFF_Z];
+				}
+			} else if(data != null) {
+				runCommand(data, commandToApply.consoleCommand);
+			}
+		}
+		return delta;
+	}
+	public static final void setEmoteCommands(
+		ArrayList<ArrayList<Emote.PartCommand>> commands,
+		int[] partUsages,
+		float[] partSpeeds,
+		byte[] commandSections,
+		int[] commandIndices,
+		float[] commandTimes,
+		float[] states,
+		int meta_i,
+		Emote emote,
+		float speed
+	) {
+		int partId = meta_i/2;
+		int isRotate = meta_i%2;
+		int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+		int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+		int loop_i = intro_i + 1;
+		int outro_i = loop_i + 1;
+
+		commandIndices[meta_i] = 0;
+		commandTimes[meta_i] = 0;
+		//reset this part
+		if(partSpeeds != null) partSpeeds[meta_i] = speed;
+		states[state_i + Emote.OFF_X] = 0;
+		states[state_i + Emote.OFF_Y] = 0;
+		states[state_i + Emote.OFF_Z] = 0;
+
+
+		if(emote != null && emote.partUsages[meta_i] > 0) {
+			partUsages[meta_i] = emote.partUsages[meta_i];
+			commandSections[meta_i] = SECTION_INTRO;
+			commands.set(intro_i, emote.commands.get(intro_i));
+			commands.set(loop_i, emote.commands.get(loop_i));
+			commands.set(outro_i, emote.commands.get(outro_i));
+		} else {
+			partUsages[meta_i] = 0;
+			commandSections[meta_i] = SECTION_NONE;
+			commands.set(intro_i, null);
+			commands.set(loop_i, null);
+			commands.set(outro_i, null);
+		}
+	}
+	public static final void fastForwardCommands(
+		ModelData data,
+		ArrayList<ArrayList<Emote.PartCommand>> commands,
+		int[] partUsages,
+		byte[] commandSections,
+		int[] commandIndices,
+		float[] commandTimes,
+		int meta_i,
+		int desiredSection
+	) {
+		if(commandSections[meta_i] == desiredSection) return;
+
+		int partId = meta_i/2;
+		int isRotate = meta_i%2;
+		int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+		int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+		int loop_i = intro_i + 1;
+		int outro_i = loop_i + 1;
+
+		boolean runsNextFrame = false;
+
+		commandTimes[meta_i] = 0;
+		while(true) {
+			Emote.PartCommand commandToApply = null;
+			if(commandSections[meta_i] == SECTION_INTRO) {
+				ArrayList<Emote.PartCommand> section = commands.get(intro_i);
+				int section_size = section == null ? 0 : section.size();
+				if(commandIndices[meta_i] < section_size) {
+					commandToApply = section.get(commandIndices[meta_i]);
+				} else {
+					commandSections[meta_i] = SECTION_OUTRO;
+					commandIndices[meta_i] = 0;
+					if(desiredSection == SECTION_OUTRO) return;
+				}
+			}
+			if(commandSections[meta_i] == SECTION_LOOP) {
+				// ArrayList<Emote.PartCommand> section = commands.get(loop_i);
+				// int section_size = section == null ? 0 : section.size();
+				// if(commandIndices[meta_i] < section_size) {
+				// 	commandToApply = section.get(commandIndices[meta_i]);
+				// } else {
+					commandSections[meta_i] = SECTION_OUTRO;
+					commandIndices[meta_i] = 0;
+					if(desiredSection == SECTION_OUTRO) return;
+				// }
+			}
+			if(commandSections[meta_i] == SECTION_OUTRO) {
+				ArrayList<Emote.PartCommand> section = commands.get(outro_i);
+				ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
+				int section_size = section == null ? 0 : section.size();
+				if(commandIndices[meta_i] < section_size) {
+					commandToApply = section.get(commandIndices[meta_i]);
+				} else {
+					commandSections[meta_i] = SECTION_NONE;
+					commandIndices[meta_i] = 0;
+					if(desiredSection == SECTION_NONE) return;
+				}
+			}
+			if(commandToApply == null) break;
+
+			//run the command
+			if(!commandToApply.disabled && commandToApply.consoleCommand != null) {
+				runCommand(data, commandToApply.consoleCommand);
+			}
+			commandIndices[meta_i] += 1;
+		}
+	}
+	public static final boolean doesEmoteConflict(int[] partUsages0, int[] partUsages1) {
+		for(int partId = 0; partId < Emote.PART_COUNT; partId += 1) {
+			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
+				final int meta_i = 2*partId + isRotate;
+				if(partUsages0[meta_i] > 0 && partUsages1[meta_i] > 0) return true;
+			}
+		}
+		return false;
+	}
+
+	public void updateAnim() {
+		float updateCutoff = .001f;
+		float movementRate = 1.0f;
+		if(this.previewIsPlaying) {
+			long curTime = System.currentTimeMillis();
+			float delta = (curTime - this.previewLastTime)/1000F;
+			if(delta > updateCutoff) {
+				this.previewLastTime = curTime;
+				this.previewIsPlaying = updatePreviewStates(this.previewCommands, this.previewPartUsages, this.previewCommandSections, this.previewCommandIndices, this.previewCommandTimes, this.previewMovements, this.previewStates, this.previewRepetitions, delta);
+			}
+			updateCutoff = 0.5f;
+		} else {
+		}
+		if(this.emoteIsPlaying) {
+			long curTime = System.currentTimeMillis();
+			float delta = (curTime - this.emoteLastTime)/1000F;
+			if(delta > updateCutoff) {
+				this.emoteLastTime = curTime;
+				if(this.player != null) {
+					float x = (float)this.player.motionX;
+					float z = (float)this.player.motionZ;
+					//sqrt(x*x + z*z) is in range ~~ .045 - .30
+					movementRate = (x*x + z*z)/.0025f;
+					movementRate = 2*movementRate/(movementRate + 1.0f);
+				}
+				this.emoteIsPlaying = updateEmoteStates(this, this.emoteCommands, this.emotePartUsages, this.emoteSpeeds, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, this.emoteMovements, this.emoteStates, movementRate, delta);
+				//check if we can play the queued emote
+				if(this.queuedEmote != null) {
+					if(!this.emoteIsPlaying || (!this.queuedOutroAllFirst && !doesEmoteConflict(this.queuedEmote.partUsages, this.emotePartUsages))) {
+						for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+							if(this.queuedEmote.partUsages[meta_i] > 0) {
+								setEmoteCommands(this.emoteCommands, this.emotePartUsages, this.emoteSpeeds, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, this.emoteStates, meta_i, this.queuedEmote, this.queuedSpeed);
+							}
+						}
+						this.emoteIsPlaying = true;
+						this.queuedEmote = null;
 					}
 				}
 			}
 		}
-		public long getPlayingEmoteId() {
-			if(this.previewTempId > 0) {
-				return this.previewTempId;
+		if(this.previewIsPlaying) {
+			this.animStates = this.previewStates;
+			this.animPartUsages = this.previewPartUsages;
+		} else if(this.emoteIsPlaying) {
+			this.animStates = this.emoteStates;
+			this.animPartUsages = this.emotePartUsages;
+		} else {
+			this.animStates = null;
+			this.animPartUsages = null;
+		}
+	}
+
+
+	public void startEmote(Emote emote, float speed, boolean cancel_if_conflicting, boolean outro_all_playing_first, boolean override_instead_of_outro) {
+		boolean conflicts = this.emoteIsPlaying && doesEmoteConflict(emote.partUsages, this.emotePartUsages);
+		//NOTE: this design can cause a minor desync bug if two emotes attempt to be queued at roughly the same time, a queue list would fix this, but I don't think the added complexity is worth it
+		if(cancel_if_conflicting && (this.queuedEmote != null || conflicts)) return;
+
+		if(override_instead_of_outro || !conflicts) {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				if(outro_all_playing_first || emote.partUsages[meta_i] > 0) {
+					fastForwardCommands(this, this.emoteCommands, this.emotePartUsages, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, meta_i, SECTION_NONE);
+					setEmoteCommands(this.emoteCommands, this.emotePartUsages, this.emoteSpeeds, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, this.emoteStates, meta_i, emote, speed);
+				}
+			}
+			if(!this.emoteIsPlaying) {
+				this.emoteIsPlaying = true;
+				this.emoteLastTime = System.currentTimeMillis();
+			}
+			if(!this.previewIsPlaying) {
+				this.animStates = this.emoteStates;
+				this.animPartUsages = this.emotePartUsages;
+			}
+		} else {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				if(this.emotePartUsages[meta_i] > 0 && (outro_all_playing_first || emote.partUsages[meta_i] > 0)) {
+					this.emotePartUsages[meta_i] |= Emote.ANIMFLAG_END_EMOTE;
+				}
+			}
+			this.queuedEmote = emote;
+			this.queuedOutroAllFirst = outro_all_playing_first;
+			this.queuedSpeed = speed;
+			this.emoteIsPlaying = true;
+		}
+	}
+	public void endEmotes(boolean override_instead_of_outro) {
+		if(this.emoteIsPlaying) {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				if(override_instead_of_outro) {
+					fastForwardCommands(this, this.emoteCommands, this.emotePartUsages, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, meta_i, SECTION_NONE);
+					setEmoteCommands(this.emoteCommands, this.emotePartUsages, this.emoteSpeeds, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, this.emoteStates, meta_i, null, 0);
+				} else if(this.emotePartUsages[meta_i] > 0) {
+					this.emotePartUsages[meta_i] |= Emote.ANIMFLAG_END_EMOTE;
+				}
+			}
+			this.emoteIsPlaying = !override_instead_of_outro;
+		}
+		this.queuedEmote = null;
+	}
+
+	public void startPreview(Emote emote) {
+		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+			setEmoteCommands(this.previewCommands, this.previewPartUsages, null, this.previewCommandSections, this.previewCommandIndices, this.previewCommandTimes, this.previewStates, meta_i, emote, 0);
+		}
+		this.previewIsPlaying = true;
+		this.previewLastTime = System.currentTimeMillis();
+		this.animStates = this.previewStates;
+		this.animPartUsages = this.previewPartUsages;
+	}
+	public void endPreview() {
+		if(this.previewIsPlaying) {
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				setEmoteCommands(this.previewCommands, this.previewPartUsages, null, this.previewCommandSections, this.previewCommandIndices, this.previewCommandTimes, this.previewStates, meta_i, null, 0);
+			}
+			this.previewIsPlaying = false;
+		}
+	}
+
+	public static ModelRenderer getEarsModel(ModelPlayer model) {
+		return model.boxList.get(model.boxList.indexOf(model.bipedLeftArm) - 2);
+	}
+	public void animModelPlayer(ModelPlayer biped, float netHeadYaw, float headPitch) {
+		if(this.animStates != null) animModelPlayerFromStates(biped, this.animStates, this.animPartUsages, this.player.height, netHeadYaw, headPitch);
+	}
+	public void animModelBiped(ModelBiped biped, float netHeadYaw, float headPitch) {
+		if(this.animStates != null) animModelBipedFromStates(biped, this.animStates, this.animPartUsages, netHeadYaw, headPitch);
+	}
+
+	public static final void animModelPlayerFromStates(ModelPlayer biped, float[] states, int[] partUsages, float playerHeight, float netHeadYaw, float headPitch) {
+		netHeadYaw /= 57.295776F;
+		headPitch /= 57.295776F;
+		if((partUsages[2*Emote.HEAD]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedHead, Emote.HEAD, states);
+			setPartOffset(biped.bipedHeadwear, Emote.HEAD, states);
+			setPartOffset(getEarsModel(biped), Emote.HEAD, states);
+		}
+		if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedHead, Emote.HEAD, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedHeadwear, Emote.HEAD, states, netHeadYaw, headPitch);
 			} else {
-				return this.curEmoteTempId;
-			}
-		}
-
-
-		public static ModelRenderer getEarsModel(ModelPlayer model) {
-			return model.boxList.get(model.boxList.indexOf(model.bipedLeftArm) - 2);
-		}
-		public void animModelPlayer(ModelPlayer biped) {
-			if(this.previewTempId > 0) {
-				animModelPlayerFromStates(biped, this.previewStates, this.previewEmote, this.player.height);
-			} else if(this.curEmoteTempId > 0) {
-				animModelPlayerFromStates(biped, this.animStates, this.curEmote, this.player.height);
-			}
-		}
-		public void animModelBiped(ModelBiped biped) {
-			if(this.previewTempId > 0) {
-				animModelBipedFromStates(biped, this.previewStates, this.previewEmote);
-			} else if(this.curEmoteTempId > 0) {
-				animModelBipedFromStates(biped, this.animStates, this.curEmote);
-			}
-		}
-
-		public static void animModelPlayerFromStates(ModelPlayer biped, float[] states, Emote emote, float playerHeight) {
-			if(emote.partIsOffset(Emote.HEAD)) {
-				setPartOffset(biped.bipedHead, Emote.HEAD, states);
-				setPartOffset(biped.bipedHeadwear, Emote.HEAD, states);
-				setPartOffset(getEarsModel(biped), Emote.HEAD, states);
-			}
-			if(emote.partIsRotate(Emote.HEAD)) {
 				setPartRotate(biped.bipedHead, Emote.HEAD, states);
 				setPartRotate(biped.bipedHeadwear, Emote.HEAD, states);
 			}
-			if(emote.partIsOffset(Emote.RIGHT_ARM)) {
-				setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
-				setPartOffset(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
-			}
-			if(emote.partIsRotate(Emote.RIGHT_ARM)) {
+		}
+		if((partUsages[2*Emote.RIGHT_ARM]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+			setPartOffset(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
+		}
+		if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedRightArm, Emote.RIGHT_ARM, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedRightArmwear, Emote.RIGHT_ARM, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedRightArm, Emote.RIGHT_ARM, states);
 				setPartRotate(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
 			}
-			if(emote.partIsOffset(Emote.LEFT_ARM)) {
-				setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
-				setPartOffset(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
-			}
-			if(emote.partIsRotate(Emote.LEFT_ARM)) {
+		}
+		if((partUsages[2*Emote.LEFT_ARM]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+			setPartOffset(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
+		}
+		if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedLeftArm, Emote.LEFT_ARM, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedLeftArmwear, Emote.LEFT_ARM, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedLeftArm, Emote.LEFT_ARM, states);
 				setPartRotate(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
 			}
-			if(emote.partIsOffset(Emote.RIGHT_LEG)) {
-				setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
-				setPartOffset(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
-			}
-			if(emote.partIsRotate(Emote.RIGHT_LEG)) {
+		}
+		if((partUsages[2*Emote.RIGHT_LEG]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+			setPartOffset(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
+		}
+		if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedRightLeg, Emote.RIGHT_LEG, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedRightLegwear, Emote.RIGHT_LEG, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
 				setPartRotate(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
 			}
-			if(emote.partIsOffset(Emote.LEFT_LEG)) {
+		}
+		if((partUsages[2*Emote.LEFT_LEG]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedLeftLeg, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedLeftLegwear, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
+			} else {
 				setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
 				setPartOffset(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
 			}
-			if(emote.partIsRotate(Emote.LEFT_LEG)) {
-				setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
-				setPartRotate(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
-			}
+		}
+		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
+			setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+			setPartRotate(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
+		}
 
-			if(emote.partIsUsed(Emote.BODY)) {
+		if((partUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.BODY + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartOffset(biped.bipedBody, Emote.BODY, states);
+				setPartOffset(biped.bipedBodyWear, Emote.BODY, states);
+				setPartRotateBoundToHead(biped.bipedBody, Emote.BODY, states, netHeadYaw, headPitch);
+				setPartRotateBoundToHead(biped.bipedBodyWear, Emote.BODY, states, netHeadYaw, headPitch);
+			} else {
 				setPartAxis(biped.bipedBody, Emote.BODY, states);
 				setPartAxis(biped.bipedBodyWear, Emote.BODY, states);
 			}
-			if(emote.partIsUsed(Emote.MODEL)) {
-				int id = Emote.AXIS_COUNT*Emote.MODEL;
-				float offsetX = states[id + Emote.OFF_X];
-				float offsetY = states[id + Emote.OFF_Y];
-				float offsetZ = states[id + Emote.OFF_Z];
-				float rotX = states[id + Emote.ROT_X];
-				float rotY = states[id + Emote.ROT_Y];
-				float rotZ = states[id + Emote.ROT_Z];
-
-				GlStateManager.translate(0, playerHeight / 2, 0);
-
-				GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
-
-				if (rotY != 0)
-				GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
-				if (rotX != 0)
-				GlStateManager.rotate(rotX * 90.0F/(float)Math.PI, 1, 0, 0);
-				if (rotZ != 0)
-				GlStateManager.rotate(rotZ * 90.0F/(float)Math.PI, 0, 0, 1);
-
-				GlStateManager.translate(0, -playerHeight / 2, 0);
-			}
 		}
-		public static void animModelBipedFromStates(ModelBiped biped, float[] states, Emote emote) {
-			if(emote.partIsOffset(Emote.HEAD)) {
-				setPartOffset(biped.bipedHead, Emote.HEAD, states);
+		if((partUsages[2*Emote.MODEL]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.MODEL + 1]&Emote.FLAG_USED) > 0) {
+			int id = Emote.AXIS_COUNT*Emote.MODEL;
+			float offsetX = states[id + Emote.OFF_X];
+			float offsetY = states[id + Emote.OFF_Y];
+			float offsetZ = states[id + Emote.OFF_Z];
+			float rotX = states[id + Emote.ROT_X];
+			float rotY = states[id + Emote.ROT_Y];
+			float rotZ = states[id + Emote.ROT_Z];
+			if((partUsages[2*Emote.MODEL + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				rotX += headPitch;
+				rotY += netHeadYaw;
 			}
-			if(emote.partIsRotate(Emote.HEAD)) {
+
+			GlStateManager.translate(0, playerHeight / 2, 0);
+
+			GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
+
+			if (rotY != 0) GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
+			if (rotX != 0) GlStateManager.rotate(rotX * 90.0F/(float)Math.PI, 1, 0, 0);
+			if (rotZ != 0) GlStateManager.rotate(rotZ * 90.0F/(float)Math.PI, 0, 0, 1);
+
+			GlStateManager.translate(0, -playerHeight / 2, 0);
+		}
+	}
+	public static final void animModelBipedFromStates(ModelBiped biped, float[] states, int[] partUsages, float netHeadYaw, float headPitch) {
+		netHeadYaw /= 57.295776F;
+		headPitch /= 57.295776F;
+		if((partUsages[2*Emote.HEAD]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedHead, Emote.HEAD, states);
+		}
+		if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedHead, Emote.HEAD, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedHead, Emote.HEAD, states);
 			}
-			if(emote.partIsOffset(Emote.RIGHT_ARM)) {
-				setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
-			}
-			if(emote.partIsRotate(Emote.RIGHT_ARM)) {
+		}
+		if((partUsages[2*Emote.RIGHT_ARM]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+		}
+		if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedRightArm, Emote.RIGHT_ARM, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedRightArm, Emote.RIGHT_ARM, states);
 			}
-			if(emote.partIsOffset(Emote.LEFT_ARM)) {
-				setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
-			}
-			if(emote.partIsRotate(Emote.LEFT_ARM)) {
+		}
+		if((partUsages[2*Emote.LEFT_ARM]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+		}
+		if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedLeftArm, Emote.LEFT_ARM, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedLeftArm, Emote.LEFT_ARM, states);
 			}
-			if(emote.partIsOffset(Emote.RIGHT_LEG)) {
-				setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
-			}
-			if(emote.partIsRotate(Emote.RIGHT_LEG)) {
+		}
+		if((partUsages[2*Emote.RIGHT_LEG]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+		}
+		if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedRightLeg, Emote.RIGHT_LEG, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
 			}
-			if(emote.partIsOffset(Emote.LEFT_LEG)) {
-				setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
-			}
-			if(emote.partIsRotate(Emote.LEFT_LEG)) {
+		}
+		if((partUsages[2*Emote.LEFT_LEG]&Emote.FLAG_USED) > 0) {
+			setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+		}
+		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartRotateBoundToHead(biped.bipedLeftLeg, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
+			} else {
 				setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
 			}
+		}
 
-			if(emote.partIsUsed(Emote.BODY)) {
+		if((partUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {
+			if((partUsages[2*Emote.BODY + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+				setPartOffset(biped.bipedBody, Emote.BODY, states);
+				setPartRotateBoundToHead(biped.bipedBody, Emote.BODY, states, netHeadYaw, headPitch);
+			} else {
 				setPartAxis(biped.bipedBody, Emote.BODY, states);
 			}
 		}
-		public static void setPartOffset(ModelRenderer part, int partId, float[] states) {
-			partId *= 6;
-			part.offsetX = states[partId + Emote.OFF_X];
-			part.offsetY = states[partId + Emote.OFF_Y];
-			part.offsetZ = states[partId + Emote.OFF_Z];
-		}
-		public static void setPartRotate(ModelRenderer part, int partId, float[] states) {
-			partId *= 6;
-			part.rotateAngleX = states[partId + Emote.ROT_X];
-			part.rotateAngleY = states[partId + Emote.ROT_Y];
-			part.rotateAngleZ = states[partId + Emote.ROT_Z];
-		}
-		public static void setPartAxis(ModelRenderer part, int partId, float[] states) {
-			partId *= 6;
-			part.offsetX = states[partId + Emote.OFF_X];
-			part.offsetY = states[partId + Emote.OFF_Y];
-			part.offsetZ = states[partId + Emote.OFF_Z];
-			part.rotateAngleX = states[partId + Emote.ROT_X];
-			part.rotateAngleY = states[partId + Emote.ROT_Y];
-			part.rotateAngleZ = states[partId + Emote.ROT_Z];
-		}
-
-		public static void resetModelPlayerAfterEmote(ModelPlayer biped) {
-			resetPart(biped.bipedHead);
-			resetPart(biped.bipedHeadwear);
-			resetPart(biped.bipedBody);
-			resetPart(biped.bipedLeftArm);
-			resetPart(biped.bipedRightArm);
-			resetPart(biped.bipedLeftLeg);
-			resetPart(biped.bipedRightLeg);
-			resetPart(biped.bipedBodyWear);
-			resetPart(biped.bipedLeftArmwear);
-			resetPart(biped.bipedRightArmwear);
-			resetPart(biped.bipedLeftLegwear);
-			resetPart(biped.bipedRightLegwear);
-			resetPart(getEarsModel(biped));
-		}
-		public static void resetModelBipedAfterEmote(ModelBiped biped) {
-			resetPart(biped.bipedHead);
-			resetPart(biped.bipedBody);
-			resetPart(biped.bipedLeftArm);
-			resetPart(biped.bipedRightArm);
-			resetPart(biped.bipedLeftLeg);
-			resetPart(biped.bipedRightLeg);
-			// resetPart(getEarsModel(biped));
-		}
-
-		public static void resetPart(ModelRenderer part) {
-			if(part != null)
-			part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
-		}
 	}
+	public static final void setPartOffset(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.offsetX = states[partId + Emote.OFF_X];
+		part.offsetY = states[partId + Emote.OFF_Y];
+		part.offsetZ = states[partId + Emote.OFF_Z];
+	}
+	public static final void setPartRotate(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.rotateAngleX = states[partId + Emote.ROT_X];
+		part.rotateAngleY = states[partId + Emote.ROT_Y];
+		part.rotateAngleZ = states[partId + Emote.ROT_Z];
+	}
+	public static final void setPartRotateBoundToHead(ModelRenderer part, int partId, float[] states, float netHeadYaw, float headPitch) {
+		partId *= 6;
+		part.rotateAngleX = states[partId + Emote.ROT_X] + headPitch;
+		part.rotateAngleY = states[partId + Emote.ROT_Y] + netHeadYaw;
+		part.rotateAngleZ = states[partId + Emote.ROT_Z];
+	}
+	public static final void setPartAxis(ModelRenderer part, int partId, float[] states) {
+		partId *= 6;
+		part.offsetX = states[partId + Emote.OFF_X];
+		part.offsetY = states[partId + Emote.OFF_Y];
+		part.offsetZ = states[partId + Emote.OFF_Z];
+		part.rotateAngleX = states[partId + Emote.ROT_X];
+		part.rotateAngleY = states[partId + Emote.ROT_Y];
+		part.rotateAngleZ = states[partId + Emote.ROT_Z];
+	}
+
+	public static final void resetModelPlayerForEmote(ModelPlayer biped) {
+		resetPart(biped.bipedHead);
+		resetPart(biped.bipedHeadwear);
+		resetPart(biped.bipedBody);
+		resetPart(biped.bipedLeftArm);
+		resetPart(biped.bipedRightArm);
+		resetPart(biped.bipedLeftLeg);
+		resetPart(biped.bipedRightLeg);
+		resetPart(biped.bipedBodyWear);
+		resetPart(biped.bipedLeftArmwear);
+		resetPart(biped.bipedRightArmwear);
+		resetPart(biped.bipedLeftLegwear);
+		resetPart(biped.bipedRightLegwear);
+		resetPart(getEarsModel(biped));
+	}
+	public static final void resetModelBipedForEmote(ModelBiped biped) {
+		resetPart(biped.bipedHead);
+		resetPart(biped.bipedBody);
+		resetPart(biped.bipedLeftArm);
+		resetPart(biped.bipedRightArm);
+		resetPart(biped.bipedLeftLeg);
+		resetPart(biped.bipedRightLeg);
+		// resetPart(getEarsModel(biped));
+	}
+
+	public static final void resetPart(ModelRenderer part) {
+		if(part != null)
+		part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+	}
+}

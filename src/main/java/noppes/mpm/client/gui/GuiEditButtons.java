@@ -25,15 +25,15 @@ public class GuiEditButtons extends GuiNPCInterface {
 		this.getLabel(0).center(this.xSize);
 		this.getLabel(6).center(this.xSize);
 		y += 22;
-		this.addButton(1, y, "MPM 1", MorePlayerModels.button1);
+		// this.addButton(1, y, "MPM 1", MorePlayerModels.button1);
 		y += 22;
-		this.addButton(2, y, "MPM 2", MorePlayerModels.button2);
+		// this.addButton(2, y, "MPM 2", MorePlayerModels.button2);
 		y += 22;
-		this.addButton(3, y, "MPM 3", MorePlayerModels.button3);
+		// this.addButton(3, y, "MPM 3", MorePlayerModels.button3);
 		y += 22;
-		this.addButton(4, y, "MPM 4", MorePlayerModels.button4);
+		// this.addButton(4, y, "MPM 4", MorePlayerModels.button4);
 		y += 22;
-		this.addButton(5, y, "MPM 5", MorePlayerModels.button5);
+		// this.addButton(5, y, "MPM 5", MorePlayerModels.button5);
 	}
 
 	private void addButton(int id, int y, String title, int value) {
@@ -66,27 +66,22 @@ public class GuiEditButtons extends GuiNPCInterface {
 		super.actionPerformed(btn);
 		GuiNpcButton button = (GuiNpcButton)btn;
 		if (button.id == 1) {
-			MorePlayerModels.button1 = this.getValue(button);
 			MorePlayerModels.instance.configLoader.updateConfig();
 		}
 
 		if (button.id == 2) {
-			MorePlayerModels.button2 = this.getValue(button);
 			MorePlayerModels.instance.configLoader.updateConfig();
 		}
 
 		if (button.id == 3) {
-			MorePlayerModels.button3 = this.getValue(button);
 			MorePlayerModels.instance.configLoader.updateConfig();
 		}
 
 		if (button.id == 4) {
-			MorePlayerModels.button4 = this.getValue(button);
 			MorePlayerModels.instance.configLoader.updateConfig();
 		}
 
 		if (button.id == 5) {
-			MorePlayerModels.button5 = this.getValue(button);
 			MorePlayerModels.instance.configLoader.updateConfig();
 		}
 

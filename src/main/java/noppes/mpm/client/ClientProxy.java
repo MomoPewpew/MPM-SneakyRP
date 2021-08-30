@@ -28,20 +28,10 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import noppes.mpm.CommonProxy;
 import noppes.mpm.MorePlayerModels;
-import noppes.mpm.client.commands.CommandBow;
 import noppes.mpm.client.commands.CommandCrawl;
-import noppes.mpm.client.commands.CommandCry;
-import noppes.mpm.client.commands.CommandDance;
-import noppes.mpm.client.commands.CommandDeath;
-import noppes.mpm.client.commands.CommandHug;
 import noppes.mpm.client.commands.CommandNames;
-import noppes.mpm.client.commands.CommandNo;
 import noppes.mpm.client.commands.CommandPoint;
 import noppes.mpm.client.commands.CommandSit;
-import noppes.mpm.client.commands.CommandSleep;
-import noppes.mpm.client.commands.CommandWag;
-import noppes.mpm.client.commands.CommandWave;
-import noppes.mpm.client.commands.CommandYes;
 import noppes.mpm.client.layer.LayerArms;
 import noppes.mpm.client.layer.LayerBackItem;
 import noppes.mpm.client.layer.LayerBody;
@@ -60,11 +50,6 @@ import noppes.mpm.client.gui.GuiCreationEmotes;
 
 public class ClientProxy extends CommonProxy {
 	public static KeyBinding Screen;
-	public static KeyBinding MPM1;
-	public static KeyBinding MPM2;
-	public static KeyBinding MPM3;
-	public static KeyBinding MPM4;
-	public static KeyBinding MPM5;
 	public static KeyBinding Camera;
 
 	@Override
@@ -78,11 +63,6 @@ public class ClientProxy extends CommonProxy {
 		MorePlayerModels var10002 = MorePlayerModels.instance;
 		new PresetController(MorePlayerModels.dir);
 		ClientRegistry.registerKeyBinding(Screen = new KeyBinding("CharacterScreen", 88, "key.categories.gameplay"));
-		ClientRegistry.registerKeyBinding(MPM1 = new KeyBinding("MPM 1", 44, "key.categories.gameplay"));
-		ClientRegistry.registerKeyBinding(MPM2 = new KeyBinding("MPM 2", 0, "key.categories.gameplay"));
-		ClientRegistry.registerKeyBinding(MPM3 = new KeyBinding("MPM 3", 0, "key.categories.gameplay"));
-		ClientRegistry.registerKeyBinding(MPM4 = new KeyBinding("MPM 4", 0, "key.categories.gameplay"));
-		ClientRegistry.registerKeyBinding(MPM5 = new KeyBinding("MPM 5", 0, "key.categories.gameplay"));
 		ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 71, "key.categories.gameplay"));
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		if (MorePlayerModels.EnableUpdateChecker) {
@@ -91,19 +71,19 @@ public class ClientProxy extends CommonProxy {
 		}
 
 		MinecraftForge.EVENT_BUS.register(new RenderEvent());
-		ClientCommandHandler.instance.registerCommand(new CommandBow());
+		// ClientCommandHandler.instance.registerCommand(new CommandBow());
 		ClientCommandHandler.instance.registerCommand(new CommandCrawl());
-		ClientCommandHandler.instance.registerCommand(new CommandCry());
-		ClientCommandHandler.instance.registerCommand(new CommandDeath());
-		ClientCommandHandler.instance.registerCommand(new CommandDance());
-		ClientCommandHandler.instance.registerCommand(new CommandHug());
-		ClientCommandHandler.instance.registerCommand(new CommandNo());
+		// ClientCommandHandler.instance.registerCommand(new CommandCry());
+		// ClientCommandHandler.instance.registerCommand(new CommandDeath());
+		// ClientCommandHandler.instance.registerCommand(new CommandDance());
+		// ClientCommandHandler.instance.registerCommand(new CommandHug());
+		// ClientCommandHandler.instance.registerCommand(new CommandNo());
 		ClientCommandHandler.instance.registerCommand(new CommandPoint());
 		ClientCommandHandler.instance.registerCommand(new CommandSit());
-		ClientCommandHandler.instance.registerCommand(new CommandSleep());
-		ClientCommandHandler.instance.registerCommand(new CommandWag());
-		ClientCommandHandler.instance.registerCommand(new CommandWave());
-		ClientCommandHandler.instance.registerCommand(new CommandYes());
+		// ClientCommandHandler.instance.registerCommand(new CommandSleep());
+		// ClientCommandHandler.instance.registerCommand(new CommandWag());
+		// ClientCommandHandler.instance.registerCommand(new CommandWave());
+		// ClientCommandHandler.instance.registerCommand(new CommandYes());
 		ClientCommandHandler.instance.registerCommand(new CommandNames());
 
 	}

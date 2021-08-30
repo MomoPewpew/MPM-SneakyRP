@@ -79,52 +79,35 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	protected void actionPerformed(GuiButton btn) {
 		super.actionPerformed(btn);
 		if (btn.id == 0) {
-			this.playerdata.endPreviewEmote();
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationOptions());
-		}
-
-		else if (btn.id == 1) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 1) {
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationEntities());
-		}
-
-		else if (btn.id == 2) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 2) {
+			this.playerdata.endPreview();
 			if (this.entity == null) {
 				this.openGui(new GuiCreationParts());
 			} else {
 				this.openGui(new GuiCreationExtra());
 			}
-		}
-
-		else if (btn.id == 3) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 3) {
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationScale());
-		}
-
-		else if (btn.id == 66) {
+		} else if (btn.id == 66) {
 			this.close();
-		}
-
-		else if (btn.id == 100) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 100) {
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationProps());
-		}
-
-		else if (btn.id == 400) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 400) {
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationSkinLoad());
-		}
-
-		else if (btn.id == 450) {
-			this.playerdata.endPreviewEmote();
+		} else if (btn.id == 450) {
+			this.playerdata.endPreview();
 			this.openGui(new GuiCreationPropLoad());
-		}
-
-		else if (btn.id == 601) {
+		} else if (btn.id == 601) {
 			this.openGui(new GuiCreationEmotes());
-		}
-		else if (btn.id == 651) {
+		} else if (btn.id == 651) {
 			this.openGui(new GuiCreationEmoteLoad());
 		}
 	}
@@ -196,6 +179,6 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	@Override
 	public void close() {
 		super.close();
-		this.playerdata.endPreviewEmote();
+		this.playerdata.endPreview();
 	}
 }

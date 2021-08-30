@@ -337,13 +337,20 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				Emote emote = Emote.readEmote(buffer);
 				if(emote == null) return;
 
-				GuiCreationEmotes.resetAndReplaceEmote(emote);
-				// GuiCreationEmotes.curEmoteName = emoteName;
-				GuiCreationEmotes.ischangedfromserver = false;
+				GuiCreationEmotes.loadNewEmote(emote);
+				ModelData data = ModelData.get(player);
+				if(data != null) {
+					data.startPreview(emote.clone());
+				}
 			} else if (type == EnumPackets.EMOTE_DO) {
 				Float speed = buffer.readFloat();
+				boolean cancel_if_conflicting = buffer.readBoolean();
+				boolean outro_all_playing_first = buffer.readBoolean();
+				boolean override_instead_of_outro = buffer.readBoolean();
+				buffer.readBoolean();
 				String playerName = Server.readString(buffer);
 				if(playerName == null) return;
+
 				Emote emote = Emote.readEmote(buffer);
 				if(emote == null) return;
 
@@ -351,17 +358,18 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				EntityPlayer target = world.getPlayerEntityByName(playerName);
 				if(target != null) {
 					ModelData data = ModelData.get(target);
-					data.startEmote(emote, speed, target);
+					data.startEmote(emote, speed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
 				}
 			} else if (type == EnumPackets.EMOTE_END) {
 				String playerName = Server.readString(buffer);
 				if(playerName == null) return;
+				boolean override_instead_of_outro = buffer.readBoolean();
 
 				World world = Minecraft.getMinecraft().theWorld;
 				EntityPlayer target = world.getPlayerEntityByName(playerName);
 				if(target != null) {
 					ModelData data = ModelData.get(target);
-					data.endCurEmote();
+					data.endEmotes(override_instead_of_outro);
 				}
 			}
 		}

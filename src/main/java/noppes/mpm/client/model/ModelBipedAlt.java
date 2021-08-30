@@ -85,39 +85,14 @@ public class ModelBipedAlt extends ModelBiped {
 			this.isSneak = false;
 		}
 
-		// this.bipedBody.rotationPointX = this.bipedBody.rotationPointY = this.bipedBody.rotationPointZ = 0.0F;
-		// this.bipedBody.rotateAngleX = this.bipedBody.rotateAngleY = this.bipedBody.rotateAngleZ = 0.0F;
-		// this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.0F;
-		// this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ = 0.0F;
-		// this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX = 0.0F;
-		// this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY = 0.0F;
-		// this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ = 0.0F;
-		// this.bipedLeftLeg.rotateAngleX = 0.0F;
-		// this.bipedLeftLeg.rotateAngleY = 0.0F;
-		// this.bipedLeftLeg.rotateAngleZ = 0.0F;
-		// this.bipedRightLeg.rotateAngleX = 0.0F;
-		// this.bipedRightLeg.rotateAngleY = 0.0F;
-		// this.bipedRightLeg.rotateAngleZ = 0.0F;
-		// this.bipedLeftArm.rotationPointX = 0.0F;
-		// this.bipedLeftArm.rotationPointY = 2.0F;
-		// this.bipedLeftArm.rotationPointZ = 0.0F;
-		// this.bipedRightArm.rotationPointX = 0.0F;
-		// this.bipedRightArm.rotationPointY = 2.0F;
-		// this.bipedRightArm.rotationPointZ = 0.0F;
 
-		// data.updateAnim();
-
-		long t = data.getPlayingEmoteId();
-		if(this.emoteId != t) {
-			this.emoteId = t;
-			ModelData.resetModelBipedAfterEmote(this);
-		}
+		ModelData.resetModelBipedForEmote(this);
 
 		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
-		if(t > 0) {
-			data.animModelBiped(this);
-		} else if (!data.isSleeping() && !player.isPlayerSleeping()) {
+		data.animModelBiped(this, netHeadYaw, headPitch);
+
+		if (!data.isSleeping() && !player.isPlayerSleeping()) {
 			if (data.animation == EnumAnimation.CRY) {
 				this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.7F;
 			} else if (data.animation == EnumAnimation.HUG) {

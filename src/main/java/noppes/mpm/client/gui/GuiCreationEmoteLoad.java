@@ -75,7 +75,6 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 	public void initGui() {
 		this.initiating = true;
 		super.initGui();
-		//TODO: lag compensation and dynamic updating
 
 		if(this.scroll == null) this.scroll = new GuiCustomScroll(this, 0, false);
 		if(scrollList == null || hasCachedEmoteFileNamesChanged) {
@@ -106,7 +105,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			this.addButton(new GuiNpcButton(655, x + 104, y, 50, 20, "gui.remove"));
 			String emoteName = scrollList.get(selected);
 			y += 22;
-			if(GuiCreationEmotes.curEmoteName.equals(emoteName) && !GuiCreationEmotes.ischangedfromserver) {
+			if(GuiCreationEmotes.emoteName.equals(emoteName) && !GuiCreationEmotes.emoteIsChangedFromServer) {
 				this.getButton(654).enabled = false;
 			}
 			if(isrequestingremoval) {
@@ -122,10 +121,10 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		y += 22;
 
 		this.addButton(new GuiNpcButton(656, x + 143, y, 50, 20, "gui.save"));
-		if(GuiCreationEmotes.curEmoteName.equals("") || !GuiCreationEmotes.ischangedfromserver) {
+		if(GuiCreationEmotes.emoteName.equals("") || !GuiCreationEmotes.emoteIsChangedFromServer) {
 			this.getButton(656).enabled = false;
 		}
-		this.addTextField(new GuiNpcTextField(657, this, x, y + 1, 140, 18, GuiCreationEmotes.curEmoteName));
+		this.addTextField(new GuiNpcTextField(657, this, x, y + 1, 140, 18, GuiCreationEmotes.emoteName));
 		y += 22;
 		this.addButton(new GuiNpcButton(658, x + 143, y, 50, 20, "gui.reset"));
 
@@ -143,24 +142,22 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		} else if(btn.id == 656) {//save local emote as server emote
 			ByteBuf buffer = Unpooled.buffer();
 			buffer.writeInt(EnumPackets.EMOTE_SAVE.ordinal());
-			Server.writeString(buffer, GuiCreationEmotes.curEmoteName);
-			Emote.writeEmote(buffer, GuiCreationEmotes.curEmote);
+			Server.writeString(buffer, GuiCreationEmotes.emoteName);
+			Emote.writeEmote(buffer, GuiCreationEmotes.emoteData);
 			Client.sendData(buffer);
-			GuiCreationEmotes.ischangedfromserver = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
+			GuiCreationEmotes.emoteIsChangedFromServer = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
 			this.initGui();
 		} else if(btn.id == 658) {//reset local emote
-			GuiCreationEmotes.resetAndReplaceEmote(new Emote());
-			GuiCreationEmotes.curEmoteName = "";
-			GuiCreationEmotes.ischangedfromserver = false;
+			GuiCreationEmotes.loadNewEmote(new Emote());
+			GuiCreationEmotes.emoteName = "";
 			this.initGui();
+			this.playerdata.endPreview();
 		} else if(selected >= 0) {//refresh
 			//NOTE: the emoteName may have been desynced with the server, minor inconvenience
 			String emoteName = scrollList.get(selected);
 			if(btn.id == 654) {//load
 				Client.sendData(EnumPackets.EMOTE_LOAD, emoteName);
-				GuiCreationEmotes.resetAndReplaceEmote(new Emote());
-				GuiCreationEmotes.curEmoteName = emoteName;
-				GuiCreationEmotes.ischangedfromserver = false;
+				GuiCreationEmotes.emoteName = emoteName;
 				this.initGui();
 			} else if(btn.id == 655) {//request remove
 				isrequestingremoval = true;
@@ -212,9 +209,9 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			this.initGui();
 		} else if(textField.id == 657) {
 			String str = MorePlayerModels.validateFileName(textField.getText());
-			if(str != null && !str.equals(GuiCreationEmotes.curEmoteName)) {
-				GuiCreationEmotes.curEmoteName = str;
-				GuiCreationEmotes.ischangedfromserver = true;
+			if(str != null && !str.equals(GuiCreationEmotes.emoteName)) {
+				GuiCreationEmotes.emoteName = str;
+				GuiCreationEmotes.emoteIsChangedFromServer = true;
 			}
 			this.initGui();
 		}

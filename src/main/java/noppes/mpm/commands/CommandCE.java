@@ -25,7 +25,12 @@ public class CommandCE extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
-		Server.sendToAll(server, EnumPackets.EMOTE_END, icommandsender.getName());
+		boolean override_instead_of_outro = false;
+		if (args.length >= 1) {
+			override_instead_of_outro = args[0].toLowerCase().equals("true") || args[0].equals("1");
+		}
+
+		Server.sendToAll(server, EnumPackets.EMOTE_END, icommandsender.getName(), override_instead_of_outro);
 		return;
 	}
 
@@ -36,7 +41,7 @@ public class CommandCE extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/ce";
+		return "/ce [override instead of playing outro <true/false>]";
 	}
 
 

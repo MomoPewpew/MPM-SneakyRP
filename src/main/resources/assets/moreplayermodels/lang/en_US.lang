@@ -78,7 +78,7 @@ gui.copy=Copy
 gui.paste=Paste
 gui.type.keyframe=Keyframe
 gui.type.command=Command
-gui.command=Command:
+gui.command=Command
 
 gui.usageflag.loop_only_stops_at_boundary=Loop only stops at boundary
 gui.usageflag.loop_pauses_when_still=Loop pauses when not moving

@@ -131,6 +131,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			} else {
 				return String.format(java.util.Locale.US, "%.2f, %.2f, %.2f", command.x, command.y, command.z);
 			}
+		} else if(command.consoleCommand.length() == 0) {
+			return "empty";
 		} else {
 			return command.consoleCommand;
 		}
@@ -292,8 +294,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				this.addButton(new GuiNpcButton(625, x + 44, y, 82, 20, "gui.type.command"));
 				y += 22;
 
-				this.addLabel(new GuiNpcLabel(626, "gui.command", x + 1,  y + 6, 16777215));
-				this.addTextField(new GuiNpcTextField(626, this, x + 46, y + 1, 145, 18, command.consoleCommand));
+				this.addLabel(new GuiNpcLabel(626, "gui.command", x + 2,  y + 6, 16777215));
+				this.addTextField(new GuiNpcTextField(626, this, x + 48, y + 1, 143, 18, command.consoleCommand));
 				y += 22;
 			}
 		} else if(emoteSelected == 0 && emoteData.partUsages[meta_i] > 0) {//editing part usage

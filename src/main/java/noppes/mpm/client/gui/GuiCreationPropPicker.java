@@ -27,9 +27,9 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 	private static String searchString;
 	private static final Integer rowAmount = 7;
 	private static final Integer columnAmount = 14;
-	private static Set<Entry<Float, ItemStack>> mappings;
 	private static PropGroup propGroupOld;
 	private static int selectedOld;
+	private static List<ItemStack> list = new ArrayList<ItemStack>();
 
 	public GuiCreationPropPicker(Prop propArg, PropGroup propGroup, int selected) {
 		this.active = -1;
@@ -61,19 +61,21 @@ public class GuiCreationPropPicker extends GuiCreationScreenInterface implements
 			}
 		}
 
-		mappings = map.entrySet();
+
+		Set<Entry<Float, ItemStack>> mappings = map.entrySet();
+
+		list = new ArrayList<ItemStack>();
+
+		for(Entry<Float, ItemStack> mapping : mappings){
+			list.add(mapping.getValue());
+		}
+
 	}
 
 	@Override
 	public void initGui() {
 		this.initiating = true;
 		super.initGui();
-
-		List<ItemStack> list = new ArrayList<ItemStack>();
-
-		for(Entry<Float, ItemStack> mapping : mappings){
-			list.add(mapping.getValue());
-		}
 
 		Iterator<ItemStack> var1 = list.iterator();
 		List<ItemStack> itemStacks = new ArrayList<ItemStack>();

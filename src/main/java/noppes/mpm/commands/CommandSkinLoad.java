@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
+import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
@@ -84,6 +85,8 @@ public class CommandSkinLoad extends CommandBase {
 				compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
 			}
 
+			ModelData data = ModelData.get((EntityPlayer) icommandsender);
+			data.readFromNBT(compound);
 			Server.sendAssociatedData((Entity) icommandsender, EnumPackets.SEND_PLAYER_DATA, ((Entity) icommandsender).getUniqueID(), compound);
 		} catch (Exception var4) {
 			LogWriter.except(var4);

@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import noppes.mpm.Emote;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
@@ -389,9 +390,9 @@ public class LayerProp extends LayerInterface {
 					Float propOffsetY = prop.offsetY;
 					Float propOffsetZ = prop.offsetZ;
 
-					Float propMotionSpeed = prop.speed;
-					Float propMotionPitch = (float) Math.toRadians((prop.pitch + (2 * prop.scatter * Math.random()) - prop.scatter));
-					Float propMotionYaw = (float) Math.toRadians((prop.yaw + (2 * prop.scatter * Math.random()) - prop.scatter));
+					Double propMotionSpeed = prop.speed;
+					Double propMotionPitch = Math.toRadians((prop.pitch + (2 * prop.scatter * Math.random()) - prop.scatter));
+					Double propMotionYaw = Math.toRadians((prop.yaw + (2 * prop.scatter * Math.random()) - prop.scatter));
 
 					Float partModifierX = 0.0F;
 					Float partModifierY = 0.0F;
@@ -564,9 +565,9 @@ public class LayerProp extends LayerInterface {
 					Float propOffsetZCorrected;
 
 					if (prop.bodyPartName.equals("model")) {
-						propOffsetXCorrected = propOffsetX;
+						propOffsetXCorrected = propOffsetX - propBodyPart.offsetX - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X];
 						propOffsetYCorrected = propOffsetY;
-						propOffsetZCorrected = propOffsetZ;
+						propOffsetZCorrected = propOffsetZ - propBodyPart.offsetZ - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL +  Emote.OFF_Z];
 					} else {
 						//Calculate prop offset
 						Float anglePrev;
@@ -603,7 +604,7 @@ public class LayerProp extends LayerInterface {
 						}
 
 						Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
-						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ;
+						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL +  Emote.OFF_Z];
 
 						//Apply roll
 						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
@@ -619,30 +620,62 @@ public class LayerProp extends LayerInterface {
 							hyp = (float) (Xyaw / Math.sin(anglePrev));
 						}
 
-						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX;
+						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X];
 						propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 					}
 
-					//Calculate particle motion
-					//Apply pitch
-					Double propMotionYCorrected = propMotionSpeed * Math.cos(propMotionPitch);
-					Double propMotionZPitch = propMotionSpeed * Math.sin(propMotionPitch);
+					Double propMotionXCorrected = null;
+					Double propMotionYCorrected = null;
+					Double propMotionZCorrected = null;
+					if (prop.bodyPartName.equals("model")) {
+						//Calculate particle motion
+						//Apply pitch
+						propMotionYCorrected = propMotionSpeed * Math.cos(propMotionPitch);
+						Double propMotionZPitch = propMotionSpeed * Math.sin(propMotionPitch);
 
-					//Apply yaw
-					Double propMotionZCorrected = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
-					Double propMotionXCorrected = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+						//Apply yaw
+						propMotionZCorrected = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+						propMotionXCorrected = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
+					} else {
+						Float anglePrev;
+						Double hyp;
+						//Apply pitch
+						Double Zpitch = (Math.sin(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
+						Double Ypitch = (Math.cos(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
+
+						//Apply yaw
+						Double Xyaw = (Math.sin(-propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * Zpitch);
+						propMotionZCorrected = (Math.cos(-propBodyPart.rotateAngleY - Math.toRadians(this.player.renderYawOffset) + propMotionYaw) * Zpitch);
+
+						//Apply roll
+						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
+							if (Ypitch <= 0) {
+								anglePrev = 0.0F;
+								hyp = Ypitch;
+							} else {
+								anglePrev = (float) Math.PI;
+								hyp = -Ypitch;
+							}
+						} else {
+							anglePrev = (float) Math.atan2(Xyaw, Ypitch);
+							hyp = (Xyaw / Math.sin(anglePrev));
+						}
+
+						propMotionXCorrected = (Math.sin(anglePrev + propBodyPart.rotateAngleZ) * hyp);
+						propMotionYCorrected = (Math.cos(anglePrev + propBodyPart.rotateAngleZ) * hyp);
+					}
 
 					//Adjust for model yaw
 					Float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
 					Float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-					Float partModifierX2 = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-					Float partModifierZ2 = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					Float partModifierXCorrected = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					Float partModifierZCorrected = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
 					this.player.worldObj.spawnParticle(propParticleType,
-					this.player.posX - propOffsetXCorrected2 - partModifierX2,
-					this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY,
-					this.player.posZ + propOffsetZCorrected2 + partModifierZ2,
-					propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
+						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
+						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y],
+						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
+						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 
 				prop.lastplayed = System.currentTimeMillis();

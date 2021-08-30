@@ -109,7 +109,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public int[] animPartUsages = null;
 
 
-
 	public ModelData() {
 		this.backItem = null;
 		this.inLove = 0;

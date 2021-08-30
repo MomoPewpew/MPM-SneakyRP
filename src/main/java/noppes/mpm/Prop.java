@@ -30,7 +30,7 @@ public class Prop {
 	public int amount = 1;
 	public Float pitch = 0.0F;
 	public Float yaw = 0.0F;
-	public Float speed = 0.0F;
+	public Double speed = 0.0D;
 	public long lastplayed = System.currentTimeMillis();
 	public Float ppOffsetX = 0.0F;
 	public Float ppOffsetY = 0.0F;
@@ -73,7 +73,7 @@ public class Prop {
 	public Prop(String propString, String bodyPartName,
 	Float motionScatter, Float frequency, int amount,
 	Float offsetX, Float offsetY, Float offsetZ,
-	Float pitch, Float yaw, Float speed,
+	Float pitch, Float yaw, Double speed,
 	Boolean hide, String name)
 	{
 		this.propString = propString;
@@ -113,7 +113,7 @@ public class Prop {
 		compound.setInteger("amount", this.amount);
 		compound.setFloat("pitch", this.pitch);
 		compound.setFloat("yaw", this.yaw);
-		compound.setFloat("speed", this.speed);
+		compound.setDouble("speed", this.speed);
 		compound.setFloat("ppOffsetX", this.ppOffsetX);
 		compound.setFloat("ppOffsetY", this.ppOffsetY);
 		compound.setFloat("ppOffsetZ", this.ppOffsetZ);
@@ -141,7 +141,7 @@ public class Prop {
 		this.amount = compound.getInteger("amount");
 		this.pitch = compound.getFloat("pitch");
 		this.yaw = compound.getFloat("yaw");
-		this.speed = compound.getFloat("speed");
+		this.speed = compound.getDouble("speed");
 		this.ppOffsetX = compound.getFloat("ppOffsetX");
 		this.ppOffsetY = compound.getFloat("ppOffsetY");
 		this.ppOffsetZ = compound.getFloat("ppOffsetZ");

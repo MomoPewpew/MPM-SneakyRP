@@ -103,7 +103,7 @@ public class Emote {
 		public float y = 0.0F;
 		public float z = 0.0F;
 		public float duration = 0.5F;
-		public int easing = TweenUtils.LINEAR_INOUT;
+		public int easing = TweenUtils.QUAD_INOUT;
 
 		public PartCommand clone() {
 			PartCommand command = new PartCommand();

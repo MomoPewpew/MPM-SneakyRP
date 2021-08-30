@@ -531,139 +531,138 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		float delta
 	) {
 		boolean runsNextFrame = false;
-		for(int partId = 0; partId < Emote.PART_COUNT; partId += 1) {
-			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
-				final int meta_i = 2*partId + isRotate;
+		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+			int partId = meta_i/2;
+			int isRotate = meta_i%2;
 
-				if(commandSections[meta_i] == SECTION_NONE) continue;
+			if(commandSections[meta_i] == SECTION_NONE) continue;
 
-				int usage = partUsages[meta_i];
-				float remainingDelta = partSpeeds[meta_i]*delta;
+			int usage = partUsages[meta_i];
+			float remainingDelta = partSpeeds[meta_i]*delta;
 
-				boolean play_outro = false;
-				boolean play_outro_at_loop_boundary = false;
-				boolean pause_at_loop_boundary = false;
-				float m = movementRate;
-				if((usage&Emote.FLAG_INVERT_MOVEMENT) > 0) {
-					m = Math.max(0.0f, 1.0f - m);
-				}
-				if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
-					if(commandSections[meta_i] != SECTION_OUTRO) {
-						if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
-							play_outro_at_loop_boundary = true;
-						} else {
-							fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
-						}
-					}
-				} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0) {
-					if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
-						if(m <= RATE_MIN) {
-							play_outro_at_loop_boundary = true;
-							remainingDelta *= RATE_MIN;
-						} else {
-							remainingDelta *= m;
-						}
+			boolean play_outro = false;
+			boolean play_outro_at_loop_boundary = false;
+			boolean pause_at_loop_boundary = false;
+			float m = movementRate;
+			if((usage&Emote.FLAG_INVERT_MOVEMENT) > 0) {
+				m = Math.max(0.0f, 1.0f - m);
+			}
+			if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
+				if(commandSections[meta_i] != SECTION_OUTRO) {
+					if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
+						play_outro_at_loop_boundary = true;
 					} else {
-						if(m <= RATE_MIN) {
-							remainingDelta *= RATE_MIN;
-							fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
-						} else {
-							remainingDelta *= m;
-						}
+						fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
 					}
-				} else if((usage&Emote.FLAG_LOOP_PAUSES_WHEN_STILL) > 0) {
-					if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
-						if(m <= RATE_MIN) {
-							pause_at_loop_boundary = true;
-							remainingDelta *= RATE_MIN;
-						} else {
-							remainingDelta *= m;
-						}
+				}
+			} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0) {
+				if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
+					if(m <= RATE_MIN) {
+						play_outro_at_loop_boundary = true;
+						remainingDelta *= RATE_MIN;
+					} else {
+						remainingDelta *= m;
+					}
+				} else {
+					if(m <= RATE_MIN) {
+						remainingDelta *= RATE_MIN;
+						fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
 					} else {
 						remainingDelta *= m;
 					}
 				}
+			} else if((usage&Emote.FLAG_LOOP_PAUSES_WHEN_STILL) > 0) {
+				if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
+					if(m <= RATE_MIN) {
+						pause_at_loop_boundary = true;
+						remainingDelta *= RATE_MIN;
+					} else {
+						remainingDelta *= m;
+					}
+				} else {
+					remainingDelta *= m;
+				}
+			}
 
-				final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
-				final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
-				final int loop_i = intro_i + 1;
-				final int outro_i = loop_i + 1;
+			final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+			final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+			final int loop_i = intro_i + 1;
+			final int outro_i = loop_i + 1;
 
-				Emote.PartCommand initCommand = null;
-				while(remainingDelta > 0) {
-					Emote.PartCommand commandToApply = null;
-					if(commandSections[meta_i] == SECTION_INTRO) {
-						ArrayList<Emote.PartCommand> section = commands.get(intro_i);
-						int section_size = section == null ? 0 : section.size();
-						if(commandIndices[meta_i] < section_size) {
-							commandToApply = section.get(commandIndices[meta_i]);
+			Emote.PartCommand initCommand = null;
+			while(remainingDelta > 0) {
+				Emote.PartCommand commandToApply = null;
+				if(commandSections[meta_i] == SECTION_INTRO) {
+					ArrayList<Emote.PartCommand> section = commands.get(intro_i);
+					int section_size = section == null ? 0 : section.size();
+					if(commandIndices[meta_i] < section_size) {
+						commandToApply = section.get(commandIndices[meta_i]);
+					} else {
+						commandSections[meta_i] = SECTION_LOOP;
+						commandIndices[meta_i] = 0;
+					}
+				}
+				if(commandSections[meta_i] == SECTION_LOOP) {
+					ArrayList<Emote.PartCommand> section = commands.get(loop_i);
+					int section_size = section == null ? 0 : section.size();
+					boolean is_at_loop_boundary = commandIndices[meta_i] >= section_size || (commandIndices[meta_i] == 0 && commandTimes[meta_i] == 0);
+					if(is_at_loop_boundary) {
+						if(section_size == 0 || play_outro_at_loop_boundary) {
+							commandSections[meta_i] = SECTION_OUTRO;
+							commandIndices[meta_i] = 0;
 						} else {
-							commandSections[meta_i] = SECTION_LOOP;
+							if(!pause_at_loop_boundary) {
+								commandToApply = section.get(0);
+							}
+							// commandSections[meta_i] = SECTION_LOOP;
 							commandIndices[meta_i] = 0;
 						}
+					} else {
+						commandToApply = section.get(commandIndices[meta_i]);
 					}
-					if(commandSections[meta_i] == SECTION_LOOP) {
-						ArrayList<Emote.PartCommand> section = commands.get(loop_i);
-						int section_size = section == null ? 0 : section.size();
-						boolean is_at_loop_boundary = commandIndices[meta_i] >= section_size || (commandIndices[meta_i] == 0 && commandTimes[meta_i] == 0);
-						if(is_at_loop_boundary) {
-							if(section_size == 0 || play_outro_at_loop_boundary) {
-								commandSections[meta_i] = SECTION_OUTRO;
-								commandIndices[meta_i] = 0;
-							} else {
-								if(!pause_at_loop_boundary) {
-									commandToApply = section.get(0);
-								}
-								// commandSections[meta_i] = SECTION_LOOP;
-								commandIndices[meta_i] = 0;
-							}
-						} else {
-							commandToApply = section.get(commandIndices[meta_i]);
-						}
-					}
-					if(commandSections[meta_i] == SECTION_OUTRO) {
-						ArrayList<Emote.PartCommand> section = commands.get(outro_i);
-						ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
-						int section_size = section == null ? 0 : section.size();
-						if(commandIndices[meta_i] < section_size) {
-							commandToApply = section.get(commandIndices[meta_i]);
-						} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0 && (usage&Emote.ANIMFLAG_END_EMOTE) == 0) {//restart for walkcycle
-							if(m <= RATE_MIN) {//hold at outro end
-								remainingDelta = 0;
-								partUsages[meta_i] &= ~Emote.FLAG_USED;
-							} else if(loop != null && loop.size() >= 0) {
-								//NOTE: if this code is reached but all sections of the emote are empty, this will crash, this is why we check if the loop is nonempty
-								partUsages[meta_i] |= Emote.FLAG_USED;
-								commandSections[meta_i] = SECTION_INTRO;
-								commandIndices[meta_i] = 0;
-								states[state_i + Emote.OFF_X] = 0;
-								states[state_i + Emote.OFF_Y] = 0;
-								states[state_i + Emote.OFF_Z] = 0;
-								continue;
-							} else {//finished
-								setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
-							}
+				}
+				if(commandSections[meta_i] == SECTION_OUTRO) {
+					ArrayList<Emote.PartCommand> section = commands.get(outro_i);
+					ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
+					int section_size = section == null ? 0 : section.size();
+					if(commandIndices[meta_i] < section_size) {
+						commandToApply = section.get(commandIndices[meta_i]);
+					} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0 && (usage&Emote.ANIMFLAG_END_EMOTE) == 0) {//restart for walkcycle
+						if(m <= RATE_MIN) {//hold at outro end
+							remainingDelta = 0;
+							partUsages[meta_i] &= ~Emote.FLAG_USED;
+						} else if(loop != null && loop.size() >= 0) {
+							//NOTE: if this code is reached but all sections of the emote are empty, this will crash, this is why we check if the loop is nonempty
+							partUsages[meta_i] |= Emote.FLAG_USED;
+							commandSections[meta_i] = SECTION_INTRO;
+							commandIndices[meta_i] = 0;
+							states[state_i + Emote.OFF_X] = 0;
+							states[state_i + Emote.OFF_Y] = 0;
+							states[state_i + Emote.OFF_Z] = 0;
+							continue;
 						} else {//finished
 							setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
 						}
+					} else {//finished
+						setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
 					}
-					if(commandToApply == null) break;
-					//prevent the same command from being run more than once a frame (stops infinite loops)
-					if(initCommand == null) {
-						initCommand = commandToApply;
-					} else if(initCommand == commandToApply) {
-						break;
-					}
+				}
+				if(commandToApply == null) break;
+				//prevent the same command from being run more than once a frame (stops infinite loops)
+				if(initCommand == null) {
+					initCommand = commandToApply;
+				} else if(initCommand == commandToApply) {
+					break;
+				}
 
-					remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
-					if(remainingDelta == 0) break;
-					//command is finished, prepare next command
-					commandIndices[meta_i] += 1;
-					commandTimes[meta_i] = 0;
-				}
-				if(commandSections[meta_i] != SECTION_NONE) {
-					runsNextFrame = true;
-				}
+				remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+				if(remainingDelta == 0) break;
+				//command is finished, prepare next command
+				commandIndices[meta_i] += 1;
+				commandTimes[meta_i] = 0;
+			}
+			if(commandSections[meta_i] != SECTION_NONE) {
+				runsNextFrame = true;
 			}
 		}
 		return runsNextFrame;
@@ -680,133 +679,130 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		float delta
 	) {
 		boolean runsNextFrame = false;
-		boolean do_end = false;
-		boolean end_preview_pause = true;
+		boolean doOutro = false;
+		boolean endPreviewPause = true;
 		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
 			if(commandSections[meta_i] == SECTION_NONE) continue;
 			if(commandSections[meta_i] != SECTION_PREVIEW_PAUSE || commandIndices[meta_i] == 0) {
-				end_preview_pause = false;
+				endPreviewPause = false;
 				break;
 			}
 		}
-		if(end_preview_pause) {
+		if(endPreviewPause) {
 			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
-				// if(commandSections[meta_i] == SECTION_NONE) continue;
-				partUsages[meta_i] &= ~Emote.ANIMFLAG_END_EMOTE;
-			}
-		}
-
-		for(int partId = 0; partId < Emote.PART_COUNT; partId += 1) {
-			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
-				final int meta_i = 2*partId + isRotate;
-
 				if(commandSections[meta_i] == SECTION_NONE) continue;
-				runsNextFrame = true;
-
-				int usage = partUsages[meta_i];
-				float remainingDelta = delta;
-
-				boolean play_outro_at_loop_boundary = false;
-				if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
-					if(commandSections[meta_i] < SECTION_OUTRO) {
-						if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
-							play_outro_at_loop_boundary = true;
-						} else {
-							fastForwardCommands(null, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
-						}
-					}
-				}
-				if(remainingDelta <= 0) continue;
-
+				final int partId = meta_i/2;
+				final int isRotate = meta_i%2;
 				final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
-				final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
-				final int loop_i = intro_i + 1;
-				final int outro_i = loop_i + 1;
-
-				Emote.PartCommand initCommand = null;
-				while(true) {
-					Emote.PartCommand commandToApply = null;
-					if(commandSections[meta_i] == SECTION_INTRO) {
-						ArrayList<Emote.PartCommand> section = commands.get(intro_i);
-						int section_size = section == null ? 0 : section.size();
-						if(commandIndices[meta_i] < section_size) {
-							commandToApply = section.get(commandIndices[meta_i]);
-						} else {
-							commandSections[meta_i] = SECTION_LOOP;
-							commandIndices[meta_i] = 0;
-						}
-					}
-					if(commandSections[meta_i] == SECTION_LOOP) {
-						ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
-						ArrayList<Emote.PartCommand> intro = commands.get(intro_i);
-						ArrayList<Emote.PartCommand> outro = commands.get(outro_i);
-						int loop_size = loop == null ? 0 : loop.size();
-						int intro_size = intro == null ? 0 : intro.size();
-						int outro_size = outro == null ? 0 : outro.size();
-						if(loop_size == 0 || commandIndices[meta_i]%loop_size == 0) {
-							if(loop_size > 0 && !play_outro_at_loop_boundary) {
-								if(commandIndices[meta_i] >= previewRepetitions*loop_size && (intro_size > 0 || outro_size > 0)) {
-									do_end = true;
-								}
-								commandToApply = loop.get(0);
-							} else {
-								commandSections[meta_i] = SECTION_OUTRO;
-								commandIndices[meta_i] = 0;
-							}
-						} else {
-							commandToApply = loop.get(commandIndices[meta_i]%loop_size);
-						}
-					}
-					if(commandSections[meta_i] == SECTION_OUTRO) {
-						ArrayList<Emote.PartCommand> section = commands.get(outro_i);
-						int section_size = section == null ? 0 : section.size();
-						if(commandIndices[meta_i] < section_size) {
-							commandToApply = section.get(commandIndices[meta_i]);
-						} else {//pause
-							commandSections[meta_i] = SECTION_PREVIEW_PAUSE;
-							commandIndices[meta_i] = 0;
-						}
-					}
-					if(commandSections[meta_i] == SECTION_PREVIEW_PAUSE) {
-						if(commandTimes[meta_i] + remainingDelta > PREVIEW_PAUSE_TIME) {
-							remainingDelta -= PREVIEW_PAUSE_TIME - commandTimes[meta_i];
-							if(end_preview_pause) {
-								commandSections[meta_i] = SECTION_INTRO;
-								commandIndices[meta_i] = 0;
-								commandTimes[meta_i] = 0;
-								states[state_i + Emote.OFF_X] = 0;
-								states[state_i + Emote.OFF_Y] = 0;
-								states[state_i + Emote.OFF_Z] = 0;
-								continue;
-							} else {
-								commandIndices[meta_i] = 1;
-								commandTimes[meta_i] = PREVIEW_PAUSE_TIME;
-								break;
-							}
-						} else {
-							commandTimes[meta_i] += remainingDelta;
-							remainingDelta = 0;
-
-							break;
-						}
-					}
-					if(commandToApply == null) break;
-					//prevent the same command from being run more than once a frame (stops infinite loops)
-					if(initCommand == null) {
-						initCommand = commandToApply;
-					} else if(initCommand == commandToApply) {
-						break;
-					}
-
-					remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
-					if(remainingDelta <= 0) break;
-					//command is finished, prepare next command
-					commandIndices[meta_i] += 1;
-					commandTimes[meta_i] = 0;
-				}
+				partUsages[meta_i] &= ~Emote.ANIMFLAG_END_EMOTE;
+				commandSections[meta_i] = SECTION_INTRO;
+				commandIndices[meta_i] = 0;
+				commandTimes[meta_i] = 0;
+				states[state_i + Emote.OFF_X] = 0;
+				states[state_i + Emote.OFF_Y] = 0;
+				states[state_i + Emote.OFF_Z] = 0;
 			}
 		}
-		if(do_end) {
+
+		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+			final int partId = meta_i/2;
+			final int isRotate = meta_i%2;
+
+			if(commandSections[meta_i] == SECTION_NONE) continue;
+			runsNextFrame = true;
+
+			int usage = partUsages[meta_i];
+			float remainingDelta = delta;
+
+			boolean play_outro_at_loop_boundary = false;
+			if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
+				if(commandSections[meta_i] < SECTION_OUTRO) {
+					if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
+						play_outro_at_loop_boundary = true;
+					} else {
+						fastForwardCommands(null, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
+					}
+				}
+			}
+			if(remainingDelta <= 0) continue;
+
+			final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+			final int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
+			final int loop_i = intro_i + 1;
+			final int outro_i = loop_i + 1;
+
+			Emote.PartCommand initCommand = null;
+			while(true) {
+				Emote.PartCommand commandToApply = null;
+				if(commandSections[meta_i] == SECTION_INTRO) {
+					ArrayList<Emote.PartCommand> section = commands.get(intro_i);
+					int section_size = section == null ? 0 : section.size();
+					if(commandIndices[meta_i] < section_size) {
+						commandToApply = section.get(commandIndices[meta_i]);
+					} else {
+						commandSections[meta_i] = SECTION_LOOP;
+						commandIndices[meta_i] = 0;
+					}
+				}
+				if(commandSections[meta_i] == SECTION_LOOP) {
+					ArrayList<Emote.PartCommand> loop = commands.get(loop_i);
+					ArrayList<Emote.PartCommand> intro = commands.get(intro_i);
+					ArrayList<Emote.PartCommand> outro = commands.get(outro_i);
+					int loop_size = loop == null ? 0 : loop.size();
+					int intro_size = intro == null ? 0 : intro.size();
+					int outro_size = outro == null ? 0 : outro.size();
+					if(loop_size == 0 || commandIndices[meta_i]%loop_size == 0) {
+						if(loop_size > 0 && !play_outro_at_loop_boundary) {
+							if(commandIndices[meta_i] >= previewRepetitions*loop_size && (intro_size > 0 || outro_size > 0)) {
+								doOutro = true;
+							}
+							commandToApply = loop.get(0);
+						} else {
+							commandSections[meta_i] = SECTION_OUTRO;
+							commandIndices[meta_i] = 0;
+						}
+					} else {
+						commandToApply = loop.get(commandIndices[meta_i]%loop_size);
+					}
+				}
+				if(commandSections[meta_i] == SECTION_OUTRO) {
+					ArrayList<Emote.PartCommand> section = commands.get(outro_i);
+					int section_size = section == null ? 0 : section.size();
+					if(commandIndices[meta_i] < section_size) {
+						commandToApply = section.get(commandIndices[meta_i]);
+					} else {//pause
+						commandSections[meta_i] = SECTION_PREVIEW_PAUSE;
+						commandIndices[meta_i] = 0;
+					}
+				}
+				if(commandSections[meta_i] == SECTION_PREVIEW_PAUSE) {
+					if(commandTimes[meta_i] + remainingDelta > PREVIEW_PAUSE_TIME) {
+						remainingDelta -= PREVIEW_PAUSE_TIME - commandTimes[meta_i];
+						commandIndices[meta_i] = 1;
+						commandTimes[meta_i] = PREVIEW_PAUSE_TIME;
+					} else {
+						commandTimes[meta_i] += remainingDelta;
+						remainingDelta = 0;
+
+					}
+					break;
+				}
+				if(commandToApply == null) break;
+				//prevent the same command from being run more than once a frame (stops infinite loops)
+				if(initCommand == null) {
+					initCommand = commandToApply;
+				} else if(initCommand == commandToApply) {
+					break;
+				}
+
+				remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+				if(remainingDelta <= 0) break;
+				//command is finished, prepare next command
+				commandIndices[meta_i] += 1;
+				commandTimes[meta_i] = 0;
+			}
+		}
+		if(doOutro) {
 			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
 				if(commandSections[meta_i] == SECTION_NONE) continue;
 				partUsages[meta_i] |= Emote.ANIMFLAG_END_EMOTE;
@@ -986,7 +982,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				this.previewIsPlaying = updatePreviewStates(this.previewCommands, this.previewPartUsages, this.previewCommandSections, this.previewCommandIndices, this.previewCommandTimes, this.previewMovements, this.previewStates, this.previewRepetitions, delta);
 			}
 			updateCutoff = 0.5f;
-		} else {
 		}
 		if(this.emoteIsPlaying) {
 			long curTime = System.currentTimeMillis();

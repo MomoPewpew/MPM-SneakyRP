@@ -109,6 +109,11 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		emoteIsRotate = 1;
 		emoteSelected = -1;
 		emoteIsChangedFromServer = false;
+
+		if(autosaveFile == null) {
+			File dir = null;
+			autosaveFile = new File(dir, "moreplayermodels" + File.separator + "emoteData-autosave.dat");
+		}
 		//NOTE: does not reset the clipboardCommand
 		// clipboardCommand = null;
 		// writeAutosave();

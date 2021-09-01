@@ -197,8 +197,8 @@ public class Emote {
 					int loop_i = intro_i + 1;
 					int outro_i = loop_i + 1;
 					str += "(" + partId + ", " + isRotate + ") = {" + this.partUsages[meta_i] + ", ";
-					str += sectionListToString(this.commands.get(intro_i)) + ",";
-					str += sectionListToString(this.commands.get(loop_i)) + ",";
+					str += sectionListToString(this.commands.get(intro_i)) + ", ";
+					str += sectionListToString(this.commands.get(loop_i)) + ", ";
 					str += sectionListToString(this.commands.get(outro_i));
 					str += "}, ";
 				}
@@ -214,7 +214,7 @@ public class Emote {
 			for(int i = 0; i < list.size(); i++) {
 				PartCommand command = list.get(i);
 				if(command.consoleCommand == null) {
-					str += "{(" + command.x + "," + command.y + "," + command.z + "), " + command.duration + "}";
+					str += "{(" + command.x + "," + command.y + "," + command.z + ")," + command.duration + "}";
 					// buffer.writeInt(2*command.easing + (command.disabled ? 1 : 0));
 				} else {
 					str += "{" + command.consoleCommand + "}";
@@ -336,7 +336,6 @@ public class Emote {
 			int size = buffer.readInt();
 			for(int i = 0; i < size; i++) {
 				int partId = buffer.readInt();
-				LogWriter.warn("svhy " + partId);
 				if(partId >= 7) return null;
 
 				int section_i = SECTION_LIST_COUNT*partId;
@@ -352,12 +351,9 @@ public class Emote {
 					emote.partUsages[2*partId + 1] = FLAG_USED;
 				}
 			}
-			LogWriter.warn("dswv " + emote.toString());
 			if(isValidEmote(emote)) {
-				LogWriter.warn("niwz");
 				return emote;
 			} else {
-				LogWriter.warn("sfef");
 				return null;
 			}
 		} catch (IndexOutOfBoundsException var2) {
@@ -367,7 +363,6 @@ public class Emote {
 	}
 	public static ArrayList<PartCommand> readPartCommandListV1(ByteBuf buffer) {
 		int size = buffer.readInt();
-		LogWriter.warn("btzs " + size);
 		if(size == 0) return null;
 		ArrayList<PartCommand> list = new ArrayList<PartCommand>(size);
 		for(int i = 0; i < size; i++) {

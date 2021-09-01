@@ -589,7 +589,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			final int loop_i = intro_i + 1;
 			final int outro_i = loop_i + 1;
 
-			Emote.PartCommand initCommand = null;
+			boolean hasLoopedThisFrame = false;
+			boolean hasOutroLoopedThisFrame = false;
 			while(remainingDelta > 0) {
 				Emote.PartCommand commandToApply = null;
 				if(commandSections[meta_i] == SECTION_INTRO) {
@@ -605,16 +606,15 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				if(commandSections[meta_i] == SECTION_LOOP) {
 					ArrayList<Emote.PartCommand> section = commands.get(loop_i);
 					int section_size = section == null ? 0 : section.size();
-					boolean is_at_loop_boundary = commandIndices[meta_i] >= section_size || (commandIndices[meta_i] == 0 && commandTimes[meta_i] == 0);
-					if(is_at_loop_boundary) {
+					if(commandIndices[meta_i] >= section_size || (commandIndices[meta_i] == 0 && commandTimes[meta_i] <= 0)) {
 						if(section_size == 0 || play_outro_at_loop_boundary) {
 							commandSections[meta_i] = SECTION_OUTRO;
 							commandIndices[meta_i] = 0;
-						} else {
+						} else if(!hasLoopedThisFrame) {//loop (and prevent inf loop)
+							hasLoopedThisFrame = true;
 							if(!pause_at_loop_boundary) {
 								commandToApply = section.get(0);
 							}
-							// commandSections[meta_i] = SECTION_LOOP;
 							commandIndices[meta_i] = 0;
 						}
 					} else {
@@ -629,31 +629,23 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 						commandToApply = section.get(commandIndices[meta_i]);
 					} else if((usage&Emote.FLAG_OUTRO_PLAYS_WHEN_STILL) > 0 && (usage&Emote.ANIMFLAG_END_EMOTE) == 0) {//restart for walkcycle
 						if(m <= RATE_MIN) {//hold at outro end
-							remainingDelta = 0;
 							partUsages[meta_i] &= ~Emote.FLAG_USED;
-						} else if(loop != null && loop.size() >= 0) {
-							//NOTE: if this code is reached but all sections of the emote are empty, this will crash, this is why we check if the loop is nonempty
+						} else if(!hasOutroLoopedThisFrame) {//loop to intro (and prevent inf loop)
+							hasOutroLoopedThisFrame = true;
 							partUsages[meta_i] |= Emote.FLAG_USED;
 							commandSections[meta_i] = SECTION_INTRO;
 							commandIndices[meta_i] = 0;
 							states[state_i + Emote.OFF_X] = 0;
 							states[state_i + Emote.OFF_Y] = 0;
 							states[state_i + Emote.OFF_Z] = 0;
+
 							continue;
-						} else {//finished
-							setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
 						}
 					} else {//finished
 						setEmoteCommands(commands, partUsages, partSpeeds, commandSections, commandIndices, commandTimes, states, meta_i, null, 0);
 					}
 				}
 				if(commandToApply == null) break;
-				//prevent the same command from being run more than once a frame (stops infinite loops)
-				if(initCommand == null) {
-					initCommand = commandToApply;
-				} else if(initCommand == commandToApply) {
-					break;
-				}
 
 				remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
 				if(remainingDelta == 0) break;
@@ -680,29 +672,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	) {
 		boolean runsNextFrame = false;
 		boolean doOutro = false;
-		boolean endPreviewPause = true;
-		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
-			if(commandSections[meta_i] == SECTION_NONE) continue;
-			if(commandSections[meta_i] != SECTION_PREVIEW_PAUSE || commandIndices[meta_i] == 0) {
-				endPreviewPause = false;
-				break;
-			}
-		}
-		if(endPreviewPause) {
-			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
-				if(commandSections[meta_i] == SECTION_NONE) continue;
-				final int partId = meta_i/2;
-				final int isRotate = meta_i%2;
-				final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
-				partUsages[meta_i] &= ~Emote.ANIMFLAG_END_EMOTE;
-				commandSections[meta_i] = SECTION_INTRO;
-				commandIndices[meta_i] = 0;
-				commandTimes[meta_i] = 0;
-				states[state_i + Emote.OFF_X] = 0;
-				states[state_i + Emote.OFF_Y] = 0;
-				states[state_i + Emote.OFF_Z] = 0;
-			}
-		}
 
 		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
 			final int partId = meta_i/2;
@@ -731,7 +700,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			final int loop_i = intro_i + 1;
 			final int outro_i = loop_i + 1;
 
-			Emote.PartCommand initCommand = null;
+			boolean hasLoopedThisFrame = false;
 			while(true) {
 				Emote.PartCommand commandToApply = null;
 				if(commandSections[meta_i] == SECTION_INTRO) {
@@ -751,15 +720,17 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 					int loop_size = loop == null ? 0 : loop.size();
 					int intro_size = intro == null ? 0 : intro.size();
 					int outro_size = outro == null ? 0 : outro.size();
-					if(loop_size == 0 || commandIndices[meta_i]%loop_size == 0) {
-						if(loop_size > 0 && !play_outro_at_loop_boundary) {
+					if(loop_size == 0 || (commandIndices[meta_i]%loop_size == 0 && commandTimes[meta_i] <= 0)) {
+						if(loop_size == 0 || play_outro_at_loop_boundary) {
+							commandSections[meta_i] = SECTION_OUTRO;
+							commandIndices[meta_i] = 0;
+						} else if(!hasLoopedThisFrame) {//loop (and prevent inf loop)
+							hasLoopedThisFrame = true;
+
 							if(commandIndices[meta_i] >= previewRepetitions*loop_size && (intro_size > 0 || outro_size > 0)) {
 								doOutro = true;
 							}
 							commandToApply = loop.get(0);
-						} else {
-							commandSections[meta_i] = SECTION_OUTRO;
-							commandIndices[meta_i] = 0;
 						}
 					} else {
 						commandToApply = loop.get(commandIndices[meta_i]%loop_size);
@@ -783,17 +754,10 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 					} else {
 						commandTimes[meta_i] += remainingDelta;
 						remainingDelta = 0;
-
 					}
 					break;
 				}
 				if(commandToApply == null) break;
-				//prevent the same command from being run more than once a frame (stops infinite loops)
-				if(initCommand == null) {
-					initCommand = commandToApply;
-				} else if(initCommand == commandToApply) {
-					break;
-				}
 
 				remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
 				if(remainingDelta <= 0) break;
@@ -807,7 +771,31 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				if(commandSections[meta_i] == SECTION_NONE) continue;
 				partUsages[meta_i] |= Emote.ANIMFLAG_END_EMOTE;
 			}
-
+		}
+		if(runsNextFrame) {
+			boolean endPreviewPause = true;
+			for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+				if(commandSections[meta_i] == SECTION_NONE) continue;
+				if(commandSections[meta_i] != SECTION_PREVIEW_PAUSE || commandIndices[meta_i] == 0) {
+					endPreviewPause = false;
+					break;
+				}
+			}
+			if(endPreviewPause) {
+				for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
+					if(commandSections[meta_i] == SECTION_NONE) continue;
+					final int partId = meta_i/2;
+					final int isRotate = meta_i%2;
+					final int state_i = Emote.AXIS_COUNT*partId + 3*isRotate;
+					partUsages[meta_i] &= ~Emote.ANIMFLAG_END_EMOTE;
+					commandSections[meta_i] = SECTION_INTRO;
+					commandIndices[meta_i] = 0;
+					commandTimes[meta_i] = 0;
+					states[state_i + Emote.OFF_X] = 0;
+					states[state_i + Emote.OFF_Y] = 0;
+					states[state_i + Emote.OFF_Z] = 0;
+				}
+			}
 		}
 		return runsNextFrame;
 	}

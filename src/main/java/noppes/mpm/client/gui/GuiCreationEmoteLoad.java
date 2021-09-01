@@ -41,9 +41,17 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		isrequestingremoval = false;
 	}
 
+	public static String getSelectedEmoteName(int selected) {
+		String str = scrollList.get(selected);
+		if(str.contains(" (vault)")) {
+			str = str.substring(0, str.length() - 8);
+		}
+		return str;
+	}
+
 	public static void _updateScrollList() {
 		String emoteName = "";
-		if(selected >= 0) emoteName = scrollList.get(selected);
+		if(selected >= 0) emoteName = getSelectedEmoteName(selected);
 		ArrayList<String> fileNamesEmotes = cachedEmoteFileNames;
 
 		if(searchString.equals("")) {
@@ -63,7 +71,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			selected = -1;
 			isrequestingremoval = false;
 			for(int i = 0; i < scrollList.size(); i++) {
-				if(emoteName.equals(scrollList.get(i))) {
+				if(emoteName.equals(getSelectedEmoteName(i))) {
 					selected = i;
 					break;
 				}
@@ -103,7 +111,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		if(selected >= 0) {
 			this.addButton(new GuiNpcButton(654, x + 52, y, 50, 20, "gui.load"));
 			this.addButton(new GuiNpcButton(655, x + 104, y, 50, 20, "gui.remove"));
-			String emoteName = scrollList.get(selected);
+			String emoteName = getSelectedEmoteName(selected);
 			y += 22;
 			if(GuiCreationEmotes.emoteName.equals(emoteName) && !GuiCreationEmotes.emoteIsChangedFromServer) {
 				this.getButton(654).enabled = false;
@@ -154,7 +162,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			this.playerdata.endPreview();
 		} else if(selected >= 0) {//refresh
 			//NOTE: the emoteName may have been desynced with the server, minor inconvenience
-			String emoteName = scrollList.get(selected);
+			String emoteName = getSelectedEmoteName(selected);
 			if(btn.id == 654) {//load
 				Client.sendData(EnumPackets.EMOTE_LOAD, emoteName);
 				GuiCreationEmotes.emoteName = emoteName;

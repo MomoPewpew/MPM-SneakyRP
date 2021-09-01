@@ -33,6 +33,8 @@ import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
+import noppes.mpm.commands.CommandVault;
+import noppes.mpm.commands.CommandUnvault;
 import noppes.mpm.commands.CommandCE;
 import noppes.mpm.commands.CommandPropRem;
 import noppes.mpm.commands.CommandPropRestore;
@@ -138,6 +140,10 @@ public class MorePlayerModels {
 	public static List<String> entityNamesRemovedFromGui;
 	public static List<String> blacklistedPropStrings;
 
+	public static File emoteFolder;
+	public static File emoteArchiveFolder;
+	public static File emoteVaultFolder;
+
 	public ConfigLoader configLoader;
 
 	public MorePlayerModels() {
@@ -180,6 +186,13 @@ public class MorePlayerModels {
 		hasEntityPermission = true;
 		fileNamesSkins = new ArrayList<String>();
 		playersEntityDenied = new ArrayList<UUID>();
+
+		{//init emote folders
+			dir = null;
+			emoteFolder = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+			emoteArchiveFolder = new File(emoteFolder, "archive");
+			emoteVaultFolder = new File(emoteFolder, "vault");
+		}
 	}
 
 	@EventHandler
@@ -204,6 +217,8 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandPropRestore());
 		event.registerServerCommand(new CommandEmote());
 		event.registerServerCommand(new CommandCE());
+		event.registerServerCommand(new CommandVault());
+		event.registerServerCommand(new CommandUnvault());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
@@ -211,13 +226,6 @@ public class MorePlayerModels {
 
 	}
 
-	static {
-		// button1 = EnumAnimation.SLEEPING_SOUTH.ordinal();
-		// button2 = EnumAnimation.SITTING.ordinal();
-		// button3 = EnumAnimation.CRAWLING.ordinal();
-		// button4 = EnumAnimation.HUG.ordinal();
-		// button5 = EnumAnimation.DANCING.ordinal();
-	}
 
 	public static void syncSkinFileNames(EntityPlayerMP player) {
 		File dir = null;
@@ -343,7 +351,7 @@ public class MorePlayerModels {
 
 	public static String validateFileName(String name) {
 		if(name == null) return null;
-		if(name.length() > 55) return null;
+		if(name.length() > 555) return null;
 		if(name.length() < 1) return null;
 		name = name.toLowerCase();
 		for(int i = 0; i < name.length(); i++) {

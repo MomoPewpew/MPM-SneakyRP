@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import noppes.mpm.LogWriter;
+// import noppes.mpm.LogWriter;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Emote;
 import noppes.mpm.Server;
@@ -62,33 +62,32 @@ public class CommandEmote extends CommandBase {
 		String filename = emoteName + ".dat";
 
 		try {
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
-
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
-
-			File file = new File(dir, filename);
+			File file = new File(MorePlayerModels.emoteVaultFolder, filename);
 			if (!file.exists()) {
-				icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " was not found on the server."));
-				return;
+				file = new File(MorePlayerModels.emoteFolder, filename);
+				if (!file.exists()) {
+					icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " was not found on the server."));
+					return;
+				}
 			}
 
 			//NOTE: maybe we should open a seperate thread to handle sending the emote data
 			ByteBuf sendBuffer = Unpooled.buffer();
-			sendBuffer.writeInt(EnumPackets.EMOTE_DO.ordinal());
-			sendBuffer.writeFloat(emoteSpeed);
-			sendBuffer.writeBoolean(cancel_if_conflicting);
-			sendBuffer.writeBoolean(outro_all_playing_first);
-			sendBuffer.writeBoolean(override_instead_of_outro);
-			sendBuffer.writeBoolean(false);
-			Server.writeString(sendBuffer, icommandsender.getName());
+			try {
+				sendBuffer.writeInt(EnumPackets.EMOTE_DO.ordinal());
+				sendBuffer.writeFloat(emoteSpeed);
+				sendBuffer.writeBoolean(cancel_if_conflicting);
+				sendBuffer.writeBoolean(outro_all_playing_first);
+				sendBuffer.writeBoolean(override_instead_of_outro);
+				sendBuffer.writeBoolean(false);
+				Server.writeString(sendBuffer, icommandsender.getName());
 
-			sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
-
-
-			Server.sendToAll(server, sendBuffer);
+				sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
+				Server.sendToAll(server, sendBuffer);
+			} catch(Exception e) {//i do not like exceptions
+				icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " could not be opened."));
+				sendBuffer.release();
+			}
 		} catch (Exception var4) {
 			icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " could not be opened."));
 		}
@@ -101,7 +100,7 @@ public class CommandEmote extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/e [<name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
+		return "/e [<emote name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
 	}
 
 

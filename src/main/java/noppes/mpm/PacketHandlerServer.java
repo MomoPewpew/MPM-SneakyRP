@@ -20,9 +20,10 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketE
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.MorePlayerModels;
 
 public class PacketHandlerServer {
-	static EnumPackets[] cachedEnums = EnumPackets.values();
+	static final EnumPackets[] cachedEnums = EnumPackets.values();
 	@SubscribeEvent
 	public void onPacketData(ServerCustomPacketEvent event) {
 		EntityPlayerMP player = ((NetHandlerPlayServer)event.getHandler()).playerEntity;
@@ -252,44 +253,53 @@ public class PacketHandlerServer {
 				LogWriter.except(var4);
 			}
 		} else if (type == EnumPackets.EMOTE_FILENAME_UPDATE) {
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
-
-			if (!dir.exists()) dir.mkdirs();
-
 			ArrayList<String> list = new ArrayList<String>();
-			for (final File fileEntry : dir.listFiles()) {
-				if (fileEntry.isDirectory()) {
-					continue;
-				} else {
-					String emoteName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
-					list.add(emoteName);
+			int totalVaulted = 0;
+
+			if (MorePlayerModels.emoteVaultFolder.exists()) {
+				for (final File fileEntry : MorePlayerModels.emoteVaultFolder.listFiles()) {
+					if (fileEntry.isDirectory()) {
+						continue;
+					} else {
+						String emoteName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+						list.add(emoteName);
+						totalVaulted += 1;
+					}
 				}
 			}
 
-			Server.sendData(player, EnumPackets.EMOTE_FILENAME_UPDATE, list);
+			if (MorePlayerModels.emoteFolder.exists()) {
+				for (final File fileEntry : MorePlayerModels.emoteFolder.listFiles()) {
+					if (fileEntry.isDirectory()) {
+						continue;
+					} else {
+						String emoteName = fileEntry.getName().substring(0, fileEntry.getName().length() - 4);
+						list.add(emoteName);
+					}
+				}
+			}
+
+			//NOTE: we do not deduplicate emotes with the same name, it is assumed that this should not happen
+			Server.sendData(player, EnumPackets.EMOTE_FILENAME_UPDATE, totalVaulted, list);
 		} else if (type == EnumPackets.EMOTE_LOAD) {
 			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
 			if(emoteName == null) return;
 			String filename = emoteName + ".dat";
 
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
-
-			if (!dir.exists()) {//can only throw a security error
-				dir.mkdirs();
-				return;
+			File file = new File(MorePlayerModels.emoteVaultFolder, filename);
+			if (!file.exists()) {
+				file = new File(MorePlayerModels.emoteFolder, filename);
+				if (!file.exists()) return;
 			}
 
-			File file = new File(dir, filename);
-			if (!file.exists()) return;//can only throw a security error
-
 			ByteBuf sendBuffer = Unpooled.buffer();
-			sendBuffer.writeInt(EnumPackets.EMOTE_LOAD.ordinal());
-			// Server.writeString(buffer, emoteName);
-			sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
-
-			Server.sendData(player, sendBuffer);
+			try {
+				sendBuffer.writeInt(EnumPackets.EMOTE_LOAD.ordinal());
+				sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
+				Server.sendData(player, sendBuffer);
+			} catch(Exception e) {
+				sendBuffer.release();
+			}
 		} else if (type == EnumPackets.EMOTE_SAVE) {
 			String emoteName = MorePlayerModels.validateFileName(Server.readString(buffer));
 			if(emoteName == null) return;
@@ -298,23 +308,18 @@ public class PacketHandlerServer {
 
 			String filename = emoteName + ".dat";
 
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+			File vaultfile = new File(MorePlayerModels.emoteVaultFolder, filename);
+			if(vaultfile.exists()) return;
 
-			if (!dir.exists()) {
-				dir.mkdirs();
-				return;
-			}
+			if (!MorePlayerModels.emoteFolder.exists()) MorePlayerModels.emoteFolder.mkdirs();
 
-			File file = new File(dir, filename);
-			if(file.exists()) {//save copy
-				File archive = null;
-				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
-				if (!archive.exists()) {
-					archive.mkdirs();
-				}
+			File file = new File(MorePlayerModels.emoteFolder, filename);
+
+			if(file.exists()) {//save backup
+				if (!MorePlayerModels.emoteArchiveFolder.exists()) MorePlayerModels.emoteArchiveFolder.mkdirs();
+
 				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
-				File filenew = new File(archive, filenamenew);
+				File filenew = new File(MorePlayerModels.emoteArchiveFolder, filenamenew);
 
 				file.renameTo(filenew);
 			}
@@ -334,24 +339,14 @@ public class PacketHandlerServer {
 
 			String filename = emoteName + ".dat";
 
-			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+			if (!MorePlayerModels.emoteFolder.exists()) return;
 
-			if (!dir.exists()) {
-				dir.mkdirs();
-				return;
-			}
-
-
-			File file = new File(dir, filename);
+			File file = new File(MorePlayerModels.emoteFolder, filename);
 			if(file.exists()) {//save copy
-				File archive = null;
-				archive = new File(archive, ".." + File.separator + "moreplayermodels" + File.separator + "emotes" + File.separator + "archive");
-				if (!archive.exists()) {
-					archive.mkdirs();
-				}
+				if (!MorePlayerModels.emoteArchiveFolder.exists()) MorePlayerModels.emoteArchiveFolder.mkdirs();
+
 				String filenamenew = emoteName + "-" + System.currentTimeMillis() + ".dat";
-				File filenew = new File(archive, filenamenew);
+				File filenew = new File(MorePlayerModels.emoteArchiveFolder, filenamenew);
 
 				boolean succ = file.renameTo(filenew);
 			}

@@ -324,16 +324,18 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				propGroup.readFromNBT(compound);
 				data.propGroups.add(propGroup);
 			} else if (type == EnumPackets.EMOTE_FILENAME_UPDATE) {
+				int totalVaulted = buffer.readInt();
 				ArrayList<String> names = Server.readArray(buffer);
-				if(names == null) return;
+				if(names == null || totalVaulted > names.size()) return;
+				for(int i = 0; i < totalVaulted; i += 1) {
+					names.set(i, names.get(i) + " (vault)");
+				}
 				Collections.sort(names);
 				if(!GuiCreationEmoteLoad.cachedEmoteFileNames.equals(names)) {
 					GuiCreationEmoteLoad.cachedEmoteFileNames = names;
 					GuiCreationEmoteLoad.hasCachedEmoteFileNamesChanged = true;
 				}
 			} else if (type == EnumPackets.EMOTE_LOAD) {
-				// String emoteName = Server.readString(buffer);
-				// if(emoteName == null) return;
 				Emote emote = Emote.readEmote(buffer);
 				if(emote == null) return;
 

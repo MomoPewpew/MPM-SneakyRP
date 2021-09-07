@@ -565,9 +565,9 @@ public class LayerProp extends LayerInterface {
 					Float propOffsetZCorrected;
 
 					if (prop.bodyPartName.equals("model")) {
-						propOffsetXCorrected = propOffsetX - propBodyPart.offsetX - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X];
+						propOffsetXCorrected = propOffsetX - propBodyPart.offsetX - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X]);
 						propOffsetYCorrected = propOffsetY;
-						propOffsetZCorrected = propOffsetZ - propBodyPart.offsetZ - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL +  Emote.OFF_Z];
+						propOffsetZCorrected = propOffsetZ - propBodyPart.offsetZ - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Z]);
 					} else {
 						//Calculate prop offset
 						Float anglePrev;
@@ -604,7 +604,7 @@ public class LayerProp extends LayerInterface {
 						}
 
 						Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
-						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL +  Emote.OFF_Z];
+						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Z]);
 
 						//Apply roll
 						if (Xyaw > -0.0001 && Xyaw < 0.0001) {
@@ -620,7 +620,7 @@ public class LayerProp extends LayerInterface {
 							hyp = (float) (Xyaw / Math.sin(anglePrev));
 						}
 
-						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X];
+						propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp) - propBodyPart.offsetX - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X]);
 						propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 					}
 
@@ -673,7 +673,7 @@ public class LayerProp extends LayerInterface {
 
 					this.player.worldObj.spawnParticle(propParticleType,
 						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
-						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y],
+						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]),
 						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
 						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}

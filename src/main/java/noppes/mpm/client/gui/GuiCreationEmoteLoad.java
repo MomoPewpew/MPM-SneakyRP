@@ -148,13 +148,15 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 			Client.sendData(EnumPackets.EMOTE_FILENAME_UPDATE);
 			this.initGui();
 		} else if(btn.id == 656) {//save local emote as server emote
-			ByteBuf buffer = Unpooled.buffer();
-			buffer.writeInt(EnumPackets.EMOTE_SAVE.ordinal());
-			Server.writeString(buffer, GuiCreationEmotes.emoteName);
-			Emote.writeEmote(buffer, GuiCreationEmotes.emoteData);
-			Client.sendData(buffer);
-			GuiCreationEmotes.emoteIsChangedFromServer = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
-			this.initGui();
+			if(GuiCreationEmotes.emoteData != null) {
+				ByteBuf buffer = Unpooled.buffer();
+				buffer.writeInt(EnumPackets.EMOTE_SAVE.ordinal());
+				Server.writeString(buffer, GuiCreationEmotes.emoteName);
+				Emote.writeEmote(buffer, GuiCreationEmotes.emoteData);
+				Client.sendData(buffer);
+				GuiCreationEmotes.emoteIsChangedFromServer = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
+				this.initGui();
+			}
 		} else if(btn.id == 658) {//reset local emote
 			GuiCreationEmotes.loadNewEmote(new Emote());
 			GuiCreationEmotes.emoteName = "";

@@ -1183,6 +1183,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			GlStateManager.translate(0, playerHeight / 2, 0);
 
 			GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
+			// GlStateManager.translate(offsetX/2, offsetY/2, offsetZ/2);
 
 			if (rotY != 0) GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
 			if (rotX != 0) GlStateManager.rotate(rotX * 90.0F/(float)Math.PI, 1, 0, 0);

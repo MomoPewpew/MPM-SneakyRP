@@ -280,6 +280,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 						this.getSlider(514).displayString = "Speed";
 					}
 					y += 22;
+					this.addLabel(new GuiNpcLabel(129, "gui.lockrotation", guiOffsetX, y + 5, 16777215));
+					this.addButton(new GuiNpcButton(129, guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.lockrotation ? 1 : 0));
+					y += 22;
 					this.addButton(new GuiNpcButton(122, guiOffsetX, y, 152, 20, "gui.propgroup"));
 				}
 				this.getButton(sliders).enabled = false;
@@ -446,6 +449,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 		} else if (btn.id == 124) {
 			advanced = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 			this.initGui();
+		} else if (btn.id == 129) {
+			prop.lockrotation = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 		}
 	}
 

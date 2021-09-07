@@ -257,12 +257,13 @@ public class CommandProp extends MpmCommandInterface {
 			Double propSpeed = (args.length > 10) ? Double.valueOf(args[10]) : 0.0F;
 			Boolean propHide = (args.length > 11) ? parseBoolean(args[11]) : false;
 			String propName = (args.length > 12) ? args[12] : "NONAME";
+			Boolean lockrotation = (args.length > 13) ? parseBoolean(args[13]) : false;
 
 			prop = new Prop(propString, bodyPartName,
 			propMotionScatter, propFrequency, propAmount,
 			propOffsetX, propOffsetY, propOffsetZ,
 			propPitch, propYaw, propSpeed,
-			propHide, propName);
+			propHide, propName, lockrotation);
 		}
 
 

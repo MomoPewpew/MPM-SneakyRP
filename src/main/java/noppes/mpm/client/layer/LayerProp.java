@@ -627,7 +627,7 @@ public class LayerProp extends LayerInterface {
 					Double propMotionXCorrected = null;
 					Double propMotionYCorrected = null;
 					Double propMotionZCorrected = null;
-					if (prop.bodyPartName.equals("model")) {
+					if (prop.bodyPartName.equals("model") || prop.lockrotation) {
 						//Calculate particle motion
 						//Apply pitch
 						propMotionYCorrected = propMotionSpeed * Math.cos(propMotionPitch);

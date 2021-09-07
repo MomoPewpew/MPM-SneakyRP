@@ -35,6 +35,7 @@ public class Prop {
 	public Float ppOffsetX = 0.0F;
 	public Float ppOffsetY = 0.0F;
 	public Float ppOffsetZ = 0.0F;
+	public Boolean lockrotation = false;
 
 	public enum EnumType {
 		ITEM,
@@ -74,7 +75,7 @@ public class Prop {
 	Float motionScatter, Float frequency, int amount,
 	Float offsetX, Float offsetY, Float offsetZ,
 	Float pitch, Float yaw, Double speed,
-	Boolean hide, String name)
+	Boolean hide, String name, Boolean lockrotation)
 	{
 		this.propString = propString;
 		this.parsePropString(this.propString);
@@ -90,6 +91,7 @@ public class Prop {
 		this.speed = speed;
 		this.hide = hide;
 		this.name = name;
+		this.lockrotation = lockrotation;
 	}
 
 	public NBTTagCompound writeToNBT() {
@@ -117,6 +119,7 @@ public class Prop {
 		compound.setFloat("ppOffsetX", this.ppOffsetX);
 		compound.setFloat("ppOffsetY", this.ppOffsetY);
 		compound.setFloat("ppOffsetZ", this.ppOffsetZ);
+		compound.setBoolean("lockrotation", this.lockrotation);
 		return compound;
 	}
 
@@ -145,6 +148,7 @@ public class Prop {
 		this.ppOffsetX = compound.getFloat("ppOffsetX");
 		this.ppOffsetY = compound.getFloat("ppOffsetY");
 		this.ppOffsetZ = compound.getFloat("ppOffsetZ");
+		this.lockrotation = compound.getBoolean("lockrotation");
 	}
 
 	public String getCommand() {
@@ -163,7 +167,7 @@ public class Prop {
 			this.scatter + " " + this.frequency + " " + this.amount + " " +
 			this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
 			this.pitch + " " + this.yaw + " " + this.speed + " " +
-			this.hide + " " + this.name;
+			this.hide + " " + this.name + " " + this.lockrotation;
 		}
 
 		return command;

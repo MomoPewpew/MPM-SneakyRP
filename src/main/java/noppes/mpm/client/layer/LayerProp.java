@@ -336,6 +336,8 @@ public class LayerProp extends LayerInterface {
 			minecraft.getItemRenderer().renderItem(this.player, propItemStack, TransformType.NONE);
 
 			GlStateManager.popMatrix();
+
+			propBodyPart.childModels.remove(propRenderer);
 		}
 	}
 

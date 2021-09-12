@@ -15,6 +15,7 @@ import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumParts;
+import noppes.mpm.ModelPartConfig;
 
 public class LayerProp extends LayerInterface {
 
@@ -56,21 +57,22 @@ public class LayerProp extends LayerInterface {
 			ModelRenderer propRenderer = new ModelRenderer(this.model);
 
 			ItemStack propItemStack = prop.itemStack;
-			Float propScaleX = prop.scaleX;
-			Float propScaleY = prop.scaleY;
-			Float propScaleZ = prop.scaleZ;
-			Float propOffsetX = -prop.offsetX;
-			Float propOffsetY = prop.offsetY;
-			Float propOffsetZ = prop.offsetZ;
-			Float propRotateX = -prop.rotateX;
-			Float propRotateY = prop.rotateY;
-			Float propRotateZ = prop.rotateZ;
+			float propScaleX = prop.scaleX;
+			float propScaleY = prop.scaleY;
+			float propScaleZ = prop.scaleZ;
+			float propOffsetX = -prop.offsetX;
+			float propOffsetY = prop.offsetY;
+			float propOffsetZ = prop.offsetZ;
+			float propRotateX = -prop.rotateX;
+			float propRotateY = prop.rotateY;
+			float propRotateZ = prop.rotateZ;
 			Boolean propMatchScaling = prop.matchScaling;
-			Float propPpOffsetX = -prop.ppOffsetX;
-			Float propPpOffsetY = prop.ppOffsetY;
-			Float propPpOffsetZ = prop.ppOffsetZ;
+			float propPpOffsetX = -prop.ppOffsetX;
+			float propPpOffsetY = prop.ppOffsetY;
+			float propPpOffsetZ = prop.ppOffsetZ;
 
 			EnumParts enumPart = null;
+			ModelPartConfig config = null;
 
 			switch(prop.bodyPartName) {
 				case "hat":
@@ -78,54 +80,58 @@ public class LayerProp extends LayerInterface {
 				propBodyPart = this.model.bipedHead;
 
 				enumPart = EnumParts.HEAD;
+				config = this.playerdata.head;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY + 0.50F) * this.playerdata.getPartConfig(enumPart).scaleY + 0.20F;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = (propOffsetY + 0.50F) * config.scaleY + 0.20F;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "model":
 				propBodyPart = this.model.bipedBody;
 
 				enumPart = EnumParts.BODY;
+				config = this.playerdata.body;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "body":
 				case "torso":
 				propBodyPart = this.model.bipedBody;
 
 				enumPart = EnumParts.BODY;
+				config = this.playerdata.body;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "back":
 				propBodyPart = this.model.bipedBody;
 
 				enumPart = EnumParts.BODY;
+				config = this.playerdata.body;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY - 0.3F) * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = (propOffsetZ - 0.15F) * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = (propOffsetY - 0.3F) * config.scaleY;
+				propOffsetZ = (propOffsetZ - 0.15F) * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "arm":
 				case "armleft":
@@ -133,14 +139,15 @@ public class LayerProp extends LayerInterface {
 				propBodyPart = this.model.bipedLeftArm;
 
 				enumPart = EnumParts.ARM_LEFT;
+				config = this.playerdata.arm1;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "hand":
 				case "handleft":
@@ -148,42 +155,45 @@ public class LayerProp extends LayerInterface {
 				propBodyPart = this.model.bipedLeftArm;
 
 				enumPart = EnumParts.ARM_LEFT;
+				config = this.playerdata.arm1;
 
-				propOffsetX = (propOffsetX - 0.0625F) * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = (propOffsetX - 0.0625F) * config.scaleX;
+				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "armright":
 				case "rightarm":
 				propBodyPart = this.model.bipedRightArm;
 
 				enumPart = EnumParts.ARM_RIGHT;
+				config = this.playerdata.arm2;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "handright":
 				case "righthand":
 				propBodyPart = this.model.bipedRightArm;
 
 				enumPart = EnumParts.ARM_RIGHT;
+				config = this.playerdata.arm2;
 
-				propOffsetX = (propOffsetX + 0.0625F) * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = (propOffsetX + 0.0625F) * config.scaleX;
+				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "leg":
 				case "legleft":
@@ -191,14 +201,15 @@ public class LayerProp extends LayerInterface {
 				propBodyPart = this.model.bipedLeftLeg;
 
 				enumPart = EnumParts.LEG_LEFT;
+				config = this.playerdata.leg1;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "foot":
 				case "footleft":
@@ -206,42 +217,45 @@ public class LayerProp extends LayerInterface {
 				propBodyPart = this.model.bipedLeftLeg;
 
 				enumPart = EnumParts.LEG_LEFT;
+				config = this.playerdata.leg1;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "legright":
 				case "rightleg":
 				propBodyPart = this.model.bipedRightLeg;
 
 				enumPart = EnumParts.LEG_RIGHT;
+				config = this.playerdata.leg2;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = propOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = propOffsetY * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 				case "footright":
 				case "rightfoot":
 				propBodyPart = this.model.bipedRightLeg;
 
 				enumPart = EnumParts.LEG_RIGHT;
+				config = this.playerdata.leg2;
 
-				propOffsetX = propOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propOffsetY = (propOffsetY - 0.7F) * this.playerdata.getPartConfig(enumPart).scaleY;
-				propOffsetZ = propOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propOffsetX = propOffsetX * config.scaleX;
+				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
+				propOffsetZ = propOffsetZ * config.scaleZ;
 
-				propPpOffsetX = propPpOffsetX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propPpOffsetY = propPpOffsetY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propPpOffsetZ = propPpOffsetZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propPpOffsetX = propPpOffsetX * config.scaleX;
+				propPpOffsetY = propPpOffsetY * config.scaleY;
+				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
 				break;
 			}
 
@@ -250,9 +264,9 @@ public class LayerProp extends LayerInterface {
 			if (propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
 			return;
 
-			Float propOffsetXCorrected;
-			Float propOffsetYCorrected;
-			Float propOffsetZCorrected;
+			float propOffsetXCorrected;
+			float propOffsetYCorrected;
+			float propOffsetZCorrected;
 
 			if (prop.bodyPartName.equals("model")) {
 				propOffsetXCorrected = propOffsetX;
@@ -260,8 +274,8 @@ public class LayerProp extends LayerInterface {
 				propOffsetZCorrected = propOffsetZ;
 			} else {
 				//Calculate prop offset
-				Float anglePrev;
-				Float hyp;
+				float anglePrev;
+				float hyp;
 				//Apply pitch
 				if (propOffsetZ == 0) {
 					if (propOffsetY <= 0) {
@@ -276,8 +290,8 @@ public class LayerProp extends LayerInterface {
 					hyp = (float) (propOffsetZ / Math.sin(anglePrev));
 				}
 
-				Float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
-				Float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
+				float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
+				float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
 
 				//Apply yaw
 				if (propOffsetX == 0) {
@@ -293,7 +307,7 @@ public class LayerProp extends LayerInterface {
 					hyp = (float) (propOffsetX / Math.sin(anglePrev));
 				}
 
-				Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
+				float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
 				propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp);
 
 				//Apply roll
@@ -315,9 +329,9 @@ public class LayerProp extends LayerInterface {
 			}
 
 			if (propMatchScaling == true) {
-				propScaleX = propScaleX * this.playerdata.getPartConfig(enumPart).scaleX;
-				propScaleY = propScaleY * this.playerdata.getPartConfig(enumPart).scaleY;
-				propScaleZ = propScaleZ * this.playerdata.getPartConfig(enumPart).scaleZ;
+				propScaleX = propScaleX * config.scaleX;
+				propScaleY = propScaleY * config.scaleY;
+				propScaleZ = propScaleZ * config.scaleZ;
 			}
 
 			GlStateManager.pushMatrix();
@@ -352,17 +366,17 @@ public class LayerProp extends LayerInterface {
 					ModelRenderer propBodyPart = null;
 
 					EnumParticleTypes propParticleType = prop.particleType;
-					Float propOffsetX = -prop.offsetX;
-					Float propOffsetY = prop.offsetY;
-					Float propOffsetZ = prop.offsetZ;
+					float propOffsetX = -prop.offsetX;
+					float propOffsetY = prop.offsetY;
+					float propOffsetZ = prop.offsetZ;
 
 					Double propMotionSpeed = prop.speed;
 					Double propMotionPitch = Math.toRadians((prop.pitch + (2 * prop.scatter * Math.random()) - prop.scatter));
 					Double propMotionYaw = Math.toRadians((prop.yaw + (2 * prop.scatter * Math.random()) - prop.scatter));
 
-					Float partModifierX = 0.0F;
-					Float partModifierY = 0.0F;
-					Float partModifierZ = 0.0F;
+					float partModifierX = 0.0F;
+					float partModifierY = 0.0F;
+					float partModifierZ = 0.0F;
 					EnumParts enumPart = null;
 
 					switch(prop.bodyPartName) {
@@ -526,9 +540,9 @@ public class LayerProp extends LayerInterface {
 						}
 					}
 
-					Float propOffsetXCorrected;
-					Float propOffsetYCorrected;
-					Float propOffsetZCorrected;
+					float propOffsetXCorrected;
+					float propOffsetYCorrected;
+					float propOffsetZCorrected;
 
 					if (prop.bodyPartName.equals("model")) {
 						propOffsetXCorrected = propOffsetX - propBodyPart.offsetX - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X]);
@@ -536,8 +550,8 @@ public class LayerProp extends LayerInterface {
 						propOffsetZCorrected = propOffsetZ - propBodyPart.offsetZ - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Z]);
 					} else {
 						//Calculate prop offset
-						Float anglePrev;
-						Float hyp;
+						float anglePrev;
+						float hyp;
 						//Apply pitch
 						if (propOffsetZ == 0) {
 							if (propOffsetY <= 0) {
@@ -552,8 +566,8 @@ public class LayerProp extends LayerInterface {
 							hyp = (float) (propOffsetZ / Math.sin(anglePrev));
 						}
 
-						Float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
-						Float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
+						float Zpitch = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleX) * hyp);
+						float Ypitch = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleX) * hyp);
 
 						//Apply yaw
 						if (propOffsetX == 0) {
@@ -569,7 +583,7 @@ public class LayerProp extends LayerInterface {
 							hyp = (float) (propOffsetX / Math.sin(anglePrev));
 						}
 
-						Float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
+						float Xyaw = (float) (Math.sin(anglePrev + propBodyPart.rotateAngleY) * hyp);
 						propOffsetZCorrected = (float) (Math.cos(anglePrev + propBodyPart.rotateAngleY) * hyp) - propBodyPart.offsetZ - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Z]);
 
 						//Apply roll
@@ -603,7 +617,7 @@ public class LayerProp extends LayerInterface {
 						propMotionZCorrected = propMotionZPitch * Math.cos(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
 						propMotionXCorrected = propMotionZPitch * Math.sin(-propMotionYaw - Math.toRadians(this.player.renderYawOffset));
 					} else {
-						Float anglePrev;
+						float anglePrev;
 						Double hyp;
 						//Apply pitch
 						Double Zpitch = (Math.sin(propBodyPart.rotateAngleX + propMotionPitch) * propMotionSpeed);
@@ -632,10 +646,10 @@ public class LayerProp extends LayerInterface {
 					}
 
 					//Adjust for model yaw
-					Float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
-					Float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-					Float partModifierXCorrected = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
-					Float partModifierZCorrected = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
+					float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					float partModifierXCorrected = (float) (partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+					float partModifierZCorrected = (float) (partModifierZ * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + partModifierX * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
 					this.player.worldObj.spawnParticle(propParticleType,
 						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,

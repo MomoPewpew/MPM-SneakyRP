@@ -170,7 +170,6 @@ public class ClientProxy extends CommonProxy {
 				list.add(new LayerChatbubble(playerRender));
 				list.add(new LayerBackItem(playerRender));
 				list.add(new LayerProp(playerRender));
-				list.add(new LayerProp(playerRender));
 			}
 
 			public static void bindTexture(ResourceLocation location) {

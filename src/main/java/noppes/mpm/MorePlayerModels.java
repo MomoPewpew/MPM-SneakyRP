@@ -245,7 +245,7 @@ public class MorePlayerModels {
 				try {
 					skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(fileEntry));
 
-					if (!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
+					if(!skinCompound.getString("EntityClass").equals("") && playersEntityDenied.contains(player.getUniqueID()))
 					continue;
 				} catch (FileNotFoundException e) {
 				} catch (IOException e) {
@@ -358,8 +358,19 @@ public class MorePlayerModels {
 			char ch = name.charAt(i);
 			if('a' <= ch && ch <= 'z') {
 			} else if('0' <= ch && ch <= '9') {
-			} else if(ch == '-') {
+			} else if('!' <= ch && ch <= '-') {
+				if(ch == '"'|| ch == '*') return null;
+			} else if(ch == ';') {
+			} else if(ch == '=') {
+			} else if(ch == '@') {
+			} else if(ch == '[') {
+			} else if(ch == ']') {
+			} else if(ch == '^') {
 			} else if(ch == '_') {
+			} else if(ch == '`') {
+			} else if(ch == '{') {
+			} else if(ch == '}') {
+			} else if(ch == '~') {
 			} else {
 				return null;
 			}

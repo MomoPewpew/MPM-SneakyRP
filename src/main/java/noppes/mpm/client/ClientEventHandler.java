@@ -58,7 +58,7 @@ public class ClientEventHandler {
 			return entity != Minecraft.getMinecraft().thePlayer && entity.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) <= 6400.0D;
 		}
 	}});
-	public static List playerList;
+	// public static List playerList;
 	private boolean slashPressed = false;
 	public static Camera camera = new Camera();
 
@@ -198,9 +198,9 @@ public class ClientEventHandler {
 				}
 
 				++RenderEvent.lastSkinTick;
-				if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
-					playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
-				}
+				// if (mc.theWorld.getWorldInfo().getWorldTotalTime() % 20L == 0L) {
+					// playerList = mc.theWorld.getPlayers(EntityPlayer.class, playerSelector);
+				// }
 
 			}
 		}

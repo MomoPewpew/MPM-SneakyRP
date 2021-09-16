@@ -121,71 +121,67 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private static void fixModels(RenderPlayer render, boolean slim, boolean fix) {
-		// if (!MorePlayerModels.Compatibility) {
-			render.mainModel = new ModelPlayerAlt(0.0F, slim);
-			// } else if (fix) {
-				//      render.mainModel = new ModelPlayer(0.0F, slim);
-				// }
+		render.mainModel = new ModelPlayerAlt(0.0F, slim);
 
-				Iterator ita = render.layerRenderers.iterator();
+		Iterator ita = render.layerRenderers.iterator();
 
-				while(ita.hasNext()) {
-					LayerRenderer layer = (LayerRenderer)ita.next();
-					if (layer instanceof LayerArmorBase) {
-						LayerArmorBase l = (LayerArmorBase)layer;
-						if (!MorePlayerModels.Compatibility) {
-							ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(0.5F), 1);
-							ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(1.0F), 2);
-						} else if (fix) {
-							ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(0.5F), 1);
-							ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(1.0F), 2);
-						}
-					}
-
-					if (layer instanceof LayerCustomHead) {
-						ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, render.getMainModel().bipedHead, 0);
-					}
-
-					if (layer instanceof LayerElytra) {
-						ita.remove();
-					}
+		while(ita.hasNext()) {
+			LayerRenderer layer = (LayerRenderer)ita.next();
+			if (layer instanceof LayerArmorBase) {
+				LayerArmorBase l = (LayerArmorBase)layer;
+				if (!MorePlayerModels.Compatibility) {
+					ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(0.5F), 1);
+					ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBipedAlt(1.0F), 2);
+				} else if (fix) {
+					ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(0.5F), 1);
+					ObfuscationReflectionHelper.setPrivateValue(LayerArmorBase.class, l, new ModelBiped(1.0F), 2);
 				}
-
-				LayerRenderer layer = new LayerElytraAlt(render);
-				render.layerRenderers.add(layer);
 			}
 
-			private static void addLayers(RenderPlayer playerRender) {
-				List list = playerRender.layerRenderers;
-				list.removeIf((layer) -> {
-					return layer instanceof LayerCape;
-				});
-				list.add(1, new LayerEyes(playerRender));
-				list.add(2, new LayerHead(playerRender));
-				list.add(3, new LayerBody(playerRender));
-				list.add(4, new LayerArms(playerRender));
-				list.add(5, new LayerLegs(playerRender));
-				list.add(6, new LayerHeadwear(playerRender));
-				list.add(new LayerCapeMPM(playerRender));
-				list.add(new LayerChatbubble(playerRender));
-				list.add(new LayerBackItem(playerRender));
-				list.add(new LayerProp(playerRender));
+			if (layer instanceof LayerCustomHead) {
+				ObfuscationReflectionHelper.setPrivateValue(LayerCustomHead.class, (LayerCustomHead)layer, render.getMainModel().bipedHead, 0);
 			}
 
-			public static void bindTexture(ResourceLocation location) {
-				if (location != null) {
-					TextureManager manager = Minecraft.getMinecraft().getTextureManager();
-					ITextureObject textureObject = manager.getTexture(location);
-					if (textureObject == null) {
-						textureObject = new SimpleTexture(location);
-						manager.loadTexture(location, (ITextureObject)textureObject);
-					}
-
-					GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-					GlStateManager.pushMatrix();
-					GlStateManager.enableBlend();
-					GlStateManager.bindTexture(((ITextureObject)textureObject).getGlTextureId());
-					GlStateManager.popMatrix();
-				}
+			if (layer instanceof LayerElytra) {
+				ita.remove();
 			}
 		}
+
+		LayerRenderer layer = new LayerElytraAlt(render);
+		render.layerRenderers.add(layer);
+	}
+
+	private static void addLayers(RenderPlayer playerRender) {
+		List list = playerRender.layerRenderers;
+		list.removeIf((layer) -> {
+			return layer instanceof LayerCape;
+		});
+		list.add(1, new LayerEyes(playerRender));
+		list.add(2, new LayerHead(playerRender));
+		list.add(3, new LayerBody(playerRender));
+		list.add(4, new LayerArms(playerRender));
+		list.add(5, new LayerLegs(playerRender));
+		list.add(6, new LayerHeadwear(playerRender));
+		list.add(new LayerCapeMPM(playerRender));
+		list.add(new LayerChatbubble(playerRender));
+		list.add(new LayerBackItem(playerRender));
+		list.add(new LayerProp(playerRender));
+	}
+
+	public static void bindTexture(ResourceLocation location) {
+		if (location != null) {
+			TextureManager manager = Minecraft.getMinecraft().getTextureManager();
+			ITextureObject textureObject = manager.getTexture(location);
+			if (textureObject == null) {
+				textureObject = new SimpleTexture(location);
+				manager.loadTexture(location, (ITextureObject)textureObject);
+			}
+
+			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+			GlStateManager.pushMatrix();
+			GlStateManager.enableBlend();
+			GlStateManager.bindTexture(((ITextureObject)textureObject).getGlTextureId());
+			GlStateManager.popMatrix();
+		}
+	}
+}

@@ -88,9 +88,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				NBTTagCompound compound = Server.readNBT(buffer);
 				data.readFromNBT(compound);
 				data.save();
-				if (pl == Minecraft.getMinecraft().thePlayer) {
-					data.lastEdited = System.currentTimeMillis();
-				}
 			} else if (type == EnumPackets.CHAT_EVENT) {
 				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
 				if (pl == null) {
@@ -223,44 +220,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				ModelData data = ModelData.get(pl);
 				data.propGroups.remove(buffer.readInt());
-			} else if (type == EnumPackets.PARTICLE) {
-				animation = buffer.readInt();
-				if (animation == 0) {
-					pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-					if (pl == null) {
-						return;
-					}
-
-					ModelData data = ModelData.get(pl);
-					data.inLove = 40;
-				} else if (animation == 1) {
-					player.worldObj.spawnParticle(EnumParticleTypes.NOTE, buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), 0.0D, 0.0D, new int[0]);
-				} else if (animation == 2) {
-					pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-					if (pl == null) {
-						return;
-					}
-
-					ModelData data = ModelData.get(pl);
-
-					for(int i = 0; i < 5; ++i) {
-						double d0 = player.getRNG().nextGaussian() * 0.02D;
-						double d1 = player.getRNG().nextGaussian() * 0.02D;
-						double d2 = player.getRNG().nextGaussian() * 0.02D;
-						double x = player.posX + (double)((player.getRNG().nextFloat() - 0.5F) * player.width * 2.0F);
-						double z = player.posZ + (double)((player.getRNG().nextFloat() - 0.5F) * player.width * 2.0F);
-						player.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, x, player.posY + 0.800000011920929D + (double)(player.getRNG().nextFloat() * player.height / 2.0F) - player.getYOffset() - (double)data.getBodyY(), z, d0, d1, d2, new int[0]);
-					}
-				}
-			} else if (type == EnumPackets.ANIMATION) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-				if (pl == null) {
-					return;
-				}
-
-				ModelData data = ModelData.get(pl);
-				data.setAnimation(buffer.readInt());
-				data.animationStart = pl.ticksExisted;
 			} else if (type == EnumPackets.ENTITIES_ENABLE) {
 				MorePlayerModels.hasEntityPermission = true;
 			} else if (type == EnumPackets.ENTITIES_DISABLE) {
@@ -285,7 +244,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				data.readFromNBT(compound);
 				data.save();
-				data.lastEdited = System.currentTimeMillis();
 			} else if (type == EnumPackets.SKIN_LOAD_GUI) {
 				GuiMPM guiMPM = new GuiMPM();
 				Minecraft.getMinecraft().displayGuiScreen(guiMPM);

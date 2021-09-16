@@ -20,7 +20,6 @@ import noppes.mpm.client.model.part.tails.ModelFeatherTail;
 import noppes.mpm.client.model.part.tails.ModelRodentTail;
 import noppes.mpm.client.model.part.tails.ModelSquirrelTail;
 import noppes.mpm.client.model.part.tails.ModelTailFin;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 
 public class LayerLegs extends LayerInterface implements LayerPreRender {
@@ -191,8 +190,7 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
 			this.horseLegs.setRotationAngles(this.playerdata, par1, par2, par3, par4, par5, par6, this.player);
 		} else if (part.type == 1) {
 			this.naga.isRiding = this.model.isRiding;
-			this.naga.isSleeping = this.player.isPlayerSleeping() || this.playerdata.isSleeping();
-			this.naga.isCrawling = this.playerdata.animation == EnumAnimation.CRAWLING;
+			this.naga.isSleeping = this.player.isPlayerSleeping();
 			this.naga.isSneaking = this.model.isSneak;
 			this.naga.setRotationAngles(par1, par2, par3, par4, par5, par6, this.player);
 		} else if (part.type == 4) {
@@ -212,14 +210,14 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
 		float rotateAngleX = MathHelper.sin(par3 * 0.067F) * 0.05F + this.model.bipedBody.rotateAngleX;
 		this.rotationPointZ = 0.0F;
 		this.rotationPointY = 11.0F;
-		if (this.playerdata.animation == EnumAnimation.WAG) {
-			rotateAngleY = (float)(Math.sin((double)((float)this.player.ticksExisted * 0.55F)) * 0.44999998807907104D + this.model.bipedBody.rotateAngleY);
-		}
+		// if (this.playerdata.animation == EnumAnimation.WAG) {
+		// 	rotateAngleY = (float)(Math.sin((double)((float)this.player.ticksExisted * 0.55F)) * 0.44999998807907104D + this.model.bipedBody.rotateAngleY);
+		// }
 
 		if (part.type == 2) {
 			this.rotationPointY = 12.0F + (config.scaleY - 1.0F) * 3.0F;
 			this.rotationPointZ = 15.0F + (config.scaleZ - 1.0F) * 10.0F;
-			if (this.playerdata.isSleeping() || this.player.isPlayerSleeping() || this.playerdata.animation == EnumAnimation.CRAWLING) {
+			if (this.player.isPlayerSleeping()) {
 				this.rotationPointY = 12.0F + 16.0F * config.scaleZ;
 				this.rotationPointZ = 1.0F * config.scaleY;
 				rotateAngleX = -0.7853982F;

@@ -12,15 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
-import noppes.mpm.client.model.animation.AniBow;
-import noppes.mpm.client.model.animation.AniCrawling;
-import noppes.mpm.client.model.animation.AniDancing;
-import noppes.mpm.client.model.animation.AniHug;
-import noppes.mpm.client.model.animation.AniNo;
-import noppes.mpm.client.model.animation.AniPoint;
-import noppes.mpm.client.model.animation.AniWaving;
-import noppes.mpm.client.model.animation.AniYes;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 
 
@@ -77,13 +68,6 @@ public class ModelBipedAlt extends ModelBiped {
 		this.bipedLeftArm.isHidden = this.bipedRightArm.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
 		this.bipedHead.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
 		this.bipedBody.isHidden = data.getPartData(EnumParts.LEGS).type != 0;
-		if (!this.isRiding) {
-			this.isRiding = data.animation == EnumAnimation.SITTING;
-		}
-
-		if (this.isSneak && (data.animation == EnumAnimation.CRAWLING || data.isSleeping())) {
-			this.isSneak = false;
-		}
 
 
 		ModelData.resetModelBipedForEmote(this);
@@ -91,33 +75,5 @@ public class ModelBipedAlt extends ModelBiped {
 		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		data.animModelBiped(this, netHeadYaw, headPitch);
-
-		if (!data.isSleeping() && !player.isPlayerSleeping()) {
-			if (data.animation == EnumAnimation.CRY) {
-				this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.7F;
-			} else if (data.animation == EnumAnimation.HUG) {
-				AniHug.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this);
-			} else if (data.animation == EnumAnimation.CRAWLING) {
-				AniCrawling.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this);
-			} else if (data.animation == EnumAnimation.WAVING) {
-				AniWaving.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this);
-			} else if (data.animation == EnumAnimation.DANCING) {
-				AniDancing.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this);
-			} else if (data.animation == EnumAnimation.BOW) {
-				AniBow.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this, data);
-			} else if (data.animation == EnumAnimation.YES) {
-				AniYes.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this, data);
-			} else if (data.animation == EnumAnimation.NO) {
-				AniNo.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this, data);
-			} else if (data.animation == EnumAnimation.POINT) {
-				AniPoint.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity, this);
-			} else if (this.isSneak) {
-				this.bipedBody.rotateAngleX = 0.5F / data.getPartConfig(EnumParts.BODY).scaleY;
-			}
-		} else if (this.bipedHead.rotateAngleX < 0.0F) {
-			this.bipedHead.rotateAngleX = 0.0F;
-			this.bipedHeadwear.rotateAngleX = 0.0F;
-		}
-
 	}
 }

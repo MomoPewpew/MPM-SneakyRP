@@ -115,7 +115,7 @@ public class ServerEventHandler {
 	}
 
 	@SubscribeEvent
-	public void playerTracking(StartTracking event) {
+	public void playerTracking(StartTracking event) {//one player is close enough to another so we need to start syncing model data between them
 		if (event.getTarget() instanceof EntityPlayer) {
 			EntityPlayer target = (EntityPlayer)event.getTarget();
 			EntityPlayerMP player = (EntityPlayerMP)event.getEntityPlayer();

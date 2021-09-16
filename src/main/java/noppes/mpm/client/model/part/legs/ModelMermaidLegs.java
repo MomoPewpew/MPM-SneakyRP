@@ -5,7 +5,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import noppes.mpm.ModelData;
-import noppes.mpm.constants.EnumAnimation;
 
 public class ModelMermaidLegs extends ModelRenderer {
 	private ModelRenderer top;
@@ -65,16 +64,12 @@ public class ModelMermaidLegs extends ModelRenderer {
 			ani /= 3.0F;
 		}
 
-		if (!data.isSleeping() && data.animation != EnumAnimation.CRAWLING) {
-			this.top.rotateAngleX = 0.26F - ani * 0.2F * par2;
-			this.middle.rotateAngleX = 0.86F - ani * 0.24F * par2;
-			this.bottom.rotateAngleX = 0.15F - ani * 0.28F * par2;
-			this.fin2.rotateAngleX = this.fin1.rotateAngleX = 0.05F - ani * 0.35F * par2;
-			if (entity.isSneaking()) {
-				this.top.setRotationPoint(-2.0F, 12.0F, 6.0F);
-			}
-		} else {
-			this.top.rotateAngleX = this.middle.rotateAngleX = this.bottom.rotateAngleX = this.fin2.rotateAngleX = 0.0F;
+		this.top.rotateAngleX = 0.26F - ani * 0.2F * par2;
+		this.middle.rotateAngleX = 0.86F - ani * 0.24F * par2;
+		this.bottom.rotateAngleX = 0.15F - ani * 0.28F * par2;
+		this.fin2.rotateAngleX = this.fin1.rotateAngleX = 0.05F - ani * 0.35F * par2;
+		if (entity.isSneaking()) {
+			this.top.setRotationPoint(-2.0F, 12.0F, 6.0F);
 		}
 
 	}

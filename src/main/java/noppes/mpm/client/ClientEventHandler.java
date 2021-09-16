@@ -40,7 +40,6 @@ import noppes.mpm.client.fx.EntityEnderFX;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.commands.MpmCommandInterface;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.util.MPMEntityUtil;
@@ -67,8 +66,6 @@ public class ClientEventHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc != null && mc.thePlayer != null) {
 			if (ClientProxy.Screen.isPressed()) {
-				ModelData data = ModelData.get(mc.thePlayer);
-				data.setAnimation(EnumAnimation.NONE);
 				if (mc.currentScreen == null) {
 					mc.displayGuiScreen(new GuiMPM());
 				}
@@ -137,47 +134,6 @@ public class ClientEventHandler {
 		}
 	}
 
-	public static void processAnimation(int type) {
-		if (type >= 0) {
-			if (MorePlayerModels.HasServerSide) {
-				Client.sendData(EnumPackets.ANIMATION, type);
-			} else {
-				EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-				EnumAnimation animation = EnumAnimation.values()[type];
-				if (animation == EnumAnimation.SLEEPING_SOUTH) {
-					float rotation;
-					for(rotation = player.rotationYaw; rotation < 0.0F; rotation += 360.0F) {
-					}
-
-					while(rotation > 360.0F) {
-						rotation -= 360.0F;
-					}
-
-					int rotate = (int)((rotation + 45.0F) / 90.0F);
-					if (rotate == 1) {
-						animation = EnumAnimation.SLEEPING_WEST;
-					}
-
-					if (rotate == 2) {
-						animation = EnumAnimation.SLEEPING_NORTH;
-					}
-
-					if (rotate == 3) {
-						animation = EnumAnimation.SLEEPING_EAST;
-					}
-				}
-
-				ModelData data = ModelData.get(player);
-				if (data.animationEquals(animation)) {
-					animation = EnumAnimation.NONE;
-				}
-
-				data.setAnimation(animation.ordinal());
-			}
-
-		}
-	}
-
 	@SubscribeEvent
 	public void onRenderTick(RenderTickEvent event) {
 		camera.update(event.phase == Phase.START);
@@ -192,6 +148,9 @@ public class ClientEventHandler {
 					MorePlayerModels.HasServerSide = false;
 					GuiCreationScreenInterface.Message = "message.noserver";
 					ModelData data = ModelData.get(mc.thePlayer);
+					if(data.player == null) {
+						data.loadPlayerData(mc.thePlayer);
+					}
 					Client.sendData(EnumPackets.PING, MorePlayerModels.Version, data.writeToNBT());
 					this.prevWorld = mc.theWorld;
 					ClientProxy.fixModels(false);
@@ -258,60 +217,14 @@ public class ClientEventHandler {
 				entity.onUpdate();
 				MPMEntityUtil.Copy(player, entity);
 			} else {
-
 				if (!MorePlayerModels.HasServerSide) {
 					data.eyes.update(player);
 				}
 
-				if (data.inLove > 0) {
-					--data.inLove;
-					if (player.getRNG().nextBoolean()) {
-						double d0 = player.getRNG().nextGaussian() * 0.02D;
-						double d1 = player.getRNG().nextGaussian() * 0.02D;
-						double d2 = player.getRNG().nextGaussian() * 0.02D;
-						player.worldObj.spawnParticle(EnumParticleTypes.HEART, player.posX + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, player.posY + 0.5D + (double)(player.getRNG().nextFloat() * player.height), player.posZ + (double)(player.getRNG().nextFloat() * player.width * 2.0F) - (double)player.width, d0, d1, d2, new int[0]);
-					}
-				}
-
-				if (data.animation == EnumAnimation.CRY) {
-					float f1 = player.rotationYaw * 3.1415927F / 180.0F;
-					float dx = -MathHelper.sin(f1);
-					float dz = MathHelper.cos(f1);
-
-					for(int i = 0; (float)i < 10.0F; ++i) {
-						float f2 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dx * 0.15F;
-						float f3 = (player.getRNG().nextFloat() - 0.5F) * player.width * 0.5F + dz * 0.15F;
-						player.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, player.posX + (double)f2, player.posY - (double)data.getBodyY() + 1.100000023841858D - player.getYOffset(), player.posZ + (double)f3, 1.0000000195414814E-25D, 0.0D, 1.0000000195414814E-25D, new int[0]);
-					}
-				}
-
-				if (data.animation != EnumAnimation.NONE) {
-					ServerTickHandler.checkAnimation(player, data);
-				}
-
-				if (data.animation == EnumAnimation.DEATH) {
-					if (player.deathTime == 0) {
-						player.playSound(SoundEvents.ENTITY_GENERIC_HURT, 1.0F, 1.0F);
-					}
-
-					if (player.deathTime < 19) {
-						++player.deathTime;
-					}
-				}
-
-				if (data.prevAnimation != data.animation && data.prevAnimation == EnumAnimation.DEATH && !player.isDead) {
-					player.deathTime = 0;
-				}
-
-				data.prevAnimation = data.animation;
-				data.prevPosX = player.posX;
-				data.prevPosY = player.posY;
-				data.prevPosZ = player.posZ;
 				ModelPartData particles = data.getPartData(EnumParts.PARTICLES);
 				if (particles != null) {
 					this.spawnParticles(player, data, particles);
 				}
-
 			}
 		}
 	}

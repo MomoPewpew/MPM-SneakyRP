@@ -36,7 +36,6 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.client.Client;
 import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 import aurelienribon.tweenengine.*;
@@ -49,17 +48,11 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public boolean resourceLoaded = false;
 	public Object textureObject = null;
 	public ItemStack backItem;
-	public int inLove;
-	public int animationTime;
-	public EnumAnimation animation;
-	public EnumAnimation prevAnimation;
-	public int animationStart;
 	public short soundType;
 	public double prevPosX;
 	public double prevPosY;
 	public double prevPosZ;
 	public EntityPlayer player;
-	public long lastEdited;
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
 
@@ -111,14 +104,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 	public ModelData() {
 		this.backItem = null;
-		this.inLove = 0;
-		this.animationTime = -1;
-		this.animation = EnumAnimation.NONE;
-		this.prevAnimation = EnumAnimation.NONE;
-		this.animationStart = 0;
 		this.soundType = 0;
 		this.player = null;
-		this.lastEdited = System.currentTimeMillis();
 
 		this.propBase = new PropGroup(this.player);
 		this.propGroups = new ArrayList<PropGroup>();
@@ -128,8 +115,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public synchronized NBTTagCompound writeToNBT() {
 		NBTTagCompound compound = super.writeToNBT();
 		compound.setShort("SoundType", this.soundType);
-		compound.setInteger("Animation", this.animation.ordinal());
-		compound.setLong("LastEdited", this.lastEdited);
 		compound = this.propsToNBT(compound);
 		return compound;
 	}
@@ -150,7 +135,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		String prevUrl = new String(this.url);
 		super.readFromNBT(compound);
 		this.soundType = compound.getShort("SoundType");
-		this.lastEdited = compound.getLong("LastEdited");
 		if (this.player != null) {
 			this.player.refreshDisplayName();
 			if (this.entityClass == null) {
@@ -160,43 +144,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 
-		this.setAnimation(compound.getInteger("Animation"));
 		if (!prevUrl.equals(this.url)) {
 			this.resourceInit = false;
 			this.resourceLoaded = false;
 		}
 
 		this.propsFromNBT(compound);
-	}
-
-	public void setAnimation(int i) {
-		if (i < EnumAnimation.values().length) {
-			this.animation = EnumAnimation.values()[i];
-		} else {
-			this.animation = EnumAnimation.NONE;
-		}
-
-		this.setAnimation(this.animation);
-	}
-
-	public void setAnimation(EnumAnimation ani) {
-		this.animationTime = -1;
-		this.animation = ani;
-		this.lastEdited = System.currentTimeMillis();
-		if (this.animation == EnumAnimation.WAVING) {
-			this.animationTime = 80;
-		}
-
-		if (this.animation == EnumAnimation.YES || this.animation == EnumAnimation.NO) {
-			this.animationTime = 60;
-		}
-
-		if (this.player != null && ani != EnumAnimation.NONE) {
-			this.animationStart = this.player.ticksExisted;
-		} else {
-			this.animationStart = -1;
-		}
-
 	}
 
 	public EntityLivingBase getEntity(EntityPlayer player) {
@@ -238,18 +191,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		return data;
 	}
 
-	public boolean isSleeping() {
-		return this.isSleeping(this.animation);
-	}
-
-	private boolean isSleeping(EnumAnimation animation) {
-		return animation == EnumAnimation.SLEEPING_EAST || animation == EnumAnimation.SLEEPING_NORTH || animation == EnumAnimation.SLEEPING_SOUTH || animation == EnumAnimation.SLEEPING_WEST;
-	}
-
-	public boolean animationEquals(EnumAnimation animation2) {
-		return animation2 == this.animation || this.isSleeping() && this.isSleeping(animation2);
-	}
-
 	public float getOffsetCamera(EntityPlayer player) {
 		if (!MorePlayerModels.EnablePOV) {
 			return 0.0F;
@@ -257,18 +198,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			float offset = -this.offsetY();
 			if(this.animPartUsages != null && (this.animPartUsages[2*Emote.MODEL + 0]&Emote.FLAG_CAMERA_FOLLOWS_MODEL_OFFSET) > 0) {
 				offset += this.animStates[6*Emote.MODEL + Emote.OFF_Y];
-			} else {
-				if (this.animation == EnumAnimation.SITTING) {
-					offset += 0.5F - this.getLegsY();
-				}
-
-				if (this.isSleeping()) {
-					offset = 1.18F;
-				}
-
-				if (this.animation == EnumAnimation.CRAWLING) {
-					offset = 0.8F;
-				}
 			}
 
 			if (offset < -0.2F && this.isBlocked(player)) {
@@ -343,19 +272,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public static ModelData get(EntityPlayer player) {
-		ModelData data = (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
-		if (data.player == null) {
-			data.player = player;
-			NBTTagCompound compound = loadPlayerData(player.getUniqueID());
-			if (compound != null) {
-				data.readFromNBT(compound);
-			}
-		}
-
-		return data;
+		return (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
 	}
 
-	private static NBTTagCompound loadPlayerData(UUID id) {
+	public NBTTagCompound loadPlayerData(EntityPlayer player) {
+		this.player = player;
+		UUID id = player.getUniqueID();
 		String filename = id.toString();
 		if (filename.isEmpty()) {
 			filename = "noplayername";
@@ -363,20 +285,16 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 		filename = filename + ".dat";
 
+		NBTTagCompound compound = null;
 		File file;
 		try {
 			file = new File(MorePlayerModels.dir, filename);
 			return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
 		} catch (Exception var4) {
 			LogWriter.except(var4);
-
-			try {
-				file = new File(MorePlayerModels.dir, filename + "_old");
-				return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
-			} catch (Exception var3) {
-				LogWriter.except(var3);
-				return null;
-			}
+		}
+		if(compound != null) {
+			this.readFromNBT(compound);
 		}
 	}
 
@@ -962,6 +880,16 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public void updateAnim() {
 		float updateCutoff = .001f;
 		float movementRate = 1.0f;
+		// if (data.prevPosY > 0.0D && player.ticksExisted >= 40) {
+			// double motionX = data.prevPosX - player.posX;
+		// 	double motionY = data.prevPosY - player.posY;
+		// 	double motionZ = data.prevPosZ - player.posZ;
+		// 	double speed = motionX * motionX + motionZ * motionZ;
+		// 	boolean isJumping = motionY * motionY > 0.08D;
+			// data.prevPosX = player.posX;
+			// data.prevPosY = player.posY;
+			// data.prevPosZ = player.posZ;
+		// }
 		if(this.previewIsPlaying) {
 			long curTime = System.currentTimeMillis();
 			float delta = (curTime - this.previewLastTime)/1000F;

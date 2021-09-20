@@ -333,20 +333,12 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				}
 				LogWriter.error("EMOTE_DO " + uuid + " ; " + emote.toString());
 
-				long emoteStartTime = buffer.readLong();
-				boolean wasPlaying = data.emoteIsPlaying;
-
 				Float speed = buffer.readFloat();
 				boolean cancel_if_conflicting = buffer.readBoolean();
 				boolean outro_all_playing_first = buffer.readBoolean();
 				boolean override_instead_of_outro = buffer.readBoolean();
 
 				data.startEmote(emote, speed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
-				if(!wasPlaying) {
-					//right now we only bother synchronizing with the server if no emote was previously playing, because in this case synchronization is trivial
-					//I would put a todo here to improve sync, but precise emote sync does not seem important enough to warrant this (it is already decently well synced)
-					data.emoteLastTime = emoteStartTime;
-				}
 			} else if (type == EnumPackets.EMOTE_DATA) {
 				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
 				pl = player.worldObj.getPlayerEntityByUUID(uuid);
@@ -376,8 +368,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 					data.emoteCommandIndices[i] = a >> 2;
 				}
 				for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) data.emoteCommandTimes[i] = buffer.readFloat();
-
-				data.emoteLastTime = buffer.readLong();
 
 				for(int i = 0; i < Emote.STATE_COUNT; i += 1) {
 					data.emoteMovements[i] = 0.0f;

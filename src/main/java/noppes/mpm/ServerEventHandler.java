@@ -149,8 +149,6 @@ public class ServerEventHandler {
 					for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) sendBuffer.writeInt((data.emoteCommandIndices[i] << 2)|(data.emoteCommandSections[i]));
 					for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) sendBuffer.writeFloat(data.emoteCommandTimes[i]);
 
-					sendBuffer.writeLong(data.emoteLastTime);
-
 					Server.sendDelayedData(player, 100, sendBuffer);
 				} catch(Exception e) {//I do not like exceptions
 					sendBuffer.release();

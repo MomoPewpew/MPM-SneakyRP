@@ -66,8 +66,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static final float PREVIEW_PAUSE_TIME = .5f;//NOTE: must be >0
 
 	//this is data to track server emotes
-	public final ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
-	public final int[] emotePartUsages = new int[2*Emote.PART_COUNT];
+	public ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
+	public int[] emotePartUsages = new int[2*Emote.PART_COUNT];
 	public final float[] emoteSpeeds = new float[2*Emote.PART_COUNT];
 	public final byte[] emoteCommandSections = new byte[2*Emote.PART_COUNT];
 	public final int[] emoteCommandIndices = new int[2*Emote.PART_COUNT];

@@ -363,6 +363,9 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				}
 				LogWriter.error("EMOTE_DATA " + uuid + " ; " + emote.toString());
 
+
+				data.emoteCommands = emote.commands;
+				data.emotePartUsages = emote.partUsages;
 				//totally overwrite previous emote data with new data
 				//NOTE: if an exception is thrown while reading the packet it might leave garbage values in the emote data tables, causing minor animation glitches, however this should not be able to happen
 

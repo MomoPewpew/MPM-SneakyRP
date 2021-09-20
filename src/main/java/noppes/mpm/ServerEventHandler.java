@@ -140,7 +140,7 @@ public class ServerEventHandler {
 				try {
 					sendBuffer.writeInt(EnumPackets.EMOTE_DATA.ordinal());
 
-					UUID uuid = player.getUniqueID();
+					UUID uuid = target.getUniqueID();
 					sendBuffer.writeLong(uuid.getMostSignificantBits());
 					sendBuffer.writeLong(uuid.getLeastSignificantBits());
 

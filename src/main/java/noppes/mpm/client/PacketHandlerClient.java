@@ -356,7 +356,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				}
 				ModelData data = ModelData.get(pl);
 
-				Emote emote = Emote.readEmoteV2(buffer);
+				Emote emote = Emote.readEmote(buffer);
 				if(emote == null) {
 					LogWriter.error("Packet error: Invalid emote data for EMOTE_DATA");
 					return;
@@ -385,11 +385,15 @@ public class PacketHandlerClient extends PacketHandlerServer {
 			} else if (type == EnumPackets.EMOTE_END) {
 				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
 				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+
+				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+
 				if(pl == null) {
 					LogWriter.error("Packet error: Invalid player for EMOTE_END, " + uuid);
 					return;
 				}
 				ModelData data = ModelData.get(pl);
+
 
 				LogWriter.error("EMOTE_END " + uuid);
 

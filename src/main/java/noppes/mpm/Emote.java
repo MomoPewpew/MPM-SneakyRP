@@ -311,7 +311,7 @@ public class Emote {
 	public static ArrayList<PartCommand> readPartCommandListV2(ByteBuf buffer) {
 		int size = buffer.readInt();
 		if(size == 0) return null;
-		ArrayList<PartCommand> list = new ArrayList<PartCommand>(size);
+		ArrayList<PartCommand> list = new ArrayList<PartCommand>(Math.min(size, 100));
 		for(int i = 0; i < size; i++) {
 			PartCommand command = new PartCommand();
 			int a = buffer.readInt();

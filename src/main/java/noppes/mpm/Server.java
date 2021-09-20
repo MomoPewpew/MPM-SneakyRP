@@ -158,7 +158,9 @@ public class Server {
 							writeString(buffer, s);
 						}
 					} else if (ob instanceof UUID) {
-						writeString(buffer, ob.toString());
+						buffer.writeLong(((UUID)ob).getMostSignificantBits());
+						buffer.writeLong(((UUID)ob).getLeastSignificantBits());
+						// writeString(buffer, ob.toString());
 					} else if (ob instanceof Enum) {
 						buffer.writeInt(((Enum)ob).ordinal());
 					} else if (ob instanceof Integer) {

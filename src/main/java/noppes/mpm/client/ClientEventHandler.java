@@ -148,9 +148,6 @@ public class ClientEventHandler {
 					MorePlayerModels.HasServerSide = false;
 					GuiCreationScreenInterface.Message = "message.noserver";
 					ModelData data = ModelData.get(mc.thePlayer);
-					if(data.player == null) {
-						data.loadPlayerData(mc.thePlayer);
-					}
 					Client.sendData(EnumPackets.PING, MorePlayerModels.Version, data.writeToNBT());
 					this.prevWorld = mc.theWorld;
 					ClientProxy.fixModels(false);

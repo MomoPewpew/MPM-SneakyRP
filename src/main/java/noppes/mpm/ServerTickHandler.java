@@ -48,7 +48,6 @@ public class ServerTickHandler {
 			// }
 
 			ModelData data = ModelData.get(event.player);
-			data.loadPlayerData(event.player);
 		}
 	}
 }

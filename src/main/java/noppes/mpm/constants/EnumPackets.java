@@ -37,5 +37,6 @@ public enum EnumPackets {
 	EMOTE_SAVE,
 	EMOTE_REMOVE,
 	EMOTE_DO,
+	EMOTE_DATA,
 	EMOTE_END,
 }

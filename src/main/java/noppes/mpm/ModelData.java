@@ -49,9 +49,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public Object textureObject = null;
 	public ItemStack backItem;
 	public short soundType;
-	public double prevPosX;
-	public double prevPosY;
-	public double prevPosZ;
+	public float prePosX = 0.0f;
+	public float prePosZ = 0.0f;
+	// public float prePosY;
 	public EntityPlayer player;
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
@@ -66,30 +66,31 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static final float PREVIEW_PAUSE_TIME = .5f;//NOTE: must be >0
 
 	//this is data to track server emotes
-	public ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
+	public final ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
 	public final int[] emotePartUsages = new int[2*Emote.PART_COUNT];
+	public final float[] emoteSpeeds = new float[2*Emote.PART_COUNT];
 	public final byte[] emoteCommandSections = new byte[2*Emote.PART_COUNT];
 	public final int[] emoteCommandIndices = new int[2*Emote.PART_COUNT];
 	public final float[] emoteCommandTimes = new float[2*Emote.PART_COUNT];
-	public final float[] emoteSpeeds = new float[2*Emote.PART_COUNT];
 	public final float[] emoteMovements = new float[Emote.STATE_COUNT];
 	public final float[] emoteStates = new float[Emote.STATE_COUNT];
 
 	public long emoteLastTime = 0;
 	public boolean emoteIsPlaying = false;
+	public float emoteMovementRate = 0.0f;
 
 	public Emote queuedEmote;
 	public boolean queuedOutroAllFirst;
 	public float queuedSpeed;
 
-	//TODO: allocate these jit
-	public ArrayList<ArrayList<Emote.PartCommand>> previewCommands = Emote.createCommandsList();
-	public int[] previewPartUsages = new int[2*Emote.PART_COUNT];
-	public byte[] previewCommandSections = new byte[2*Emote.PART_COUNT];
-	public int[] previewCommandIndices = new int[2*Emote.PART_COUNT];
-	public float[] previewCommandTimes = new float[2*Emote.PART_COUNT];
-	public float[] previewMovements = new float[Emote.STATE_COUNT];
-	public float[] previewStates = new float[Emote.STATE_COUNT];
+	//this is to track client-side emote previews
+	public ArrayList<ArrayList<Emote.PartCommand>> previewCommands = null;
+	public int[] previewPartUsages = null;
+	public byte[] previewCommandSections = null;
+	public int[] previewCommandIndices = null;
+	public float[] previewCommandTimes = null;
+	public float[] previewMovements = null;
+	public float[] previewStates = null;
 
 	public int previewRepetitions = 4;
 	public long previewLastTime = 0;
@@ -97,7 +98,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 
 	//the following arrays will point to the emote, the preview, or null, depending on which takes precedence for current animation
-	//These arrays are for convenient external use, refer to only these if possible
 	public float[] animStates = null;
 	public int[] animPartUsages = null;
 
@@ -272,10 +272,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public static ModelData get(EntityPlayer player) {
-		return (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
+		ModelData data = (ModelData)player.getCapability(MODELDATA_CAPABILITY, (EnumFacing)null);
+		if(data.player == null) data.loadPlayerData(player);
+		return data;
 	}
 
-	public NBTTagCompound loadPlayerData(EntityPlayer player) {
+	public void loadPlayerData(EntityPlayer player) {
 		this.player = player;
 		UUID id = player.getUniqueID();
 		String filename = id.toString();
@@ -289,7 +291,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		File file;
 		try {
 			file = new File(MorePlayerModels.dir, filename);
-			return !file.exists() ? null : CompressedStreamTools.readCompressed(new FileInputStream(file));
+			if(file.exists()) {
+				compound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+			}
 		} catch (Exception var4) {
 			LogWriter.except(var4);
 		}
@@ -354,7 +358,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		}
 	}
 
-	public void showPropGroupServerByName (String name) {
+	public void showPropGroupServerByName(String name) {
 		for (int i = 0; i < this.propGroups.size(); i++) {
 			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
 				this.propGroups.get(i).hide = false;
@@ -879,17 +883,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 	public void updateAnim() {
 		float updateCutoff = .001f;
-		float movementRate = 1.0f;
-		// if (data.prevPosY > 0.0D && player.ticksExisted >= 40) {
-			// double motionX = data.prevPosX - player.posX;
-		// 	double motionY = data.prevPosY - player.posY;
-		// 	double motionZ = data.prevPosZ - player.posZ;
-		// 	double speed = motionX * motionX + motionZ * motionZ;
-		// 	boolean isJumping = motionY * motionY > 0.08D;
-			// data.prevPosX = player.posX;
-			// data.prevPosY = player.posY;
-			// data.prevPosZ = player.posZ;
-		// }
 		if(this.previewIsPlaying) {
 			long curTime = System.currentTimeMillis();
 			float delta = (curTime - this.previewLastTime)/1000F;
@@ -899,18 +892,45 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 			updateCutoff = 0.5f;
 		}
+		//NOTE: this is really dumb code to predict the player's movement speed
+		float posX = (float)this.player.posX;
+		float posZ = (float)this.player.posZ;
+		float x = this.prePosX - posX;
+		float z = this.prePosZ - posZ;
+		this.prePosX = posX;
+		this.prePosZ = posZ;
+		if(x != 0.0F || z != 0.0F) {
+			float movementRate = (x*x + z*z)/2;
+			if(movementRate < 1F) {
+				// LogWriter.warn(movementRate);
+				this.emoteMovementRate = movementRate;
+			}
+		}
+		this.updateEmote(updateCutoff);
+		if(this.previewIsPlaying) {
+			this.animStates = this.previewStates;
+			this.animPartUsages = this.previewPartUsages;
+		} else if(this.emoteIsPlaying) {
+			this.animStates = this.emoteStates;
+			this.animPartUsages = this.emotePartUsages;
+		} else {
+			this.animStates = null;
+			this.animPartUsages = null;
+		}
+	}
+
+	public void updateEmote() {
+		this.updateEmote(.001f);
+	}
+	public void updateEmote(float updateCutoff) {
 		if(this.emoteIsPlaying) {
 			long curTime = System.currentTimeMillis();
 			float delta = (curTime - this.emoteLastTime)/1000F;
 			if(delta > updateCutoff) {
 				this.emoteLastTime = curTime;
-				if(this.player != null) {
-					float x = (float)this.player.motionX;
-					float z = (float)this.player.motionZ;
-					//sqrt(x*x + z*z) is in range ~~ .045 - .30
-					movementRate = (x*x + z*z)/.0025f;
-					movementRate = 2*movementRate/(movementRate + 1.0f);
-				}
+				float movementRate = this.emoteMovementRate/delta;
+				movementRate = 2*movementRate/(movementRate + 1.0f);
+
 				this.emoteIsPlaying = updateEmoteStates(this, this.emoteCommands, this.emotePartUsages, this.emoteSpeeds, this.emoteCommandSections, this.emoteCommandIndices, this.emoteCommandTimes, this.emoteMovements, this.emoteStates, movementRate, delta);
 				//check if we can play the queued emote
 				if(this.queuedEmote != null) {
@@ -926,18 +946,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				}
 			}
 		}
-		if(this.previewIsPlaying) {
-			this.animStates = this.previewStates;
-			this.animPartUsages = this.previewPartUsages;
-		} else if(this.emoteIsPlaying) {
-			this.animStates = this.emoteStates;
-			this.animPartUsages = this.emotePartUsages;
-		} else {
-			this.animStates = null;
-			this.animPartUsages = null;
-		}
 	}
-
 
 	public void startEmote(Emote emote, float speed, boolean cancel_if_conflicting, boolean outro_all_playing_first, boolean override_instead_of_outro) {
 		boolean conflicts = this.emoteIsPlaying && doesEmoteConflict(emote.partUsages, this.emotePartUsages);
@@ -987,6 +996,15 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void startPreview(Emote emote) {
+		if(this.previewCommands == null) {
+			this.previewCommands = Emote.createCommandsList();
+			this.previewPartUsages = new int[2*Emote.PART_COUNT];
+			this.previewCommandSections = new byte[2*Emote.PART_COUNT];
+			this.previewCommandIndices = new int[2*Emote.PART_COUNT];
+			this.previewCommandTimes = new float[2*Emote.PART_COUNT];
+			this.previewMovements = new float[Emote.STATE_COUNT];
+			this.previewStates = new float[Emote.STATE_COUNT];
+		}
 		for(int meta_i = 0; meta_i < 2*Emote.PART_COUNT; meta_i += 1) {
 			setEmoteCommands(this.previewCommands, this.previewPartUsages, null, this.previewCommandSections, this.previewCommandIndices, this.previewCommandTimes, this.previewStates, meta_i, emote, 0);
 		}

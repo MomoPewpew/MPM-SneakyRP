@@ -81,7 +81,7 @@ public class Emote {
 
 	///////////////////
 	// data format:
-	// commands = {head_intro_offset, head_intro_rotate, head_loop_offset, head_loop_rotate, head_outro_offset, head_outro_rotate, body_intro_offset, ...}
+	// commands[SECTION_LIST_COUNT*PART_COUNT][..] = {head_intro_offset, head_intro_rotate, head_loop_offset, head_loop_rotate, head_outro_offset, head_outro_rotate, body_intro_offset, ...}
 	// head_intro_offset = {PartCommand0, PartCommand1, ...}
 	// partUsages = {head_offset, head_rotate, body_offset, ...}
 
@@ -139,7 +139,7 @@ public class Emote {
 
 
 	public static void writeEmote(ByteBuf buffer, Emote emote) {
-		writeEmoteV2(buffer, emote);
+		writeEmoteV2(buffer, emote.commands, emote.partUsages);
 	}
 	public static Emote readEmote(ByteBuf buffer) {
 		int version_no = buffer.readInt();
@@ -227,14 +227,14 @@ public class Emote {
 		}
 	}
 
-	public static void writeEmoteV2(ByteBuf buffer, Emote emote) {
+	public static void writeEmoteV2(ByteBuf buffer, ArrayList<ArrayList<PartCommand>> commands, int[] partUsages) {
 		buffer.writeInt(2);//encoding version number
 		int size = 0;
 		for(int partId = 0; partId < PART_COUNT; partId += 1) {
 			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
 				final int meta_i = 2*partId + isRotate;
 
-				if(emote.partUsages[meta_i] > 0) {
+				if(partUsages[meta_i] > 0) {
 					size += 1;
 				}
 			}
@@ -245,15 +245,15 @@ public class Emote {
 			for(int isRotate = 0; isRotate < 2; isRotate += 1) {
 				int meta_i = 2*partId + isRotate;
 
-				if(emote.partUsages[meta_i] > 0) {
+				if(partUsages[meta_i] > 0) {
 					int intro_i = Emote.SECTION_LIST_COUNT*partId + 3*isRotate;
 					int loop_i = intro_i + 1;
 					int outro_i = loop_i + 1;
 					buffer.writeInt(meta_i);
-					buffer.writeInt(emote.partUsages[meta_i]);
-					writeSectionListV2(buffer, emote.commands.get(intro_i));
-					writeSectionListV2(buffer, emote.commands.get(loop_i));
-					writeSectionListV2(buffer, emote.commands.get(outro_i));
+					buffer.writeInt(partUsages[meta_i]);
+					writeSectionListV2(buffer, commands.get(intro_i));
+					writeSectionListV2(buffer, commands.get(loop_i));
+					writeSectionListV2(buffer, commands.get(outro_i));
 				}
 			}
 		}

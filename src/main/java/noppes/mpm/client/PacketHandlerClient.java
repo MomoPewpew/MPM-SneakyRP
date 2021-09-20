@@ -386,7 +386,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
 				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				// pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
 
 				if(pl == null) {
 					LogWriter.error("Packet error: Invalid player for EMOTE_END, " + uuid);

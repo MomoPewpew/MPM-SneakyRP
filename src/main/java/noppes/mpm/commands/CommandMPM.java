@@ -24,12 +24,11 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Server;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 
 public class CommandMPM extends MpmCommandInterface {
 	private HashMap entities = new HashMap();
-	private List sub = Arrays.asList("url", "name", "entity", "scale", "animation", "sendmodel", "enableentity", "disableentity");
+	private List sub = Arrays.asList("url", "name", "entity", "scale", "sendmodel", "enableentity", "disableentity");
 
 	public CommandMPM() {
 		Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
@@ -92,8 +91,6 @@ public class CommandMPM extends MpmCommandInterface {
 						this.name((EntityPlayer)player, args, data);
 					} else if (type.equals("entity")) {
 						this.entity((EntityPlayer)player, args, data);
-					} else if (type.equals("animation")) {
-						this.animation((EntityPlayer)player, args, data);
 					} else if (type.equals("sendmodel")) {
 						this.sendmodel(server, (EntityPlayer)player, args, data);
 					} else if (type.equals("enableentity")) {
@@ -106,36 +103,6 @@ public class CommandMPM extends MpmCommandInterface {
 						MorePlayerModels.playersEntityDenied.add(((EntityPlayer) icommandsender).getUniqueID());
 					}
 				}
-			}
-		}
-	}
-
-	private void animation(EntityPlayer player, String[] args, ModelData data) throws WrongUsageException {
-		if (args.length <= 0) {
-			throw new WrongUsageException("/mpm animation [@p] <animation>", new Object[0]);
-		} else {
-			String type = args[0];
-			EnumAnimation animation = null;
-			EnumAnimation[] var6 = EnumAnimation.values();
-			int var7 = var6.length;
-
-			for(int var8 = 0; var8 < var7; ++var8) {
-				EnumAnimation ani = var6[var8];
-				if (ani.name().equalsIgnoreCase(type)) {
-					animation = ani;
-					break;
-				}
-			}
-
-			if (animation == null) {
-				throw new WrongUsageException("Unknown animation " + type, new Object[0]);
-			} else {
-				if (data.animation == animation) {
-					animation = EnumAnimation.NONE;
-				}
-
-				Server.sendAssociatedData(player, EnumPackets.ANIMATION, player.getUniqueID(), animation);
-				data.setAnimation(animation);
 			}
 		}
 	}
@@ -275,7 +242,7 @@ public class CommandMPM extends MpmCommandInterface {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/mpm <url/model/scale/name/animation> [@p]";
+		return "/mpm <url/model/scale/name> [@p]";
 	}
 
 	@Override
@@ -294,9 +261,6 @@ public class CommandMPM extends MpmCommandInterface {
 			list.addAll(Arrays.asList(server.getPlayerList().getAllUsernames()));
 			if (type.equals("model"))
 			list.addAll(this.entities.keySet());
-			if (type.equals("animation"))
-			for (EnumAnimation ani : EnumAnimation.values())
-			list.add(ani.name().toLowerCase());
 			return CommandBase.getListOfStringsMatchingLastWord(args, list);
 		}
 		return super.getTabCompletionOptions(server, par1, args, pos);

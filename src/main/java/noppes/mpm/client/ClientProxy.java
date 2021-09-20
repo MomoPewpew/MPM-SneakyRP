@@ -28,10 +28,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import noppes.mpm.CommonProxy;
 import noppes.mpm.MorePlayerModels;
-import noppes.mpm.client.commands.CommandCrawl;
 import noppes.mpm.client.commands.CommandNames;
-import noppes.mpm.client.commands.CommandPoint;
-import noppes.mpm.client.commands.CommandSit;
 import noppes.mpm.client.layer.LayerArms;
 import noppes.mpm.client.layer.LayerBackItem;
 import noppes.mpm.client.layer.LayerBody;
@@ -71,19 +68,6 @@ public class ClientProxy extends CommonProxy {
 		}
 
 		MinecraftForge.EVENT_BUS.register(new RenderEvent());
-		// ClientCommandHandler.instance.registerCommand(new CommandBow());
-		ClientCommandHandler.instance.registerCommand(new CommandCrawl());
-		// ClientCommandHandler.instance.registerCommand(new CommandCry());
-		// ClientCommandHandler.instance.registerCommand(new CommandDeath());
-		// ClientCommandHandler.instance.registerCommand(new CommandDance());
-		// ClientCommandHandler.instance.registerCommand(new CommandHug());
-		// ClientCommandHandler.instance.registerCommand(new CommandNo());
-		ClientCommandHandler.instance.registerCommand(new CommandPoint());
-		ClientCommandHandler.instance.registerCommand(new CommandSit());
-		// ClientCommandHandler.instance.registerCommand(new CommandSleep());
-		// ClientCommandHandler.instance.registerCommand(new CommandWag());
-		// ClientCommandHandler.instance.registerCommand(new CommandWave());
-		// ClientCommandHandler.instance.registerCommand(new CommandYes());
 		ClientCommandHandler.instance.registerCommand(new CommandNames());
 
 	}

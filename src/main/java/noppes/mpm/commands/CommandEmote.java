@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -12,13 +13,15 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 
-// import noppes.mpm.LogWriter;
+import noppes.mpm.LogWriter;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Emote;
+import noppes.mpm.ModelData;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
@@ -27,8 +30,15 @@ public class CommandEmote extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
+		if(!(icommandsender instanceof EntityPlayerMP))
+		return;
+		EntityPlayerMP player = (EntityPlayerMP)icommandsender;
+		ModelData data = ModelData.get(player);
+
 		if(args.length == 0) {
-			Server.sendToAll(server, EnumPackets.EMOTE_END, icommandsender.getName(), false);
+			data.updateEmote();
+			data.endEmotes(false);
+			Server.sendAssociatedData(player, EnumPackets.EMOTE_END, player.getUniqueID(), false);
 			return;
 		}
 		String emoteName = MorePlayerModels.validateFileName(args[0]);
@@ -74,16 +84,36 @@ public class CommandEmote extends CommandBase {
 			//NOTE: maybe we should open a seperate thread to handle sending the emote data
 			ByteBuf sendBuffer = Unpooled.buffer();
 			try {
-				sendBuffer.writeInt(EnumPackets.EMOTE_DO.ordinal());
-				sendBuffer.writeFloat(emoteSpeed);
-				sendBuffer.writeBoolean(cancel_if_conflicting);
-				sendBuffer.writeBoolean(outro_all_playing_first);
-				sendBuffer.writeBoolean(override_instead_of_outro);
-				sendBuffer.writeBoolean(false);
-				Server.writeString(sendBuffer, icommandsender.getName());
-
 				sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
-				Server.sendToAll(server, sendBuffer);
+				Emote emote = Emote.readEmote(sendBuffer);
+				if(emote != null) {
+					LogWriter.warn("DO COMMAND " + emote.toString());
+
+					data.updateEmote();
+					data.startEmote(emote, emoteSpeed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
+
+					sendBuffer.clear();
+					sendBuffer.writeInt(EnumPackets.EMOTE_DO.ordinal());
+
+					UUID uuid = player.getUniqueID();
+					sendBuffer.writeLong(uuid.getMostSignificantBits());
+					sendBuffer.writeLong(uuid.getLeastSignificantBits());
+
+					Emote.writeEmote(sendBuffer, emote);
+
+					sendBuffer.writeLong(data.emoteLastTime);
+
+					sendBuffer.writeFloat(emoteSpeed);
+					sendBuffer.writeBoolean(cancel_if_conflicting);
+					sendBuffer.writeBoolean(outro_all_playing_first);
+					sendBuffer.writeBoolean(override_instead_of_outro);
+
+					Server.sendAssociatedData(player, sendBuffer);
+					LogWriter.warn("DO COMMAND SENT ");
+				} else {
+					icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " is corrupted."));
+					sendBuffer.release();
+				}
 			} catch(Exception e) {//i do not like exceptions
 				icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " could not be opened."));
 				sendBuffer.release();

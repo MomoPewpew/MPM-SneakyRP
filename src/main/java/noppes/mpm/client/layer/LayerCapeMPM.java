@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 
 public class LayerCapeMPM extends LayerCape {
@@ -24,18 +23,18 @@ public class LayerCapeMPM extends LayerCape {
 		ModelData data = ModelData.get(player);
 		ModelPartConfig config = data.getPartConfig(EnumParts.BODY);
 		GlStateManager.pushMatrix();
-		if (player.isSneaking() && !data.animationEquals(EnumAnimation.CRAWLING)) {
+		if (player.isSneaking()) {
 			GlStateManager.translate(0.0F, 0.0F, (-2.0F + config.scaleZ) * scale);
 		}
 
 		GlStateManager.translate(config.transX, config.transY, config.transZ + (-1.0F + config.scaleZ) * scale);
 		GlStateManager.scale(config.scaleX, config.scaleY, 1.0F);
-		if (data.animationEquals(EnumAnimation.CRAWLING)) {
-			int rotation = 78;
-			if (player.isSneaking()) {
-				GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
-			}
-		}
+		// if (data.animationEquals(EnumAnimation.CRAWLING)) {
+		// 	int rotation = 78;
+		// 	if (player.isSneaking()) {
+		// 		GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
+		// 	}
+		// }
 
 		if (player.hurtTime > 0 || player.deathTime > 0) {
 			GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);

@@ -18,7 +18,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import noppes.mpm.commands.CommandProp;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.MorePlayerModels;
 
@@ -72,38 +71,6 @@ public class PacketHandlerServer {
 
 			data.save();
 			Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), data.writeToNBT());
-		} else if (type == EnumPackets.ANIMATION) {
-			EnumAnimation animation = EnumAnimation.values()[buffer.readInt()];
-			if (animation == EnumAnimation.SLEEPING_SOUTH) {
-				float rotation;
-				for(rotation = player.rotationYaw; rotation < 0.0F; rotation += 360.0F) {
-				}
-
-				while(rotation > 360.0F) {
-					rotation -= 360.0F;
-				}
-
-				int rotate = (int)((rotation + 45.0F) / 90.0F);
-				if (rotate == 1) {
-					animation = EnumAnimation.SLEEPING_WEST;
-				}
-
-				if (rotate == 2) {
-					animation = EnumAnimation.SLEEPING_NORTH;
-				}
-
-				if (rotate == 3) {
-					animation = EnumAnimation.SLEEPING_EAST;
-				}
-			}
-
-			ModelData data = ModelData.get(player);
-			if (data.animationEquals(animation)) {
-				animation = EnumAnimation.NONE;
-			}
-
-			Server.sendAssociatedData(player, EnumPackets.ANIMATION, player.getUniqueID(), animation);
-			data.setAnimation(animation);
 		} else if (type == EnumPackets.PROP_CLEAR) {
 			ModelData data = ModelData.get(player);
 

@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import noppes.mpm.ModelData;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 
 public class ModelSpiderLegs extends ModelRenderer {
@@ -141,7 +140,7 @@ public class ModelSpiderLegs extends ModelRenderer {
 			this.spiderNeck.rotateAngleX = -0.3926991F;
 		}
 
-		if (((EntityPlayer)entity).isPlayerSleeping() || data.isSleeping() || data.animation == EnumAnimation.CRAWLING) {
+		if (((EntityPlayer)entity).isPlayerSleeping()) {
 			this.rotationPointY = 12.0F * data.getPartConfig(EnumParts.LEG_LEFT).scaleY;
 			this.rotationPointZ = 15.0F * data.getPartConfig(EnumParts.LEG_LEFT).scaleY;
 			this.rotateAngleX = -1.5707964F;

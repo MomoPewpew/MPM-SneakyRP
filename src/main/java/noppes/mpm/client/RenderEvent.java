@@ -36,7 +36,6 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.layer.LayerPreRender;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.util.PixelmonHelper;
 
 public class RenderEvent {
@@ -65,9 +64,9 @@ public class RenderEvent {
 		if (event.getEntity() instanceof AbstractClientPlayer) {
 			AbstractClientPlayer player = (AbstractClientPlayer)event.getEntity();
 			ModelData data = ModelData.get(player);
-			if (data.isSleeping()) {
-				player.renderYawOffset = player.prevRenderYawOffset = player.rotationYaw;
-			}
+			// if (data.isSleeping()) {
+			// 	player.renderYawOffset = player.prevRenderYawOffset = player.rotationYaw;
+			// }
 
 			GlStateManager.popMatrix();
 		}
@@ -86,23 +85,6 @@ public class RenderEvent {
 			}
 
 			ModelData data = ModelData.get(player);
-			if (data.isSleeping()) {
-				if (data.animation == EnumAnimation.SLEEPING_EAST) {
-					player.renderYawOffset = player.prevRenderYawOffset = -90.0F;
-				}
-
-				if (data.animation == EnumAnimation.SLEEPING_WEST) {
-					player.renderYawOffset = player.prevRenderYawOffset = 90.0F;
-				}
-
-				if (data.animation == EnumAnimation.SLEEPING_NORTH) {
-					player.renderYawOffset = player.prevRenderYawOffset = 180.0F;
-				}
-
-				if (data.animation == EnumAnimation.SLEEPING_SOUTH) {
-					player.renderYawOffset = player.prevRenderYawOffset = 0.0F;
-				}
-			}
 
 			float offset = data.getOffsetCamera(player);
 			player.eyeHeight = player.getDefaultEyeHeight() - offset;
@@ -153,10 +135,6 @@ public class RenderEvent {
 				offset = 0.0F;
 				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {
 					offset = MathHelper.cos((float)player.ticksExisted * 0.1F) * -0.06F;
-				}
-
-				if (data.animation == EnumAnimation.SITTING) {
-					offset = (float)((double)offset + (0.5D - (double)data.getLegsY() * 0.8D));
 				}
 
 				GlStateManager.translate(0.0F, -offset, 0.0F);
@@ -258,7 +236,7 @@ public class RenderEvent {
 		ModelData data = ModelData.get(mc.thePlayer);
 		mc.thePlayer.eyeHeight = mc.thePlayer.getDefaultEyeHeight() - data.getOffsetCamera(mc.thePlayer);
 		Entity entity = data.getEntity(mc.thePlayer);
-		if (entity != null || data.isSleeping() || data.animation == EnumAnimation.CRAWLING || data.animation == EnumAnimation.BOW && mc.thePlayer.getHeldItemMainhand() == null) {
+		if (entity != null) {
 			event.setCanceled(true);
 		} else {
 			if (!data.resourceInit && lastSkinTick > 6L) {

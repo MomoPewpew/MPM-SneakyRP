@@ -54,7 +54,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayer player, EnumPackets type) throws Exception {
-		// LogWriter.warn("ClientPacket: " + type);
+		LogWriter.warn("ClientPacket: " + type);
 		int animation;
 		if (type == EnumPackets.PING) {
 			animation = buffer.readInt();
@@ -71,7 +71,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 		} else {
 			EntityPlayer pl;
 			if (type == EnumPackets.EYE_BLINK) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -79,7 +80,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.eyes.blinkStart = System.currentTimeMillis();
 			} else if (type == EnumPackets.SEND_PLAYER_DATA) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -88,11 +90,9 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				NBTTagCompound compound = Server.readNBT(buffer);
 				data.readFromNBT(compound);
 				data.save();
-				if (pl == Minecraft.getMinecraft().thePlayer) {
-					data.lastEdited = System.currentTimeMillis();
-				}
 			} else if (type == EnumPackets.CHAT_EVENT) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -100,7 +100,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				String message = Server.readString(buffer);
 				ChatMessages.getChatMessages(pl.getName()).addMessage(message);
 			} else if (type == EnumPackets.BACK_ITEM_REMOVE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -108,7 +109,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.backItem = null;
 			} else if (type == EnumPackets.BACK_ITEM_UPDATE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -118,7 +120,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.backItem = item;
 			} else if (type == EnumPackets.PROP_ADD) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -130,7 +133,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				prop.readFromNBT(compound);
 				data.propBase.props.add(prop);
 			} else if (type == EnumPackets.PROP_SYNC) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -139,7 +143,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				NBTTagCompound compound = Server.readNBT(buffer);
 				data.propsFromNBT(compound);
 			} else if (type == EnumPackets.PROP_CLEAR) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -148,7 +153,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				data.propBase.props.clear();
 				data.propGroups = new ArrayList<PropGroup>();
 			} else if (type == EnumPackets.PROP_REMOVE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -164,7 +170,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				}
 			} else if (type == EnumPackets.PROP_HIDE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -172,7 +179,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.propBase.props.get(buffer.readInt()).hide = true;
 			} else if (type == EnumPackets.PROP_SHOW) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -180,7 +188,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.propBase.props.get(buffer.readInt()).hide = false;
 			} else if (type == EnumPackets.PROP_NAME) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -188,7 +197,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.propBase.props.get(data.propBase.props.size() - 1).name = Server.readString(buffer);
 			} else if (type == EnumPackets.PROPGROUP_HIDE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -196,7 +206,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.propGroups.get(buffer.readInt()).hide = true;
 			} else if (type == EnumPackets.PROPGROUP_SHOW) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -204,7 +215,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(pl);
 				data.propGroups.get(buffer.readInt()).hide = false;
 			} else if (type == EnumPackets.PROPGROUP_ADD) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
@@ -216,51 +228,14 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				propGroup.readFromNBT(compound);
 				data.propGroups.add(propGroup);
 			} else if (type == EnumPackets.PROPGROUP_REMOVE) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
 				if (pl == null) {
 					return;
 				}
 
 				ModelData data = ModelData.get(pl);
 				data.propGroups.remove(buffer.readInt());
-			} else if (type == EnumPackets.PARTICLE) {
-				animation = buffer.readInt();
-				if (animation == 0) {
-					pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-					if (pl == null) {
-						return;
-					}
-
-					ModelData data = ModelData.get(pl);
-					data.inLove = 40;
-				} else if (animation == 1) {
-					player.worldObj.spawnParticle(EnumParticleTypes.NOTE, buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), 0.0D, 0.0D, new int[0]);
-				} else if (animation == 2) {
-					pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-					if (pl == null) {
-						return;
-					}
-
-					ModelData data = ModelData.get(pl);
-
-					for(int i = 0; i < 5; ++i) {
-						double d0 = player.getRNG().nextGaussian() * 0.02D;
-						double d1 = player.getRNG().nextGaussian() * 0.02D;
-						double d2 = player.getRNG().nextGaussian() * 0.02D;
-						double x = player.posX + (double)((player.getRNG().nextFloat() - 0.5F) * player.width * 2.0F);
-						double z = player.posZ + (double)((player.getRNG().nextFloat() - 0.5F) * player.width * 2.0F);
-						player.worldObj.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY, x, player.posY + 0.800000011920929D + (double)(player.getRNG().nextFloat() * player.height / 2.0F) - player.getYOffset() - (double)data.getBodyY(), z, d0, d1, d2, new int[0]);
-					}
-				}
-			} else if (type == EnumPackets.ANIMATION) {
-				pl = player.worldObj.getPlayerEntityByUUID(UUID.fromString(Server.readString(buffer)));
-				if (pl == null) {
-					return;
-				}
-
-				ModelData data = ModelData.get(pl);
-				data.setAnimation(buffer.readInt());
-				data.animationStart = pl.ticksExisted;
 			} else if (type == EnumPackets.ENTITIES_ENABLE) {
 				MorePlayerModels.hasEntityPermission = true;
 			} else if (type == EnumPackets.ENTITIES_DISABLE) {
@@ -285,7 +260,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				data.readFromNBT(compound);
 				data.save();
-				data.lastEdited = System.currentTimeMillis();
 			} else if (type == EnumPackets.SKIN_LOAD_GUI) {
 				GuiMPM guiMPM = new GuiMPM();
 				Minecraft.getMinecraft().displayGuiScreen(guiMPM);
@@ -341,38 +315,87 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				GuiCreationEmotes.loadNewEmote(emote);
 				ModelData data = ModelData.get(player);
-				if(data != null) {
-					data.startPreview(emote.clone());
-				}
+
+				data.startPreview(emote.clone());
 			} else if (type == EnumPackets.EMOTE_DO) {
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+				if(pl == null) {
+					LogWriter.error("Packet error: Invalid player for EMOTE_DO, " + uuid.toString());
+					return;
+				}
+				ModelData data = ModelData.get(pl);
+
+				Emote emote = Emote.readEmote(buffer);
+				if(emote == null) {
+					LogWriter.error("Packet error: Invalid emote data for EMOTE_DO");
+					return;
+				}
+				LogWriter.error("EMOTE_DO " + uuid + " ; " + emote.toString());
+
+				long emoteStartTime = buffer.readLong();
+				boolean wasPlaying = data.emoteIsPlaying;
+
 				Float speed = buffer.readFloat();
 				boolean cancel_if_conflicting = buffer.readBoolean();
 				boolean outro_all_playing_first = buffer.readBoolean();
 				boolean override_instead_of_outro = buffer.readBoolean();
-				buffer.readBoolean();
-				String playerName = Server.readString(buffer);
-				if(playerName == null) return;
 
-				Emote emote = Emote.readEmote(buffer);
-				if(emote == null) return;
-
-				World world = Minecraft.getMinecraft().theWorld;
-				EntityPlayer target = world.getPlayerEntityByName(playerName);
-				if(target != null) {
-					ModelData data = ModelData.get(target);
-					data.startEmote(emote, speed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
+				data.startEmote(emote, speed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
+				if(!wasPlaying) {
+					//right now we only bother synchronizing with the server if no emote was previously playing, because in this case synchronization is trivial
+					//I would put a todo here to improve sync, but precise emote sync does not seem important enough to warrant this (it is already decently well synced)
+					data.emoteLastTime = emoteStartTime;
 				}
+			} else if (type == EnumPackets.EMOTE_DATA) {
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+				if(pl == null) {
+					LogWriter.error("Packet error: Invalid player for EMOTE_DATA, " + uuid);
+					return;
+				}
+				ModelData data = ModelData.get(pl);
+
+				Emote emote = Emote.readEmoteV2(buffer);
+				if(emote == null) {
+					LogWriter.error("Packet error: Invalid emote data for EMOTE_DATA");
+					return;
+				}
+				LogWriter.error("EMOTE_DATA " + uuid + " ; " + emote.toString());
+
+				//totally overwrite previous emote data with new data
+				//NOTE: if an exception is thrown while reading the packet it might leave garbage values in the emote data tables, causing minor animation glitches, however this should not be able to happen
+
+				for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) data.emoteSpeeds[i] = buffer.readFloat();
+				for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) {
+					int a = buffer.readInt();
+					data.emoteCommandSections[i] = (byte)(a&3);
+					data.emoteCommandIndices[i] = a >> 2;
+				}
+				for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) data.emoteCommandTimes[i] = buffer.readFloat();
+
+				data.emoteLastTime = buffer.readLong();
+
+				for(int i = 0; i < Emote.STATE_COUNT; i += 1) {
+					data.emoteMovements[i] = 0.0f;
+					data.emoteStates[i] = 0.0f;
+				}
+
+				data.emoteIsPlaying = true;
 			} else if (type == EnumPackets.EMOTE_END) {
-				String playerName = Server.readString(buffer);
-				if(playerName == null) return;
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+				if(pl == null) {
+					LogWriter.error("Packet error: Invalid player for EMOTE_END, " + uuid);
+					return;
+				}
+				ModelData data = ModelData.get(pl);
+
+				LogWriter.error("EMOTE_END " + uuid);
+
 				boolean override_instead_of_outro = buffer.readBoolean();
 
-				World world = Minecraft.getMinecraft().theWorld;
-				EntityPlayer target = world.getPlayerEntityByName(playerName);
-				if(target != null) {
-					ModelData data = ModelData.get(target);
-					data.endEmotes(override_instead_of_outro);
-				}
+				data.endEmotes(override_instead_of_outro);
 			}
 		}
 	}

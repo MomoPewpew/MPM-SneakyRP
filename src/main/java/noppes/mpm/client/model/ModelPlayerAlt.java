@@ -15,15 +15,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
-import noppes.mpm.client.model.animation.AniBow;
-import noppes.mpm.client.model.animation.AniCrawling;
-import noppes.mpm.client.model.animation.AniDancing;
-import noppes.mpm.client.model.animation.AniHug;
-import noppes.mpm.client.model.animation.AniNo;
-import noppes.mpm.client.model.animation.AniPoint;
-import noppes.mpm.client.model.animation.AniWaving;
-import noppes.mpm.client.model.animation.AniYes;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.LogWriter;
 
@@ -82,16 +73,6 @@ public class ModelPlayerAlt extends ModelPlayer {
 	public void setRotationAngles(float par1, float par2, float ageInTicks, float par4, float par5, float par6, Entity entity) {
 		EntityPlayer player = (EntityPlayer)entity;
 		this.playerdata = ModelData.get(player);
-		if (this.playerdata.isSleeping()) {
-			GlStateManager.translate(0.0F, 1.14F, 0.0F);
-			GlStateManager.rotate(45.0F, -1.0F, 0.0F, 0.0F);
-			GlStateManager.translate(0.0F, -0.8F, 0.0F);
-		} else if (this.playerdata.animation == EnumAnimation.CRAWLING) {
-			GlStateManager.translate(0.0F, (12.0F - this.playerdata.getBodyY() * 4.0F) * par6, 0.0F);
-			GlStateManager.translate(0.0F, 0.0F, ((this.isSneak ? -6.0F : -3.0F) - this.playerdata.getBodyY() * 10.0F) * par6);
-			GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
-		}
-
 		Iterator var9 = this.map.keySet().iterator();
 
 		while(var9.hasNext()) {
@@ -104,13 +85,6 @@ public class ModelPlayerAlt extends ModelPlayer {
 			}
 		}
 
-		if (!this.isRiding) {
-			this.isRiding = this.playerdata.animation == EnumAnimation.SITTING;
-		}
-
-		if (this.isSneak && (this.playerdata.animation == EnumAnimation.CRAWLING || this.playerdata.isSleeping())) {
-			this.isSneak = false;
-		}
 
 		ModelData.resetModelPlayerForEmote(this);
 
@@ -118,46 +92,6 @@ public class ModelPlayerAlt extends ModelPlayer {
 
 		this.playerdata.updateAnim();
 		this.playerdata.animModelPlayer(this, par4, par5);
-
-		if (!this.playerdata.isSleeping() && !player.isPlayerSleeping()) {
-			if (this.playerdata.animation == EnumAnimation.CRY) {
-				this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX = 0.7F;
-			} else if (this.playerdata.animation == EnumAnimation.HUG) {
-				AniHug.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
-			} else if (this.playerdata.animation == EnumAnimation.CRAWLING) {
-				AniCrawling.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
-			} else if (this.playerdata.animation == EnumAnimation.WAVING) {
-				AniWaving.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
-			} else if (this.playerdata.animation == EnumAnimation.DANCING) {
-				AniDancing.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
-			} else if (this.playerdata.animation == EnumAnimation.BOW) {
-				AniBow.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
-			} else if (this.playerdata.animation == EnumAnimation.YES) {
-				AniYes.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
-			} else if (this.playerdata.animation == EnumAnimation.NO) {
-				AniNo.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this, this.playerdata);
-			} else if (this.playerdata.animation == EnumAnimation.POINT) {
-				AniPoint.setRotationAngles(par1, par2, ageInTicks, par4, par5, par6, entity, this);
-			} else if (this.isSneak) {
-				this.bipedBody.rotateAngleX = 0.5F / this.playerdata.getPartConfig(EnumParts.BODY).scaleY;
-			}
-			copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
-			copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
-			copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
-			copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
-			copyModelAngles(this.bipedBody, this.bipedBodyWear);
-			copyModelAngles(this.bipedHead, this.bipedHeadwear);
-		} else if (this.bipedHead.rotateAngleX < 0.0F) {
-			this.bipedHead.rotateAngleX = 0.0F;
-			this.bipedHeadwear.rotateAngleX = 0.0F;
-			copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);
-			copyModelAngles(this.bipedRightLeg, this.bipedRightLegwear);
-			copyModelAngles(this.bipedLeftArm, this.bipedLeftArmwear);
-			copyModelAngles(this.bipedRightArm, this.bipedRightArmwear);
-			copyModelAngles(this.bipedBody, this.bipedBodyWear);
-			copyModelAngles(this.bipedHead, this.bipedHeadwear);
-		}
-
 	}
 
 	@Override

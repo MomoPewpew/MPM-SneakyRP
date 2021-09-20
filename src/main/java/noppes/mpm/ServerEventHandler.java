@@ -1,5 +1,9 @@
 package noppes.mpm;
 
+import java.util.UUID;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -19,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import noppes.mpm.constants.EnumPackets;
 
 public class ServerEventHandler {
@@ -115,7 +120,7 @@ public class ServerEventHandler {
 	}
 
 	@SubscribeEvent
-	public void playerTracking(StartTracking event) {
+	public void playerTracking(StartTracking event) {//player target has moved close enough to player player to start needing their model data
 		if (event.getTarget() instanceof EntityPlayer) {
 			EntityPlayer target = (EntityPlayer)event.getTarget();
 			EntityPlayerMP player = (EntityPlayerMP)event.getEntityPlayer();
@@ -127,6 +132,30 @@ public class ServerEventHandler {
 			} else {
 				Server.sendDelayedData(player, EnumPackets.BACK_ITEM_REMOVE, 100, target.getUniqueID());
 			}
+			//transfer emotes
+			//TODO: write a custom, optimized serverside emote update procedure
+			data.updateEmote();
+			if(data.emoteIsPlaying) {
+				ByteBuf sendBuffer = Unpooled.buffer();
+				try {
+					sendBuffer.writeInt(EnumPackets.EMOTE_DATA.ordinal());
+
+					UUID uuid = player.getUniqueID();
+					sendBuffer.writeLong(uuid.getMostSignificantBits());
+					sendBuffer.writeLong(uuid.getLeastSignificantBits());
+
+					Emote.writeEmoteV2(sendBuffer, data.emoteCommands, data.emotePartUsages);
+					for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) sendBuffer.writeFloat(data.emoteSpeeds[i]);
+					for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) sendBuffer.writeInt((data.emoteCommandIndices[i] << 2)|(data.emoteCommandSections[i]));
+					for(int i = 0; i < 2*Emote.PART_COUNT; i += 1) sendBuffer.writeFloat(data.emoteCommandTimes[i]);
+
+					sendBuffer.writeLong(data.emoteLastTime);
+
+					Server.sendDelayedData(player, 100, sendBuffer);
+				} catch(Exception e) {//I do not like exceptions
+					sendBuffer.release();
+				}
+			}
 		}
 	}
 
@@ -136,7 +165,6 @@ public class ServerEventHandler {
 		if (!data.displayName.isEmpty()) {
 			event.setDisplayname(data.displayName);
 		}
-
 	}
 
 	@SubscribeEvent
@@ -145,6 +173,4 @@ public class ServerEventHandler {
 			event.addCapability(key, new ModelData());
 		}
 	}
-
-
 }

@@ -7,8 +7,6 @@ public enum EnumPackets {
 	CHAT_EVENT,
 	BACK_ITEM_REMOVE,
 	BACK_ITEM_UPDATE,
-	PARTICLE,
-	ANIMATION,
 	EYE_BLINK,
 	PROP_ADD,
 	PROP_REMOVE,
@@ -39,5 +37,6 @@ public enum EnumPackets {
 	EMOTE_SAVE,
 	EMOTE_REMOVE,
 	EMOTE_DO,
+	EMOTE_DATA,
 	EMOTE_END,
 }

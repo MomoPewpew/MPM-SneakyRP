@@ -148,7 +148,6 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 		NBTTagCompound newCompound = this.playerdata.writeToNBT();
 		if (!this.original.equals(newCompound)) {
 			this.playerdata.save();
-			this.playerdata.lastEdited = System.currentTimeMillis();
 			Client.sendData(EnumPackets.UPDATE_PLAYER_DATA, newCompound);
 			this.original = newCompound;
 		}

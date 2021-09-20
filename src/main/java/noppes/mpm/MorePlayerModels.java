@@ -39,14 +39,12 @@ import noppes.mpm.commands.CommandCE;
 import noppes.mpm.commands.CommandPropRem;
 import noppes.mpm.commands.CommandPropRestore;
 import noppes.mpm.commands.CommandPropSave;
-import noppes.mpm.commands.CommandSing;
 import noppes.mpm.commands.CommandSkinDel;
 import noppes.mpm.commands.CommandSkinLoad;
 import noppes.mpm.commands.CommandSkinRestore;
 import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
-import noppes.mpm.constants.EnumAnimation;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.PixelmonHelper;
 
@@ -113,26 +111,7 @@ public class MorePlayerModels {
 	info = "Disables scaling and animations from more compatibilty with other mods"
 	)
 	public static boolean Compatibility = false;
-	@ConfigProp(
-	info = "Used to register buttons to animations"
-	)
-	// public static int button1;
-	// @ConfigProp(
-	// info = "Used to register buttons to animations"
-	// )
-	// public static int button2;
-	// @ConfigProp(
-	// info = "Used to register buttons to animations"
-	// )
-	// public static int button3;
-	// @ConfigProp(
-	// info = "Used to register buttons to animations"
-	// )
-	// public static int button4;
-	// @ConfigProp(
-	// info = "Used to register buttons to animations"
-	// )
-	// public static int button5;
+
 	public static boolean hasEntityPermission;
 	public static List<UUID> playersEntityDenied;
 	public static List<String> fileNamesSkins;

@@ -101,8 +101,6 @@ public class CommandEmote extends CommandBase {
 
 					Emote.writeEmote(sendBuffer, emote);
 
-					sendBuffer.writeLong(data.emoteLastTime);
-
 					sendBuffer.writeFloat(emoteSpeed);
 					sendBuffer.writeBoolean(cancel_if_conflicting);
 					sendBuffer.writeBoolean(outro_all_playing_first);

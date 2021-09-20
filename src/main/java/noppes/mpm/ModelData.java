@@ -431,12 +431,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static final void runCommand(ModelData data, String str) {
 		// send command or text to server. For the time being it is
 		// not possible to execute client-only commands.
-		if(!str.equals("")) {
-			Minecraft mc = Minecraft.getMinecraft();
+		if(data.player.worldObj.isRemote && !str.equals("")) {
+		Minecraft mc = Minecraft.getMinecraft();
 			if(data.player == mc.thePlayer) {
 				mc.thePlayer.sendChatMessage(str);
 			}
 		}
+
 	}
 
 	public static final boolean updateEmoteStates(

@@ -1278,9 +1278,4 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		part = biped.bipedRightLeg;
 		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
-
-	// public static final void resetPart(ModelRenderer part) {
-	// 	if(part != null)
-	// 	part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
-	// }
 }

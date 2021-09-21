@@ -1233,8 +1233,24 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public static final void resetModelPlayerForEmote(ModelPlayer biped) {
-		resetModelBipedForEmote(biped);
 		ModelRenderer part;
+		part = biped.bipedHead;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedBody;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftArm;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightArm;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftLeg;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightLeg;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 
 		part = biped.bipedHeadwear;
 		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
@@ -1278,9 +1294,4 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		part = biped.bipedRightLeg;
 		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
-
-	// public static final void resetPart(ModelRenderer part) {
-	// 	if(part != null)
-	// 	part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
-	// }
 }

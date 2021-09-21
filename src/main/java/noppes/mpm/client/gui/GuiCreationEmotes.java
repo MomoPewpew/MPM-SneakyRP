@@ -167,7 +167,8 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 		//start at top left of menu
 		int x = this.guiLeft;
 		int y = this.guiTop + 45;
-		this.addButton(new GuiNpcButton(606, x, y, 100, 20, "gui." + Emote.BODY_PARTS[emotePart]));
+		this.addButton(new GuiNpcButton(640, x, y, 20, 20, "gui.moveup"));
+		this.addButton(new GuiNpcButton(606, x + 20, y, 80, 20, "gui." + Emote.BODY_PARTS[emotePart]));
 		y += 22;
 		this.addButton(new GuiNpcButton(605, x,      y, 50, 20, "gui.rotate"));
 		this.addButton(new GuiNpcButton(604, x + 50, y, 50, 20, "gui.offset"));
@@ -400,6 +401,10 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 			this.initGui();
 		} else if(btn.id == 606) {//change and goto part commands
 			emotePart = (emotePart + 1)%Emote.BODY_PARTS.length;
+			emoteSelected = -1;
+			this.initGui();
+		} else if(btn.id == 640) {//change and goto part commands
+			emotePart = (emotePart + Emote.BODY_PARTS.length - 1)%Emote.BODY_PARTS.length;
 			emoteSelected = -1;
 			this.initGui();
 		} else if(emoteSelected == 0 && emoteData.partUsages[meta_i] > 0) {

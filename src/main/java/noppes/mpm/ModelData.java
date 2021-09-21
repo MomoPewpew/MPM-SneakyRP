@@ -1027,19 +1027,19 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		return model.boxList.get(model.boxList.indexOf(model.bipedLeftArm) - 2);
 	}
 	public void animModelPlayer(ModelPlayer biped, float netHeadYaw, float headPitch) {
-		if(this.animStates != null) animModelPlayerFromStates(biped, this.animStates, this.animPartUsages, this.player.height, netHeadYaw, headPitch);
+		if(this.animStates != null) animModelPlayerFromStates(this, biped, this.animStates, this.animPartUsages, this.player.height, netHeadYaw, headPitch);
 	}
 	public void animModelBiped(ModelBiped biped, float netHeadYaw, float headPitch) {
-		if(this.animStates != null) animModelBipedFromStates(biped, this.animStates, this.animPartUsages, netHeadYaw, headPitch);
+		if(this.animStates != null) animModelBipedFromStates(this, biped, this.animStates, this.animPartUsages, netHeadYaw, headPitch);
 	}
 
-	public static final void animModelPlayerFromStates(ModelPlayer biped, float[] states, int[] partUsages, float playerHeight, float netHeadYaw, float headPitch) {
+	public static final void animModelPlayerFromStates(ModelData data, ModelPlayer biped, float[] states, int[] partUsages, float playerHeight, float netHeadYaw, float headPitch) {
 		netHeadYaw /= 57.295776F;
 		headPitch /= 57.295776F;
+		ModelPartConfig config = data.body;
 		if((partUsages[2*Emote.HEAD]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedHead, Emote.HEAD, states);
-			setPartOffset(biped.bipedHeadwear, Emote.HEAD, states);
-			setPartOffset(getEarsModel(biped), Emote.HEAD, states);
+			setPartOffsetToTwo(biped.bipedHead, biped.bipedHeadwear, Emote.HEAD, states, config);
+			setPartOffset(getEarsModel(biped), Emote.HEAD, states, config);
 		}
 		if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1051,8 +1051,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.RIGHT_ARM]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
-			setPartOffset(biped.bipedRightArmwear, Emote.RIGHT_ARM, states);
+			setPartOffsetToTwo(biped.bipedRightArm, biped.bipedRightArmwear, Emote.RIGHT_ARM, states, config);
 		}
 		if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1064,8 +1063,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.LEFT_ARM]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
-			setPartOffset(biped.bipedLeftArmwear, Emote.LEFT_ARM, states);
+			setPartOffsetToTwo(biped.bipedLeftArm, biped.bipedLeftArmwear, Emote.LEFT_ARM, states, config);
 		}
 		if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1077,8 +1075,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.RIGHT_LEG]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
-			setPartOffset(biped.bipedRightLegwear, Emote.RIGHT_LEG, states);
+			setPartOffsetToTwo(biped.bipedRightLeg, biped.bipedRightLegwear, Emote.RIGHT_LEG, states, config);
 		}
 		if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1094,8 +1091,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				setPartRotateBoundToHead(biped.bipedLeftLeg, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
 				setPartRotateBoundToHead(biped.bipedLeftLegwear, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
 			} else {
-				setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
-				setPartOffset(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
+				setPartOffsetToTwo(biped.bipedLeftLeg, biped.bipedLeftLegwear, Emote.LEFT_LEG, states, config);
 			}
 		}
 		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
@@ -1105,13 +1101,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 		if((partUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.BODY + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
-				setPartOffset(biped.bipedBody, Emote.BODY, states);
-				setPartOffset(biped.bipedBodyWear, Emote.BODY, states);
+				setPartOffsetToTwo(biped.bipedBody, biped.bipedBodyWear, Emote.BODY, states, config);
 				setPartRotateBoundToHead(biped.bipedBody, Emote.BODY, states, netHeadYaw, headPitch);
 				setPartRotateBoundToHead(biped.bipedBodyWear, Emote.BODY, states, netHeadYaw, headPitch);
 			} else {
-				setPartAxis(biped.bipedBody, Emote.BODY, states);
-				setPartAxis(biped.bipedBodyWear, Emote.BODY, states);
+				setPartOffsetToTwo(biped.bipedBody, biped.bipedBodyWear, Emote.BODY, states, config);
+				setPartRotate(biped.bipedBody, Emote.BODY, states);
+				setPartRotate(biped.bipedBodyWear, Emote.BODY, states);
 			}
 		}
 		if((partUsages[2*Emote.MODEL]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.MODEL + 1]&Emote.FLAG_USED) > 0) {
@@ -1129,7 +1125,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 			GlStateManager.translate(0, playerHeight / 2, 0);
 
-			GlStateManager.translate(offsetX/playerHeight, offsetY/playerHeight, offsetZ/playerHeight);
+			config = data.leg1;
+			GlStateManager.translate(offsetX/playerHeight*config.scaleX, offsetY/playerHeight*config.scaleY, offsetZ/playerHeight*config.scaleZ);
 			// GlStateManager.translate(offsetX/2, offsetY/2, offsetZ/2);
 
 			if (rotY != 0) GlStateManager.rotate(rotY * 90.0F/(float)Math.PI, 0, 1, 0);
@@ -1139,11 +1136,12 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			GlStateManager.translate(0, -playerHeight / 2, 0);
 		}
 	}
-	public static final void animModelBipedFromStates(ModelBiped biped, float[] states, int[] partUsages, float netHeadYaw, float headPitch) {
+	public static final void animModelBipedFromStates(ModelData data, ModelBiped biped, float[] states, int[] partUsages, float netHeadYaw, float headPitch) {
 		netHeadYaw /= 57.295776F;
 		headPitch /= 57.295776F;
+		ModelPartConfig config = data.body;
 		if((partUsages[2*Emote.HEAD]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedHead, Emote.HEAD, states);
+			setPartOffset(biped.bipedHead, Emote.HEAD, states, config);
 		}
 		if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.HEAD + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1153,7 +1151,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.RIGHT_ARM]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states);
+			setPartOffset(biped.bipedRightArm, Emote.RIGHT_ARM, states, config);
 		}
 		if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.RIGHT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1163,7 +1161,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.LEFT_ARM]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states);
+			setPartOffset(biped.bipedLeftArm, Emote.LEFT_ARM, states, config);
 		}
 		if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.LEFT_ARM + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1173,7 +1171,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.RIGHT_LEG]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states);
+			setPartOffset(biped.bipedRightLeg, Emote.RIGHT_LEG, states, config);
 		}
 		if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.RIGHT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1183,7 +1181,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.LEFT_LEG]&Emote.FLAG_USED) > 0) {
-			setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+			setPartOffset(biped.bipedLeftLeg, Emote.LEFT_LEG, states, config);
 		}
 		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
@@ -1195,18 +1193,31 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 		if((partUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.BODY + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
-				setPartOffset(biped.bipedBody, Emote.BODY, states);
+				setPartOffset(biped.bipedBody, Emote.BODY, states, config);
 				setPartRotateBoundToHead(biped.bipedBody, Emote.BODY, states, netHeadYaw, headPitch);
 			} else {
-				setPartAxis(biped.bipedBody, Emote.BODY, states);
+				setPartOffset(biped.bipedBody, Emote.BODY, states, config);
+				setPartRotate(biped.bipedBody, Emote.BODY, states);
 			}
 		}
 	}
-	public static final void setPartOffset(ModelRenderer part, int partId, float[] states) {
+	public static final void setPartOffset(ModelRenderer part, int partId, float[] states, ModelPartConfig config) {
 		partId *= 6;
-		part.offsetX = states[partId + Emote.OFF_X];
-		part.offsetY = states[partId + Emote.OFF_Y];
-		part.offsetZ = states[partId + Emote.OFF_Z];
+		part.offsetX = states[partId + Emote.OFF_X]*config.scaleX;
+		part.offsetY = states[partId + Emote.OFF_Y]*config.scaleY;
+		part.offsetZ = states[partId + Emote.OFF_Z]*config.scaleZ;
+	}
+	public static final void setPartOffsetToTwo(ModelRenderer part0, ModelRenderer part1, int partId, float[] states, ModelPartConfig config) {
+		partId *= 6;
+		float offsetX = states[partId + Emote.OFF_X]*config.scaleX;
+		float offsetY = states[partId + Emote.OFF_Y]*config.scaleY;
+		float offsetZ = states[partId + Emote.OFF_Z]*config.scaleZ;
+		part0.offsetX = offsetX;
+		part0.offsetY = offsetY;
+		part0.offsetZ = offsetZ;
+		part1.offsetX = offsetX;
+		part1.offsetY = offsetY;
+		part1.offsetZ = offsetZ;
 	}
 	public static final void setPartRotate(ModelRenderer part, int partId, float[] states) {
 		partId *= 6;
@@ -1220,43 +1231,56 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		part.rotateAngleY = states[partId + Emote.ROT_Y] + netHeadYaw;
 		part.rotateAngleZ = states[partId + Emote.ROT_Z];
 	}
-	public static final void setPartAxis(ModelRenderer part, int partId, float[] states) {
-		partId *= 6;
-		part.offsetX = states[partId + Emote.OFF_X];
-		part.offsetY = states[partId + Emote.OFF_Y];
-		part.offsetZ = states[partId + Emote.OFF_Z];
-		part.rotateAngleX = states[partId + Emote.ROT_X];
-		part.rotateAngleY = states[partId + Emote.ROT_Y];
-		part.rotateAngleZ = states[partId + Emote.ROT_Z];
-	}
 
 	public static final void resetModelPlayerForEmote(ModelPlayer biped) {
-		resetPart(biped.bipedHead);
-		resetPart(biped.bipedHeadwear);
-		resetPart(biped.bipedBody);
-		resetPart(biped.bipedLeftArm);
-		resetPart(biped.bipedRightArm);
-		resetPart(biped.bipedLeftLeg);
-		resetPart(biped.bipedRightLeg);
-		resetPart(biped.bipedBodyWear);
-		resetPart(biped.bipedLeftArmwear);
-		resetPart(biped.bipedRightArmwear);
-		resetPart(biped.bipedLeftLegwear);
-		resetPart(biped.bipedRightLegwear);
-		resetPart(getEarsModel(biped));
+		resetModelBipedForEmote(biped);
+		ModelRenderer part;
+
+		part = biped.bipedHeadwear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedBodyWear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftArmwear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightArmwear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftLegwear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightLegwear;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = getEarsModel(biped);
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
 	public static final void resetModelBipedForEmote(ModelBiped biped) {
-		resetPart(biped.bipedHead);
-		resetPart(biped.bipedBody);
-		resetPart(biped.bipedLeftArm);
-		resetPart(biped.bipedRightArm);
-		resetPart(biped.bipedLeftLeg);
-		resetPart(biped.bipedRightLeg);
-		// resetPart(getEarsModel(biped));
+		ModelRenderer part;
+
+		part = biped.bipedHead;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedBody;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftArm;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightArm;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedLeftLeg;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+
+		part = biped.bipedRightLeg;
+		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
 
-	public static final void resetPart(ModelRenderer part) {
-		if(part != null)
-		part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
-	}
+	// public static final void resetPart(ModelRenderer part) {
+	// 	if(part != null)
+	// 	part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
+	// }
 }

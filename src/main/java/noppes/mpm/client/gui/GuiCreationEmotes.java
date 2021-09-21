@@ -303,6 +303,16 @@ public class GuiCreationEmotes extends GuiCreationScreenInterface implements ISl
 				this.addTextField(new GuiNpcTextField(626, this, x + 48, y + 1, 143, 18, command.consoleCommand));
 				y += 22;
 			}
+			this.addLabel(new GuiNpcLabel(627, "gui.timestamp", x + 2,  y + 6, 16777215));
+			float timestamp = 0.0f;
+			for(int i = 0; i <= emoteSelected - 1; i += 1) {
+				Emote.PartCommand c = sectionList.get(i);
+				if(c.consoleCommand == null) {
+					timestamp += c.duration;
+				}
+			}
+			this.addLabel(new GuiNpcLabel(628, String.format(java.util.Locale.US, "%.2f", timestamp), x + 53,  y + 6, 16777215));
+
 		} else if(emoteSelected == 0 && emoteData.partUsages[meta_i] > 0) {//editing part usage
 			this.addButton(new GuiNpcButton(609, x + 44,  y, 40, 20, "gui.copy"));
 			this.addButton(new GuiNpcButton(610, x + 86,  y, 40, 20, "gui.paste"));

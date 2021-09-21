@@ -65,6 +65,7 @@ gui.enabled=Enabled
 gui.easing=Easing
 gui.moveup=<
 gui.movedown=>
+gui.timestamp=Timestamp:
 gui.load=Load
 gui.remove=Remove
 gui.areyousure=Confirm Remove

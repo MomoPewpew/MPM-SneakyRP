@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
+import noppes.mpm.Emote;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartConfig;
 import noppes.mpm.constants.EnumParts;
@@ -29,12 +30,22 @@ public class LayerCapeMPM extends LayerCape {
 
 		GlStateManager.translate(config.transX, config.transY, config.transZ + (-1.0F + config.scaleZ) * scale);
 		GlStateManager.scale(config.scaleX, config.scaleY, 1.0F);
-		// if (data.animationEquals(EnumAnimation.CRAWLING)) {
-		// 	int rotation = 78;
-		// 	if (player.isSneaking()) {
-		// 		GlStateManager.rotate(-25.0F, 1.0F, 0.0F, 0.0F);
-		// 	}
-		// }
+		if(data.animStates != null) {
+			if((data.animPartUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (data.animPartUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {
+				float offx = data.animStates[6*Emote.BODY + Emote.OFF_X];
+				float offy = data.animStates[6*Emote.BODY + Emote.OFF_Y];
+				float offz = data.animStates[6*Emote.BODY + Emote.OFF_Z];
+				float rotx = data.animStates[6*Emote.BODY + Emote.ROT_X];
+				float roty = data.animStates[6*Emote.BODY + Emote.ROT_Y];
+				float rotz = data.animStates[6*Emote.BODY + Emote.ROT_Z];
+				if((data.animPartUsages[2*Emote.BODY + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
+					rotx += headPitch;
+					roty += netHeadYaw;
+				}
+				GlStateManager.translate(offx, offy, offz);
+				GlStateManager.rotate(rotx, roty, rotz, 0.0f);
+			}
+		}
 
 		if (player.hurtTime > 0 || player.deathTime > 0) {
 			GlStateManager.color(1.0F, 0.0F, 0.0F, 0.3F);

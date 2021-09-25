@@ -62,7 +62,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static final byte SECTION_OUTRO = 3;
 	public static final byte SECTION_PREVIEW_PAUSE = 4;
 
-	public static final float RATE_MIN = .75f;
+	public static final float RATE_MIN = .5f;
 	public static final float PREVIEW_PAUSE_TIME = .5f;//NOTE: must be >0
 
 	//this is data to track server emotes
@@ -901,7 +901,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		this.prePosX = posX;
 		this.prePosZ = posZ;
 		if(x != 0.0F || z != 0.0F) {
-			float movementRate = (x*x + z*z)/2;
+			float movementRate = (x*x + z*z)*.75f;
 			if(movementRate < 1F) {
 				// LogWriter.warn(movementRate);
 				this.emoteMovementRate = movementRate;

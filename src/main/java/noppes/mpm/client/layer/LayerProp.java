@@ -54,7 +54,9 @@ public class LayerProp extends LayerInterface {
 			Minecraft minecraft = Minecraft.getMinecraft();
 
 			ModelRenderer propBodyPart = null;
+			ModelRenderer motherRenderer = new ModelRenderer(this.model);
 			ModelRenderer propRenderer = new ModelRenderer(this.model);
+			motherRenderer.addChild(propRenderer);
 
 			ItemStack propItemStack = prop.itemStack;
 			float propScaleX = prop.scaleX;
@@ -71,14 +73,18 @@ public class LayerProp extends LayerInterface {
 			float propPpOffsetY = prop.ppOffsetY;
 			float propPpOffsetZ = prop.ppOffsetZ;
 
+			Float partModifierX = 0.0F;
+			Float partModifierY = 0.0F;
+			Float partModifierZ = 0.0F;
 			ModelPartConfig config = null;
 
 			switch(prop.bodyPartName) {
 				case "hat":
 				case "head":
 				propBodyPart = this.model.bipedHead;
-
 				config = this.playerdata.head;
+
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = (propOffsetY + 0.50F) * config.scaleY + 0.20F;
@@ -90,8 +96,9 @@ public class LayerProp extends LayerInterface {
 				break;
 				case "model":
 				propBodyPart = this.model.bipedBody;
-
 				config = this.playerdata.body;
+
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -104,8 +111,9 @@ public class LayerProp extends LayerInterface {
 				case "body":
 				case "torso":
 				propBodyPart = this.model.bipedBody;
-
 				config = this.playerdata.body;
+
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -117,8 +125,9 @@ public class LayerProp extends LayerInterface {
 				break;
 				case "back":
 				propBodyPart = this.model.bipedBody;
-
 				config = this.playerdata.body;
+
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = (propOffsetY - 0.3F) * config.scaleY;
@@ -132,8 +141,10 @@ public class LayerProp extends LayerInterface {
 				case "armleft":
 				case "leftarm":
 				propBodyPart = this.model.bipedLeftArm;
-
 				config = this.playerdata.arm1;
+
+				partModifierX = (-0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * this.playerdata.getPartConfig(EnumParts.ARM_LEFT).scaleX);
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * this.playerdata.getPartConfig(EnumParts.ARM_LEFT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -147,8 +158,10 @@ public class LayerProp extends LayerInterface {
 				case "handleft":
 				case "lefthand":
 				propBodyPart = this.model.bipedLeftArm;
-
 				config = this.playerdata.arm1;
+
+				partModifierX = (-0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * this.playerdata.getPartConfig(EnumParts.ARM_LEFT).scaleX);
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * this.playerdata.getPartConfig(EnumParts.ARM_LEFT).scaleY);
 
 				propOffsetX = (propOffsetX - 0.0625F) * config.scaleX;
 				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
@@ -161,8 +174,10 @@ public class LayerProp extends LayerInterface {
 				case "armright":
 				case "rightarm":
 				propBodyPart = this.model.bipedRightArm;
-
 				config = this.playerdata.arm2;
+
+				partModifierX = (0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * this.playerdata.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * this.playerdata.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -175,8 +190,10 @@ public class LayerProp extends LayerInterface {
 				case "handright":
 				case "righthand":
 				propBodyPart = this.model.bipedRightArm;
-
 				config = this.playerdata.arm2;
+
+				partModifierX = (0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * this.playerdata.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * this.playerdata.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
 
 				propOffsetX = (propOffsetX + 0.0625F) * config.scaleX;
 				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
@@ -190,8 +207,10 @@ public class LayerProp extends LayerInterface {
 				case "legleft":
 				case "leftleg":
 				propBodyPart = this.model.bipedLeftLeg;
-
 				config = this.playerdata.leg1;
+
+				partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -205,8 +224,10 @@ public class LayerProp extends LayerInterface {
 				case "footleft":
 				case "leftfoot":
 				propBodyPart = this.model.bipedLeftLeg;
-
 				config = this.playerdata.leg1;
+
+				partModifierX = -0.125F * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleX;
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
@@ -219,8 +240,10 @@ public class LayerProp extends LayerInterface {
 				case "legright":
 				case "rightleg":
 				propBodyPart = this.model.bipedRightLeg;
-
 				config = this.playerdata.leg2;
+
+				partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = propOffsetY * config.scaleY;
@@ -233,8 +256,10 @@ public class LayerProp extends LayerInterface {
 				case "footright":
 				case "rightfoot":
 				propBodyPart = this.model.bipedRightLeg;
-
 				config = this.playerdata.leg2;
+
+				partModifierX = 0.125F * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
+				partModifierY = (float) (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
 				propOffsetX = propOffsetX * config.scaleX;
 				propOffsetY = (propOffsetY - 0.7F) * config.scaleY;
@@ -246,10 +271,17 @@ public class LayerProp extends LayerInterface {
 				break;
 			}
 
-			propBodyPart.addChild(propRenderer);
-
 			if (propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
-			return;
+				return;
+
+			if (this.player.isSneaking()) {
+				if (propBodyPart == this.model.bipedLeftLeg || propBodyPart == this.model.bipedRightLeg) {
+					partModifierY += 0.1875F;
+					partModifierZ -= 0.25F;
+				} else if (propBodyPart == this.model.bipedHead) {
+					partModifierY -= 0.0625F;
+				}
+			}
 
 			float propOffsetXCorrected;
 			float propOffsetYCorrected;
@@ -313,18 +345,22 @@ public class LayerProp extends LayerInterface {
 
 				propOffsetXCorrected = (float) (Math.sin(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 				propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
+
+				motherRenderer.rotateAngleX = propBodyPart.rotateAngleX;
+				motherRenderer.rotateAngleY = propBodyPart.rotateAngleY;
+				motherRenderer.rotateAngleZ = propBodyPart.rotateAngleZ;
 			}
 
-			if (!propMatchScaling) {
-				propScaleX = propScaleX / config.scaleX;
-				propScaleY = propScaleY / config.scaleY;
-				propScaleZ = propScaleZ / config.scaleZ;
+			if (propMatchScaling == true) {
+				propScaleX = propScaleX * config.scaleX;
+				propScaleY = propScaleY * config.scaleY;
+				propScaleZ = propScaleZ * config.scaleZ;
 			}
 
 			GlStateManager.pushMatrix();
 
-			GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - propPpOffsetX), (propBodyPart.offsetY - propOffsetYCorrected - propPpOffsetY), (propBodyPart.offsetZ - propOffsetZCorrected - propPpOffsetZ));
-			propBodyPart.postRender(par7);
+			GlStateManager.translate((propBodyPart.offsetX - propOffsetXCorrected - partModifierX - propPpOffsetX), (propBodyPart.offsetY - propOffsetYCorrected - partModifierY - propPpOffsetY), (propBodyPart.offsetZ - propOffsetZCorrected - partModifierZ - propPpOffsetZ));
+			motherRenderer.postRender(par7);
 
 			GlStateManager.rotate(propRotateX, 1.0F, 0.0F, 0.0F);
 			GlStateManager.rotate(propRotateY, 0.0F, 1.0F, 0.0F);
@@ -338,7 +374,7 @@ public class LayerProp extends LayerInterface {
 
 			GlStateManager.popMatrix();
 
-			propBodyPart.childModels.remove(propRenderer);
+			motherRenderer.childModels.remove(propRenderer);
 		}
 	}
 

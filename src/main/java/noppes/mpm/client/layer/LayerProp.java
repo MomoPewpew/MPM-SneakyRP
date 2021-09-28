@@ -315,10 +315,10 @@ public class LayerProp extends LayerInterface {
 				propOffsetYCorrected = (float) (Math.cos(anglePrev - propBodyPart.rotateAngleZ) * hyp);
 			}
 
-			if (!propMatchScaling) {
-				propScaleX = propScaleX / config.scaleX;
-				propScaleY = propScaleY / config.scaleY;
-				propScaleZ = propScaleZ / config.scaleZ;
+			if (propMatchScaling == true) {
+				propScaleX = propScaleX * config.scaleX;
+				propScaleY = propScaleY * config.scaleY;
+				propScaleZ = propScaleZ * config.scaleZ;
 			}
 
 			GlStateManager.pushMatrix();

@@ -67,8 +67,8 @@ public class LayerProp extends LayerInterface {
 			float propRotateY = prop.rotateY;
 			float propRotateZ = prop.rotateZ;
 			Boolean propMatchScaling = prop.matchScaling;
-			float propPpOffsetX = new Float(-prop.ppOffsetX);
-			float propPpOffsetY = new Float(prop.ppOffsetY);
+			float propPpOffsetX = -prop.ppOffsetX;
+			float propPpOffsetY = prop.ppOffsetY;
 			float propPpOffsetZ = prop.ppOffsetZ;
 
 			ModelPartConfig config = null;
@@ -142,11 +142,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += (-0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * config.scaleX);
-					propPpOffsetY += (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * config.scaleY);
-				}
 				break;
 				case "hand":
 				case "handleft":
@@ -162,11 +157,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += (-0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * config.scaleX);
-					propPpOffsetY += (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * config.scaleY);
-				}
 				break;
 				case "armright":
 				case "rightarm":
@@ -181,11 +171,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += (0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * config.scaleX);
-					propPpOffsetY += (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * config.scaleY);
-				}
 				break;
 				case "handright":
 				case "righthand":
@@ -200,11 +185,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += (0.25F * this.playerdata.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * config.scaleX);
-					propPpOffsetY += (-1.5F + 0.75 * this.playerdata.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * this.playerdata.getPartConfig(EnumParts.BODY).scaleY - 0.125  * config.scaleY);
-				}
 				break;
 				case "leg":
 				case "legleft":
@@ -220,11 +200,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += -0.125F * config.scaleX;
-					propPpOffsetY += -0.75F;
-				}
 				break;
 				case "foot":
 				case "footleft":
@@ -240,11 +215,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += -0.125F * config.scaleX;
-					propPpOffsetY += -0.75F;
-				}
 				break;
 				case "legright":
 				case "rightleg":
@@ -259,11 +229,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += 0.125F * config.scaleX;
-					propPpOffsetY += -0.75F;
-				}
 				break;
 				case "footright":
 				case "rightfoot":
@@ -278,11 +243,6 @@ public class LayerProp extends LayerInterface {
 				propPpOffsetX = propPpOffsetX * config.scaleX;
 				propPpOffsetY = propPpOffsetY * config.scaleY;
 				propPpOffsetZ = propPpOffsetZ * config.scaleZ;
-
-				if (propBodyPart.isHidden) {
-					propPpOffsetX += 0.125F * config.scaleX;
-					propPpOffsetY += -0.75F;
-				}
 				break;
 			}
 

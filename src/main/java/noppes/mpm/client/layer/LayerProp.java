@@ -71,6 +71,7 @@ public class LayerProp extends LayerInterface {
 			float propPpOffsetY = prop.ppOffsetY;
 			float propPpOffsetZ = prop.ppOffsetZ;
 
+			EnumParts enumPart = null;
 			ModelPartConfig config = null;
 
 			switch(prop.bodyPartName) {
@@ -78,6 +79,7 @@ public class LayerProp extends LayerInterface {
 				case "head":
 				propBodyPart = this.model.bipedHead;
 
+				enumPart = EnumParts.HEAD;
 				config = this.playerdata.head;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -91,6 +93,7 @@ public class LayerProp extends LayerInterface {
 				case "model":
 				propBodyPart = this.model.bipedBody;
 
+				enumPart = EnumParts.BODY;
 				config = this.playerdata.body;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -105,6 +108,7 @@ public class LayerProp extends LayerInterface {
 				case "torso":
 				propBodyPart = this.model.bipedBody;
 
+				enumPart = EnumParts.BODY;
 				config = this.playerdata.body;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -118,6 +122,7 @@ public class LayerProp extends LayerInterface {
 				case "back":
 				propBodyPart = this.model.bipedBody;
 
+				enumPart = EnumParts.BODY;
 				config = this.playerdata.body;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -133,6 +138,7 @@ public class LayerProp extends LayerInterface {
 				case "leftarm":
 				propBodyPart = this.model.bipedLeftArm;
 
+				enumPart = EnumParts.ARM_LEFT;
 				config = this.playerdata.arm1;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -148,6 +154,7 @@ public class LayerProp extends LayerInterface {
 				case "lefthand":
 				propBodyPart = this.model.bipedLeftArm;
 
+				enumPart = EnumParts.ARM_LEFT;
 				config = this.playerdata.arm1;
 
 				propOffsetX = (propOffsetX - 0.0625F) * config.scaleX;
@@ -162,6 +169,7 @@ public class LayerProp extends LayerInterface {
 				case "rightarm":
 				propBodyPart = this.model.bipedRightArm;
 
+				enumPart = EnumParts.ARM_RIGHT;
 				config = this.playerdata.arm2;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -176,6 +184,7 @@ public class LayerProp extends LayerInterface {
 				case "righthand":
 				propBodyPart = this.model.bipedRightArm;
 
+				enumPart = EnumParts.ARM_RIGHT;
 				config = this.playerdata.arm2;
 
 				propOffsetX = (propOffsetX + 0.0625F) * config.scaleX;
@@ -191,6 +200,7 @@ public class LayerProp extends LayerInterface {
 				case "leftleg":
 				propBodyPart = this.model.bipedLeftLeg;
 
+				enumPart = EnumParts.LEG_LEFT;
 				config = this.playerdata.leg1;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -206,6 +216,7 @@ public class LayerProp extends LayerInterface {
 				case "leftfoot":
 				propBodyPart = this.model.bipedLeftLeg;
 
+				enumPart = EnumParts.LEG_LEFT;
 				config = this.playerdata.leg1;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -220,6 +231,7 @@ public class LayerProp extends LayerInterface {
 				case "rightleg":
 				propBodyPart = this.model.bipedRightLeg;
 
+				enumPart = EnumParts.LEG_RIGHT;
 				config = this.playerdata.leg2;
 
 				propOffsetX = propOffsetX * config.scaleX;
@@ -234,6 +246,7 @@ public class LayerProp extends LayerInterface {
 				case "rightfoot":
 				propBodyPart = this.model.bipedRightLeg;
 
+				enumPart = EnumParts.LEG_RIGHT;
 				config = this.playerdata.leg2;
 
 				propOffsetX = propOffsetX * config.scaleX;

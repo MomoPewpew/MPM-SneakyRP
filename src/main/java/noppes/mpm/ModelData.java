@@ -64,6 +64,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 	public static final float RATE_MIN = .5f;
 	public static final float PREVIEW_PAUSE_TIME = .5f;//NOTE: must be >0
+	public static final float MOVEMENT_SCALING = .8f;
 
 	//this is data to track server emotes
 	public ArrayList<ArrayList<Emote.PartCommand>> emoteCommands = Emote.createCommandsList();
@@ -558,9 +559,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 							partUsages[meta_i] |= Emote.FLAG_USED;
 							commandSections[meta_i] = SECTION_INTRO;
 							commandIndices[meta_i] = 0;
-							states[state_i + Emote.OFF_X] = 0;
-							states[state_i + Emote.OFF_Y] = 0;
-							states[state_i + Emote.OFF_Z] = 0;
+							// states[state_i + Emote.OFF_X] = 0;
+							// states[state_i + Emote.OFF_Y] = 0;
+							// states[state_i + Emote.OFF_Z] = 0;
 
 							continue;
 						}
@@ -901,7 +902,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		this.prePosX = posX;
 		this.prePosZ = posZ;
 		if(x != 0.0F || z != 0.0F) {
-			float movementRate = (x*x + z*z)*.75f;
+			float movementRate = (x*x + z*z)*MOVEMENT_SCALING;
 			if(movementRate < 1F) {
 				// LogWriter.warn(movementRate);
 				this.emoteMovementRate = movementRate;

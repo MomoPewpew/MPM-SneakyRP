@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.EntitySelectors;
 
 import noppes.mpm.LogWriter;
 import noppes.mpm.MorePlayerModels;
@@ -26,12 +27,18 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 
-public class CommandEmote extends CommandBase {
+public class CommandENear extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 		if(!(icommandsender instanceof EntityPlayerMP)) return;
-		EntityPlayerMP player = (EntityPlayerMP)icommandsender;
+
+		EntityPlayerMP player = getClosestPlayer((EntityPlayerMP)icommandsender);
+		if(player == null) {
+			icommandsender.addChatMessage(new TextComponentTranslation("No target found."));
+			return;
+		}
+
 		ModelData data = ModelData.get(player);
 
 		if(args.length == 0) {
@@ -46,7 +53,7 @@ public class CommandEmote extends CommandBase {
 			return;
 		}
 		float emoteSpeed = 1.0f;
-		if (args.length >= 2) {
+		if (args.length > 1) {
 			try {
 				emoteSpeed = Float.parseFloat(args[1].replace(',', '.'));
 				emoteSpeed = Math.max(.0001F, Math.min(10000F, emoteSpeed));
@@ -58,13 +65,13 @@ public class CommandEmote extends CommandBase {
 		boolean cancel_if_conflicting = false;
 		boolean outro_all_playing_first = false;
 		boolean override_instead_of_outro = false;
-		if (args.length >= 3) {
+		if (args.length > 2) {
 			outro_all_playing_first = args[2].toLowerCase().equals("true") || args[2].equals("1");
 		}
-		if (args.length >= 4) {
+		if (args.length > 3) {
 			override_instead_of_outro = args[3].toLowerCase().equals("true") || args[3].equals("1");
 		}
-		if (args.length >= 5) {
+		if (args.length > 4) {
 			cancel_if_conflicting = args[4].toLowerCase().equals("true") || args[4].equals("1");
 		}
 
@@ -120,14 +127,34 @@ public class CommandEmote extends CommandBase {
 		}
 	}
 
+	private static EntityPlayerMP getClosestPlayer(final EntityPlayerMP player) {
+		EntityPlayerMP closest = null;
+		double closestDistance = 0;
+
+		for (EntityPlayerMP entity : player.getEntityWorld().getEntities(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING)) {
+			if (entity == player || !(entity instanceof EntityPlayerMP)) {
+				continue;
+			}
+
+			double distance = entity.getPosition().distanceSq(player.getPosition());
+			if ((closest == null || distance < closestDistance) && Math.sqrt(distance) <= 3) {
+				closest = entity;
+				closestDistance = distance;
+			}
+		}
+
+		return closest;
+	}
+
+
 	@Override
 	public String getCommandName() {
-		return "e";
+		return "enear";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/e [<emote name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
+		return "/enear [<emote name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
 	}
 
 

@@ -33,6 +33,8 @@ import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
+import noppes.mpm.commands.CommandEGive;
+import noppes.mpm.commands.CommandENear;
 import noppes.mpm.commands.CommandVault;
 import noppes.mpm.commands.CommandUnvault;
 import noppes.mpm.commands.CommandCE;
@@ -192,6 +194,8 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandPropRem());
 		event.registerServerCommand(new CommandPropRestore());
 		event.registerServerCommand(new CommandEmote());
+		event.registerServerCommand(new CommandEGive());
+		event.registerServerCommand(new CommandENear());
 		event.registerServerCommand(new CommandCE());
 		event.registerServerCommand(new CommandVault());
 		event.registerServerCommand(new CommandUnvault());

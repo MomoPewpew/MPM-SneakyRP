@@ -26,29 +26,39 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 
-public class CommandEmote extends CommandBase {
+public class CommandEGive extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
-		if(!(icommandsender instanceof EntityPlayerMP)) return;
-		EntityPlayerMP player = (EntityPlayerMP)icommandsender;
+		if(args.length < 1) {
+			icommandsender.addChatMessage(new TextComponentTranslation("No target specified."));
+			return;
+		}
+
+
+		EntityPlayerMP player = getPlayer(server, icommandsender, args[0]);
+		if(player == null) {
+			icommandsender.addChatMessage(new TextComponentTranslation("No target found."));
+			return;
+		}
+
 		ModelData data = ModelData.get(player);
 
-		if(args.length == 0) {
+		if(args.length == 1) {
 			data.updateEmote();
 			data.endEmotes(false);
 			Server.sendAssociatedData(player, EnumPackets.EMOTE_END, player.getUniqueID(), false);
 			return;
 		}
-		String emoteName = MorePlayerModels.validateFileName(args[0]);
+		String emoteName = MorePlayerModels.validateFileName(args[1]);
 		if(emoteName == null) {
 			icommandsender.addChatMessage(new TextComponentTranslation("Invalid Emote Name."));
 			return;
 		}
 		float emoteSpeed = 1.0f;
-		if (args.length >= 2) {
+		if (args.length > 2) {
 			try {
-				emoteSpeed = Float.parseFloat(args[1].replace(',', '.'));
+				emoteSpeed = Float.parseFloat(args[2].replace(',', '.'));
 				emoteSpeed = Math.max(.0001F, Math.min(10000F, emoteSpeed));
 			} catch (NumberFormatException e) {
 				emoteSpeed = 1.0f;
@@ -58,14 +68,14 @@ public class CommandEmote extends CommandBase {
 		boolean cancel_if_conflicting = false;
 		boolean outro_all_playing_first = false;
 		boolean override_instead_of_outro = false;
-		if (args.length >= 3) {
-			outro_all_playing_first = args[2].toLowerCase().equals("true") || args[2].equals("1");
+		if (args.length > 3) {
+			outro_all_playing_first = args[3].toLowerCase().equals("true") || args[3].equals("1");
 		}
-		if (args.length >= 4) {
-			override_instead_of_outro = args[3].toLowerCase().equals("true") || args[3].equals("1");
+		if (args.length > 4) {
+			override_instead_of_outro = args[4].toLowerCase().equals("true") || args[4].equals("1");
 		}
-		if (args.length >= 5) {
-			cancel_if_conflicting = args[4].toLowerCase().equals("true") || args[4].equals("1");
+		if (args.length > 5) {
+			cancel_if_conflicting = args[5].toLowerCase().equals("true") || args[5].equals("1");
 		}
 
 		String filename = emoteName + ".dat";
@@ -120,14 +130,15 @@ public class CommandEmote extends CommandBase {
 		}
 	}
 
+
 	@Override
 	public String getCommandName() {
-		return "e";
+		return "egive";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/e [<emote name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
+		return "/egive [<player name>] [<emote name>] [<speed>] [end all emotes first <true/false>] [override instead of playing outro <true/false>] [cancel if conflicting <true/false>]";
 	}
 
 

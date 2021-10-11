@@ -393,6 +393,8 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				boolean override_instead_of_outro = buffer.readBoolean();
 
 				data.endEmotes(override_instead_of_outro);
+			} else if (type == EnumPackets.NAMES_TOGGLE) {
+				MorePlayerModels.HidePlayerNames = !MorePlayerModels.HidePlayerNames;
 			}
 		}
 	}

@@ -39,4 +39,5 @@ public enum EnumPackets {
 	EMOTE_DO,
 	EMOTE_DATA,
 	EMOTE_END,
+	NAMES_TOGGLE,
 }

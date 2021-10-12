@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
@@ -22,13 +21,11 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import noppes.mpm.CommonProxy;
 import noppes.mpm.MorePlayerModels;
-import noppes.mpm.client.commands.CommandNames;
 import noppes.mpm.client.layer.LayerArms;
 import noppes.mpm.client.layer.LayerBackItem;
 import noppes.mpm.client.layer.LayerBody;
@@ -43,7 +40,6 @@ import noppes.mpm.client.layer.LayerLegs;
 import noppes.mpm.client.layer.LayerProp;
 import noppes.mpm.client.model.ModelBipedAlt;
 import noppes.mpm.client.model.ModelPlayerAlt;
-import noppes.mpm.client.gui.GuiCreationEmotes;
 
 public class ClientProxy extends CommonProxy {
 	public static KeyBinding Screen;
@@ -68,8 +64,6 @@ public class ClientProxy extends CommonProxy {
 		}
 
 		MinecraftForge.EVENT_BUS.register(new RenderEvent());
-		ClientCommandHandler.instance.registerCommand(new CommandNames());
-
 	}
 
 	@Override

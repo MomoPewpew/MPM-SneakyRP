@@ -32,7 +32,7 @@ public class CommandEN extends CommandENear {
 
 	@Override
 	public String getCommandName() {
-		return "enear";
+		return "en";
 	}
 
 

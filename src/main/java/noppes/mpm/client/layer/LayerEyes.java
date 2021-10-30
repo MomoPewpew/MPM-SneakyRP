@@ -33,9 +33,9 @@ public class LayerEyes extends LayerInterface {
 			int k = i / 65536;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
 			Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
-			this.drawBrows();
 			this.drawLeft();
 			this.drawRight();
+			this.drawBrows();
 			Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
 			GlStateManager.depthMask(true);
 			GlStateManager.disableBlend();
@@ -102,8 +102,8 @@ public class LayerEyes extends LayerInterface {
 
 		if (this.playerdata.eyes.browThickness > 0) {
 			f = (float)this.playerdata.eyes.browThickness / 10.0F;
-			this.drawRect(-3.0D, (double)(-5.0F + offsetY), -1.0D, (double)(-5.0F - f + offsetY), this.playerdata.eyes.browColor, 4.014D, false);
-			this.drawRect(1.0D, (double)(-5.0F + offsetY), 3.0D, (double)(-5.0F - f + offsetY), this.playerdata.eyes.browColor, 4.014D, false);
+			this.drawRect(-3.0D, (double)(-5.0F), -1.0D, (double)(-5.0F - f), this.playerdata.eyes.browColor, 4.014D, false);
+			this.drawRect(1.0D, (double)(-5.0F), 3.0D, (double)(-5.0F - f), this.playerdata.eyes.browColor, 4.014D, false);
 		}
 
 	}

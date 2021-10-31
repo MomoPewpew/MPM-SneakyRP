@@ -20,6 +20,9 @@ public class ModelDataShared {
 	public ModelEyeData eyes = new ModelEyeData();
 	public Class entityClass;
 	protected EntityLivingBase entity;
+	public float entityScaleX = 1.0F;
+	public float entityScaleY = 1.0F;
+	public float entityScaleZ = 1.0F;
 	public NBTTagCompound extra = new NBTTagCompound();
 	protected HashMap parts = new HashMap();
 	public int wingMode = 0;

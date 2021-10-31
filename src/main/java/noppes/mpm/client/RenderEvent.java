@@ -96,6 +96,10 @@ public class RenderEvent {
 
 			Entity entity = data.getEntity(player);
 			if (entity != null) {
+				GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleZ);
+				GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+
 				if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
 					entity.rotationPitch = player.rotationPitch;
 					entity.prevRotationPitch = player.prevRotationPitch;

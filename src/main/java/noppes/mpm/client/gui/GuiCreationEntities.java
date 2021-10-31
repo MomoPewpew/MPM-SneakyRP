@@ -19,13 +19,21 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNpcButton;
+import noppes.mpm.client.gui.util.GuiNpcSlider;
+import noppes.mpm.client.gui.util.GuiNpcTextField;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
+import noppes.mpm.client.gui.util.ISliderListener;
+import noppes.mpm.client.gui.util.ITextfieldListener;
 
-public class GuiCreationEntities extends GuiCreationScreenInterface implements ICustomScrollListener {
+public class GuiCreationEntities extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener  {
 	public HashMap data = new HashMap();
 	private List list;
 	private GuiCustomScroll scroll;
 	private boolean resetToSelected = true;
+	private static final float minScale = 0.5F;
+	private static final float maxScale = 1.5F;
+	private Boolean initiating = false;
+
 
 	public GuiCreationEntities() {
 		Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
@@ -62,6 +70,8 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 			return;
 		}
 
+		this.initiating = true;
+
 		this.addButton(new GuiNpcButton(10, this.guiLeft, this.guiTop + 46, 120, 20, "gui.resettoplayer"));
 		if (this.scroll == null) {
 			this.scroll = new GuiCustomScroll(this, 0);
@@ -90,6 +100,24 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		}
 
 		this.addScroll(this.scroll);
+
+		int x = this.guiLeft + 122;
+		int y = this.guiTop + 46;
+		this.addTextField(new GuiNpcTextField(11, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleX)));
+		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, (playerdata.entityScaleX / (minScale + maxScale))));
+		this.getSlider(11).displayString = "X";
+		y += 22;
+
+		this.addTextField(new GuiNpcTextField(12, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleY)));
+		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, (playerdata.entityScaleY / (minScale + maxScale))));
+		this.getSlider(12).displayString = "Y";
+
+		y += 22;
+		this.addTextField(new GuiNpcTextField(13, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleZ)));
+		this.addSlider(new GuiNpcSlider(this, 13, x, y, 100, 20, (playerdata.entityScaleZ / (minScale + maxScale))));
+		this.getSlider(13).displayString = "Z";
+
+		this.initiating = false;
 	}
 
 	@Override
@@ -110,11 +138,83 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 	}
 
 	@Override
+	public void mouseDragged(GuiNpcSlider slider) {
+		super.mouseDragged(slider);
+		if (this.initiating) return;
+
+		if (slider.id >= 11 && slider.id <= 13) {
+			Float value = 0.0F;
+			String text = "";
+
+			value = ((slider.sliderValue * (maxScale - minScale)) + minScale);
+
+			if (slider.id == 11) {
+				playerdata.entityScaleX = value;
+			} else if (slider.id == 12) {
+				playerdata.entityScaleY = value;
+			} else if (slider.id == 13) {
+				playerdata.entityScaleZ = value;
+			}
+
+			text = String.format(java.util.Locale.US,"%.2f", value);
+
+			this.getTextField(slider.id).setText(text);
+		}
+	}
+
+	@Override
 	public void scrollDoubleClicked(String selection, GuiCustomScroll scroll) {
 	}
 
 	@Override
 	public void scrollSubButtonClicked(int var1, int var2, int var3, GuiCustomScroll var4) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unFocused(GuiNpcTextField textField) {
+		if (this.initiating) return;
+
+		if (textField.id >= 11 && textField.id <= 13) {
+			Float value = null;
+			try {
+				value = Float.parseFloat(textField.getText().replace(',', '.'));
+			} catch (NumberFormatException e) {
+				return;
+			}
+
+			Float sliderValue = 0.0F;
+
+			sliderValue = value / (minScale + maxScale);
+
+			if (textField.id == 11) {
+				playerdata.entityScaleX = value;
+			} else if (textField.id == 12) {
+				playerdata.entityScaleY = value;
+			} else if (textField.id == 13) {
+				playerdata.entityScaleZ = value;
+			}
+
+			textField.setCursorPositionZero();
+			textField.setSelectionPos(0);
+			this.getSlider(textField.id).sliderValue = sliderValue;
+		}
+	}
+
+	@Override
+	public void focused(GuiNpcTextField textField) {
+		if (this.initiating) return;
+
+		if ((textField.id >= 11 && textField.id <= 13)) {
+			textField.setCursorPositionZero();
+			textField.setSelectionPos(textField.getText().length());
+		}
+
+	}
+
+	@Override
+	public void textboxKeyTyped(GuiNpcTextField textField) {
 		// TODO Auto-generated method stub
 
 	}

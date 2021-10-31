@@ -172,7 +172,7 @@ public class ModelDataShared {
 	}
 
 	public float offsetY() {
-		return this.entity == null ? -this.getBodyY() : this.entity.height - 1.8F;
+		return this.entity == null ? -this.getBodyY() : (this.entity.height * this.entityScaleY) - 1.8F;
 	}
 
 	public void clearEntity() {

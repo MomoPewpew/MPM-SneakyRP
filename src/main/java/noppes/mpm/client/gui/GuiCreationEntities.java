@@ -104,17 +104,17 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		int x = this.guiLeft + 122;
 		int y = this.guiTop + 46;
 		this.addTextField(new GuiNpcTextField(11, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleX)));
-		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, (playerdata.entityScaleX / (minScale + maxScale))));
+		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, ((playerdata.entityScaleX - minScale) / (maxScale - minScale))));
 		this.getSlider(11).displayString = "X";
 		y += 22;
 
 		this.addTextField(new GuiNpcTextField(12, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleY)));
-		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, (playerdata.entityScaleY / (minScale + maxScale))));
+		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, ((playerdata.entityScaleY - minScale) / (maxScale - minScale))));
 		this.getSlider(12).displayString = "Y";
 
 		y += 22;
 		this.addTextField(new GuiNpcTextField(13, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleZ)));
-		this.addSlider(new GuiNpcSlider(this, 13, x, y, 100, 20, (playerdata.entityScaleZ / (minScale + maxScale))));
+		this.addSlider(new GuiNpcSlider(this, 13, x, y, 100, 20, ((playerdata.entityScaleZ - minScale) / (maxScale - minScale))));
 		this.getSlider(13).displayString = "Z";
 
 		this.initiating = false;

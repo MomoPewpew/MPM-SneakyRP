@@ -134,12 +134,13 @@ public class RenderEvent {
 				GlStateManager.translate(
 						((player.posX - renderViewEntity.posX) * (1.0F - data.entityScaleX)),
 						((player.posY - renderViewEntity.posY) * (1.0F - data.entityScaleY)),
-						((player.posZ - renderViewEntity.posZ) * (1.0F - data.entityScaleZ))
+						((player.posZ - renderViewEntity.posZ) * (1.0F - data.entityScaleX))
 					);
 
-				GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
-				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleZ);
-				GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+				//These rotate functions were neccesary when we had separate X and Z sliders, but that feature was cut. Too many bugs, and even when it worked it looked 20 fps
+				//GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleX);
+				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
 				GlStateManager.popMatrix();

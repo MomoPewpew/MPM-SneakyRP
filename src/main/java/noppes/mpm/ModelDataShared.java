@@ -22,7 +22,6 @@ public class ModelDataShared {
 	protected EntityLivingBase entity;
 	public float entityScaleX = 1.0F;
 	public float entityScaleY = 1.0F;
-	public float entityScaleZ = 1.0F;
 	public NBTTagCompound extra = new NBTTagCompound();
 	protected HashMap parts = new HashMap();
 	public int wingMode = 0;
@@ -36,6 +35,8 @@ public class ModelDataShared {
 			compound.setString("EntityClass", this.entityClass.getCanonicalName());
 		}
 
+		compound.setFloat("entityScaleX", entityScaleX);
+		compound.setFloat("entityScaleY", entityScaleY);
 		compound.setTag("ArmsConfig", this.arm1.writeToNBT());
 		compound.setTag("BodyConfig", this.body.writeToNBT());
 		compound.setTag("LegsConfig", this.leg1.writeToNBT());
@@ -64,6 +65,8 @@ public class ModelDataShared {
 
 	public void readFromNBT(NBTTagCompound compound) {
 		this.setEntityClass(compound.getString("EntityClass"));
+		this.entityScaleX = compound.getFloat("entityScaleX");
+		this.entityScaleY = compound.getFloat("entityScaleY");
 		this.arm1.readFromNBT(compound.getCompoundTag("ArmsConfig"));
 		this.body.readFromNBT(compound.getCompoundTag("BodyConfig"));
 		this.leg1.readFromNBT(compound.getCompoundTag("LegsConfig"));

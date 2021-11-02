@@ -104,18 +104,13 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		int x = this.guiLeft + 122;
 		int y = this.guiTop + 46;
 		this.addTextField(new GuiNpcTextField(11, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleX)));
-		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, (playerdata.entityScaleX / (minScale + maxScale))));
-		this.getSlider(11).displayString = "X";
+		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, ((playerdata.entityScaleX - minScale) / (maxScale - minScale))));
+		this.getSlider(11).displayString = "Width";
 		y += 22;
 
 		this.addTextField(new GuiNpcTextField(12, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleY)));
-		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, (playerdata.entityScaleY / (minScale + maxScale))));
-		this.getSlider(12).displayString = "Y";
-
-		y += 22;
-		this.addTextField(new GuiNpcTextField(13, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleZ)));
-		this.addSlider(new GuiNpcSlider(this, 13, x, y, 100, 20, (playerdata.entityScaleZ / (minScale + maxScale))));
-		this.getSlider(13).displayString = "Z";
+		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, ((playerdata.entityScaleY - minScale) / (maxScale - minScale))));
+		this.getSlider(12).displayString = "Height";
 
 		this.initiating = false;
 	}
@@ -142,7 +137,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		super.mouseDragged(slider);
 		if (this.initiating) return;
 
-		if (slider.id >= 11 && slider.id <= 13) {
+		if (slider.id >= 11 && slider.id <= 12) {
 			Float value = 0.0F;
 			String text = "";
 
@@ -152,8 +147,6 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 				playerdata.entityScaleX = value;
 			} else if (slider.id == 12) {
 				playerdata.entityScaleY = value;
-			} else if (slider.id == 13) {
-				playerdata.entityScaleZ = value;
 			}
 
 			text = String.format(java.util.Locale.US,"%.2f", value);
@@ -176,7 +169,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 	public void unFocused(GuiNpcTextField textField) {
 		if (this.initiating) return;
 
-		if (textField.id >= 11 && textField.id <= 13) {
+		if (textField.id >= 11 && textField.id <= 12) {
 			Float value = null;
 			try {
 				value = Float.parseFloat(textField.getText().replace(',', '.'));
@@ -186,14 +179,12 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
 			Float sliderValue = 0.0F;
 
-			sliderValue = value / (minScale + maxScale);
+			sliderValue = (value - minScale) / (maxScale - minScale);
 
 			if (textField.id == 11) {
 				playerdata.entityScaleX = value;
 			} else if (textField.id == 12) {
 				playerdata.entityScaleY = value;
-			} else if (textField.id == 13) {
-				playerdata.entityScaleZ = value;
 			}
 
 			textField.setCursorPositionZero();

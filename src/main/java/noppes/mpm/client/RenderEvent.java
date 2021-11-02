@@ -96,10 +96,6 @@ public class RenderEvent {
 
 			Entity entity = data.getEntity(player);
 			if (entity != null) {
-				GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
-				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleZ);
-				GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
-
 				if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
 					entity.rotationPitch = player.rotationPitch;
 					entity.prevRotationPitch = player.prevRotationPitch;
@@ -132,6 +128,19 @@ public class RenderEvent {
 						texturemanager.loadTexture(skinResource, (ITextureObject)data.textureObject);
 					}
 				}
+
+				Entity renderViewEntity = mc.getRenderViewEntity();
+
+				GlStateManager.translate(
+						((((player.posX - player.lastTickPosX) * Animation.getPartialTickTime() + player.lastTickPosX) - ((renderViewEntity.posX - renderViewEntity.lastTickPosX) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosX)) * (1.0F - data.entityScaleX)),
+						((((player.posY - player.lastTickPosY) * Animation.getPartialTickTime() + player.lastTickPosY) - ((renderViewEntity.posY - renderViewEntity.lastTickPosY) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosY)) * (1.0F - data.entityScaleY)),
+						((((player.posZ - player.lastTickPosZ) * Animation.getPartialTickTime() + player.lastTickPosZ) - ((renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosZ)) * (1.0F - data.entityScaleX))
+					);
+
+				//These rotate functions were neccesary when we had separate X and Z sliders, but that feature was cut. Too many bugs, and even when it worked it looked 20 fps
+				//GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleX);
+				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
 				GlStateManager.popMatrix();

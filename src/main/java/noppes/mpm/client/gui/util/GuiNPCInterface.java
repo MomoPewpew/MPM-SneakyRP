@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -39,6 +41,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	public GuiNPCInterface parent;
 	public int mouseX;
 	public int mouseY;
+	private float playersVolume = 0.0F;
 
 	public GuiNPCInterface() {
 		this.player = Minecraft.getMinecraft().thePlayer;
@@ -72,6 +75,11 @@ public abstract class GuiNPCInterface extends GuiScreen {
 		this.scrolls.clear();
 		this.sliders.clear();
 		Keyboard.enableRepeatEvents(true);
+
+		if (playersVolume == 0.0F) {
+			playersVolume = mc.gameSettings.getSoundLevel(SoundCategory.PLAYERS);
+			mc.gameSettings.setSoundLevel(SoundCategory.PLAYERS, 0.0F);
+		}
 	}
 
 	@Override
@@ -160,6 +168,9 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		GuiNpcTextField.unfocus();
+
+		mc.gameSettings.setSoundLevel(SoundCategory.PLAYERS, playersVolume);
+		playersVolume = 0.0F;
 	}
 
 	public void close() {

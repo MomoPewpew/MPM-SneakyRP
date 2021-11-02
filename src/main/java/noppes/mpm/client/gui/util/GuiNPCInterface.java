@@ -76,7 +76,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 		this.sliders.clear();
 		Keyboard.enableRepeatEvents(true);
 
-		if (playersVolume == 0.0F) {
+		if (playersVolume == 0.0F && this.player.worldObj.isRemote) {
 			playersVolume = mc.gameSettings.getSoundLevel(SoundCategory.PLAYERS);
 			mc.gameSettings.setSoundLevel(SoundCategory.PLAYERS, 0.0F);
 		}
@@ -169,8 +169,10 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	public void onGuiClosed() {
 		GuiNpcTextField.unfocus();
 
-		mc.gameSettings.setSoundLevel(SoundCategory.PLAYERS, playersVolume);
-		playersVolume = 0.0F;
+		if (playersVolume == 0.0F && this.player.worldObj.isRemote) {
+			mc.gameSettings.setSoundLevel(SoundCategory.PLAYERS, playersVolume);
+			playersVolume = 0.0F;
+		}
 	}
 
 	public void close() {

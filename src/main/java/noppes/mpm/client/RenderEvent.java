@@ -96,10 +96,6 @@ public class RenderEvent {
 
 			Entity entity = data.getEntity(player);
 			if (entity != null) {
-				GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
-				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleZ);
-				GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
-
 				if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
 					entity.rotationPitch = player.rotationPitch;
 					entity.prevRotationPitch = player.prevRotationPitch;
@@ -132,6 +128,18 @@ public class RenderEvent {
 						texturemanager.loadTexture(skinResource, (ITextureObject)data.textureObject);
 					}
 				}
+
+				Entity renderViewEntity = mc.getRenderViewEntity();
+
+				GlStateManager.translate(
+						((player.posX - renderViewEntity.posX) * (1.0F - data.entityScaleX)),
+						((player.posY - renderViewEntity.posY) * (1.0F - data.entityScaleY)),
+						((player.posZ - renderViewEntity.posZ) * (1.0F - data.entityScaleZ))
+					);
+
+				GlStateManager.rotate(player.renderYawOffset, 0.0F, -1.0F, 0.0F);
+				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleZ);
+				GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
 				GlStateManager.popMatrix();

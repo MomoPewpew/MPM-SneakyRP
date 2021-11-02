@@ -41,7 +41,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	public GuiNPCInterface parent;
 	public int mouseX;
 	public int mouseY;
-	private float playersVolume = 0.0F;
+	private static float playersVolume = 0.0F;
 
 	public GuiNPCInterface() {
 		this.player = Minecraft.getMinecraft().thePlayer;

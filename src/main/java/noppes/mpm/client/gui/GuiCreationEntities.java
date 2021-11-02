@@ -186,7 +186,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
 			Float sliderValue = 0.0F;
 
-			sliderValue = value / (minScale + maxScale);
+			sliderValue = (value - minScale) / (maxScale - minScale);
 
 			if (textField.id == 11) {
 				playerdata.entityScaleX = value;

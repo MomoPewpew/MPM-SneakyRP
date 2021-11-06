@@ -180,7 +180,10 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				}
 			}
 
-			this.entity.setSilent(true);
+			if(this.entity != null) {
+				this.entity.setSilent(true);
+			}
+
 			return this.entity;
 		}
 	}

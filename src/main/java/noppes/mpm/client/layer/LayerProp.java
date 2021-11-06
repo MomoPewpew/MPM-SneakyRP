@@ -375,6 +375,8 @@ public class LayerProp extends LayerInterface {
 			GlStateManager.popMatrix();
 
 			motherRenderer.childModels.remove(propRenderer);
+			this.model.boxList.remove(propRenderer);
+			this.model.boxList.remove(motherRenderer);
 		}
 	}
 

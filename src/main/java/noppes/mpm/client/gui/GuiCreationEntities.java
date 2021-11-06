@@ -46,7 +46,7 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 				Class c = ent.getEntityClass();
 				if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
 					if (!MorePlayerModels.entityNamesRemovedFromGui.contains(name.toLowerCase()))
-					this.data.put(name, c.asSubclass(EntityLivingBase.class));
+					this.data.put(name.replace("mocreatures:", "").replace("ebwizardry:", ""), c.asSubclass(EntityLivingBase.class));
 				}
 			} catch (SecurityException var5) {
 				var5.printStackTrace();

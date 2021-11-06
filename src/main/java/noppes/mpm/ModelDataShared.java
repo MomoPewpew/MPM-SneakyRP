@@ -67,6 +67,8 @@ public class ModelDataShared {
 		this.setEntityClass(compound.getString("EntityClass"));
 		this.entityScaleX = compound.getFloat("entityScaleX");
 		this.entityScaleY = compound.getFloat("entityScaleY");
+		if (this.entityScaleX == 0.0F) this.entityScaleX = 1.0F;
+		if (this.entityScaleY == 0.0F) this.entityScaleY = 1.0F;
 		this.arm1.readFromNBT(compound.getCompoundTag("ArmsConfig"));
 		this.body.readFromNBT(compound.getCompoundTag("BodyConfig"));
 		this.leg1.readFromNBT(compound.getCompoundTag("LegsConfig"));

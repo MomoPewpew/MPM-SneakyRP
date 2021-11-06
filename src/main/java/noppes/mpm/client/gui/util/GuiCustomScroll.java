@@ -408,4 +408,12 @@ public class GuiCustomScroll extends GuiScreen {
 	public void setHover(int hover) {
 		this.hover = hover;
 	}
+
+	public int getScrollY() {
+		return scrollY;
+	}
+
+	public void setScrollY(int scrollY) {
+		this.scrollY = scrollY;
+	}
 }

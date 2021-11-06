@@ -33,20 +33,26 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 	private static final float minScale = 0.5F;
 	private static final float maxScale = 1.5F;
 	private Boolean initiating = false;
-
+	private static String searchString;
 
 	public GuiCreationEntities() {
 		Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
 
 		while(var1.hasNext()) {
 			EntityEntry ent = (EntityEntry)var1.next();
-			String name = ent.getName();
+			String name = new String(ent.getName());
+
+			if (!MorePlayerModels.entityNamesRemovedFromGui.contains(name.toLowerCase()))
+
+			if (name.contains(":")) {
+				String[] namespaced = name.split(":");
+				name = namespaced[namespaced.length - 1];
+			}
 
 			try {
 				Class c = ent.getEntityClass();
 				if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
-					if (!MorePlayerModels.entityNamesRemovedFromGui.contains(name.toLowerCase()))
-					this.data.put(name.replace("mocreatures:", "").replace("ebwizardry:", ""), c.asSubclass(EntityLivingBase.class));
+					this.data.put(name, c.asSubclass(EntityLivingBase.class));
 				}
 			} catch (SecurityException var5) {
 				var5.printStackTrace();
@@ -59,6 +65,8 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 		Collections.sort(this.list, String.CASE_INSENSITIVE_ORDER);
 		this.active = 1;
 		this.xOffset = 60;
+		searchString = "";
+		this.closeOnInventory = false;
 	}
 
 	@Override
@@ -72,15 +80,29 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
 		this.initiating = true;
 
+		this.list.clear();
+
+		for (Object name : this.data.keySet()) {
+			if (((String) name).toLowerCase().contains(searchString))
+				this.list.add((String) name);
+		}
+
+		if (I18n.translateToLocal("gui.player").toLowerCase().contains(searchString))
+			this.list.add(I18n.translateToLocal("gui.player"));
+
+		Collections.sort(this.list, String.CASE_INSENSITIVE_ORDER);
+
 		this.addButton(new GuiNpcButton(10, this.guiLeft, this.guiTop + 46, 120, 20, "gui.resettoplayer"));
 		if (this.scroll == null) {
 			this.scroll = new GuiCustomScroll(this, 0);
 			this.scroll.setUnsortedList(this.list);
 		}
 
+		this.addTextField(new GuiNpcTextField(13, this, this.guiLeft + 2, this.guiTop + 70, 116, 16, searchString.equals("") ? "Search" : searchString));
+
 		this.scroll.guiLeft = this.guiLeft;
-		this.scroll.guiTop = this.guiTop + 45 + 22;
-		this.scroll.setSize(100, this.ySize - 52 - 22);
+		this.scroll.guiTop = this.guiTop + 45 + 22 + 22;
+		this.scroll.setSize(100, this.ySize - 52 - 22 - 22);
 		String selected = I18n.translateToLocal("gui.player");
 		if (this.entity != null) {
 			Iterator var2 = this.data.entrySet().iterator();
@@ -103,13 +125,13 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
 		int x = this.guiLeft + 122;
 		int y = this.guiTop + 46;
-		this.addTextField(new GuiNpcTextField(11, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleX)));
-		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, ((playerdata.entityScaleX - minScale) / (maxScale - minScale))));
+		this.addTextField(new GuiNpcTextField(11, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.entityScaleX)));
+		this.addSlider(new GuiNpcSlider(this, 11, x, y, 100, 20, ((this.playerdata.entityScaleX - minScale) / (maxScale - minScale))));
 		this.getSlider(11).displayString = "Width";
 		y += 22;
 
-		this.addTextField(new GuiNpcTextField(12, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", playerdata.entityScaleY)));
-		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, ((playerdata.entityScaleY - minScale) / (maxScale - minScale))));
+		this.addTextField(new GuiNpcTextField(12, this, x + 103, y + 1, 36, 18, String.format(java.util.Locale.US,"%.2f", this.playerdata.entityScaleY)));
+		this.addSlider(new GuiNpcSlider(this, 12, x, y, 100, 20, ((this.playerdata.entityScaleY - minScale) / (maxScale - minScale))));
 		this.getSlider(12).displayString = "Height";
 
 		this.initiating = false;
@@ -144,9 +166,9 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 			value = ((slider.sliderValue * (maxScale - minScale)) + minScale);
 
 			if (slider.id == 11) {
-				playerdata.entityScaleX = value;
+				this.playerdata.entityScaleX = value;
 			} else if (slider.id == 12) {
-				playerdata.entityScaleY = value;
+				this.playerdata.entityScaleY = value;
 			}
 
 			text = String.format(java.util.Locale.US,"%.2f", value);
@@ -182,9 +204,9 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 			sliderValue = (value - minScale) / (maxScale - minScale);
 
 			if (textField.id == 11) {
-				playerdata.entityScaleX = value;
+				this.playerdata.entityScaleX = value;
 			} else if (textField.id == 12) {
-				playerdata.entityScaleY = value;
+				this.playerdata.entityScaleY = value;
 			}
 
 			textField.setCursorPositionZero();
@@ -206,7 +228,18 @@ public class GuiCreationEntities extends GuiCreationScreenInterface implements I
 
 	@Override
 	public void textboxKeyTyped(GuiNpcTextField textField) {
-		// TODO Auto-generated method stub
+		if (this.initiating) return;
+		if (textField.id >= 13) {
+			searchString = new String(textField.getText()).toLowerCase();
+			int i = textField.getCursorPosition();
 
+			this.initGui();
+
+			if (searchString.equals("")) this.getTextField(13).setText("");
+
+			this.getTextField(13).setFocused(true);
+			this.getTextField(13).setCursorPosition(i);
+			this.scroll.setScrollY(0);
+		}
 	}
 }

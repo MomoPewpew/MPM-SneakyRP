@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;

@@ -364,7 +364,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void showPropGroupServerByName(String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
 			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.get(i).hide = false;
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
@@ -378,7 +378,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void hidePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
 			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.get(i).hide = true;
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
@@ -387,7 +387,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void togglePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
 			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				if (this.propGroups.get(i).hide == true) {
 					this.propGroups.get(i).hide = false;
@@ -401,7 +401,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void removePropGroupByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
 			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.remove(i);
 			}
@@ -409,7 +409,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void removePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
 			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.remove(i);
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);

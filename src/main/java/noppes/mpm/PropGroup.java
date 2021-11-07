@@ -114,7 +114,7 @@ public class PropGroup {
 	}
 
 	public void removePropServerByName(String name) {
-		for (int i = 0; i < this.props.size(); i++) {
+		for (int i = this.props.size() - 1; i >= 0; i--) {
 			if (this.props.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.props.remove(i);
 				Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), i);
@@ -128,7 +128,7 @@ public class PropGroup {
 	}
 
 	public void hidePropServerByName(String name) {
-		for (int i = 0; i < this.props.size(); i++) {
+		for (int i = this.props.size() - 1; i >= 0; i--) {
 			if (this.props.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.props.get(i).hide = true;
 				Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), i);
@@ -142,7 +142,7 @@ public class PropGroup {
 	}
 
 	public void showPropServerByName(String name) {
-		for (int i = 0; i < this.props.size(); i++) {
+		for (int i = this.props.size() - 1; i >= 0; i--) {
 			if (this.props.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.props.get(i).hide = false;
 				Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), i);
@@ -161,7 +161,7 @@ public class PropGroup {
 	}
 
 	public void togglePropServerByName(String name) {
-		for (int i = 0; i < this.props.size(); i++) {
+		for (int i = this.props.size() - 1; i >= 0; i--) {
 			if (this.props.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				if (this.props.get(i).hide == true) {
 					this.props.get(i).hide = false;

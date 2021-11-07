@@ -113,7 +113,7 @@ public class PropGroup {
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_REMOVE, this.player.getUniqueID(), index);
 	}
 
-	public void removePropServerByName (String name) {
+	public void removePropServerByName(String name) {
 		for (int i = 0; i < this.props.size(); i++) {
 			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
 				this.props.remove(i);
@@ -122,12 +122,12 @@ public class PropGroup {
 		}
 	}
 
-	public void hidePropServer (Integer index) {
+	public void hidePropServer(Integer index) {
 		this.props.get(index).hide = true;
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_HIDE, this.player.getUniqueID(), index);
 	}
 
-	public void hidePropServerByName (String name) {
+	public void hidePropServerByName(String name) {
 		for (int i = 0; i < this.props.size(); i++) {
 			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
 				this.props.get(i).hide = true;
@@ -136,12 +136,12 @@ public class PropGroup {
 		}
 	}
 
-	public void showPropServer (Integer index) {
+	public void showPropServer(Integer index) {
 		this.props.get(index).hide = false;
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
 	}
 
-	public void showPropServerByName (String name) {
+	public void showPropServerByName(String name) {
 		for (int i = 0; i < this.props.size(); i++) {
 			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
 				this.props.get(i).hide = false;
@@ -150,7 +150,7 @@ public class PropGroup {
 		}
 	}
 
-	public void togglePropServer (Integer index) {
+	public void togglePropServer(Integer index) {
 		if (this.props.get(index).hide == true) {
 			this.props.get(index).hide = false;
 			Server.sendAssociatedData(this.player, EnumPackets.PROP_SHOW, this.player.getUniqueID(), index);
@@ -160,7 +160,7 @@ public class PropGroup {
 		}
 	}
 
-	public void togglePropServerByName (String name) {
+	public void togglePropServerByName(String name) {
 		for (int i = 0; i < this.props.size(); i++) {
 			if (this.props.get(i).name.toLowerCase().equals(name.toLowerCase())) {
 				if (this.props.get(i).hide == true) {
@@ -174,7 +174,7 @@ public class PropGroup {
 		}
 	}
 
-	public void namePropServer (String name) {
+	public void namePropServer(String name) {
 		this.props.get(this.props.size() - 1).name = name;
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_NAME, this.player.getUniqueID(), name);
 	}

@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,6 +54,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public EntityPlayer player;
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
+	public boolean showHat = true;
+	public boolean showShirt = true;
+	public boolean showPants = true;
 
 	public static final byte SECTION_NONE = 0;
 	public static final byte SECTION_INTRO = 1;
@@ -364,8 +366,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void showPropGroupServerByName(String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
-			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
+			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.get(i).hide = false;
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
 			}
@@ -378,8 +380,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void hidePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
-			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
+			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.get(i).hide = true;
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_HIDE, this.player.getUniqueID(), i);
 			}
@@ -387,8 +389,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void togglePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
-			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
+			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				if (this.propGroups.get(i).hide == true) {
 					this.propGroups.get(i).hide = false;
 					Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_SHOW, this.player.getUniqueID(), i);
@@ -401,16 +403,16 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void removePropGroupByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
-			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
+			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.remove(i);
 			}
 		}
 	}
 
 	public void removePropGroupServerByName (String name) {
-		for (int i = 0; i < this.propGroups.size(); i++) {
-			if (this.propGroups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+		for (int i = this.propGroups.size() - 1; i >= 0; i--) {
+			if (this.propGroups.get(i).name.toLowerCase().startsWith(name.toLowerCase())) {
 				this.propGroups.remove(i);
 				Server.sendAssociatedData(this.player, EnumPackets.PROPGROUP_REMOVE, this.player.getUniqueID(), i);
 			}

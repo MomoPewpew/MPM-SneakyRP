@@ -40,4 +40,7 @@ public enum EnumPackets {
 	EMOTE_DATA,
 	EMOTE_END,
 	NAMES_TOGGLE,
+	TOGGLE_HAT,
+	TOGGLE_SHIRT,
+	TOGGLE_PANTS
 }

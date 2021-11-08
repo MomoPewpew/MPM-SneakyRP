@@ -28,7 +28,7 @@ import noppes.mpm.constants.EnumPackets;
 
 public class CommandMPM extends MpmCommandInterface {
 	private HashMap entities = new HashMap();
-	private List sub = Arrays.asList("url", "name", "entity", "scale", "sendmodel", "enableentity", "disableentity");
+	private List sub = Arrays.asList("url", "name", "entity", "scale", "sendmodel", "enableentity", "disableentity", "hat", "shirt", "pants");
 
 	public CommandMPM() {
 		Iterator var1 = ForgeRegistries.ENTITIES.getValues().iterator();
@@ -101,6 +101,15 @@ public class CommandMPM extends MpmCommandInterface {
 						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.ENTITIES_DISABLE, 100);
 						if (!MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
 						MorePlayerModels.playersEntityDenied.add(((EntityPlayer) icommandsender).getUniqueID());
+					} else if (type.equals("hat")) {
+						data.showHat = !data.showHat;
+						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_HAT, 100);
+					} else if (type.equals("shirt")) {
+						data.showShirt = !data.showShirt;
+						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_SHIRT, 100);
+					} else if (type.equals("pants")) {
+						data.showPants = !data.showPants;
+						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_PANTS, 100);
 					}
 				}
 			}

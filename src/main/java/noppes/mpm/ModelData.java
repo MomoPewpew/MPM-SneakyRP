@@ -54,6 +54,9 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public EntityPlayer player;
 	public PropGroup propBase;
 	public List<PropGroup> propGroups;
+	public boolean showHat = true;
+	public boolean showShirt = true;
+	public boolean showPants = true;
 
 	public static final byte SECTION_NONE = 0;
 	public static final byte SECTION_INTRO = 1;

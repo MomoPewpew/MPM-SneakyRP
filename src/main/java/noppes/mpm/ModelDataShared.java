@@ -28,9 +28,9 @@ public class ModelDataShared {
 	public String url = "";
 	public String displayName = "";
 	public String displayFormat = "";
-	public boolean showHat = true;
-	public boolean showShirt = true;
-	public boolean showPants = true;
+	public boolean hideHat = false;
+	public boolean hideShirt = false;
+	public boolean hidePants = false;
 
 	public NBTTagCompound writeToNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
@@ -52,9 +52,9 @@ public class ModelDataShared {
 		compound.setString("CustomSkinUrl", this.url);
 		compound.setString("DisplayName", this.displayName);
 		compound.setString("DisplayDisplayFormat", this.displayFormat);
-		compound.setBoolean("showHat", this.showHat);
-		compound.setBoolean("showShirt", this.showShirt);
-		compound.setBoolean("showPants", this.showPants);
+		compound.setBoolean("hideHat", this.hideHat);
+		compound.setBoolean("hideShirt", this.hideShirt);
+		compound.setBoolean("hidePants", this.hidePants);
 		NBTTagList list = new NBTTagList();
 		Iterator var3 = this.parts.keySet().iterator();
 
@@ -89,9 +89,9 @@ public class ModelDataShared {
 		this.url = compound.getString("CustomSkinUrl");
 		this.displayName = compound.getString("DisplayName");
 		this.displayFormat = compound.getString("DisplayDisplayFormat");
-		this.showHat = compound.getBoolean("showHat");
-		this.showShirt = compound.getBoolean("showShirt");
-		this.showPants = compound.getBoolean("showPants");
+		this.hideHat = compound.getBoolean("hideHat");
+		this.hideShirt = compound.getBoolean("hideShirt");
+		this.hidePants = compound.getBoolean("hidePants");
 		HashMap parts = new HashMap();
 		NBTTagList list = compound.getTagList("Parts", 10);
 

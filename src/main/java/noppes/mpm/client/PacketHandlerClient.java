@@ -397,13 +397,13 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				MorePlayerModels.HidePlayerNames = !MorePlayerModels.HidePlayerNames;
 			} else if (type == EnumPackets.TOGGLE_HAT) {
 				ModelData data = ModelData.get(player);
-				data.showHat = !data.showHat;
+				data.hideHat = !data.hideHat;
 			} else if (type == EnumPackets.TOGGLE_SHIRT) {
 				ModelData data = ModelData.get(player);
-				data.showShirt = !data.showShirt;
+				data.hideHat = !data.hideHat;
 			} else if (type == EnumPackets.TOGGLE_PANTS) {
 				ModelData data = ModelData.get(player);
-				data.showPants = !data.showPants;
+				data.hidePants = !data.hidePants;
 			}
 		}
 	}

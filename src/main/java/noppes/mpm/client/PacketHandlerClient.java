@@ -400,7 +400,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				data.hideHat = !data.hideHat;
 			} else if (type == EnumPackets.TOGGLE_SHIRT) {
 				ModelData data = ModelData.get(player);
-				data.hideHat = !data.hideHat;
+				data.hideShirt = !data.hideShirt;
 			} else if (type == EnumPackets.TOGGLE_PANTS) {
 				ModelData data = ModelData.get(player);
 				data.hidePants = !data.hidePants;

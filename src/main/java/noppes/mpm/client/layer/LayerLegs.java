@@ -259,6 +259,6 @@ public class LayerLegs extends LayerInterface implements LayerPreRender {
 
 		this.model.bipedLeftLeg.isHidden = this.model.bipedLeftLegwear.isHidden = data == null || data.type != 0 || dataLeftLeg.type != 0;
 		this.model.bipedRightLeg.isHidden = this.model.bipedRightLegwear.isHidden = data == null || data.type != 0 || dataRightLeg.type != 0;
-		this.model.bipedLeftLegwear.showModel = this.model.bipedRightLegwear.showModel = this.playerdata.showPants;
+		this.model.bipedLeftLegwear.showModel = this.model.bipedRightLegwear.showModel = !this.playerdata.hidePants;
 	}
 }

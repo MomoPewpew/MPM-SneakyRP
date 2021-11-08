@@ -22,7 +22,7 @@ public class LayerHeadwear extends LayerInterface implements LayerPreRender {
 
 	@Override
 	public void render(float par2, float par3, float par4, float par5, float par6, float par7) {
-		if (MorePlayerModels.HeadWearType == 1 && !this.model.bipedHead.isHidden && this.model.bipedHead.showModel && this.playerdata.showHat) {
+		if (MorePlayerModels.HeadWearType == 1 && !this.model.bipedHead.isHidden && this.model.bipedHead.showModel && !this.playerdata.hideHat) {
 			GlStateManager.translate(this.model.bipedHead.offsetX, this.model.bipedHead.offsetY, this.model.bipedHead.offsetZ);
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F);
@@ -49,6 +49,6 @@ public class LayerHeadwear extends LayerInterface implements LayerPreRender {
 
 		this.model.bipedHeadwear.isHidden = MorePlayerModels.HeadWearType == 1;
 		this.headwear.config = null;
-		this.model.bipedHeadwear.showModel = this.playerdata.showHat;
+		this.model.bipedHeadwear.showModel = !this.playerdata.hideHat;
 	}
 }

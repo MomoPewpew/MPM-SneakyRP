@@ -57,16 +57,16 @@ public class LayerBipedArmorAlt extends LayerArmorBase<ModelBiped> {
 
 		switch (slot) {
 		case HEAD:
-			if (!data.showHat) return null;
+			if (data.hideHat) return null;
 			break;
 		case CHEST:
-			if (!data.showShirt) return null;
+			if (data.hideShirt) return null;
 			break;
 		case LEGS:
-			if (!data.showPants) return null;
+			if (data.hidePants) return null;
 			break;
 		case FEET:
-			if (!data.showPants) return null;
+			if (data.hidePants) return null;
 			break;
 		}
 

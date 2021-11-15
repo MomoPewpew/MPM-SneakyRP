@@ -165,7 +165,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	}
 
 	public void reloadSkinType() {
-		NetworkPlayerInfo playerInfo = (NetworkPlayerInfo)ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, (AbstractClientPlayer) this.player, 0);
+		NetworkPlayerInfo playerInfo = null;
+
+		if (this.player != null) {
+			playerInfo = (NetworkPlayerInfo)ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, (AbstractClientPlayer) this.player, 0);
+		}
+
+		if (playerInfo == null) return;
 
 		String type;
 

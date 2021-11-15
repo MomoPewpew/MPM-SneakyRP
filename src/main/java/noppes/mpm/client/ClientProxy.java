@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerElytra;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
@@ -37,6 +38,7 @@ import noppes.mpm.client.layer.LayerElytraAlt;
 import noppes.mpm.client.layer.LayerEyes;
 import noppes.mpm.client.layer.LayerHead;
 import noppes.mpm.client.layer.LayerHeadwear;
+import noppes.mpm.client.layer.LayerHeldItemAlt;
 import noppes.mpm.client.layer.LayerInterface;
 import noppes.mpm.client.layer.LayerLegs;
 import noppes.mpm.client.layer.LayerProp;
@@ -134,7 +136,7 @@ public class ClientProxy extends CommonProxy {
 	private static void addLayers(RenderPlayer playerRender) {
 		List list = playerRender.layerRenderers;
 		list.removeIf((layer) -> {
-			return layer instanceof LayerCape || layer instanceof LayerBipedArmor;
+			return layer instanceof LayerCape || layer instanceof LayerBipedArmor || layer instanceof LayerHeldItem;
 		});
 		list.add(1, new LayerEyes(playerRender));
 		list.add(2, new LayerHead(playerRender));
@@ -147,6 +149,7 @@ public class ClientProxy extends CommonProxy {
 		list.add(new LayerBackItem(playerRender));
 		list.add(new LayerProp(playerRender));
 		list.add(new LayerBipedArmorAlt(playerRender));
+		list.add(new LayerHeldItemAlt(playerRender));
 	}
 
 	public static void bindTexture(ResourceLocation location) {

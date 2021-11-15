@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,9 +27,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 
 import noppes.mpm.LogWriter;
@@ -45,6 +48,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public static Capability MODELDATA_CAPABILITY = null;
 	public boolean resourceInit = false;
 	public boolean resourceLoaded = false;
+	public boolean armsLoaded = false;
 	public Object textureObject = null;
 	public ItemStack backItem;
 	public short soundType;
@@ -133,6 +137,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		}
 
 		String prevUrl = new String(this.url);
+		Boolean prevModelType = new Boolean(this.slim);
+
 		super.readFromNBT(compound);
 		this.soundType = compound.getShort("SoundType");
 		if (this.player != null) {
@@ -149,7 +155,27 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			this.resourceLoaded = false;
 		}
 
+		if (this.player != null) {
+			if (this.player.worldObj.isRemote && !prevModelType.equals(this.slim)) {
+				this.reloadSkinType();
+			}
+		}
+
 		this.propsFromNBT(compound);
+	}
+
+	public void reloadSkinType() {
+		NetworkPlayerInfo playerInfo = (NetworkPlayerInfo)ObfuscationReflectionHelper.getPrivateValue(AbstractClientPlayer.class, (AbstractClientPlayer) this.player, 0);
+
+		String type;
+
+		if (this.slim) {
+			type = "slim";
+		} else {
+			type = "default";
+		}
+
+		ObfuscationReflectionHelper.setPrivateValue(NetworkPlayerInfo.class, playerInfo, type, 5);
 	}
 
 	public EntityLivingBase getEntity(EntityPlayer player) {

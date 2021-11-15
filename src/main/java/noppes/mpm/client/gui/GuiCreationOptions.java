@@ -23,6 +23,9 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
 		this.addTextField(new GuiNpcTextField(52, this, var10005, y, 200, 20, this.playerdata.url));
 		this.addLabel(new GuiNpcLabel(52, "config.skinurl", this.guiLeft, y + 5, 16777215));
 		//this.addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
+		y += 23;
+		this.addLabel(new GuiNpcLabel(5, "part.arms", this.guiLeft, y + 5, 16777215));
+		this.addButton(new GuiNpcButton(11, this.guiLeft + 58, y, 80, 20, new String[]{"gui.default", "gui.slim"}, this.playerdata.slim ? 1 : 0));
 	}
 
 	@Override
@@ -36,6 +39,11 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IT
 
 			if (button.id == 10) {
 				this.setSubGui(new GuiTextureSelection(this.playerdata));
+			}
+
+			if (button.id == 11) {
+				this.playerdata.slim = button.getValue() == 1;
+				if (this.getPlayer() != null) this.playerdata.reloadSkinType();
 			}
 
 		}

@@ -65,6 +65,9 @@ public class LayerArms extends LayerInterface implements LayerPreRender  {
 
 		this.model.bipedLeftArm.isHidden = this.model.bipedLeftArmwear.isHidden = dataLeftArm.type != 0;
 		this.model.bipedRightArm.isHidden = this.model.bipedRightArmwear.isHidden = dataRightArm.type != 0;
-		this.model.bipedLeftArmwear.showModel = this.model.bipedRightArmwear.showModel = !this.playerdata.hideShirt;
+
+		if (this.playerdata.hideShirt) {
+			this.model.bipedLeftArmwear.showModel = this.model.bipedRightArmwear.showModel = false;
+		}
 	}
 }

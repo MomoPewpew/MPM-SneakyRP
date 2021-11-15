@@ -49,6 +49,9 @@ public class LayerHeadwear extends LayerInterface implements LayerPreRender {
 
 		this.model.bipedHeadwear.isHidden = MorePlayerModels.HeadWearType == 1;
 		this.headwear.config = null;
-		this.model.bipedHeadwear.showModel = !this.playerdata.hideHat;
+
+		if (this.playerdata.hideHat) {
+			this.model.bipedHeadwear.showModel = false;
+		}
 	}
 }

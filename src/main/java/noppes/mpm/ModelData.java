@@ -1123,16 +1123,16 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.LEFT_LEG]&Emote.FLAG_USED) > 0) {
+			setPartOffsetToTwo(biped.bipedRightLeg, biped.bipedRightLegwear, Emote.LEFT_LEG, states, config);
+		}
+		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {
 				setPartRotateBoundToHead(biped.bipedLeftLeg, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
 				setPartRotateBoundToHead(biped.bipedLeftLegwear, Emote.LEFT_LEG, states, netHeadYaw, headPitch);
 			} else {
-				setPartOffsetToTwo(biped.bipedLeftLeg, biped.bipedLeftLegwear, Emote.LEFT_LEG, states, config);
+				setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
+				setPartRotate(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
 			}
-		}
-		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
-			setPartRotate(biped.bipedLeftLeg, Emote.LEFT_LEG, states);
-			setPartRotate(biped.bipedLeftLegwear, Emote.LEFT_LEG, states);
 		}
 
 		if((partUsages[2*Emote.BODY]&Emote.FLAG_USED) > 0 || (partUsages[2*Emote.BODY + 1]&Emote.FLAG_USED) > 0) {

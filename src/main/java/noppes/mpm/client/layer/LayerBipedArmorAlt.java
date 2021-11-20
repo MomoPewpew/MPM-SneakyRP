@@ -2,7 +2,7 @@ package noppes.mpm.client.layer;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import noppes.mpm.ModelData;
 
 @SideOnly(Side.CLIENT)
-public class LayerBipedArmorAlt extends LayerArmorBase<ModelBiped> {
+public class LayerBipedArmorAlt extends LayerBipedArmor {
+
+	ModelData data = null;
 
 	public LayerBipedArmorAlt(RenderLivingBase<?> render) {
 		super(render);
@@ -28,22 +30,44 @@ public class LayerBipedArmorAlt extends LayerArmorBase<ModelBiped> {
 		setModelVisible(model);
 		switch (slot) {
 		case HEAD:
-			model.bipedHead.showModel = true;
-			model.bipedHeadwear.showModel = true;
+			if (data.hideHat) {
+				model.bipedHead.showModel = false;
+				model.bipedHeadwear.showModel = false;
+			} else {
+				model.bipedHead.showModel = true;
+				model.bipedHeadwear.showModel = true;
+			}
 			break;
 		case CHEST:
-			model.bipedBody.showModel = true;
-			model.bipedRightArm.showModel = true;
-			model.bipedLeftArm.showModel = true;
+			if (data.hideShirt) {
+				model.bipedBody.showModel = false;
+				model.bipedRightArm.showModel =false;
+				model.bipedLeftArm.showModel = false;
+			} else {
+				model.bipedBody.showModel = true;
+				model.bipedRightArm.showModel = true;
+				model.bipedLeftArm.showModel = true;
+			}
 			break;
 		case LEGS:
-			model.bipedBody.showModel = true;
-			model.bipedRightLeg.showModel = true;
-			model.bipedLeftLeg.showModel = true;
+			if (data.hidePants) {
+				model.bipedBody.showModel = false;
+				model.bipedRightLeg.showModel = false;
+				model.bipedLeftLeg.showModel = false;
+			} else {
+				model.bipedBody.showModel = true;
+				model.bipedRightLeg.showModel = true;
+				model.bipedLeftLeg.showModel = true;
+			}
 			break;
 		case FEET:
-			model.bipedRightLeg.showModel = true;
-			model.bipedLeftLeg.showModel = true;
+			if (data.hidePants) {
+				model.bipedRightLeg.showModel = false;
+				model.bipedLeftLeg.showModel = false;
+			} else {
+				model.bipedRightLeg.showModel = true;
+				model.bipedLeftLeg.showModel = true;
+			}
 			break;
 		}
 	}
@@ -53,23 +77,7 @@ public class LayerBipedArmorAlt extends LayerArmorBase<ModelBiped> {
 	}
 
 	protected ModelBiped getArmorModelHook(EntityLivingBase entity, ItemStack stack, EntityEquipmentSlot slot, ModelBiped model) {
-		ModelData data = ModelData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(entity.getUniqueID()));
-
-		switch (slot) {
-		case HEAD:
-			if (data.hideHat) return null;
-			break;
-		case CHEST:
-			if (data.hideShirt) return null;
-			break;
-		case LEGS:
-			if (data.hidePants) return null;
-			break;
-		case FEET:
-			if (data.hidePants) return null;
-			break;
-		}
-
+		if (data == null) data = ModelData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(entity.getUniqueID()));
 		return ForgeHooksClient.getArmorModel(entity, stack, slot, model);
 	}
 }

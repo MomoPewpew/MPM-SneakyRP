@@ -136,7 +136,7 @@ public class ClientProxy extends CommonProxy {
 	private static void addLayers(RenderPlayer playerRender) {
 		List list = playerRender.layerRenderers;
 		list.removeIf((layer) -> {
-			return layer instanceof LayerCape || layer instanceof LayerBipedArmor || layer instanceof LayerHeldItem;
+			return layer instanceof LayerCape || layer.getClass() == LayerBipedArmor.class || layer.getClass() == LayerHeldItem.class;
 		});
 		list.add(1, new LayerEyes(playerRender));
 		list.add(2, new LayerHead(playerRender));

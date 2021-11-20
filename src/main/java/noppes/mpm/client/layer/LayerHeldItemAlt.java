@@ -46,8 +46,8 @@ public class LayerHeldItemAlt extends LayerHeldItem {
 
 	private void renderHeldItem(EntityLivingBase entity, ItemStack stack, ItemCameraTransforms.TransformType type, EnumHandSide side) {
 		if (stack != null) {
-			if (entity instanceof EntityPlayer) {
-				ModelData data = ModelData.get(FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(entity.getUniqueID()));
+			if (entity instanceof EntityPlayer && entity != null) {
+				ModelData data = ModelData.get((EntityPlayer) entity);
 				ModelPartData dataLeftArm = data.getOrCreatePart(EnumParts.ARM_LEFT);
 				ModelPartData dataRightArm = data.getOrCreatePart(EnumParts.ARM_RIGHT);
 

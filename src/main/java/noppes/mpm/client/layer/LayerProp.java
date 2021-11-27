@@ -678,7 +678,7 @@ public class LayerProp extends LayerInterface {
 
 					this.player.worldObj.spawnParticle(propParticleType,
 						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
-						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]),
+						this.player.posY + propOffsetYCorrected + partModifierY - propBodyPart.offsetY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]) + this.playerdata.modelOffsetY,
 						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
 						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}

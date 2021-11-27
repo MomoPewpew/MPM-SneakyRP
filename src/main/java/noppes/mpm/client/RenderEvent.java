@@ -86,6 +86,8 @@ public class RenderEvent {
 
 			ModelData data = ModelData.get(player);
 
+			GlStateManager.translate(0.0F, data.modelOffsetY, 0.0F);
+
 			float offset = data.getOffsetCamera(player);
 			player.eyeHeight = player.getDefaultEyeHeight() - offset;
 			if (!data.resourceInit && lastSkinTick > 6L) {

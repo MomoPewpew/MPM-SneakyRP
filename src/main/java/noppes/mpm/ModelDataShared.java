@@ -32,6 +32,7 @@ public class ModelDataShared {
 	public boolean hideShirt = false;
 	public boolean hidePants = false;
 	public boolean slim = false;
+	public float modelOffsetY = 0.0F;
 
 	public NBTTagCompound writeToNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
@@ -57,6 +58,7 @@ public class ModelDataShared {
 		compound.setBoolean("hideShirt", this.hideShirt);
 		compound.setBoolean("hidePants", this.hidePants);
 		compound.setBoolean("slim", this.slim);
+		compound.setFloat("modelOffsetY", this.modelOffsetY);
 		NBTTagList list = new NBTTagList();
 		Iterator var3 = this.parts.keySet().iterator();
 
@@ -95,6 +97,7 @@ public class ModelDataShared {
 		this.hideShirt = compound.getBoolean("hideShirt");
 		this.hidePants = compound.getBoolean("hidePants");
 		this.slim = compound.getBoolean("slim");
+		this.modelOffsetY = compound.getFloat("modelOffsetY");
 		HashMap parts = new HashMap();
 		NBTTagList list = compound.getTagList("Parts", 10);
 

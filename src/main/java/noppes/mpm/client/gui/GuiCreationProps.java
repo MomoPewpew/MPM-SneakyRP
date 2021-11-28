@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
@@ -50,6 +46,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	private static int propGroupAmount;
 	private static Prop prop = null;
 	private static Boolean advanced = false;
+	private static float tempX = 0.0F;
+	private static float tempY = 0.0F;
+	private static float tempZ = 0.0F;
 
 	public GuiCreationProps() {
 		this.playerdata = ModelData.get(this.getPlayer());
@@ -318,10 +317,53 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			this.addLabel(new GuiNpcLabel(303, "gui.name", guiOffsetX, y + 5, 16777215));
 			this.addTextField(new GuiNpcTextField(303, this, guiOffsetX + 33, y, 185, 20, selectedPropGroup.name));
 			y += 22;
-			this.addButton(new GuiNpcButton(307, guiOffsetX, y, 100, 20, "gui.browse"));
-			this.addButton(new GuiNpcButton(308, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, selectedPropGroup.hide ? 1 : 0));
+			this.addButton(new GuiNpcButton(307, guiOffsetX, y, 90, 20, "gui.browse"));
+			this.addButton(new GuiNpcButton(308, guiOffsetX + 92, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, selectedPropGroup.hide ? 1 : 0));
+			this.addButton(new GuiNpcButton(310, guiOffsetX + 144, y, 49, 20, "gui.flipx"));
 			y += 22;
-			this.addButton(new GuiNpcButton(310, guiOffsetX, y, 49, 20, "gui.flipx"));
+
+			if (sliders == 506) sliders = 106;
+			if (sliders == 508) sliders = 108;
+			if (sliders > 107 || sliders < 106) sliders = 106;
+
+			this.addButton(new GuiNpcButton(106, guiOffsetX, y, 49, 20, "gui.offset"));
+			this.addButton(new GuiNpcButton(107, guiOffsetX + 50, y, 142, 20, "gui.postprocessingoffset"));
+			y += 22;
+
+			if (sliders == 106) {
+				this.addTextField(new GuiNpcTextField(311, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 311, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(311).displayString = "X";
+
+				y += 22;
+				this.addTextField(new GuiNpcTextField(312, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 312, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(312).displayString = "Y";
+
+				y += 22;
+				this.addTextField(new GuiNpcTextField(313, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 313, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(313).displayString = "Z";
+			} else {
+				this.addTextField(new GuiNpcTextField(314, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 314, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(314).displayString = "X";
+
+				y += 22;
+				this.addTextField(new GuiNpcTextField(315, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 315, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(315).displayString = "Y";
+
+				y += 22;
+				this.addTextField(new GuiNpcTextField(316, this, guiOffsetX + 155, y + 1, 36, 18, "0.00"));
+				this.addSlider(new GuiNpcSlider(this, 316, guiOffsetX, y, 152, 20, 0.5F));
+				this.getSlider(316).displayString = "Z";
+			}
+
+			tempX = 0.0F;
+			tempY = 0.0F;
+			tempZ = 0.0F;
+			this.getButton(sliders).enabled = false;
 		}
 
 		this.initiating = false;
@@ -459,7 +501,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 		super.mouseDragged(slider);
 		if (this.initiating) return;
 
-		if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 126 && slider.id <= 128) || (slider.id >= 509 && slider.id <= 514)) {
+		if ((slider.id >= 109 && slider.id <= 117) || (slider.id >= 126 && slider.id <= 128) || (slider.id >= 509 && slider.id <= 514) || (slider.id >= 311 && slider.id <= 316)) {
 			Float value = 0.0F;
 			String text = "";
 
@@ -528,7 +570,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 					prop.speed = (double) value;
 					text = String.format(java.util.Locale.US,"%.2f", value);
 				}
-
 			} else if (slider.id >= 126 && slider.id <= 128) {
 				value = ((slider.sliderValue - 0.5F) * (maxOffset * 2.0F));
 
@@ -538,6 +579,42 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 					prop.ppOffsetY = value;
 				} else if (slider.id == 128) {
 					prop.ppOffsetZ = value;
+				}
+
+				text = String.format(java.util.Locale.US,"%.2f", value);
+			} else if (slider.id >= 311 && slider.id <= 316) {
+				value = ((slider.sliderValue - 0.5F) * (maxOffset * 2.0F));
+
+				if (slider.id == 311) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetX += (value - tempX);
+					}
+					tempX = value;
+				} else if (slider.id == 312) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetY += (value - tempY);
+					}
+					tempY = value;
+				} else if (slider.id == 313) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetZ += (value - tempZ);
+					}
+					tempZ = value;
+				} else if (slider.id == 314) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetX += (value - tempX);
+					}
+					tempX = value;
+				} else if (slider.id == 315) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetY += (value - tempY);
+					}
+					tempY = value;
+				} else if (slider.id == 316) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetZ += (value - tempZ);
+					}
+					tempZ = value;
 				}
 
 				text = String.format(java.util.Locale.US,"%.2f", value);
@@ -606,7 +683,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 			selectedPropGroup.name = textField.getText();
 			this.initGui();
-		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 126 && textField.id <= 128) || (textField.id >= 509 && textField.id <= 514)) {
+		} else if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 126 && textField.id <= 128) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316)) {
 			Float value = null;
 			try {
 				value = Float.parseFloat(textField.getText().replace(',', '.'));
@@ -678,6 +755,40 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				} else if (textField.id == 128) {
 					prop.ppOffsetZ = value;
 				}
+			} else if (textField.id >= 311 && textField.id <= 316) {
+				sliderValue = (value + maxOffset) / (maxOffset * 2.0F);
+
+				if (textField.id == 311) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetX += (value - tempX);
+					}
+					tempX = value;
+				} else if (textField.id == 312) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetY += (value - tempY);
+					}
+					tempY = value;
+				} else if (textField.id == 313) {
+					for (Prop p : selectedPropGroup.props) {
+						p.offsetZ += (value - tempZ);
+					}
+					tempZ = value;
+				} else if (textField.id == 314) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetX += (value - tempX);
+					}
+					tempX = value;
+				} else if (textField.id == 315) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetY += (value - tempY);
+					}
+					tempY = value;
+				} else if (textField.id == 316) {
+					for (Prop p : selectedPropGroup.props) {
+						p.ppOffsetZ += (value - tempZ);
+					}
+					tempZ = value;
+				}
 			}
 
 			textField.setCursorPositionZero();
@@ -691,7 +802,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 		if (this.initiating) return;
 
-		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514)) {
+		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316)) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

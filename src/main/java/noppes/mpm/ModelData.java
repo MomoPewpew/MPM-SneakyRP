@@ -240,6 +240,8 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				offset = -0.2F;
 			}
 
+			offset -= this.modelOffsetY;
+
 			return offset;
 		}
 	}

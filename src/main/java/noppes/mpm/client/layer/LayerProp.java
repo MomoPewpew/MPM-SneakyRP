@@ -308,6 +308,14 @@ public class LayerProp extends LayerInterface {
 				List<Field> renderers = new ArrayList<Field>();
 				Field[] fields;
 
+				fields = model.getClass().getFields();
+
+				for (Field field : fields) {
+					if (field.getType() == ModelRenderer.class) {
+						renderers.add(field);
+					}
+				}
+
 				fields = model.getClass().getDeclaredFields();
 
 				for (Field field : fields) {

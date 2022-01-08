@@ -1125,7 +1125,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 		if((partUsages[2*Emote.LEFT_LEG]&Emote.FLAG_USED) > 0) {
-			setPartOffsetToTwo(biped.bipedRightLeg, biped.bipedRightLegwear, Emote.LEFT_LEG, states, config);
+			setPartOffsetToTwo(biped.bipedLeftLeg, biped.bipedLeftLegwear, Emote.LEFT_LEG, states, config);
 		}
 		if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_USED) > 0) {
 			if((partUsages[2*Emote.LEFT_LEG + 1]&Emote.FLAG_FOLLOWS_HEAD_ROTATION) > 0) {

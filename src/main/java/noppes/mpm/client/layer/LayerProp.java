@@ -338,9 +338,9 @@ public class LayerProp extends LayerInterface {
 				motherRenderer = new ModelRenderer(model);
 				propRenderer = new ModelRenderer(model);
 
-				partModifierX = propBodyPart.rotationPointX / 16;
+				partModifierX = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * propBodyPart.rotationPointZ)) / 16);
 				partModifierY = propBodyPart.rotationPointY / 16 - 1.525F;
-				partModifierZ = -propBodyPart.rotationPointZ / 16;
+				partModifierZ = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * propBodyPart.rotationPointX)) / 16);
 
 				if (this.player.isSneaking()) {
 					partModifierY += 0.1875F;

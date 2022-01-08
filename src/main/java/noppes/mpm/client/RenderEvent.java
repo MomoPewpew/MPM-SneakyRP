@@ -36,6 +36,7 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.layer.LayerPreRender;
+import noppes.mpm.client.layer.LayerProp;
 import noppes.mpm.util.PixelmonHelper;
 
 public class RenderEvent {
@@ -146,6 +147,16 @@ public class RenderEvent {
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
 				GlStateManager.popMatrix();
+
+                List layers = event.getRenderer().layerRenderers;
+                Iterator var8 = layers.iterator();
+
+                while(var8.hasNext()) {
+                     LayerRenderer layer = (LayerRenderer)var8.next();
+                     if (layer instanceof LayerProp) {
+                          ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
+                     }
+                }
 			} else {
 				offset = 0.0F;
 				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {

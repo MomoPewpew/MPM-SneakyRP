@@ -347,7 +347,7 @@ public class LayerProp extends LayerInterface {
 				}
 
 				partXrotation = (float) (Math.PI + propBodyPart.rotateAngleX);
-				partYrotation = (float) (Math.PI - propBodyPart.rotateAngleY);
+				partYrotation = (float) (-propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
 			}
 
 			motherRenderer.addChild(propRenderer);

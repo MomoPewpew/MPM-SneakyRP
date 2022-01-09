@@ -29,6 +29,7 @@ public class BodyPartManager {
 
 		for (Field field : fields) {
 			if (field.getType() == ModelRenderer.class && !renderers.contains(field)) {
+				field.setAccessible(true);
 				renderers.add(field);
 			}
 		}
@@ -37,6 +38,7 @@ public class BodyPartManager {
 
 		for (Field field : fields) {
 			if (field.getType() == ModelRenderer.class && !renderers.contains(field)) {
+				field.setAccessible(true);
 				renderers.add(field);
 			}
 		}

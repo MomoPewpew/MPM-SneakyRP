@@ -22,6 +22,7 @@ import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumParts;
+import noppes.mpm.util.BodyPartManager;
 import noppes.mpm.ModelPartConfig;
 
 public class LayerProp extends LayerInterface {
@@ -301,39 +302,11 @@ public class LayerProp extends LayerInterface {
 
 				i = 29;
 			} else {
-				Minecraft mc = Minecraft.getMinecraft();
 				EntityLivingBase entity = this.playerdata.getEntity(this.player);
-				ModelBase model = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
 
-				List<Field> renderers = new ArrayList<Field>();
-				Field[] fields;
+				propBodyPart = BodyPartManager.getRenderer(entity, i);
 
-				fields = model.getClass().getFields();
-
-				for (Field field : fields) {
-					if (field.getType() == ModelRenderer.class) {
-						renderers.add(field);
-					}
-				}
-
-				fields = model.getClass().getDeclaredFields();
-
-				for (Field field : fields) {
-					if (field.getType() == ModelRenderer.class) {
-						renderers.add(field);
-					}
-				}
-
-				if (i > renderers.size() - 1) return;
-
-				try {
-					renderers.get(i).setAccessible(true);
-					propBodyPart = (ModelRenderer) renderers.get(i).get(model);
-				} catch (IllegalArgumentException e) {
-					return;
-				} catch (IllegalAccessException e) {
-					return;
-				}
+				if (propBodyPart == null) return;
 
 				motherRenderer = new ModelRenderer(model);
 				propRenderer = new ModelRenderer(model);

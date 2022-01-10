@@ -1,9 +1,5 @@
 package noppes.mpm.client.layer;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -15,14 +11,10 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumParticleTypes;
 import noppes.mpm.Emote;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
-import noppes.mpm.constants.EnumParts;
-import noppes.mpm.util.BodyPartManager;
 import noppes.mpm.ModelPartConfig;
 
 public class LayerProp extends LayerInterface {

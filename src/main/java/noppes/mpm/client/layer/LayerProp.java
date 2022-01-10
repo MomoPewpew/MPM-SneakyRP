@@ -87,10 +87,10 @@ public class LayerProp extends LayerInterface {
 				}
 			} else {
 				Minecraft mc = Minecraft.getMinecraft();
-				ModelBase model = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
+				ModelBase entityModel = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
 
-				motherRenderer = new ModelRenderer(model);
-				propRenderer = new ModelRenderer(model);
+				motherRenderer = new ModelRenderer(entityModel);
+				propRenderer = new ModelRenderer(entityModel);
 
 				if (this.player.isSneaking()) {
 					sneakModifierY = 0.1875F;

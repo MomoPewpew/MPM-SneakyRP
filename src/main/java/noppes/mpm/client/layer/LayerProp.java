@@ -63,7 +63,9 @@ public class LayerProp extends LayerInterface {
 			float partYrotation = 0.0F;
 
 			ModelPartConfig config = null;
-			if (this.playerdata.getEntity(this.player) == null) {
+
+			EntityLivingBase entity = this.playerdata.getEntity(this.player);
+			if (entity == null) {
 				motherRenderer = new ModelRenderer(this.model);
 				propRenderer = new ModelRenderer(this.model);
 
@@ -85,7 +87,6 @@ public class LayerProp extends LayerInterface {
 				}
 			} else {
 				Minecraft mc = Minecraft.getMinecraft();
-				EntityLivingBase entity = this.playerdata.getEntity(this.player);
 				ModelBase model = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
 
 				motherRenderer = new ModelRenderer(model);

@@ -59,7 +59,6 @@ public class LayerProp extends LayerInterface {
 
 	private void renderItemProp(Prop prop, float par7) {
 		if (!prop.hide) {
-			prop.propBodyPart = this.model.bipedLeftArm;
 			Minecraft minecraft = Minecraft.getMinecraft();
 
 			ModelRenderer motherRenderer = null;

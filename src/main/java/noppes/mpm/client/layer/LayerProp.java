@@ -58,7 +58,7 @@ public class LayerProp extends LayerInterface {
 	}
 
 	private void renderItemProp(Prop prop, float par7) {
-		if (!prop.hide) {
+		if (!prop.hide && prop.propBodyPart != null) {
 			Minecraft minecraft = Minecraft.getMinecraft();
 
 			ModelRenderer motherRenderer = null;

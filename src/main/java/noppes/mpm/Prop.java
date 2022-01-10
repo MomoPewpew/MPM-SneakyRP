@@ -38,7 +38,6 @@ public class Prop {
 	public float ppOffsetY = 0.0F;
 	public float ppOffsetZ = 0.0F;
 	public boolean lockrotation = false;
-	public boolean modelProp = false;
 
 	//These are cached variables that are inferred and then used directly in the renderer
 	public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
@@ -472,7 +471,7 @@ public class Prop {
 	}
 
 	//This is backwards compatibility code. Bodyparts are no longer saved as strings, but we need to be able to load props from before this rework.
-	private int switchBipedBodypart(String bodyPartName) {
+	private static int switchBipedBodypart(String bodyPartName) {
 		int partIndex = 0;
 
 		switch(bodyPartName) {
@@ -481,8 +480,7 @@ public class Prop {
 				partIndex = 7;
 				break;
 			case "model":
-				partIndex = 9;
-				this.modelProp = true;
+				partIndex = 1;
 				break;
 			case "body":
 			case "torso":
@@ -517,101 +515,101 @@ public class Prop {
 		EntityLivingBase entity = data.getEntity(player);
 
 		if (entity == null) {
-			this.propBodyPart = BodyPartManager.getRenderer(player, this.partIndex);
+			this.propBodyPart = BodyPartManager.getRenderer(player, (this.partIndex >= 0) ? this.partIndex : 9);
 
-			if (this.propBodyPart != null) {
-				switch(this.partIndex) {
-					case 7:
-						config = data.head;
+			switch(this.partIndex) {
+				case 7:
+					config = data.head;
 
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
-						this.propOffsetX = this.propOffsetX * config.scaleX;
-						this.propOffsetY = (this.propOffsetY + 0.50F) * config.scaleY + 0.20F;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = this.propOffsetX * config.scaleX;
+					this.propOffsetY = (this.propOffsetY + 0.50F) * config.scaleY + 0.20F;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-					case 9:
-						config = data.body;
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
+				case -1:
+				case 9:
+					config = data.body;
 
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
-						this.propOffsetX = this.propOffsetX * config.scaleX;
-						this.propOffsetY = this.propOffsetY * config.scaleY;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = this.propOffsetX * config.scaleX;
+					this.propOffsetY = this.propOffsetY * config.scaleY;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-					case 11:
-						config = data.arm1;
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
+				case 11:
+					config = data.arm1;
 
-						this.partModifierX = (-0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * data.getPartConfig(EnumParts.ARM_LEFT).scaleX);
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
+					this.partModifierX = (-0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * data.getPartConfig(EnumParts.ARM_LEFT).scaleX);
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
 
-						this.propOffsetX = (this.propOffsetX - 0.0625F) * config.scaleX;
-						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = (this.propOffsetX - 0.0625F) * config.scaleX;
+					this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-					case 10:
-						config = data.arm2;
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
+				case 10:
+					config = data.arm2;
 
-						this.partModifierX = (0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * data.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
+					this.partModifierX = (0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * data.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
 
-						this.propOffsetX = (this.propOffsetX + 0.0625F) * config.scaleX;
-						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = (this.propOffsetX + 0.0625F) * config.scaleX;
+					this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-					case 13:
-						config = data.leg1;
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
+				case 13:
+					config = data.leg1;
 
-						this.partModifierX = -0.125F * data.getPartConfig(EnumParts.LEG_LEFT).scaleX;
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY);
+					this.partModifierX = -0.125F * data.getPartConfig(EnumParts.LEG_LEFT).scaleX;
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
-						this.propOffsetX = this.propOffsetX * config.scaleX;
-						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = this.propOffsetX * config.scaleX;
+					this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-					case 12:
-						config = data.leg2;
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
+				case 12:
+					config = data.leg2;
 
-						this.partModifierX = 0.125F * data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
-						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+					this.partModifierX = 0.125F * data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
+					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
-						this.propOffsetX = this.propOffsetX * config.scaleX;
-						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
-						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+					this.propOffsetX = this.propOffsetX * config.scaleX;
+					this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+					this.propOffsetZ = this.propOffsetZ * config.scaleZ;
 
-						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
-						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
-						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
-						break;
-				}
-
-				if (this.matchScaling) {
-					this.propScaleX = propScaleX * config.scaleX;
-					this.propScaleY = propScaleY * config.scaleY;
-					this.propScaleZ = propScaleZ * config.scaleZ;
-				}
+					this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+					this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+					this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+					break;
 			}
-		} else {
+
+			if (this.matchScaling) {
+				this.propScaleX = propScaleX * config.scaleX;
+				this.propScaleY = propScaleY * config.scaleY;
+				this.propScaleZ = propScaleZ * config.scaleZ;
+			}
+
+		} else if (this.partIndex >= 0) {
 			this.propBodyPart = BodyPartManager.getRenderer(entity, this.partIndex);
 			if (this.propBodyPart != null) {
 				this.partModifierX = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) *this.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointZ)) / 16);

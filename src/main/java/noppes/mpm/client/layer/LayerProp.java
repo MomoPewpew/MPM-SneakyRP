@@ -79,8 +79,10 @@ public class LayerProp extends LayerInterface {
 					}
 				}
 
-				partXrotation = prop.propBodyPart.rotateAngleX;
-				partYrotation = prop.propBodyPart.rotateAngleY;
+				if (prop.partIndex >= 0) {
+					partXrotation = prop.propBodyPart.rotateAngleX;
+					partYrotation = prop.propBodyPart.rotateAngleY;
+				}
 			} else {
 				Minecraft mc = Minecraft.getMinecraft();
 				EntityLivingBase entity = this.playerdata.getEntity(this.player);
@@ -93,8 +95,10 @@ public class LayerProp extends LayerInterface {
 					sneakModifierY = 0.1875F;
 				}
 
-				partXrotation = (float) (Math.PI + prop.propBodyPart.rotateAngleX);
-				partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
+				if (prop.partIndex >= 0) {
+					partXrotation = (float) (Math.PI + prop.propBodyPart.rotateAngleX);
+					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
+				}
 			}
 
 			motherRenderer.addChild(propRenderer);
@@ -103,7 +107,7 @@ public class LayerProp extends LayerInterface {
 			float propOffsetYCorrected;
 			float propOffsetZCorrected;
 
-			if (prop.propBodyPart == this.model.bipedBodyWear) {
+			if (prop.partIndex < 0) {
 				propOffsetXCorrected = -prop.propOffsetX;
 				propOffsetYCorrected = prop.propOffsetY;
 				propOffsetZCorrected = prop.propOffsetZ;
@@ -226,7 +230,7 @@ public class LayerProp extends LayerInterface {
 					float propOffsetYCorrected;
 					float propOffsetZCorrected;
 
-					if (prop.modelProp) {
+					if (prop.partIndex < 0) {
 						propOffsetXCorrected = -prop.propOffsetX - prop.propBodyPart.offsetX - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_X]);
 						propOffsetYCorrected = prop.propOffsetY;
 						propOffsetZCorrected = prop.propOffsetZ - prop.propBodyPart.offsetZ - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Z]);
@@ -289,7 +293,7 @@ public class LayerProp extends LayerInterface {
 					Double propMotionXCorrected = null;
 					Double propMotionYCorrected = null;
 					Double propMotionZCorrected = null;
-					if (prop.modelProp || prop.lockrotation) {
+					if (prop.partIndex < 0 || prop.lockrotation) {
 						//Calculate particle motion
 						//Apply pitch
 						propMotionYCorrected = prop.speed * Math.cos(propMotionPitch);

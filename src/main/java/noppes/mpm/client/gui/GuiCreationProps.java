@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
@@ -164,7 +165,14 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
 				y += 22;
 				this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
-				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, BodyPartManager.partNumberArray(this.getPlayer()), prop.partIndex));
+
+				EntityLivingBase entity = this.playerdata.getEntity(this.getPlayer());
+				if (entity == null) {
+					this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, BodyPartManager.bipedPartNames, BodyPartManager.convertPartIndexToBipedPart(prop.partIndex) + 1));
+				} else {
+					this.addButton(new GuiNpcButton(130, guiOffsetX + 32, y, 69, 20, BodyPartManager.partNumberArrayWithModel(entity), prop.partIndex + 1));
+				}
+
 				this.addButton(new GuiNpcButton(121, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, prop.hide ? 1 : 0));
 				y += 22;
 
@@ -401,7 +409,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 108;
 			this.initGui();
 		} else if (btn.id == 105) {
-			prop.partIndex = ((GuiNpcButton)btn).getValue();
+			prop.partIndex = BodyPartManager.convertBipedPartToPartIndex(((GuiNpcButton)btn).getValue() - 1);
+			this.initGui();
+		} else if (btn.id == 130) {
+			prop.partIndex = ((GuiNpcButton)btn).getValue() - 1;
 			this.initGui();
 		} else if (btn.id == 118) {
 			prop.matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;

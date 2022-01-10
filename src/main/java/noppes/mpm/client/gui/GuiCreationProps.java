@@ -24,6 +24,7 @@ import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISliderListener;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.BodyPartManager;
 
 public class GuiCreationProps extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener {
 	private GuiCustomScroll scroll;
@@ -163,8 +164,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
 				y += 22;
 				this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
-				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
-				bodyParts.contains(prop.bodyPartName) ? bodyParts.indexOf(prop.bodyPartName) : 0));
+				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, BodyPartManager.partNumberArray(this.getPlayer()), prop.partIndex));
 				this.addButton(new GuiNpcButton(121, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, prop.hide ? 1 : 0));
 				y += 22;
 
@@ -401,7 +401,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 108;
 			this.initGui();
 		} else if (btn.id == 105) {
-			prop.bodyPartName = this.bodyParts.get(((GuiNpcButton)btn).getValue());
+			prop.partIndex = ((GuiNpcButton)btn).getValue();
 			this.initGui();
 		} else if (btn.id == 118) {
 			prop.matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
@@ -472,7 +472,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 508;
 			this.initGui();
 		} else if (btn.id == 310) {
-			for (Prop p : selectedPropGroup.props) {
+/*			for (Prop p : selectedPropGroup.props) {
 				p.offsetX = -p.offsetX;
 
 				if (p.bodyPartName.contains("left")) {
@@ -487,7 +487,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				} else if (p.type == EnumType.PARTICLE) {
 					p.yaw = -p.yaw;
 				}
-			}
+			}*/
 		} else if (btn.id == 124) {
 			advanced = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 			this.initGui();

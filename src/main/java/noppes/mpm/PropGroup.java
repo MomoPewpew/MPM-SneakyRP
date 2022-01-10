@@ -58,11 +58,11 @@ public class PropGroup {
 	}
 
 	public void addPropClient(String propString, String bodyPartName,
-	Float propScaleX, Float propScaleY, Float propScaleZ,
-	Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-	Float propRotateX, Float propRotateY, Float propRotateZ,
-	Boolean propMatchScaling, Boolean hide, String name,
-	Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
+		Float propScaleX, Float propScaleY, Float propScaleZ,
+		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+		Float propRotateX, Float propRotateY, Float propRotateZ,
+		Boolean propMatchScaling, Boolean hide, String name,
+		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
 	) {
 		Prop prop = new Prop(propString, bodyPartName,
 		propScaleX, propScaleY, propScaleZ,
@@ -75,11 +75,11 @@ public class PropGroup {
 	}
 
 	public void addPropServer(String propString, String bodyPartName,
-	Float propScaleX, Float propScaleY, Float propScaleZ,
-	Float propOffsetX, Float propOffsetY, Float propOffsetZ,
-	Float propRotateX, Float propRotateY, Float propRotateZ,
-	Boolean propMatchScaling, Boolean hide, String name,
-	Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
+		Float propScaleX, Float propScaleY, Float propScaleZ,
+		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
+		Float propRotateX, Float propRotateY, Float propRotateZ,
+		Boolean propMatchScaling, Boolean hide, String name,
+		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
 	) {
 		Prop prop = new Prop(propString, bodyPartName,
 		propScaleX, propScaleY, propScaleZ,

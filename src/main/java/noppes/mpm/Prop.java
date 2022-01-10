@@ -1,41 +1,65 @@
 package noppes.mpm;
 
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import noppes.mpm.constants.EnumParts;
+import noppes.mpm.util.BodyPartManager;
 
 public class Prop {
+	//These variables are read from NBT tags
 	public String propString = "";
-	public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
-	public String bodyPartName = "lefthand";
-	public Float scaleX = 1.0F;
-	public Float scaleY = 1.0F;
-	public Float scaleZ = 1.0F;
-	public Float offsetX = 0.0F;
-	public Float offsetY = 0.0F;
-	public Float offsetZ = 0.0F;
-	public Float rotateX = 0.0F;
-	public Float rotateY = 0.0F;
-	public Float rotateZ = 0.0F;
-	public Boolean matchScaling = false;
-	public Boolean hide = false;
+	public int partIndex = 0;
+	public float scaleX = 1.0F;
+	public float scaleY = 1.0F;
+	public float scaleZ = 1.0F;
+	public float offsetX = 0.0F;
+	public float offsetY = 0.0F;
+	public float offsetZ = 0.0F;
+	public float rotateX = 0.0F;
+	public float rotateY = 0.0F;
+	public float rotateZ = 0.0F;
+	public boolean matchScaling = false;
+	public boolean hide = false;
 	public String name = "NONAME";
+	public float scatter = 0.0F;
+	public float frequency = 1.0F;
+	public int amount = 1;
+	public float pitch = 0.0F;
+	public float yaw = 0.0F;
+	public double speed = 0.0D;
+	public float ppOffsetX = 0.0F;
+	public float ppOffsetY = 0.0F;
+	public float ppOffsetZ = 0.0F;
+	public boolean lockrotation = false;
+	public boolean modelProp = false;
+
+	//These are cached variables that are inferred and then used directly in the renderer
+	public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
 	public EnumType type = EnumType.ITEM;
 	public EnumParticleTypes particleType = null;
-	public Float scatter = 0.0F;
-	public Float frequency = 1.0F;
-	public int amount = 1;
-	public Float pitch = 0.0F;
-	public Float yaw = 0.0F;
-	public Double speed = 0.0D;
-	public long lastplayed = System.currentTimeMillis();
-	public Float ppOffsetX = 0.0F;
-	public Float ppOffsetY = 0.0F;
-	public Float ppOffsetZ = 0.0F;
-	public Boolean lockrotation = false;
+	public long lastPlayed = System.currentTimeMillis();
+	public ModelRenderer propBodyPart = null;
+	public boolean refreshCache = true;
+
+	public float propScaleX = 0.0F;
+	public float propScaleY = 0.0F;
+	public float propScaleZ = 0.0F;
+	public float propOffsetX = 0.0F;
+	public float propOffsetY = 0.0F;
+	public float propOffsetZ = 0.0F;
+	public float partModifierX = 0.0F;
+	public float partModifierY = 0.0F;
+	public float partModifierZ = 0.0F;
+	public float propPpOffsetX = 0.0F;
+	public float propPpOffsetY = 0.0F;
+	public float propPpOffsetZ = 0.0F;
 
 	public enum EnumType {
 		ITEM,
@@ -44,16 +68,16 @@ public class Prop {
 
 	public Prop(){}
 
-	public Prop(String propString, String bodyPartName,
-	Float scaleX, Float scaleY, Float scaleZ,
-	Float offsetX, Float offsetY, Float offsetZ,
-	Float rotateX, Float rotateY, Float rotateZ,
-	Boolean matchScaling, Boolean hide, String name,
-	Float ppOffsetX, Float ppOffsetY, Float ppOffsetZ)
+	public Prop(String propString, int partIndex,
+		float scaleX, float scaleY, float scaleZ,
+		float offsetX, float offsetY, float offsetZ,
+		float rotateX, float rotateY, float rotateZ,
+		boolean matchScaling, boolean hide, String name,
+		float ppOffsetX, float ppOffsetY, float ppOffsetZ)
 	{
 		this.propString = propString;
 		this.parsePropString(this.propString);
-		this.bodyPartName = bodyPartName;
+		this.partIndex = partIndex;
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
 		this.scaleZ = scaleZ;
@@ -71,15 +95,67 @@ public class Prop {
 		this.ppOffsetZ = ppOffsetZ;
 	}
 
-	public Prop(String propString, String bodyPartName,
-	Float motionScatter, Float frequency, int amount,
-	Float offsetX, Float offsetY, Float offsetZ,
-	Float pitch, Float yaw, Double speed,
-	Boolean hide, String name, Boolean lockrotation)
+	public Prop(String propString, int partIndex,
+		float motionScatter, float frequency, int amount,
+		float offsetX, float offsetY, float offsetZ,
+		float pitch, float yaw, double speed,
+		boolean hide, String name, boolean lockrotation)
 	{
 		this.propString = propString;
 		this.parsePropString(this.propString);
-		this.bodyPartName = bodyPartName;
+		this.partIndex = partIndex;
+		this.scatter = motionScatter;
+		this.frequency = frequency;
+		this.amount = amount;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+		this.offsetZ = offsetZ;
+		this.pitch = pitch;
+		this.yaw = yaw;
+		this.speed = speed;
+		this.hide = hide;
+		this.name = name;
+		this.lockrotation = lockrotation;
+	}
+
+	//Backwards compatibility assurance
+	public Prop(String propString, String bodyPartName,
+		float scaleX, float scaleY, float scaleZ,
+		float offsetX, float offsetY, float offsetZ,
+		float rotateX, float rotateY, float rotateZ,
+		boolean matchScaling, boolean hide, String name,
+		float ppOffsetX, float ppOffsetY, float ppOffsetZ)
+	{
+		this.propString = propString;
+		this.parsePropString(this.propString);
+		this.partIndex = switchBipedBodypart(bodyPartName);
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+		this.scaleZ = scaleZ;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+		this.offsetZ = offsetZ;
+		this.rotateX = rotateX;
+		this.rotateY = rotateY;
+		this.rotateZ = rotateZ;
+		this.hide = hide;
+		this.matchScaling = matchScaling;
+		this.name = name;
+		this.ppOffsetX = ppOffsetX;
+		this.ppOffsetY = ppOffsetY;
+		this.ppOffsetZ = ppOffsetZ;
+	}
+
+	//Backwards compatibility assurance
+	public Prop(String propString, String bodyPartName,
+		float motionScatter, float frequency, int amount,
+		float offsetX, float offsetY, float offsetZ,
+		float pitch, float yaw, double speed,
+		boolean hide, String name, boolean lockrotation)
+	{
+		this.propString = propString;
+		this.parsePropString(this.propString);
+		this.partIndex = switchBipedBodypart(bodyPartName);
 		this.scatter = motionScatter;
 		this.frequency = frequency;
 		this.amount = amount;
@@ -97,7 +173,7 @@ public class Prop {
 	public NBTTagCompound writeToNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setString("propString", this.propString);
-		compound.setString("bodyPartName", this.bodyPartName);
+		compound.setInteger("partIndex", this.partIndex);
 		compound.setFloat("scaleX", this.scaleX);
 		compound.setFloat("scaleY", this.scaleY);
 		compound.setFloat("scaleZ", this.scaleZ);
@@ -126,7 +202,8 @@ public class Prop {
 	public void readFromNBT(NBTTagCompound compound) {
 		this.propString = compound.getString("propString");
 		this.parsePropString(this.propString);
-		this.bodyPartName = compound.getString("bodyPartName");
+		String bodyPartName = compound.getString("bodyPartName");
+		this.partIndex = compound.getInteger("partIndex");
 		this.scaleX = compound.getFloat("scaleX");
 		this.scaleY = compound.getFloat("scaleY");
 		this.scaleZ = compound.getFloat("scaleZ");
@@ -149,13 +226,17 @@ public class Prop {
 		this.ppOffsetY = compound.getFloat("ppOffsetY");
 		this.ppOffsetZ = compound.getFloat("ppOffsetZ");
 		this.lockrotation = compound.getBoolean("lockrotation");
+
+		if (!bodyPartName.equals("")) {
+			this.partIndex = switchBipedBodypart(bodyPartName);
+		}
 	}
 
 	public String getCommand() {
 		String command = "";
 		if (this.type == EnumType.ITEM) {
 			command = "/prop " +
-			this.propString + " " + this.bodyPartName + " " +
+			this.propString + " " + this.partIndex + " " +
 			this.scaleX + " " + this.scaleY + " " + this.scaleZ + " " +
 			this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
 			this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
@@ -163,7 +244,7 @@ public class Prop {
 			this.ppOffsetX + " " + this.ppOffsetY + " " + this.ppOffsetZ;
 		} else if (this.type == EnumType.PARTICLE) {
 			command = "/prop " +
-			this.propString + " " + this.bodyPartName + " " +
+			this.propString + " " + this.partIndex + " " +
 			this.scatter + " " + this.frequency + " " + this.amount + " " +
 			this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
 			this.pitch + " " + this.yaw + " " + this.speed + " " +
@@ -387,6 +468,156 @@ public class Prop {
 			this.type = EnumType.PARTICLE;
 			this.itemStack = null;
 			return true;
+		}
+	}
+
+	//This is backwards compatibility code. Bodyparts are no longer saved as strings, but we need to be able to load props from before this rework.
+	private int switchBipedBodypart(String bodyPartName) {
+		int partIndex = 0;
+
+		switch(bodyPartName) {
+			case "hat":
+			case "head":
+				partIndex = 7;
+				break;
+			case "model":
+				partIndex = 9;
+				this.modelProp = true;
+				break;
+			case "body":
+			case "torso":
+				partIndex = 9;
+				break;
+			case "hand":
+			case "handleft":
+			case "lefthand":
+				partIndex = 11;
+				break;
+			case "handright":
+			case "righthand":
+				partIndex = 10;
+				break;
+			case "foot":
+			case "footleft":
+			case "leftfoot":
+				partIndex = 13;
+				break;
+			case "footright":
+			case "rightfoot":
+				partIndex = 12;
+				break;
+		}
+
+		return partIndex;
+	}
+
+	public void refreshCache(EntityPlayer player) {
+		ModelData data = ModelData.get(player);
+		ModelPartConfig config = null;
+		EntityLivingBase entity = data.getEntity(player);
+
+		if (entity == null) {
+			this.propBodyPart = BodyPartManager.getRenderer(player, this.partIndex);
+
+			if (this.propBodyPart != null) {
+				switch(this.partIndex) {
+					case 7:
+						config = data.head;
+
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+
+						this.propOffsetX = this.propOffsetX * config.scaleX;
+						this.propOffsetY = (this.propOffsetY + 0.50F) * config.scaleY + 0.20F;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+					case 9:
+						config = data.body;
+
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+
+						this.propOffsetX = this.propOffsetX * config.scaleX;
+						this.propOffsetY = this.propOffsetY * config.scaleY;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+					case 11:
+						config = data.arm1;
+
+						this.partModifierX = (-0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * data.getPartConfig(EnumParts.ARM_LEFT).scaleX);
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
+
+						this.propOffsetX = (this.propOffsetX - 0.0625F) * config.scaleX;
+						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+					case 10:
+						config = data.arm2;
+
+						this.partModifierX = (0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * data.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
+
+						this.propOffsetX = (this.propOffsetX + 0.0625F) * config.scaleX;
+						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+					case 13:
+						config = data.leg1;
+
+						this.partModifierX = -0.125F * data.getPartConfig(EnumParts.LEG_LEFT).scaleX;
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY);
+
+						this.propOffsetX = this.propOffsetX * config.scaleX;
+						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+					case 12:
+						config = data.leg2;
+
+						this.partModifierX = 0.125F * data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
+						this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+
+						this.propOffsetX = this.propOffsetX * config.scaleX;
+						this.propOffsetY = (this.propOffsetY - 0.7F) * config.scaleY;
+						this.propOffsetZ = this.propOffsetZ * config.scaleZ;
+
+						this.propPpOffsetX = this.propPpOffsetX * config.scaleX;
+						this.propPpOffsetY = this.propPpOffsetY * config.scaleY;
+						this.propPpOffsetZ = this.propPpOffsetZ * config.scaleZ;
+						break;
+				}
+
+				if (this.matchScaling) {
+					this.propScaleX = propScaleX * config.scaleX;
+					this.propScaleY = propScaleY * config.scaleY;
+					this.propScaleZ = propScaleZ * config.scaleZ;
+				}
+			}
+		} else {
+			this.propBodyPart = BodyPartManager.getRenderer(entity, this.partIndex);
+			if (this.propBodyPart != null) {
+				this.partModifierX = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) *this.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointZ)) / 16);
+				this.partModifierY = this.propBodyPart.rotationPointY / 16 - 1.525F;
+				this.partModifierZ = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointX)) / 16);
+			}
 		}
 	}
 }

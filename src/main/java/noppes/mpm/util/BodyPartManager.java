@@ -71,13 +71,16 @@ public class BodyPartManager {
 		}
 	}
 
-	public static ArrayList<String> partNumberArray(EntityLivingBase entity) {
+	public static String[] partNumberArray(EntityLivingBase entity) {
 		ArrayList<String> parts = new ArrayList<String>();
 
 		for (int i = 0 ; i < getFields(entity).size() ; i++) {
 			parts.add(Integer.toString(i));
 		}
 
-		return parts;
+		String[] partsArray = new String[parts.size()];
+		partsArray = parts.toArray(partsArray);
+
+		return partsArray;
 	}
 }

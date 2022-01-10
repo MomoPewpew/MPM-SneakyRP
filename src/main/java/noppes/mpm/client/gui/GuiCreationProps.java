@@ -381,7 +381,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	protected void actionPerformed(GuiButton btn) {
 		super.actionPerformed(btn);
 		if (btn.id == 101) {
-			props.add(new Prop("minecraft:stained_glass:2", "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, false, false, "NONAME", 0.0F, 0.0F, 0.0F));
+			props.add(new Prop("minecraft:stained_glass:2", 11, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, false, false, "NONAME", 0.0F, 0.0F, 0.0F));
 			newProp = true;
 			advanced = false;
 			this.initGui();

@@ -15,7 +15,7 @@ import noppes.mpm.util.BodyPartManager;
 public class Prop {
 	//These variables are read from NBT tags
 	public String propString = "";
-	public int partIndex = 0;
+	public int partIndex = 11;
 	public float scaleX = 1.0F;
 	public float scaleY = 1.0F;
 	public float scaleZ = 1.0F;

@@ -184,8 +184,8 @@ public class LayerProp extends LayerInterface {
 			GlStateManager.rotate(prop.rotateZ, 0.0F, 0.0F, 1.0F);
 			propRenderer.postRender(par7);
 
-			IBakedModel model = minecraft.getRenderItem().getItemModelMesher().getItemModel(prop.itemStack);
-			ItemTransformVec3f transformVec = model.getItemCameraTransforms().thirdperson_right;
+			IBakedModel iModel = minecraft.getRenderItem().getItemModelMesher().getItemModel(prop.itemStack);
+			ItemTransformVec3f transformVec = iModel.getItemCameraTransforms().thirdperson_right;
 			GlStateManager.scale((-prop.propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (-prop.propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (prop.propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 			minecraft.getItemRenderer().renderItem(this.player, prop.itemStack, TransformType.NONE);
 

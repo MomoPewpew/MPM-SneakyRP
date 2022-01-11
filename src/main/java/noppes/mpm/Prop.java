@@ -481,7 +481,7 @@ public class Prop {
 
 		switch(bodyPartName) {
 			case "model":
-				partIndex = 1;
+				partIndex = -1;
 				break;
 			case "hand":
 			case "handleft":

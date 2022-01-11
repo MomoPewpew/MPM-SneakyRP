@@ -527,10 +527,6 @@ public class Prop {
 					this.propOffsetX = (this.offsetX - 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 				case 1:
 					config = data.arm2;
@@ -541,10 +537,6 @@ public class Prop {
 					this.propOffsetX = (this.offsetX + 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 				case 2:
 					config = data.leg1;
@@ -555,10 +547,6 @@ public class Prop {
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 				case 3:
 					config = data.leg2;
@@ -569,10 +557,6 @@ public class Prop {
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 				case -1:
 				case 4:
@@ -583,10 +567,6 @@ public class Prop {
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = this.offsetY * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 				case 5:
 					config = data.head;
@@ -596,12 +576,12 @@ public class Prop {
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY + 0.50F) * config.scaleY + 0.20F;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
-
-					this.propPpOffsetX = this.ppOffsetX * config.scaleX;
-					this.propPpOffsetY = this.ppOffsetY * config.scaleY;
-					this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 					break;
 			}
+
+			this.propPpOffsetX = this.ppOffsetX * config.scaleX;
+			this.propPpOffsetY = this.ppOffsetY * config.scaleY;
+			this.propPpOffsetZ = this.ppOffsetZ * config.scaleZ;
 
 			if (this.matchScaling) {
 				this.propScaleX = this.scaleX * config.scaleX;
@@ -630,6 +610,10 @@ public class Prop {
 			this.propScaleX = this.scaleX;
 			this.propScaleY = this.scaleY;
 			this.propScaleZ = this.scaleZ;
+
+			this.propPpOffsetX = this.ppOffsetX;
+			this.propPpOffsetY = this.ppOffsetY;
+			this.propPpOffsetZ = this.ppOffsetZ;
 		}
 	}
 }

@@ -47,9 +47,9 @@ public class Prop {
 	public ModelRenderer propBodyPart = null;
 	public boolean refreshCache = true;
 
-	public float propScaleX = 0.0F;
-	public float propScaleY = 0.0F;
-	public float propScaleZ = 0.0F;
+	public float propScaleX = 1.0F;
+	public float propScaleY = 1.0F;
+	public float propScaleZ = 1.0F;
 	public float propOffsetX = 0.0F;
 	public float propOffsetY = 0.0F;
 	public float propOffsetZ = 0.0F;
@@ -607,6 +607,10 @@ public class Prop {
 				this.propScaleX = this.scaleX * config.scaleX;
 				this.propScaleY = this.scaleY * config.scaleY;
 				this.propScaleZ = this.scaleZ * config.scaleZ;
+			} else {
+				this.propScaleX = this.scaleX;
+				this.propScaleY = this.scaleY;
+				this.propScaleZ = this.scaleZ;
 			}
 
 		} else if (this.partIndex >= 0) {

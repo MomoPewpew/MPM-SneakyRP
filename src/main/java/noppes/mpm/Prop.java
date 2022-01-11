@@ -598,7 +598,7 @@ public class Prop {
 				this.propBodyPart = BodyPartManager.getRenderer(entity, this.partIndex);
 				if (this.propBodyPart != null) {
 					this.partModifierX = (float) -(((Math.cos(Math.toRadians(entity.renderYawOffset)) * this.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(entity.renderYawOffset)) * this.propBodyPart.rotationPointZ)) / 16);
-					this.partModifierY = this.propBodyPart.rotationPointY / 16 - 1.525F;
+					this.partModifierY = this.propBodyPart.rotationPointY / 16 - 1.5F;
 					this.partModifierZ = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * this.propBodyPart.rotationPointX)) / 16);
 				}
 			}

@@ -146,7 +146,6 @@ public class RenderEvent {
 				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
-				GlStateManager.popMatrix();
 
                 List layers = event.getRenderer().layerRenderers;
                 Iterator var8 = layers.iterator();
@@ -157,6 +156,8 @@ public class RenderEvent {
                           ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
                      }
                 }
+
+				GlStateManager.popMatrix();
 			} else {
 				offset = 0.0F;
 				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {

@@ -15,7 +15,6 @@ import noppes.mpm.Emote;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
-import noppes.mpm.ModelPartConfig;
 
 public class LayerProp extends LayerInterface {
 
@@ -61,8 +60,6 @@ public class LayerProp extends LayerInterface {
 
 			float partXrotation = 0.0F;
 			float partYrotation = 0.0F;
-
-			ModelPartConfig config = null;
 
 			EntityLivingBase entity = this.playerdata.getEntity(this.player);
 			if (entity == null) {

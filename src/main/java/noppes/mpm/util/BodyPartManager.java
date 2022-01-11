@@ -99,73 +99,13 @@ public class BodyPartManager {
 		return partsArrayWithModel;
 	}
 
-	public static String[] bipedPartNames = new String[]{
+	public static String[] bipedPartNamesWithModel = new String[]{
 		"gui.model",
 		"gui.lefthand",
 		"gui.righthand",
-		"gui.head",
-		"gui.body",
 		"gui.leftfoot",
 		"gui.rightfoot",
+		"gui.body",
+		"gui.head"
 	};
-
-	public static int convertBipedPartToPartIndex(int index) {
-		int ret = 0;
-
-		switch(index) {
-		case 2:
-			ret = 7;
-			break;
-		case -1:
-			ret = -1;
-			break;
-		case 3:
-			ret = 9;
-			break;
-		case 0:
-			ret = 11;
-			break;
-		case 1:
-			ret = 10;
-			break;
-		case 4:
-			ret = 13;
-			break;
-		case 5:
-			ret = 12;
-			break;
-		}
-
-		return ret;
-	}
-
-	public static int convertPartIndexToBipedPart(int index) {
-		int ret = 0;
-
-		switch(index) {
-		case 7:
-			ret = 2;
-			break;
-		case -1:
-			ret = -1;
-			break;
-		case 9:
-			ret = 3;
-			break;
-		case 11:
-			ret = 0;
-			break;
-		case 10:
-			ret = 1;
-			break;
-		case 13:
-			ret = 4;
-			break;
-		case 12:
-			ret = 5;
-			break;
-		}
-
-		return ret;
-	}
 }

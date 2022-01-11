@@ -167,11 +167,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
 
 				EntityLivingBase entity = this.playerdata.getEntity(this.getPlayer());
-				if (entity == null) {
-					this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, BodyPartManager.bipedPartNames, BodyPartManager.convertPartIndexToBipedPart(prop.partIndex) + 1));
-				} else {
-					this.addButton(new GuiNpcButton(130, guiOffsetX + 32, y, 69, 20, BodyPartManager.partNumberArrayWithModel(entity), prop.partIndex + 1));
-				}
+				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, (entity == null) ? BodyPartManager.bipedPartNamesWithModel : BodyPartManager.partNumberArrayWithModel(entity), prop.partIndex + 1));
 
 				this.addButton(new GuiNpcButton(121, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, prop.hide ? 1 : 0));
 				y += 22;
@@ -409,9 +405,6 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 108;
 			this.initGui();
 		} else if (btn.id == 105) {
-			prop.partIndex = BodyPartManager.convertBipedPartToPartIndex(((GuiNpcButton)btn).getValue() - 1);
-			this.initGui();
-		} else if (btn.id == 130) {
 			prop.partIndex = ((GuiNpcButton)btn).getValue() - 1;
 			this.initGui();
 		} else if (btn.id == 118) {

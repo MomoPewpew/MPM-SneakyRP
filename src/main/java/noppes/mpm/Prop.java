@@ -511,10 +511,10 @@ public class Prop {
 
 	public void refreshCache(EntityPlayer player) {
 		ModelData data = ModelData.get(player);
-		ModelPartConfig config = null;
 		EntityLivingBase entity = data.getEntity(player);
 
 		if (entity == null) {
+			ModelPartConfig config = null;
 			this.propBodyPart = BodyPartManager.getRenderer(player, (this.partIndex >= 0) ? this.partIndex : 9);
 
 			switch(this.partIndex) {

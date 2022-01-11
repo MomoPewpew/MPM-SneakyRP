@@ -472,7 +472,12 @@ public class Prop {
 
 	//This is backwards compatibility code. Bodyparts are no longer saved as strings, but we need to be able to load props from before this rework.
 	private static int switchBipedBodypart(String bodyPartName) {
-		int partIndex = 0;
+		Integer partIndex = 0;
+		try {
+			partIndex = Integer.valueOf(bodyPartName);
+		} catch (NumberFormatException e) {
+			partIndex = 0;
+		}
 
 		switch(bodyPartName) {
 			case "model":
@@ -515,7 +520,7 @@ public class Prop {
 
 		if (entity == null) {
 			ModelPartConfig config = null;
-			this.propBodyPart = BodyPartManager.getRenderer(player, (this.partIndex >= 0) ? this.partIndex : 9);
+			this.propBodyPart = BodyPartManager.getRenderer(player, (this.partIndex >= 0) ? this.partIndex : 4);
 
 			switch(this.partIndex) {
 				case 0:

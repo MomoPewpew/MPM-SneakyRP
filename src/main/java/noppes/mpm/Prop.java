@@ -529,7 +529,7 @@ public class Prop {
 					this.partModifierX = (-0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * data.getPartConfig(EnumParts.ARM_LEFT).scaleX);
 					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
 
-					this.propOffsetX = (this.offsetX - 0.0625F) * config.scaleX;
+					this.propOffsetX = (this.offsetX + 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
 					break;
@@ -539,7 +539,7 @@ public class Prop {
 					this.partModifierX = (0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * data.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
 					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
 
-					this.propOffsetX = (this.offsetX + 0.0625F) * config.scaleX;
+					this.propOffsetX = (this.offsetX - 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
 					break;

@@ -476,22 +476,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 508;
 			this.initGui();
 		} else if (btn.id == 310) {
-/*			for (Prop p : selectedPropGroup.props) {
-				p.offsetX = -p.offsetX;
-
-				if (p.bodyPartName.contains("left")) {
-					p.bodyPartName = p.bodyPartName.replace("left", "right");
-				} else if (p.bodyPartName.contains("right")) {
-					p.bodyPartName = p.bodyPartName.replace("right", "left");
-				}
-
-				if (p.type == EnumType.ITEM) {
-					p.rotateY = -p.rotateY;
-					p.rotateZ = -p.rotateZ;
-				} else if (p.type == EnumType.PARTICLE) {
-					p.yaw = -p.yaw;
-				}
-			}*/
+			for (Prop p : selectedPropGroup.props) {
+				p.flip();
+			}
+			this.initGui();
 		} else if (btn.id == 124) {
 			advanced = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 			this.initGui();

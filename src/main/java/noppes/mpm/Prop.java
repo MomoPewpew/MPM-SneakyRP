@@ -621,4 +621,30 @@ public class Prop {
 			this.propPpOffsetZ = this.ppOffsetZ;
 		}
 	}
+
+	public void flip() {
+		this.offsetX = -this.offsetX;
+
+		switch (this.partIndex) {
+		case 0:
+			this.partIndex = 1;
+			break;
+		case 1:
+			this.partIndex = 0;
+			break;
+		case 2:
+			this.partIndex = 3;
+			break;
+		case 3:
+			this.partIndex = 2;
+			break;
+		}
+
+		if (this.type == EnumType.ITEM) {
+			this.rotateY = -this.rotateY;
+			this.rotateZ = -this.rotateZ;
+		} else {
+			this.yaw = -this.yaw;
+		}
+	}
 }

@@ -794,7 +794,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 		if (this.initiating) return;
 
-		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316)) {
+		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316) || (textField.id >= 126 && textField.id <= 128)) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

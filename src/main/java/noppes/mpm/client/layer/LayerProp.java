@@ -63,6 +63,8 @@ public class LayerProp extends LayerInterface {
 
 			EntityLivingBase entity = this.playerdata.getEntity(this.player);
 			if (entity == null) {
+				if (prop.partIndex > 5) return;
+
 				motherRenderer = new ModelRenderer(this.model);
 				propRenderer = new ModelRenderer(this.model);
 

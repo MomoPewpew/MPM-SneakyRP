@@ -584,6 +584,8 @@ public class Prop {
 					this.propOffsetY = (this.offsetY + 0.50F) * config.scaleY + 0.20F;
 					this.propOffsetZ = this.offsetZ * config.scaleZ;
 					break;
+				default:
+					return;
 			}
 
 			this.propPpOffsetX = this.ppOffsetX * config.scaleX;

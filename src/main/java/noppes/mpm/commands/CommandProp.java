@@ -90,7 +90,7 @@ public class CommandProp extends MpmCommandInterface {
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 
-		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
+		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "") : "0";
 
 		if (args.length > 0) {
 			if (clearStrings.contains(args[0])) {

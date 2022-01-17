@@ -98,6 +98,9 @@ public class LayerProp extends LayerInterface {
 				if (prop.partIndex >= 0) {
 					partXrotation = (float) (Math.PI + prop.propBodyPart.rotateAngleX);
 					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
+				} else {
+					partXrotation = (float) (Math.PI);
+					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
 				}
 			}
 
@@ -111,6 +114,11 @@ public class LayerProp extends LayerInterface {
 				propOffsetXCorrected = -prop.propOffsetX;
 				propOffsetYCorrected = prop.propOffsetY;
 				propOffsetZCorrected = prop.propOffsetZ;
+
+				if (entity != null) {
+					motherRenderer.rotateAngleX = partXrotation;
+					motherRenderer.rotateAngleY = partYrotation;
+				}
 			} else {
 				//Calculate prop offset
 				float anglePrev;

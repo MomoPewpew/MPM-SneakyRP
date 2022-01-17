@@ -567,6 +567,7 @@ public class Prop {
 				case 4:
 					config = data.body;
 
+					this.partModifierX = 0.0F;
 					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;
@@ -576,6 +577,7 @@ public class Prop {
 				case 5:
 					config = data.head;
 
+					this.partModifierX = 0.0F;
 					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;

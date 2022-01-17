@@ -102,6 +102,11 @@ public class LayerProp extends LayerInterface {
 					partXrotation = (float) (Math.PI);
 					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
 				}
+
+				if (prop.propBodyPart != null) {
+					prop.partModifierX = (float) -(((Math.cos(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ)) / 16);
+					prop.partModifierZ = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointX)) / 16);
+				}
 			}
 
 			motherRenderer.addChild(propRenderer);

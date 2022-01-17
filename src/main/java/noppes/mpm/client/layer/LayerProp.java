@@ -92,7 +92,7 @@ public class LayerProp extends LayerInterface {
 				propRenderer = new ModelRenderer(entityModel);
 
 				if (this.player.isSneaking()) {
-					sneakModifierY = 0.1875F;
+					sneakModifierY = 0.20F;
 				}
 
 				if (prop.partIndex >= 0) {

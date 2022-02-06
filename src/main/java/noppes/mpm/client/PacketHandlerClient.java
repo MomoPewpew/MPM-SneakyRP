@@ -395,6 +395,10 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				data.endEmotes(override_instead_of_outro);
 			} else if (type == EnumPackets.NAMES_TOGGLE) {
 				MorePlayerModels.HidePlayerNames = !MorePlayerModels.HidePlayerNames;
+			} else if (type == EnumPackets.NAMES_ON) {
+				MorePlayerModels.HidePlayerNames = false;
+			} else if (type == EnumPackets.NAMES_OFF) {
+				MorePlayerModels.HidePlayerNames = true;
 			} else if (type == EnumPackets.TOGGLE_HAT) {
 				ModelData data = ModelData.get(player);
 				data.hideHat = !data.hideHat;

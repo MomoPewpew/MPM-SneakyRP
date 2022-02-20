@@ -54,7 +54,6 @@ public class PacketHandlerClient extends PacketHandlerServer {
 	}
 
 	private void handlePacket(ByteBuf buffer, EntityPlayer player, EnumPackets type) throws Exception {
-		LogWriter.warn("ClientPacket: " + type);
 		int animation;
 		if (type == EnumPackets.PING) {
 			animation = buffer.readInt();

@@ -27,6 +27,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 	public static ArrayList<String> scrollList = null;//readonly
 	public static boolean hasCachedEmoteFileNamesChanged = true;
 	public static boolean isrequestingremoval = false;
+	public static boolean isrequestingreset = false;
 	public static ArrayList<String> cachedEmoteFileNames = new ArrayList<String>();
 
 	public GuiCustomScroll scroll;
@@ -39,6 +40,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 
 		Client.sendData(EnumPackets.EMOTE_FILENAME_UPDATE);
 		isrequestingremoval = false;
+		isrequestingreset = false;
 	}
 
 	public static String getSelectedEmoteName(int selected) {
@@ -117,7 +119,7 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 				this.getButton(654).enabled = false;
 			}
 			if(isrequestingremoval) {
-				this.addButton(new GuiNpcButton(657, x + 52, y, 102, 20, "gui.areyousure"));
+				this.addButton(new GuiNpcButton(657, x + 52, y, 102, 20, "gui.confirmremove"));
 				this.getButton(655).enabled = false;
 			}
 		} else {
@@ -135,6 +137,10 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 		this.addTextField(new GuiNpcTextField(657, this, x, y + 1, 140, 18, GuiCreationEmotes.emoteName));
 		y += 22;
 		this.addButton(new GuiNpcButton(658, x + 143, y, 50, 20, "gui.reset"));
+		if (isrequestingreset) {
+			this.addButton(new GuiNpcButton(659, x + 143 - 102 - 2, y, 102, 20, "gui.confirmreset"));
+			this.getButton(658).enabled = false;
+		}
 
 		this.initiating = false;
 	}
@@ -157,7 +163,11 @@ public class GuiCreationEmoteLoad extends GuiCreationScreenInterface implements 
 				GuiCreationEmotes.emoteIsChangedFromServer = false;//if this packet is dropped it could cause problems since the emote wasn't actually saved
 				this.initGui();
 			}
-		} else if(btn.id == 658) {//reset local emote
+		} else if(btn.id == 658) {//request reset local emote
+			isrequestingreset = true;
+			this.initGui();
+		} else if(btn.id == 659) {//reset local emote
+			isrequestingreset = false;
 			GuiCreationEmotes.loadNewEmote(new Emote());
 			GuiCreationEmotes.emoteName = "";
 			this.initGui();

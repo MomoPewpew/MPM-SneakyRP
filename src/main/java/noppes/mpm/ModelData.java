@@ -500,14 +500,15 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 			int usage = partUsages[meta_i];
 			float remainingDelta = partSpeeds[meta_i]*delta;
+			float loopSpeedMult = 1.0f;
 
-			boolean play_outro = false;
 			boolean play_outro_at_loop_boundary = false;
 			boolean pause_at_loop_boundary = false;
 			float m = movementRate;
 			if((usage&Emote.FLAG_INVERT_MOVEMENT) > 0) {
 				m = Math.max(0.0f, 1.0f - m);
 			}
+
 			if((usage&Emote.ANIMFLAG_END_EMOTE) > 0) {
 				if(commandSections[meta_i] != SECTION_OUTRO) {
 					if((usage&Emote.FLAG_LOOP_ONLY_STOPS_AT_BOUNDARY) > 0) {
@@ -520,28 +521,28 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
 					if(m <= RATE_MIN) {
 						play_outro_at_loop_boundary = true;
-						remainingDelta *= RATE_MIN;
+						loopSpeedMult = RATE_MIN;
 					} else {
-						remainingDelta *= m;
+						loopSpeedMult = m;
 					}
 				} else {
 					if(m <= RATE_MIN) {
-						remainingDelta *= RATE_MIN;
+						loopSpeedMult = RATE_MIN;
 						fastForwardCommands(data, commands, partUsages, commandSections, commandIndices, commandTimes, meta_i, SECTION_OUTRO);
 					} else {
-						remainingDelta *= m;
+						loopSpeedMult = m;
 					}
 				}
 			} else if((usage&Emote.FLAG_LOOP_PAUSES_WHEN_STILL) > 0) {
 				if((usage&Emote.FLAG_LOOP_ONLY_PAUSES_AT_BOUNDARY) > 0) {
 					if(m <= RATE_MIN) {
 						pause_at_loop_boundary = true;
-						remainingDelta *= RATE_MIN;
+						loopSpeedMult = RATE_MIN;
 					} else {
-						remainingDelta *= m;
+						loopSpeedMult = m;
 					}
 				} else {
-					remainingDelta *= m;
+					loopSpeedMult = m;
 				}
 			}
 
@@ -554,6 +555,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			boolean hasOutroLoopedThisFrame = false;
 			while(remainingDelta > 0) {
 				Emote.PartCommand commandToApply = null;
+				float speedMultToApply = 1.0f;
 				if(commandSections[meta_i] == SECTION_INTRO) {
 					ArrayList<Emote.PartCommand> section = commands.get(intro_i);
 					int section_size = section == null ? 0 : section.size();
@@ -575,11 +577,13 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 							hasLoopedThisFrame = true;
 							if(!pause_at_loop_boundary) {
 								commandToApply = section.get(0);
+								speedMultToApply = loopSpeedMult;
 							}
 							commandIndices[meta_i] = 0;
 						}
 					} else {
 						commandToApply = section.get(commandIndices[meta_i]);
+						speedMultToApply = loopSpeedMult;
 					}
 				}
 				if(commandSections[meta_i] == SECTION_OUTRO) {
@@ -608,7 +612,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				}
 				if(commandToApply == null) break;
 
-				remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+				remainingDelta = applyCommand(data, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta, speedMultToApply);
 				if(remainingDelta == 0) break;
 				//command is finished, prepare next command
 				commandIndices[meta_i] += 1;
@@ -685,7 +689,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 						if(loop_size == 0 || play_outro_at_loop_boundary) {
 							commandSections[meta_i] = SECTION_OUTRO;
 							commandIndices[meta_i] = 0;
-						} else if(!hasLoopedThisFrame) {//loop (and prevent inf loop)
+						} else if(!hasLoopedThisFrame) {//loop (and prevent inf loop/crash)
 							hasLoopedThisFrame = true;
 
 							if(commandIndices[meta_i] >= previewRepetitions*loop_size && (intro_size > 0 || outro_size > 0)) {
@@ -720,7 +724,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 				}
 				if(commandToApply == null) break;
 
-				remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta);
+				remainingDelta = applyCommand(null, commandTimes, movements, states, meta_i, state_i, commandToApply, remainingDelta, 1.0f);
 				if(remainingDelta <= 0) break;
 				//command is finished, prepare next command
 				commandIndices[meta_i] += 1;
@@ -769,28 +773,31 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		int meta_i,
 		int state_i,
 		Emote.PartCommand commandToApply,
-		float delta
+		float delta,
+		float speedMult
 	) {
 		//run the command and subtract from delta
 		if(!commandToApply.disabled) {
 			if(commandToApply.consoleCommand == null) {
-				if(commandTimes[meta_i] == 0) {//NOTE: all commands must start at exactly 0 time for this to work
+				if(commandTimes[meta_i] == 0) {// NOTE: all commands must start at exactly 0 time for this to work
 					movements[state_i + Emote.OFF_X] = states[state_i + Emote.OFF_X] - commandToApply.x;
 					movements[state_i + Emote.OFF_Y] = states[state_i + Emote.OFF_Y] - commandToApply.y;
 					movements[state_i + Emote.OFF_Z] = states[state_i + Emote.OFF_Z] - commandToApply.z;
 				}
-				if(commandTimes[meta_i] + delta > commandToApply.duration) {
-					delta -= commandToApply.duration - commandTimes[meta_i];
+				float timeLeft = (commandToApply.duration - commandTimes[meta_i])/speedMult;
+				if(delta > timeLeft) {
+					delta -= timeLeft;
 
 					states[state_i + Emote.OFF_X] = commandToApply.x;
 					states[state_i + Emote.OFF_Y] = commandToApply.y;
 					states[state_i + Emote.OFF_Z] = commandToApply.z;
 				} else {
-					commandTimes[meta_i] += delta;
+					float effectiveDelta = delta*speedMult;
+					commandTimes[meta_i] += effectiveDelta;
 					delta = 0;
 
 					TweenEquation eq = TweenUtils.easings[commandToApply.easing];
-					float t = 1 - eq.compute((commandTimes[meta_i] + delta)/commandToApply.duration);
+					float t = 1 - eq.compute((commandTimes[meta_i] + effectiveDelta)/commandToApply.duration);
 					states[state_i + Emote.OFF_X] = commandToApply.x + t*movements[state_i + Emote.OFF_X];
 					states[state_i + Emote.OFF_Y] = commandToApply.y + t*movements[state_i + Emote.OFF_Y];
 					states[state_i + Emote.OFF_Z] = commandToApply.z + t*movements[state_i + Emote.OFF_Z];

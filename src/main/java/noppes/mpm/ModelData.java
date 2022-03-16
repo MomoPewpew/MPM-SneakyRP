@@ -136,9 +136,6 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 
-		String prevUrl = new String(this.url);
-		Boolean prevModelType = new Boolean(this.slim);
-
 		super.readFromNBT(compound);
 		this.soundType = compound.getShort("SoundType");
 		if (this.player != null) {
@@ -150,13 +147,11 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 			}
 		}
 
-		if (!prevUrl.equals(this.url)) {
-			this.resourceInit = false;
-			this.resourceLoaded = false;
-		}
+		this.resourceInit = false;
+		this.resourceLoaded = false;
 
 		if (this.player != null) {
-			if (this.player.worldObj.isRemote && !prevModelType.equals(this.slim)) {
+			if (this.player.worldObj.isRemote) {
 				this.reloadSkinType();
 			}
 		}

@@ -19,6 +19,7 @@ import noppes.mpm.client.PresetController;
 import noppes.mpm.client.gui.util.GuiCustomScroll;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.client.gui.util.GuiNpcButton;
+import noppes.mpm.client.gui.util.GuiNpcLabel;
 import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISubGuiListener;
 import noppes.mpm.client.gui.GuiConfig;
@@ -75,10 +76,15 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 		this.scroll.guiTop = this.guiTop + 14;
 		this.addScroll(this.scroll);
 		this.addButton(new GuiNpcButton(0, this.guiLeft + 4, this.guiTop + 176, 20, 20, "+"));
+		this.getButton(0).enabled = false;
 		this.addButton(new GuiNpcButton(1, this.guiLeft + 26, this.guiTop + 176, 20, 20, "-"));
-		this.getButton(1).enabled = this.scroll.getList().size() > 1;
+		this.getButton(1).enabled = false;
+		//this.getButton(1).enabled = this.scroll.getList().size() > 1;
 		this.addButton(new GuiNpcButton(2, this.guiLeft + 48, this.guiTop + 176, 60, 20, "selectServer.edit"));
 		this.addButton(new GuiNpcButton(3, this.guiLeft + 110, this.guiTop + 176, 68, 20, "gui.config"));
+		this.addLabel(new GuiNpcLabel(1336, "This menu is scheduled for removal, so the + and - buttons", this.guiLeft - 50, this.guiTop - 25, 16711680));
+		this.addLabel(new GuiNpcLabel(1337, "have been disabled. Please stick to using one save slot,", this.guiLeft - 50, this.guiTop - 15, 16711680));
+		this.addLabel(new GuiNpcLabel(1338, "and save your skins to the server instead using /skinsave.", this.guiLeft - 50, this.guiTop - 5, 16711680));
 	}
 
 	@Override

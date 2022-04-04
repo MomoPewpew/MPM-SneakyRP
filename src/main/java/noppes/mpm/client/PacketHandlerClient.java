@@ -399,13 +399,22 @@ public class PacketHandlerClient extends PacketHandlerServer {
 			} else if (type == EnumPackets.NAMES_OFF) {
 				MorePlayerModels.HidePlayerNames = true;
 			} else if (type == EnumPackets.TOGGLE_HAT) {
-				ModelData data = ModelData.get(player);
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+
+				ModelData data = ModelData.get(pl);
 				data.hideHat = !data.hideHat;
 			} else if (type == EnumPackets.TOGGLE_SHIRT) {
-				ModelData data = ModelData.get(player);
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+
+				ModelData data = ModelData.get(pl);
 				data.hideShirt = !data.hideShirt;
 			} else if (type == EnumPackets.TOGGLE_PANTS) {
-				ModelData data = ModelData.get(player);
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+
+				ModelData data = ModelData.get(pl);
 				data.hidePants = !data.hidePants;
 			}
 		}

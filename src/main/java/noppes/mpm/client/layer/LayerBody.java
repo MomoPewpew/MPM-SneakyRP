@@ -155,7 +155,7 @@ public class LayerBody extends LayerInterface implements LayerPreRender  {
 
 	private void renderSkirt(float par7) {
 		ModelPartData data = this.playerdata.getPartData(EnumParts.SKIRT);
-		if (data != null) {
+		if (data != null && !this.playerdata.hidePants) {
 			this.preRender(data);
 			GlStateManager.pushMatrix();
 			GlStateManager.scale(1.7F, 1.04F, 1.6F);

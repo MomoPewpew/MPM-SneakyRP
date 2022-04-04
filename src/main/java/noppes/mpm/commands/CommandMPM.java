@@ -103,13 +103,13 @@ public class CommandMPM extends MpmCommandInterface {
 						MorePlayerModels.playersEntityDenied.add(((EntityPlayer) icommandsender).getUniqueID());
 					} else if (type.equals("hat")) {
 						data.hideHat = !data.hideHat;
-						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_HAT, 100);
+						Server.sendToAll(server, EnumPackets.TOGGLE_HAT);
 					} else if (type.equals("shirt")) {
 						data.hideShirt = !data.hideShirt;
-						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_SHIRT, 100);
+						Server.sendToAll(server, EnumPackets.TOGGLE_SHIRT);
 					} else if (type.equals("pants")) {
 						data.hidePants = !data.hidePants;
-						Server.sendDelayedData((EntityPlayerMP) icommandsender, EnumPackets.TOGGLE_PANTS, 100);
+						Server.sendToAll(server, EnumPackets.TOGGLE_PANTS);
 					}
 				}
 			}

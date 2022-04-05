@@ -63,8 +63,8 @@ public class Prop {
 		this.rotateX = rotateX;
 		this.rotateY = rotateY;
 		this.rotateZ = rotateZ;
-		this.hide = hide;
 		this.matchScaling = matchScaling;
+		this.hide = hide;
 		this.name = name;
 		this.ppOffsetX = ppOffsetX;
 		this.ppOffsetY = ppOffsetY;

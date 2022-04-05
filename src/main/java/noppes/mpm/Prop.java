@@ -20,7 +20,7 @@ public class Prop {
 	public Float rotateX = 0.0F;
 	public Float rotateY = 0.0F;
 	public Float rotateZ = 0.0F;
-	public Boolean matchScaling = false;
+	public Boolean matchScaling = true;
 	public Boolean hide = false;
 	public String name = "NONAME";
 	public EnumType type = EnumType.ITEM;

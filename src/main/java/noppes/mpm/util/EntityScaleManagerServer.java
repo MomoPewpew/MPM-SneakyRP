@@ -30,35 +30,34 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 		File file = new File(dir, "entityScaleMultipliers.txt");
 		if (!file.exists()) file.createNewFile();
 
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		FileReader f = new FileReader(file);
+		BufferedReader reader = new BufferedReader(f);
+
 		String strLine;
-		while (true) {
-			do {
-				do {
-					if ((strLine = reader.readLine()) == null) {
-						reader.close();
-						return;
+
+		while((strLine = reader.readLine()) != null){
+			if (!strLine.equals("")) {
+				String[] array = strLine.split(" ");
+
+				if (array.length == 2) {
+					String name = array[0];
+					Float mult = null;
+
+					try {
+						mult = Float.valueOf(array[1]);
+					} catch (NumberFormatException e) {
+
 					}
-				} while(strLine.startsWith("#"));
-			} while(strLine.length() == 0);
 
-			String[] array = strLine.split(" ");
-
-			if (array.length == 2) {
-				String name = array[0];
-				Float mult = null;
-
-				try {
-					mult = Float.valueOf(array[1]);
-				} catch (NumberFormatException e) {
-
-				}
-
-				if (mult != null) {
-					entityMap.put(name, mult);
+					if (mult != null) {
+						entityMap.put(name, mult);
+					}
 				}
 			}
 		}
+
+		f.close();
+		reader.close();
 	}
 
 	public static Float getScaleMult(String name) {

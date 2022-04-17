@@ -27,7 +27,7 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 			dir.mkdirs();
 		}
 
-		File file = new File(dir, "entityScaleMultiplies.txt");
+		File file = new File(dir, "entityScaleMultipliers.txt");
 		if (!file.exists()) file.createNewFile();
 
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -97,7 +97,7 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 			dir.mkdirs();
 		}
 
-		File file = new File(dir, "entityScaleMultiplies.txt");
+		File file = new File(dir, "entityScaleMultipliers.txt");
 		if (!file.exists()) file.createNewFile();
 
 		BufferedReader reader = new BufferedReader(new FileReader(file));

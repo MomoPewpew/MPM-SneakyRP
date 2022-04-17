@@ -26,7 +26,7 @@ public class CommandEntityPropMult extends MpmCommandInterface {
 
 		Float mult;
 		try {
-			mult = Float.valueOf(args[1]);
+			mult = Float.valueOf(args[0]);
 		} catch (NumberFormatException e) {
 			throw new WrongUsageException(this.getCommandUsage(icommandsender));
 		}

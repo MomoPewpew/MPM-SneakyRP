@@ -16,7 +16,11 @@ public class EntityScaleManagerClient {
 	public static Float getScaleMult(EntityLivingBase entity) {
 		Float mult;
 		String name = entity.getClass().getCanonicalName();
-		if (entity.isChild()) name += "_child";
+		if (entity.isChild()) {
+			name += "_child";
+		} else {
+			name += "_adult";
+		}
 
 		if (entityMap.containsKey(name)) {
 			mult = entityMap.get(name);

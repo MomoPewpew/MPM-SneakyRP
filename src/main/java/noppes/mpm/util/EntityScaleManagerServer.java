@@ -1,13 +1,18 @@
 package noppes.mpm.util;
 
+import java.awt.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,20 +81,55 @@ public class EntityScaleManagerServer {
 
 			//TODO Parse class for potential multipliers
 
-			setScaleMult(name, mult);
+			try {
+				setScaleMult(name, mult);
+			} catch (IOException e) {
+
+			}
 			return mult;
 		}
 	}
 
-	public static void setScaleMult(String name, Float mult) {
+	public static void setScaleMult(String name, Float mult) throws IOException {
 		entityMap.put(name, mult);
-		Path path = Paths.get(".." + File.separator + "moreplayermodels" + File.separator + "entityScaleMultiplies.txt");
-		String string = System.lineSeparator() + name + " " + mult.toString();
 
-		try {
-		    Files.write(path, string.getBytes(), StandardOpenOption.APPEND);
-		} catch (IOException e) {
-		    System.err.println(e);
+		File dir = null;
+		dir = new File(dir, ".." + File.separator + "moreplayermodels");
+
+		if (!dir.exists()) {
+			dir.mkdirs();
 		}
+
+		File file = new File(dir, "entityScaleMultiplies.txt");
+		if (!file.exists()) file.createNewFile();
+
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String strLine;
+		Boolean reading = true;
+		ArrayList<String> array = new ArrayList<String>();
+		while (reading) {
+			do {
+				do {
+					if ((strLine = reader.readLine()) == null) {
+						reader.close();
+						reading = false;
+					}
+				} while(strLine.length() == 0);
+			} while (!strLine.startsWith(name));
+
+			array.add(strLine);
+		}
+
+		array.add(name + " " + Float.toString(mult));
+		Collections.sort(array);
+
+		BufferedWriter out = new BufferedWriter(new FileWriter(file));
+
+		for (String string : array) {
+			out.write(string);
+			out.write(System.getProperty("line.separator"));
+		}
+
+		out.close();
 	}
 }

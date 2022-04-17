@@ -100,22 +100,18 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 		File file = new File(dir, "entityScaleMultipliers.txt");
 		if (!file.exists()) file.createNewFile();
 
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String strLine;
-		Boolean reading = true;
+		FileReader f = new FileReader(file);
+		BufferedReader reader = new BufferedReader(f);
 		ArrayList<String> array = new ArrayList<String>();
-		while (reading) {
-			do {
-				do {
-					if ((strLine = reader.readLine()) == null) {
-						reader.close();
-						reading = false;
-					}
-				} while(strLine.length() == 0);
-			} while (!strLine.startsWith(name));
 
-			array.add(strLine);
+		String strLine;
+
+		while((strLine = reader.readLine()) != null){
+			if (!strLine.equals("") && !strLine.startsWith(name)) array.add(strLine);
 		}
+
+		f.close();
+		reader.close();
 
 		array.add(name + " " + Float.toString(mult));
 		Collections.sort(array);

@@ -61,9 +61,7 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 		}
 	}
 
-	public static Float getScaleMult(EntityLivingBase entity) {
-		String name = getName(entity);
-
+	public static Float getScaleMult(String name) {
 		if (entityMap.containsKey(name)) {
 			return entityMap.get(name);
 		} else {

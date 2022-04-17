@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
 
@@ -25,7 +26,12 @@ public class EntityScaleManagerClient extends EntityScaleManagerBase {
 			} else {
 				mult = 1.0F;
 			}
-			Client.sendData(EnumPackets.ENTITY_SCALE_MULT, name);
+
+			entityMap.put(name, mult);
+
+			NBTTagCompound compound = new NBTTagCompound();
+			compound.setString("name", name);
+			Client.sendData(EnumPackets.ENTITY_SCALE_MULT, compound);
 		}
 
 		return mult;

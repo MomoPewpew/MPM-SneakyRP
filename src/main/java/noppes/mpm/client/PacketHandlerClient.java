@@ -32,6 +32,8 @@ import noppes.mpm.client.gui.GuiCreationSkinLoad;
 import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.EntityScaleManagerClient;
+import noppes.mpm.util.EntityScaleManagerServer;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class PacketHandlerClient extends PacketHandlerServer {
@@ -404,6 +406,11 @@ public class PacketHandlerClient extends PacketHandlerServer {
 			} else if (type == EnumPackets.TOGGLE_PANTS) {
 				ModelData data = ModelData.get(player);
 				data.hidePants = !data.hidePants;
+			} else if (type == EnumPackets.ENTITY_SCALE_MULT) {
+				String name = Server.readString(buffer);
+				Float mult = buffer.readFloat();
+
+				EntityScaleManagerClient.setScaleMult(name, mult);
 			}
 		}
 	}

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.EntityScaleManagerServer;
 import noppes.mpm.MorePlayerModels;
 
 public class PacketHandlerServer {
@@ -317,6 +318,16 @@ public class PacketHandlerServer {
 
 				boolean succ = file.renameTo(filenew);
 			}
+		} else if (type == EnumPackets.ENTITY_SCALE_MULT) {
+			String name = Server.readString(buffer);
+
+			Float mult = EntityScaleManagerServer.getScaleMult(name);
+
+			NBTTagCompound compound = new NBTTagCompound();
+			compound.setString("name", name);
+			compound.setFloat("mult", mult);
+
+			Server.sendData(player, EnumPackets.ENTITY_SCALE_MULT, compound);
 		}
 	}
 }

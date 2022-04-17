@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
 
-public class EntityScaleManagerClient {
+public class EntityScaleManagerClient extends EntityScaleManagerBase {
 	private static Map<String, Float> entityMap;
 	static {
 		entityMap = new HashMap<String, Float>();
@@ -15,12 +15,7 @@ public class EntityScaleManagerClient {
 
 	public static Float getScaleMult(EntityLivingBase entity) {
 		Float mult;
-		String name = entity.getClass().getCanonicalName();
-		if (entity.isChild()) {
-			name += "_child";
-		} else {
-			name += "_adult";
-		}
+		String name = getName(entity);
 
 		if (entityMap.containsKey(name)) {
 			mult = entityMap.get(name);

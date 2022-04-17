@@ -1,22 +1,19 @@
 package noppes.mpm.util;
 
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EntityScaleManagerServer {
+import net.minecraft.entity.EntityLivingBase;
+
+public class EntityScaleManagerServer extends EntityScaleManagerBase {
 	private static Map<String, Float> entityMap;
 	static {
 		entityMap = new HashMap<String, Float>();
@@ -64,7 +61,9 @@ public class EntityScaleManagerServer {
 		}
 	}
 
-	public static Float getScaleMult(String name) {
+	public static Float getScaleMult(EntityLivingBase entity) {
+		String name = getName(entity);
+
 		if (entityMap.containsKey(name)) {
 			return entityMap.get(name);
 		} else {

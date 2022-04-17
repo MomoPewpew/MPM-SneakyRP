@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import noppes.mpm.Server;
+import noppes.mpm.constants.EnumPackets;
 
 public class EntityScaleManagerServer extends EntityScaleManagerBase {
 	private static Map<String, Float> entityMap;
@@ -60,29 +64,16 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 		reader.close();
 	}
 
-	public static Float getScaleMult(String name) {
+	public static void getScaleMult(EntityPlayerMP player, String name) {
 		if (entityMap.containsKey(name)) {
-			return entityMap.get(name);
-		} else {
-			Float mult;
-			Boolean child;
+			Float mult =  entityMap.get(name);
 
-			if (name.endsWith("_child")) {
-				mult = 0.5F;
-				child = true;
-			} else {
-				mult = 1.0F;
-				child = false;
-			}
 
-			//TODO Parse class for potential multipliers
+			NBTTagCompound compound = new NBTTagCompound();
+			compound.setString("name", name);
+			compound.setFloat("mult", mult);
 
-			try {
-				setScaleMult(name, mult);
-			} catch (IOException e) {
-
-			}
-			return mult;
+			Server.sendData(player, EnumPackets.ENTITY_SCALE_MULT, compound);
 		}
 	}
 

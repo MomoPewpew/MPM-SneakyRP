@@ -321,13 +321,7 @@ public class PacketHandlerServer {
 		} else if (type == EnumPackets.ENTITY_SCALE_MULT) {
 			String name = Server.readString(buffer);
 
-			Float mult = EntityScaleManagerServer.getScaleMult(name);
-
-			NBTTagCompound compound = new NBTTagCompound();
-			compound.setString("name", name);
-			compound.setFloat("mult", mult);
-
-			Server.sendData(player, EnumPackets.ENTITY_SCALE_MULT, compound);
+			EntityScaleManagerServer.getScaleMult(player, name);
 		}
 	}
 }

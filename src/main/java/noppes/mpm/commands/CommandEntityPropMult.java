@@ -17,10 +17,10 @@ import noppes.mpm.util.EntityScaleManagerServer;
 public class CommandEntityPropMult extends MpmCommandInterface {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
-		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
-
 		ModelData data = ModelData.get((EntityPlayer) icommandsender);
 		EntityLivingBase entity = data.getEntity((EntityPlayer) icommandsender);
+
+		if (args.length == 0 || entity == null) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
 		String name = EntityScaleManagerServer.getName(entity);
 
@@ -52,6 +52,6 @@ public class CommandEntityPropMult extends MpmCommandInterface {
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/entitypropmult <base scale multiplier>";
+		return "/entitypropmult <base scale multiplier>. Use this command while in an entity form. If you do not know what this is, please do not use it at all.";
 	}
 }

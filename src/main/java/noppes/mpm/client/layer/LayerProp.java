@@ -15,6 +15,7 @@ import noppes.mpm.Emote;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
+import noppes.mpm.util.EntityScaleManagerClient;
 
 public class LayerProp extends LayerInterface {
 
@@ -104,8 +105,8 @@ public class LayerProp extends LayerInterface {
 				}
 
 				if (prop.propBodyPart != null) {
-					prop.partModifierX = (float) -(((Math.cos(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ)) / 16);
-					prop.partModifierZ = (float) (((Math.cos(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointX)) / 16);
+					prop.partModifierX = (float) (-(((Math.cos(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+					prop.partModifierZ = (float) ((((Math.cos(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 				}
 			}
 

@@ -11,6 +11,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import noppes.mpm.constants.EnumParts;
 import noppes.mpm.util.BodyPartManager;
+import noppes.mpm.util.EntityScaleManagerClient;
 
 public class Prop {
 	//These variables are read from NBT tags
@@ -606,20 +607,20 @@ public class Prop {
 			this.propBodyPart = BodyPartManager.getRenderer(entity, (this.partIndex >= 0) ? this.partIndex : 0);
 
 			if (this.propBodyPart != null) {
-				this.partModifierY = this.propBodyPart.rotationPointY / 16 - 1.5F;
+				this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
 			}
 
-			this.propOffsetX = this.offsetX;
-			this.propOffsetY = this.offsetY;
-			this.propOffsetZ = this.offsetZ;
+			this.propOffsetX = this.offsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			this.propOffsetY = this.offsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+			this.propOffsetZ = this.offsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 
-			this.propScaleX = this.scaleX;
-			this.propScaleY = this.scaleY;
-			this.propScaleZ = this.scaleZ;
+			this.propScaleX = this.scaleX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			this.propScaleY = this.scaleY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+			this.propScaleZ = this.scaleZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 
-			this.propPpOffsetX = this.ppOffsetX;
-			this.propPpOffsetY = this.ppOffsetY;
-			this.propPpOffsetZ = this.ppOffsetZ;
+			this.propPpOffsetX = this.ppOffsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			this.propPpOffsetY = this.ppOffsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+			this.propPpOffsetZ = this.ppOffsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 		}
 	}
 

@@ -147,6 +147,8 @@ public class RenderEvent {
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
 
+				GlStateManager.popMatrix();
+
                 List layers = event.getRenderer().layerRenderers;
                 Iterator var8 = layers.iterator();
 
@@ -157,7 +159,6 @@ public class RenderEvent {
                      }
                 }
 
-				GlStateManager.popMatrix();
 			} else {
 				offset = 0.0F;
 				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {

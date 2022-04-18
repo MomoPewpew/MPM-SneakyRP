@@ -21,7 +21,6 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	public int active = 0;
 	private EntityPlayer player;
 	public int xOffset = 0;
-	public ModelData playerdata;
 	public static GuiCreationScreenInterface Gui = new GuiCreationParts();
 	private static float rotation = 0.5F;
 

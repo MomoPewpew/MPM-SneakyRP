@@ -319,7 +319,8 @@ public class PacketHandlerServer {
 				boolean succ = file.renameTo(filenew);
 			}
 		} else if (type == EnumPackets.ENTITY_SCALE_MULT) {
-			String name = Server.readString(buffer);
+			NBTTagCompound compound = Server.readNBT(buffer);
+			String name = compound.getString("name");
 
 			EntityScaleManagerServer.getScaleMult(player, name);
 		}

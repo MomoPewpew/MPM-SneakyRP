@@ -407,8 +407,10 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				ModelData data = ModelData.get(player);
 				data.hidePants = !data.hidePants;
 			} else if (type == EnumPackets.ENTITY_SCALE_MULT) {
-				String name = Server.readString(buffer);
-				Float mult = buffer.readFloat();
+				NBTTagCompound compound = Server.readNBT(buffer);
+
+				String name = compound.getString("name");
+				Float mult = compound.getFloat("mult");
 
 				EntityScaleManagerClient.setScaleMult(name, mult);
 			}

@@ -51,6 +51,7 @@ import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.EntityScaleManagerServer;
 import noppes.mpm.util.PixelmonHelper;
 
 @Mod(
@@ -210,6 +211,11 @@ public class MorePlayerModels {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
 		}
 
+		try {
+			EntityScaleManagerServer.buildMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

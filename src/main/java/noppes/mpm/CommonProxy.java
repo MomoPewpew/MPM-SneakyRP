@@ -21,11 +21,6 @@ public class CommonProxy implements IGuiHandler {
 
 	public void load() {
 		MorePlayerModels.Channel.register(new PacketHandlerServer());
-		try {
-			EntityScaleManagerServer.buildMap();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void postLoad() {

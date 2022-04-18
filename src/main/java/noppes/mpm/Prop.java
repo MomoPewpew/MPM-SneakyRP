@@ -614,9 +614,15 @@ public class Prop {
 			this.propOffsetY = this.offsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
 			this.propOffsetZ = this.offsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 
-			this.propScaleX = this.scaleX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-			this.propScaleY = this.scaleY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
-			this.propScaleZ = this.scaleZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			if (this.matchScaling) {
+				this.propScaleX = this.scaleX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleY = this.scaleY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleZ = this.scaleZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			} else {
+				this.propScaleX = this.scaleX * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleY = this.scaleY * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleZ = this.scaleZ * EntityScaleManagerClient.getScaleMult(entity);
+			}
 
 			this.propPpOffsetX = this.ppOffsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 			this.propPpOffsetY = this.ppOffsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);

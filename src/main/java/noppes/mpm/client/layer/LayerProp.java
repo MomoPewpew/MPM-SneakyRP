@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.client.model.animation.Animation;
 import noppes.mpm.Emote;
 import noppes.mpm.Prop;
 import noppes.mpm.Prop.EnumType;
@@ -96,17 +97,19 @@ public class LayerProp extends LayerInterface {
 					sneakModifierY = 0.20F;
 				}
 
+				Float yRender = (float) Math.toRadians(entity.prevRenderYawOffset + ((entity.renderYawOffset - entity.prevRenderYawOffset) * Animation.getPartialTickTime()));
+
 				if (prop.partIndex >= 0) {
 					partXrotation = (float) (Math.PI + prop.propBodyPart.rotateAngleX);
-					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
+					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - yRender);
 				} else {
 					partXrotation = (float) (Math.PI);
-					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - Math.toRadians(entity.renderYawOffset));
+					partYrotation = (float) (-prop.propBodyPart.rotateAngleY - yRender);
 				}
 
 				if (prop.propBodyPart != null) {
-					prop.partModifierX = (float) (-(((Math.cos(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointX) + (Math.sin(Math.toRadians(entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-					prop.partModifierZ = (float) ((((Math.cos(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointZ) + (Math.sin(Math.toRadians(-entity.renderYawOffset)) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+					prop.partModifierX = (float) (-(((Math.cos(yRender) * prop.propBodyPart.rotationPointX) + (Math.sin(yRender) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+					prop.partModifierZ = (float) ((((Math.cos(-yRender) * prop.propBodyPart.rotationPointZ) + (Math.sin(-yRender) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 				}
 			}
 

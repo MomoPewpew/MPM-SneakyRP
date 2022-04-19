@@ -214,7 +214,9 @@ public class PacketHandlerServer {
 
 				NBTTagCompound propCompound = new NBTTagCompound();
 
-				propCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+				FileInputStream f = new FileInputStream(file);
+				propCompound = CompressedStreamTools.readCompressed(f);
+				f.close();
 
 				Server.sendData(player, EnumPackets.PROPGROUP_LOAD_CLIENT, propCompound);
 			} catch (Exception var4) {

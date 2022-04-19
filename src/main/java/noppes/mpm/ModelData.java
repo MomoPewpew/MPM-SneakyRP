@@ -1334,4 +1334,20 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 		part = biped.bipedRightLeg;
 		if(part != null) part.rotateAngleX = part.rotateAngleY = part.rotateAngleZ = part.offsetX = part.offsetY = part.offsetZ = 0F;
 	}
+
+	public void refreshPropCaches() {
+		List<PropGroup> plist = new ArrayList<PropGroup>();
+
+		plist.add(this.propBase);
+
+		for (PropGroup pg : this.propGroups) {
+			plist.add(pg);
+		}
+
+		for (PropGroup pg : plist) {
+			for (Prop p : pg.props) {
+				p.refreshCache = true;
+			}
+		}
+	}
 }

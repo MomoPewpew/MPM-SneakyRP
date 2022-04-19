@@ -1,8 +1,11 @@
 package noppes.mpm;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import noppes.mpm.util.EntityScaleManagerServer;
 
 public class CommonProxy implements IGuiHandler {
 

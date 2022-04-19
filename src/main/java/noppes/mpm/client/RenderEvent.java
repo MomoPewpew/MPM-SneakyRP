@@ -36,6 +36,7 @@ import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.layer.LayerPreRender;
+import noppes.mpm.client.layer.LayerProp;
 import noppes.mpm.util.PixelmonHelper;
 
 public class RenderEvent {
@@ -133,10 +134,14 @@ public class RenderEvent {
 
 				Entity renderViewEntity = mc.getRenderViewEntity();
 
+	            Double x = (((player.posX - player.lastTickPosX) * Animation.getPartialTickTime() + player.lastTickPosX) - ((renderViewEntity.posX - renderViewEntity.lastTickPosX) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosX));
+	           	Double y = (((player.posY - player.lastTickPosY) * Animation.getPartialTickTime() + player.lastTickPosY) - ((renderViewEntity.posY - renderViewEntity.lastTickPosY) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosY));
+	           	Double z = (((player.posZ - player.lastTickPosZ) * Animation.getPartialTickTime() + player.lastTickPosZ) - ((renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosZ));
+
 				GlStateManager.translate(
-						((((player.posX - player.lastTickPosX) * Animation.getPartialTickTime() + player.lastTickPosX) - ((renderViewEntity.posX - renderViewEntity.lastTickPosX) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosX)) * (1.0F - data.entityScaleX)),
-						((((player.posY - player.lastTickPosY) * Animation.getPartialTickTime() + player.lastTickPosY) - ((renderViewEntity.posY - renderViewEntity.lastTickPosY) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosY)) * (1.0F - data.entityScaleY)),
-						((((player.posZ - player.lastTickPosZ) * Animation.getPartialTickTime() + player.lastTickPosZ) - ((renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosZ)) * (1.0F - data.entityScaleX))
+						(x * (1.0F - data.entityScaleX)),
+						(y * (1.0F - data.entityScaleY)),
+						(z * (1.0F - data.entityScaleX))
 					);
 
 				//These rotate functions were neccesary when we had separate X and Z sliders, but that feature was cut. Too many bugs, and even when it worked it looked 20 fps
@@ -145,7 +150,21 @@ public class RenderEvent {
 				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
 				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
+
 				GlStateManager.popMatrix();
+
+                List layers = event.getRenderer().layerRenderers;
+                Iterator var8 = layers.iterator();
+
+                while(var8.hasNext()) {
+                     LayerRenderer layer = (LayerRenderer)var8.next();
+                     if (layer instanceof LayerProp) {
+                    	 GlStateManager.translate(x, y, z);
+                         ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
+                         GlStateManager.translate(-x, -y, -z);
+                     }
+                }
+
 			} else {
 				offset = 0.0F;
 				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {

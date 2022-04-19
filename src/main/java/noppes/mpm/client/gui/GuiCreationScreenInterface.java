@@ -21,7 +21,6 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	public int active = 0;
 	private EntityPlayer player;
 	public int xOffset = 0;
-	public ModelData playerdata;
 	public static GuiCreationScreenInterface Gui = new GuiCreationParts();
 	private static float rotation = 0.5F;
 
@@ -115,15 +114,15 @@ public abstract class GuiCreationScreenInterface extends GuiNPCInterface impleme
 	@Override
 	public void drawScreen(int x, int y, float f) {
 		super.drawScreen(x, y, f);
-		this.entity = this.playerdata.getEntity(this.mc.thePlayer);
+/*		this.entity = this.playerdata.getEntity(this.mc.thePlayer);
 		EntityLivingBase entity = this.entity;
 		if (entity == null) {
 			entity = this.player;
 		} else {
 			MPMEntityUtil.Copy(this.mc.thePlayer, this.player);
-		}
+		}*/
 
-		this.drawNpc((EntityLivingBase)entity, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
+		this.drawNpc((EntityLivingBase)this.player, this.xOffset + 200, 200, 1.0F, (int)(rotation * 360.0F - 180.0F));
 	}
 
 	@Override

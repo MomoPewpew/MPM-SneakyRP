@@ -34,6 +34,7 @@ import noppes.mpm.commands.CommandNames;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
+import noppes.mpm.commands.CommandEntityPropMult;
 import noppes.mpm.commands.CommandEGive;
 import noppes.mpm.commands.CommandENear;
 import noppes.mpm.commands.CommandEN;
@@ -50,6 +51,7 @@ import noppes.mpm.commands.CommandSkinSave;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.EntityScaleManagerServer;
 import noppes.mpm.util.PixelmonHelper;
 
 @Mod(
@@ -203,11 +205,17 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandVault());
 		event.registerServerCommand(new CommandUnvault());
 		event.registerServerCommand(new CommandNames());
+		event.registerServerCommand(new CommandEntityPropMult());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
 		}
 
+		try {
+			EntityScaleManagerServer.buildMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

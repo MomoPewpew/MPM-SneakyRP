@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
@@ -24,6 +25,7 @@ import noppes.mpm.client.gui.util.ICustomScrollListener;
 import noppes.mpm.client.gui.util.ISliderListener;
 import noppes.mpm.client.gui.util.ITextfieldListener;
 import noppes.mpm.constants.EnumPackets;
+import noppes.mpm.util.BodyPartManager;
 
 public class GuiCreationProps extends GuiCreationScreenInterface implements ISliderListener, ICustomScrollListener, ITextfieldListener {
 	private GuiCustomScroll scroll;
@@ -163,8 +165,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
 				y += 22;
 				this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
-				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, new String[]{"gui.lefthand", "gui.righthand", "gui.head", "gui.body", "gui.leftfoot", "gui.rightfoot", "gui.model"},
-				bodyParts.contains(prop.bodyPartName) ? bodyParts.indexOf(prop.bodyPartName) : 0));
+
+				EntityLivingBase entity = this.playerdata.getEntity(this.getPlayer());
+				this.addButton(new GuiNpcButton(105, guiOffsetX + 32, y, 69, 20, (entity == null) ? BodyPartManager.bipedPartNamesWithModel : BodyPartManager.partNumberArrayWithModel(entity), prop.partIndex + 1));
+
 				this.addButton(new GuiNpcButton(121, guiOffsetX + 102, y, 50, 20, new String[]{"gui.shown", "gui.hidden"}, prop.hide ? 1 : 0));
 				y += 22;
 
@@ -374,6 +378,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 		super.actionPerformed(btn);
 		if (btn.id == 101) {
 			props.add(new Prop("minecraft:stained_glass:2", "lefthand", 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, true, false, "NONAME", 0.0F, 0.0F, 0.0F));
+			props.add(new Prop("minecraft:stained_glass:2", 0, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, true, false, "NONAME", 0.0F, 0.0F, 0.0F));
 			newProp = true;
 			advanced = false;
 			this.initGui();
@@ -401,7 +406,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			sliders = 108;
 			this.initGui();
 		} else if (btn.id == 105) {
-			prop.bodyPartName = this.bodyParts.get(((GuiNpcButton)btn).getValue());
+			prop.partIndex = ((GuiNpcButton)btn).getValue() - 1;
 			this.initGui();
 		} else if (btn.id == 118) {
 			prop.matchScaling = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
@@ -473,21 +478,9 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			this.initGui();
 		} else if (btn.id == 310) {
 			for (Prop p : selectedPropGroup.props) {
-				p.offsetX = -p.offsetX;
-
-				if (p.bodyPartName.contains("left")) {
-					p.bodyPartName = p.bodyPartName.replace("left", "right");
-				} else if (p.bodyPartName.contains("right")) {
-					p.bodyPartName = p.bodyPartName.replace("right", "left");
-				}
-
-				if (p.type == EnumType.ITEM) {
-					p.rotateY = -p.rotateY;
-					p.rotateZ = -p.rotateZ;
-				} else if (p.type == EnumType.PARTICLE) {
-					p.yaw = -p.yaw;
-				}
+				p.flip();
 			}
+			this.initGui();
 		} else if (btn.id == 124) {
 			advanced = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 			this.initGui();
@@ -802,7 +795,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 
 		if (this.initiating) return;
 
-		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316)) {
+		if ((textField.id >= 109 && textField.id <= 117) || (textField.id >= 509 && textField.id <= 514) || (textField.id >= 311 && textField.id <= 316) || (textField.id >= 126 && textField.id <= 128)) {
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(textField.getText().length());
 		}

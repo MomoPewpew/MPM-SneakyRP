@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import noppes.mpm.ModelData;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -42,6 +43,7 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	public int mouseX;
 	public int mouseY;
 	private static float playersVolume = 0.0F;
+	public ModelData playerdata;
 
 	public GuiNPCInterface() {
 		this.player = Minecraft.getMinecraft().thePlayer;
@@ -348,6 +350,8 @@ public abstract class GuiNPCInterface extends GuiScreen {
 	}
 
 	public void drawNpc(EntityLivingBase npc, int x, int y, float zoomed, int rotation) {
+
+
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.enableColorMaterial();
 		GlStateManager.pushMatrix();
@@ -357,8 +361,6 @@ public abstract class GuiNPCInterface extends GuiScreen {
 			scale = 2.0F / npc.height;
 		}
 
-		if (npc instanceof EntityPlayer) {
-		}
 
 		GlStateManager.scale(-60.0F * scale * zoomed, 60.0F * scale * zoomed, 60.0F * scale * zoomed);
 		GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
@@ -372,10 +374,13 @@ public abstract class GuiNPCInterface extends GuiScreen {
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-((float)Math.atan((double)(f6 / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-		npc.renderYawOffset = (float)rotation;
-		npc.rotationYaw = (float)Math.atan((double)(f5 / 80.0F)) * 40.0F + (float)rotation;
+		npc.renderYawOffset = (float)-rotation;
+		npc.rotationYaw = (float)Math.atan((double)(f5 / 80.0F)) * 40.0F - (float)rotation;
 		npc.rotationPitch = -((float)Math.atan((double)(f6 / 40.0F))) * 20.0F;
 		npc.rotationYawHead = npc.rotationYaw;
+		if (this.playerdata.getEntity(this.player) != null) {
+			GlStateManager.rotate((rotation + f2), 0.0F, 1.0F, 0.0F);
+		}
 		this.mc.getRenderManager().playerViewY = 180.0F;
 		this.mc.getRenderManager().doRenderEntity(npc, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		npc.prevRenderYawOffset = npc.renderYawOffset = f2;

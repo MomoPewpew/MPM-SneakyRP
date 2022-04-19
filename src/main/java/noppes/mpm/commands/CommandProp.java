@@ -26,35 +26,6 @@ import noppes.mpm.constants.EnumPackets;
 
 public class CommandProp extends MpmCommandInterface {
 
-	private final List<String> listBodyParts = new ArrayList<String>(Arrays.asList(
-	"hat",
-	"head",
-	"model",
-	"body",
-	"torso",
-	"back",
-	"arm",
-	"hand",
-	"armleft",
-	"handleft",
-	"leftarm",
-	"lefthand",
-	"armright",
-	"handright",
-	"rightarm",
-	"righthand",
-	"leg",
-	"foot",
-	"legleft",
-	"footleft",
-	"leftleg",
-	"leftfoot",
-	"legright",
-	"footright",
-	"rightleg",
-	"rightfoot"
-	));
-
 	private final List<String> clearStrings = new ArrayList<String>(Arrays.asList(
 	"clear",
 	"reset",
@@ -119,7 +90,7 @@ public class CommandProp extends MpmCommandInterface {
 		EntityPlayerMP player = (EntityPlayerMP) icommandsender;
 		ModelData data = ModelData.get(player);
 
-		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "").replace("-", "") : "lefthand";
+		String bodyPartString = (args.length > 1) ? args[1].toLowerCase().replace("_", "") : "0";
 
 		if (args.length > 0) {
 			if (clearStrings.contains(args[0])) {
@@ -221,7 +192,7 @@ public class CommandProp extends MpmCommandInterface {
 		String propString = (args.length > 0) ? args[0] : "minecraft:stained_glass:2";
 
 		if (!propString.startsWith("particle:")) {
-			String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
+			String bodyPartName = bodyPartString;
 			Float propScaleX = (args.length > 2) ? Float.valueOf(args[2]) : 1.0F;
 			Float propScaleY = (args.length > 3) ? Float.valueOf(args[3]) : propScaleX;
 			Float propScaleZ = (args.length > 4) ? Float.valueOf(args[4]) : propScaleX;
@@ -245,7 +216,7 @@ public class CommandProp extends MpmCommandInterface {
 			propMatchScaling, propHide, propName,
 			ppOffsetX, ppOffsetY, ppOffsetZ);
 		} else {
-			String bodyPartName = (listBodyParts.contains(bodyPartString)) ? bodyPartString : "lefthand";
+			String bodyPartName = bodyPartString;
 			Float propMotionScatter = (args.length > 2) ? Float.valueOf(args[2]) : 0.0F;
 			Float propFrequency = (args.length > 3) ? Float.valueOf(args[3]) : 1.0F;
 			int propAmount = (args.length > 4) ? Integer.valueOf(args[4]) : 1;

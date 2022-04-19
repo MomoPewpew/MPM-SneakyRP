@@ -3,18 +3,15 @@ package noppes.mpm;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import noppes.mpm.commands.CommandProp;
@@ -120,7 +117,9 @@ public class PacketHandlerServer {
 
 			try {
 				File file = new File(dir, filename);
-				CompressedStreamTools.writeCompressed(propCompound, new FileOutputStream(file));
+				FileOutputStream f = new FileOutputStream(file);
+				CompressedStreamTools.writeCompressed(propCompound, f);
+				f.close();
 			} catch (Exception var6) {
 				LogWriter.except(var6);
 				var6.printStackTrace();
@@ -174,7 +173,9 @@ public class PacketHandlerServer {
 
 				NBTTagCompound skinCompound = new NBTTagCompound();
 
-				skinCompound = CompressedStreamTools.readCompressed(new FileInputStream(file));
+				FileInputStream f = new FileInputStream(file);
+				skinCompound = CompressedStreamTools.readCompressed(f);
+				f.close();
 
 				Server.sendData(player, EnumPackets.UPDATE_PLAYER_DATA_CLIENT, skinCompound);
 			} catch (Exception var4) {
@@ -265,7 +266,9 @@ public class PacketHandlerServer {
 			ByteBuf sendBuffer = Unpooled.buffer();
 			try {
 				sendBuffer.writeInt(EnumPackets.EMOTE_LOAD.ordinal());
-				sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
+				FileInputStream f = new FileInputStream(file);
+				sendBuffer.writeBytes(f, (int)file.length());
+				f.close();
 				Server.sendData(player, sendBuffer);
 			} catch(Exception e) {
 				sendBuffer.release();
@@ -300,6 +303,7 @@ public class PacketHandlerServer {
 				Emote.writeEmote(filedata, emote);
 				byte[] rawdata = filedata.array();
 				out.write(rawdata);
+				out.close();
 			} finally {
 				filedata.release();
 			}

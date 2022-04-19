@@ -16,19 +16,7 @@ import noppes.mpm.util.EntityScaleManagerClient;
 public class Prop {
 	//These variables are read from NBT tags
 	public String propString = "";
-	public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
 	public String bodyPartName = "lefthand";
-	public Float scaleX = 1.0F;
-	public Float scaleY = 1.0F;
-	public Float scaleZ = 1.0F;
-	public Float offsetX = 0.0F;
-	public Float offsetY = 0.0F;
-	public Float offsetZ = 0.0F;
-	public Float rotateX = 0.0F;
-	public Float rotateY = 0.0F;
-	public Float rotateZ = 0.0F;
-	public Boolean matchScaling = true;
-	public Boolean hide = false;
 	public int partIndex = 0;
 	public float scaleX = 1.0F;
 	public float scaleY = 1.0F;

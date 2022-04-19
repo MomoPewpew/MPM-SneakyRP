@@ -27,7 +27,7 @@ public class Prop {
 	public float rotateY = 0.0F;
 	public float rotateZ = 0.0F;
 	public boolean matchScaling = false;
-	public boolean hide = false;
+	public boolean hide = true;
 	public String name = "NONAME";
 	public float scatter = 0.0F;
 	public float frequency = 1.0F;
@@ -87,8 +87,8 @@ public class Prop {
 		this.rotateX = rotateX;
 		this.rotateY = rotateY;
 		this.rotateZ = rotateZ;
-		this.hide = hide;
 		this.matchScaling = matchScaling;
+		this.hide = hide;
 		this.name = name;
 		this.ppOffsetX = ppOffsetX;
 		this.ppOffsetY = ppOffsetY;

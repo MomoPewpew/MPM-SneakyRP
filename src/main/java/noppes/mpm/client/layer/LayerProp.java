@@ -2,6 +2,7 @@ package noppes.mpm.client.layer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -98,7 +99,11 @@ public class LayerProp extends LayerInterface {
 				propRenderer = new ModelRenderer(entityModel);
 
 				if (this.player.isSneaking()) {
-					sneakModifierY = 0.20F;
+					if (entityModel instanceof ModelBiped) {
+						sneakModifierY = 0.40F;
+					} else {
+						sneakModifierY = 0.20F;
+					}
 				}
 
 				Float yRender = (float) Math.toRadians(entity.prevRenderYawOffset + ((entity.renderYawOffset - entity.prevRenderYawOffset) * Animation.getPartialTickTime()));

@@ -617,7 +617,7 @@ public class Prop {
 				if (this.type == EnumType.ITEM) {
 					this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
 				} else {
-					this.partModifierY = (this.propBodyPart.rotationPointY / 16 + 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+					this.partModifierY = (this.propBodyPart.rotationPointY / 16) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
 				}
 			}
 

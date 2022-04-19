@@ -319,8 +319,8 @@ public class LayerProp extends LayerInterface {
 				}
 
 				//Adjust for model yaw
-				float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
-				float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
+				float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + (2 * propOffsetZCorrected + sneakModifierZ) * Math.sin(Math.toRadians(this.player.renderYawOffset)));
+				float propOffsetZCorrected2 = (float) ((propOffsetZCorrected + sneakModifierZ) * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
 				float partModifierXCorrected = 0;
 				float partModifierZCorrected = 0;
@@ -385,7 +385,7 @@ public class LayerProp extends LayerInterface {
 					this.player.worldObj.spawnParticle(prop.particleType,
 						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
 						this.player.posY + propOffsetYCorrected + prop.partModifierY - prop.propBodyPart.offsetY + sneakModifierY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]) + this.playerdata.modelOffsetY,
-						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected - sneakModifierZ,
+						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
 						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 

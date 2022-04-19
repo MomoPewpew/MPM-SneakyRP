@@ -639,6 +639,8 @@ public class Prop {
 			this.propPpOffsetY = this.ppOffsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
 			this.propPpOffsetZ = this.ppOffsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
 		}
+
+		this.refreshCache = false;
 	}
 
 	public void flip() {

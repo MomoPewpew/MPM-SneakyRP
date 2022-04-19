@@ -21,8 +21,12 @@ import noppes.mpm.util.EntityScaleManagerClient;
 
 public class LayerProp extends LayerInterface {
 
+	Minecraft minecraft;
+
+
 	public LayerProp(RenderPlayer render) {
 		super(render);
+		this.minecraft = Minecraft.getMinecraft();
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class LayerProp extends LayerInterface {
 	}
 
 	private void renderProp(Prop prop, float par7) {
-		if (prop.refreshCache) prop.refreshCache(this.player);
+		if (prop.refreshCache || (this.playerdata.player == minecraft.thePlayer && minecraft.currentScreen instanceof GuiNPCInterface)) prop.refreshCache(this.player);
 
 		if (prop.type == EnumType.ITEM) {
 			renderItemProp(prop, par7);
@@ -53,8 +57,6 @@ public class LayerProp extends LayerInterface {
 
 	private void renderItemProp(Prop prop, float par7) {
 		if (!prop.hide && prop.propBodyPart != null) {
-			Minecraft minecraft = Minecraft.getMinecraft();
-
 			ModelRenderer motherRenderer = null;
 			ModelRenderer propRenderer = null;
 
@@ -92,8 +94,7 @@ public class LayerProp extends LayerInterface {
 					partYrotation = prop.propBodyPart.rotateAngleY;
 				}
 			} else {
-				Minecraft mc = Minecraft.getMinecraft();
-				ModelBase entityModel = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
+				ModelBase entityModel = (((RenderLivingBase) minecraft.getRenderManager().getEntityRenderObject(entity)).getMainModel());
 
 				motherRenderer = new ModelRenderer(entityModel);
 				propRenderer = new ModelRenderer(entityModel);
@@ -227,8 +228,6 @@ public class LayerProp extends LayerInterface {
 
 		if (propHide == false) {
 			if (System.currentTimeMillis() - prop.lastPlayed >= 1000 / prop.frequency) {
-				Minecraft minecraft = Minecraft.getMinecraft();
-
 				float sneakModifierY = 0.0F;
 				float sneakModifierZ = 0.0F;
 

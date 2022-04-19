@@ -70,15 +70,19 @@ public class LayerProp extends LayerInterface {
 				motherRenderer = new ModelRenderer(this.model);
 				propRenderer = new ModelRenderer(this.model);
 
-				if (prop.propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
+				if (prop.partIndex == 5 && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
 					return;
 
 				if (this.player.isSneaking()) {
-					if (prop.propBodyPart == this.model.bipedLeftLeg || prop.propBodyPart == this.model.bipedRightLeg) {
-						sneakModifierY = 0.1875F;
-						sneakModifierZ = -0.25F;
-					} else if (prop.propBodyPart == this.model.bipedHead) {
-						sneakModifierY = -0.0625F;
+					switch(prop.partIndex) {
+						case 2:
+						case 3:
+							sneakModifierY = 0.1875F;
+							sneakModifierZ = -0.25F;
+							break;
+						case 5:
+							sneakModifierY = -0.0625F;
+							break;
 					}
 				}
 
@@ -223,19 +227,30 @@ public class LayerProp extends LayerInterface {
 				float sneakModifierY = 0.0F;
 				float sneakModifierZ = 0.0F;
 
-				if (prop.propBodyPart == this.model.bipedHead && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
-				return;
+				if (prop.partIndex == 5 && this.playerdata.player == minecraft.thePlayer && minecraft.gameSettings.thirdPersonView == 0 && !(minecraft.currentScreen instanceof GuiNPCInterface))
+					return;
+
+				EntityLivingBase entity = this.playerdata.getEntity(this.player);
 
 				if (this.player.isSneaking()) {
-					if (prop.propBodyPart == this.model.bipedLeftLeg || prop.propBodyPart == this.model.bipedRightLeg) {
-						sneakModifierY = -0.125F;
-						sneakModifierZ = -0.25F;
-					} else if (prop.propBodyPart == this.model.bipedHead) {
-						sneakModifierY = -0.375F;
-					} else if (prop.propBodyPart == this.model.bipedLeftArm || prop.propBodyPart == this.model.bipedRightArm) {
-						sneakModifierY = -0.375F;
-					} else if (prop.propBodyPart == this.model.bipedBody) {
-						sneakModifierY = -0.375F;
+					if (entity == null) {
+						switch(prop.partIndex) {
+							case 2:
+							case 3:
+								sneakModifierY = -0.125F;
+								sneakModifierZ = -0.25F;
+								break;
+							case 5:
+								sneakModifierY = -0.375F;
+								break;
+							case 0:
+							case 1:
+								sneakModifierY = -0.375F;
+								break;
+							case 4:
+								sneakModifierY = -0.375F;
+								break;
+						}
 					}
 				}
 
@@ -307,7 +322,6 @@ public class LayerProp extends LayerInterface {
 				float propOffsetXCorrected2 = (float) (propOffsetXCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + 2 * propOffsetZCorrected * Math.sin(Math.toRadians(this.player.renderYawOffset)));
 				float propOffsetZCorrected2 = (float) (propOffsetZCorrected * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetXCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));
 
-				EntityLivingBase entity = this.playerdata.getEntity(this.player);
 				float partModifierXCorrected = 0;
 				float partModifierZCorrected = 0;
 				if (entity != null) {
@@ -370,8 +384,8 @@ public class LayerProp extends LayerInterface {
 
 					this.player.worldObj.spawnParticle(prop.particleType,
 						this.player.posX - propOffsetXCorrected2 - partModifierXCorrected,
-						this.player.posY + propOffsetYCorrected + prop.partModifierY - prop.propBodyPart.offsetY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]) + this.playerdata.modelOffsetY,
-						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected,
+						this.player.posY + propOffsetYCorrected + prop.partModifierY - prop.propBodyPart.offsetY + sneakModifierY - (this.playerdata.animStates == null ? 0.0F : this.playerdata.animStates[Emote.AXIS_COUNT*Emote.MODEL + Emote.OFF_Y]) + this.playerdata.modelOffsetY,
+						this.player.posZ + propOffsetZCorrected2 + partModifierZCorrected - sneakModifierZ,
 						propMotionXCorrected, propMotionYCorrected, propMotionZCorrected);
 				}
 

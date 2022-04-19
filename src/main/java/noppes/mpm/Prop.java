@@ -523,12 +523,19 @@ public class Prop {
 			ModelPartConfig config = null;
 			this.propBodyPart = BodyPartManager.getRenderer(player, (this.partIndex >= 0) ? this.partIndex : 4);
 
+			Float yMod = 0F;
+			if (this.type == EnumType.ITEM) {
+				yMod = 1.5F;
+			} else {
+				yMod = 0F;
+			}
+
 			switch(this.partIndex) {
 				case 0:
 					config = data.arm1;
 
 					this.partModifierX = (-0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (-0.0625F * data.getPartConfig(EnumParts.ARM_LEFT).scaleX);
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_LEFT).scaleY);
 
 					this.propOffsetX = (this.offsetX + 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
@@ -538,7 +545,7 @@ public class Prop {
 					config = data.arm2;
 
 					this.partModifierX = (0.25F * data.getPartConfig(EnumParts.BODY).scaleX) + (0.0625F * data.getPartConfig(EnumParts.ARM_RIGHT).scaleX);
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY - 0.125  * data.getPartConfig(EnumParts.ARM_RIGHT).scaleY);
 
 					this.propOffsetX = (this.offsetX - 0.0625F) * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
@@ -548,7 +555,7 @@ public class Prop {
 					config = data.leg1;
 
 					this.partModifierX = -0.125F * data.getPartConfig(EnumParts.LEG_LEFT).scaleX;
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
@@ -558,7 +565,7 @@ public class Prop {
 					config = data.leg2;
 
 					this.partModifierX = 0.125F * data.getPartConfig(EnumParts.LEG_RIGHT).scaleX;
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_RIGHT).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY - 0.7F) * config.scaleY;
@@ -569,7 +576,7 @@ public class Prop {
 					config = data.body;
 
 					this.partModifierX = 0.0F;
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = this.offsetY * config.scaleY;
@@ -579,7 +586,7 @@ public class Prop {
 					config = data.head;
 
 					this.partModifierX = 0.0F;
-					this.partModifierY = (float) (-1.5F + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
+					this.partModifierY = (float) (-yMod + 0.75 * data.getPartConfig(EnumParts.LEG_LEFT).scaleY + 0.75 * data.getPartConfig(EnumParts.BODY).scaleY);
 
 					this.propOffsetX = this.offsetX * config.scaleX;
 					this.propOffsetY = (this.offsetY + 0.50F) * config.scaleY + 0.20F;
@@ -607,7 +614,11 @@ public class Prop {
 			this.propBodyPart = BodyPartManager.getRenderer(entity, (this.partIndex >= 0) ? this.partIndex : 0);
 
 			if (this.propBodyPart != null) {
-				this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+				if (this.type == EnumType.ITEM) {
+					this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+				} else {
+					this.partModifierY = (this.propBodyPart.rotationPointY / 16 + 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+				}
 			}
 
 			this.propOffsetX = this.offsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);

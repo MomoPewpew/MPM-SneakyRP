@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Collections;
+import java.util.Iterator;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import noppes.mpm.LogWriter;
@@ -33,8 +33,7 @@ import noppes.mpm.client.gui.GuiMPM;
 import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.EntityScaleManagerClient;
-import noppes.mpm.util.EntityScaleManagerServer;
-import net.minecraft.util.text.TextComponentTranslation;
+import noppes.mpm.util.MPMScheduler;
 
 public class PacketHandlerClient extends PacketHandlerServer {
 	static EnumPackets[] cachedEnums = EnumPackets.values();
@@ -425,6 +424,21 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				Float mult = compound.getFloat("mult");
 
 				EntityScaleManagerClient.setScaleMult(name, mult);
+
+				List<EntityPlayerSP> list = player.worldObj.getEntitiesWithinAABB(EntityPlayerSP.class, player.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D));
+				if (!list.isEmpty()) {
+						MPMScheduler.runTack(() -> {
+						Iterator<EntityPlayerSP> var4 = list.iterator();
+
+						while(var4.hasNext()) {
+							EntityPlayerSP p = (EntityPlayerSP)var4.next();
+							ModelData data = ModelData.get(p);
+							if (data.getEntity(p) != null) {
+								data.refreshPropCaches();
+							}
+						}
+					});
+				}
 			}
 		}
 	}

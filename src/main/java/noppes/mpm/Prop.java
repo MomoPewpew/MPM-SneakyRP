@@ -616,29 +616,29 @@ public class Prop {
 
 			if (this.propBodyPart != null) {
 				if (this.type == EnumType.ITEM) {
-					this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+					this.partModifierY = (this.propBodyPart.rotationPointY / 16 - 1.5F) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(data);
 				} else {
-					this.partModifierY = (this.propBodyPart.rotationPointY / 16) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
+					this.partModifierY = (this.propBodyPart.rotationPointY / 16) * data.entityScaleY * EntityScaleManagerClient.getScaleMult(data);
 				}
 			}
 
-			this.propOffsetX = this.offsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-			this.propOffsetY = this.offsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
-			this.propOffsetZ = this.offsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			this.propOffsetX = this.offsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
+			this.propOffsetY = this.offsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(data);
+			this.propOffsetZ = this.offsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
 
 			if (this.matchScaling) {
-				this.propScaleX = this.scaleX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-				this.propScaleY = this.scaleY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
-				this.propScaleZ = this.scaleZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleX = this.scaleX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
+				this.propScaleY = this.scaleY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(data);
+				this.propScaleZ = this.scaleZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
 			} else {
-				this.propScaleX = this.scaleX * EntityScaleManagerClient.getScaleMult(entity);
-				this.propScaleY = this.scaleY * EntityScaleManagerClient.getScaleMult(entity);
-				this.propScaleZ = this.scaleZ * EntityScaleManagerClient.getScaleMult(entity);
+				this.propScaleX = this.scaleX * EntityScaleManagerClient.getScaleMult(data);
+				this.propScaleY = this.scaleY * EntityScaleManagerClient.getScaleMult(data);
+				this.propScaleZ = this.scaleZ * EntityScaleManagerClient.getScaleMult(data);
 			}
 
-			this.propPpOffsetX = this.ppOffsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-			this.propPpOffsetY = this.ppOffsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(entity);
-			this.propPpOffsetZ = this.ppOffsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+			this.propPpOffsetX = this.ppOffsetX * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
+			this.propPpOffsetY = this.ppOffsetY * data.entityScaleY * EntityScaleManagerClient.getScaleMult(data);
+			this.propPpOffsetZ = this.ppOffsetZ * data.entityScaleX * EntityScaleManagerClient.getScaleMult(data);
 		}
 
 		this.refreshCache = false;

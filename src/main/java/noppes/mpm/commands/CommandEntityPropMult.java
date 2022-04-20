@@ -22,7 +22,7 @@ public class CommandEntityPropMult extends MpmCommandInterface {
 
 		if (args.length == 0 || entity == null) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
-		String name = EntityScaleManagerServer.getName(entity);
+		String name = EntityScaleManagerServer.getName(data);
 
 		Float mult;
 		try {

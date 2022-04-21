@@ -3,6 +3,7 @@ package noppes.mpm.client;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import java.io.File;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,10 @@ public class RenderEvent {
 				data.resourceInit = true;
 			}
 
+            List<LayerRenderer<?>> layers = event.getRenderer().layerRenderers;
+            Iterator<LayerRenderer<?>> var8 = layers.iterator();
+            LayerRenderer layer = null;
+
 			Entity entity = data.getEntity(player);
 			if (entity != null) {
 				if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
@@ -153,17 +158,19 @@ public class RenderEvent {
 
 				GlStateManager.popMatrix();
 
-                List layers = event.getRenderer().layerRenderers;
-                Iterator var8 = layers.iterator();
-
                 while(var8.hasNext()) {
-                     LayerRenderer layer = (LayerRenderer)var8.next();
-                     if (layer instanceof LayerProp) {
-                    	 GlStateManager.translate(x, y, z);
-                         ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
-                         GlStateManager.translate(-x, -y, -z);
-                     }
-                }
+                    try {
+                    	layer = var8.next();
+                    }
+                    catch (ConcurrentModificationException e) {
+                    	return;
+                    }
+                    if (layer instanceof LayerProp) {
+                   	 GlStateManager.translate(x, y, z);
+                        ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
+                        GlStateManager.translate(-x, -y, -z);
+                    }
+               }
 
 			} else {
 				offset = 0.0F;
@@ -172,11 +179,14 @@ public class RenderEvent {
 				}
 
 				GlStateManager.translate(0.0F, -offset, 0.0F);
-				List layers = event.getRenderer().layerRenderers;
-				Iterator var8 = layers.iterator();
 
 				while(var8.hasNext()) {
-					LayerRenderer layer = (LayerRenderer)var8.next();
+                    try {
+                    	layer = var8.next();
+                    }
+                    catch (ConcurrentModificationException e) {
+                    	return;
+                    }
 					if (layer instanceof LayerPreRender) {
 						((LayerPreRender)layer).preRender(player);
 					}

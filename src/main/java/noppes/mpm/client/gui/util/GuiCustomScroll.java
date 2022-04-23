@@ -269,7 +269,7 @@ public class GuiCustomScroll extends GuiScreen {
 					this.selected = this.hover;
 				}
 
-				this.hover = -1;
+				//this.hover = -1;
 			}
 
 			if (this.listener != null) {

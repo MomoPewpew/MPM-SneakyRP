@@ -23,6 +23,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent.Pre;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -243,13 +244,20 @@ public class ClientEventHandler {
 
 		if (event.isCancelable()) {
 			event.setCanceled(true);
-			if (entity instanceof EntityPlayer) {
+			Minecraft minecraft = Minecraft.getMinecraft();
+			if (entity instanceof EntityPlayer && entity != minecraft.thePlayer) {
 				if (!MorePlayerModels.HidePlayerNames) {
-					String name = entity.getName();
+					String name = null;
+
+					if (Loader.isModLoaded("multicharacter")) {
+						name = ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]";
+					} else {
+						name = entity.getName();
+					}
 
 					Float animTime = Animation.getPartialTickTime();
 
-					Entity rendewViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+					Entity rendewViewEntity = minecraft.getRenderViewEntity();
 					double renderX = rendewViewEntity.lastTickPosX + (rendewViewEntity.posX - rendewViewEntity.lastTickPosX) * animTime;
 					double renderY = rendewViewEntity.lastTickPosY + (rendewViewEntity.posY - rendewViewEntity.lastTickPosY) * animTime;
 					double renderZ = rendewViewEntity.lastTickPosZ + (rendewViewEntity.posZ - rendewViewEntity.lastTickPosZ) * animTime;

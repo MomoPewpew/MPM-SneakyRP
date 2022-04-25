@@ -246,37 +246,39 @@ public class ClientEventHandler {
 			event.setCanceled(true);
 			Minecraft minecraft = Minecraft.getMinecraft();
 			if (entity instanceof EntityPlayer && entity != minecraft.thePlayer) {
-				if (!MorePlayerModels.HidePlayerNames) {
-					String name = null;
-
-					if (Loader.isModLoaded("multicharacter")) {
-						name = ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]";
-					} else {
-						name = entity.getName();
-					}
-
-					Float animTime = Animation.getPartialTickTime();
-
-					Entity rendewViewEntity = minecraft.getRenderViewEntity();
-					double renderX = rendewViewEntity.lastTickPosX + (rendewViewEntity.posX - rendewViewEntity.lastTickPosX) * animTime;
-					double renderY = rendewViewEntity.lastTickPosY + (rendewViewEntity.posY - rendewViewEntity.lastTickPosY) * animTime;
-					double renderZ = rendewViewEntity.lastTickPosZ + (rendewViewEntity.posZ - rendewViewEntity.lastTickPosZ) * animTime;
-
-					double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * animTime;
-					double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * animTime;
-					double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * animTime;
-
-					//float height = ((Entity)entity).height + 0.5F - (entity.isSneaking() ? 0.25F : 0.0F);
-					ModelData data = ModelData.get((EntityPlayer) entity);
-					float height = ((Entity)entity).getEyeHeight() + (0.75F * data.getPartConfig(EnumParts.HEAD).scaleY) - (entity.isSneaking() ? 0.25F : 0.0F);
-
-					this.renderLivingLabel(entity, name, x - renderX, (float) (y - renderY + height), z - renderZ, 64);
-				}
+				ModelData data = ModelData.get((EntityPlayer) entity);
+				float height = ((Entity)entity).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (entity.isSneaking() ? 0.25F : 0.0F);
+				renderName(entity, height);
 			}
 		}
 	}
 
-	public void renderLivingLabel(EntityLivingBase entity, String name, double x, float height, double z, int maxDistance) {
+	public static void renderName(EntityLivingBase entity, float height) {
+		if (!MorePlayerModels.HidePlayerNames) return;
+
+		String name = null;
+
+		if (Loader.isModLoaded("multicharacter")) {
+			name = ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]";
+		} else {
+			name = entity.getName();
+		}
+
+		Float animTime = Animation.getPartialTickTime();
+
+		Entity rendewViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+		double renderX = rendewViewEntity.lastTickPosX + (rendewViewEntity.posX - rendewViewEntity.lastTickPosX) * animTime;
+		double renderY = rendewViewEntity.lastTickPosY + (rendewViewEntity.posY - rendewViewEntity.lastTickPosY) * animTime;
+		double renderZ = rendewViewEntity.lastTickPosZ + (rendewViewEntity.posZ - rendewViewEntity.lastTickPosZ) * animTime;
+
+		double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * animTime;
+		double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * animTime;
+		double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * animTime;
+
+		renderLivingLabel(entity, name, x - renderX, (float) (y - renderY + height), z - renderZ, 64);
+	}
+
+	public static void renderLivingLabel(EntityLivingBase entity, String name, double x, float height, double z, int maxDistance) {
 		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
 
 		double distanceSq = entity.getDistanceSqToEntity(renderManager.renderViewEntity);

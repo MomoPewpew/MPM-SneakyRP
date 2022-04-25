@@ -5,6 +5,9 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -439,6 +442,31 @@ public class PacketHandlerClient extends PacketHandlerServer {
 						}
 					});
 				}
+			} else if (type == EnumPackets.ME) {
+				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+				pl = player.worldObj.getPlayerEntityByUUID(uuid);
+
+				ModelData data = ModelData.get(pl);
+
+				String string = Server.readString(buffer);
+				int lines = (int) Math.floor(string.length() / 30) + 1;
+				int charsPerLine = string.length() / lines;
+				int i = 0;
+				String[] split = string.split(" ");
+				String [] messages = new String[lines];
+
+				for (String s : split) {
+					if (messages[i] == null) messages[i] = "";
+					messages[i] += s + " ";
+
+					if (messages[i].length() > charsPerLine) {
+						messages[i] = StringUtils.chop(messages[i]);
+						i += 1;
+					}
+				}
+
+				Long expiryTime = System.currentTimeMillis() + Math.max(5000, string.length() * 65L);
+				data.meMessages.put(expiryTime, messages);
 			}
 		}
 	}

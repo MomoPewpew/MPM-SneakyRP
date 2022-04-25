@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -105,6 +107,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 	public float[] animStates = null;
 	public int[] animPartUsages = null;
 
+	public Map<Long, String[]> meMessages = new HashMap<>();
 
 	public ModelData() {
 		this.backItem = null;

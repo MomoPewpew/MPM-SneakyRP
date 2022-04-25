@@ -40,7 +40,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 			new GuiCreationParts.GuiPartTail(),
 			new GuiCreationParts.GuiPartHalo(),
 			new GuiCreationParts.GuiPartEyes(),
-			new GuiCreationParts.GuiPartParticles(),
+			//new GuiCreationParts.GuiPartParticles(),
 			new GuiCreationParts.GuiPartArmLeft(),
 			new GuiCreationParts.GuiPartArmRight(),
 			new GuiCreationParts.GuiPartLegLeft(),

@@ -158,6 +158,8 @@ public class RenderEvent {
 
 				GlStateManager.popMatrix();
 
+				ClientEventHandler.renderName(player, data.offsetY() + 2.8F);
+
                 while(var8.hasNext()) {
                     try {
                     	layer = var8.next();

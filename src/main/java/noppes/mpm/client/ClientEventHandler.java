@@ -245,7 +245,7 @@ public class ClientEventHandler {
 		if (event.isCancelable()) {
 			event.setCanceled(true);
 			Minecraft minecraft = Minecraft.getMinecraft();
-			if (entity instanceof EntityPlayer && entity != minecraft.thePlayer) {
+			if (entity instanceof EntityPlayer) {
 				ModelData data = ModelData.get((EntityPlayer) entity);
 				float height = ((Entity)entity).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (entity.isSneaking() ? 0.25F : 0.0F);
 				renderName(entity, height);
@@ -254,7 +254,7 @@ public class ClientEventHandler {
 	}
 
 	public static void renderName(EntityLivingBase entity, float height) {
-		if (!MorePlayerModels.HidePlayerNames) return;
+		if (MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) return;
 
 		String name = null;
 

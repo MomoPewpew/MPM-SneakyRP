@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,6 +39,7 @@ import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.layer.LayerPreRender;
 import noppes.mpm.client.layer.LayerProp;
+import noppes.mpm.constants.EnumParts;
 import noppes.mpm.util.PixelmonHelper;
 
 public class RenderEvent {
@@ -78,6 +80,14 @@ public class RenderEvent {
 	public void pre(Pre event) {
 		if (event.getEntity() instanceof AbstractClientPlayer && !event.isCanceled()) {
 			AbstractClientPlayer player = (AbstractClientPlayer)event.getEntity();
+
+			if (player.isSpectator()) {
+				ModelData data = ModelData.get((EntityPlayer) player);
+				float height = ((Entity)player).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (player.isSneaking() ? 0.25F : 0.0F);
+				ClientEventHandler.renderName(player, height);
+				return;
+			}
+
 			Minecraft mc = Minecraft.getMinecraft();
 			GlStateManager.pushMatrix();
 			if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {

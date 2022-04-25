@@ -266,7 +266,9 @@ public class ClientEventHandler {
 					double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * animTime;
 					double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * animTime;
 
-					float height = ((Entity)entity).height + 0.5F - (entity.isSneaking() ? 0.25F : 0.0F);
+					//float height = ((Entity)entity).height + 0.5F - (entity.isSneaking() ? 0.25F : 0.0F);
+					ModelData data = ModelData.get((EntityPlayer) entity);
+					float height = ((Entity)entity).getEyeHeight() + (0.75F * data.getPartConfig(EnumParts.HEAD).scaleY) - (entity.isSneaking() ? 0.25F : 0.0F);
 
 					this.renderLivingLabel(entity, name, x - renderX, (float) (y - renderY + height), z - renderZ, 64);
 				}

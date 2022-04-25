@@ -266,13 +266,15 @@ public class ClientEventHandler {
 					double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * animTime;
 					double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * animTime;
 
-					this.renderLivingLabel(entity, name, x - renderX, y - renderY, z - renderZ, 64);
+					float height = ((Entity)entity).height + 0.5F - (entity.isSneaking() ? 0.25F : 0.0F);
+
+					this.renderLivingLabel(entity, name, x - renderX, (float) (y - renderY + height), z - renderZ, 64);
 				}
 			}
 		}
 	}
 
-	public void renderLivingLabel(EntityLivingBase entity, String name, double x, double y, double z, int maxDistance) {
+	public void renderLivingLabel(EntityLivingBase entity, String name, double x, float height, double z, int maxDistance) {
 		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
 
 		double distanceSq = entity.getDistanceSqToEntity(renderManager.renderViewEntity);
@@ -281,13 +283,10 @@ public class ClientEventHandler {
 			return;
 		}
 
-		boolean sneaking = entity.isSneaking();
-
 		float viewY = renderManager.playerViewY;
 		float viewX = renderManager.playerViewX;
 		boolean backwardsCam = (renderManager.options.thirdPersonView == 2);
-		float height = ((Entity)entity).height + 0.5F - (sneaking ? 0.25F : 0.0F);
 		int lvt_17_1_ = "deadmau5".equals(name) ? -10 : 0;
-		EntityRenderer.func_189692_a(renderManager.getFontRenderer(), name, (float)x, (float)y + height, (float)z, lvt_17_1_, viewY, viewX, backwardsCam, sneaking);
+		EntityRenderer.func_189692_a(renderManager.getFontRenderer(), name, (float)x, height, (float)z, lvt_17_1_, viewY, viewX, backwardsCam, false);
 	}
 }

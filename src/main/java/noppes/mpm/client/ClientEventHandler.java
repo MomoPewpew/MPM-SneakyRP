@@ -254,7 +254,7 @@ public class ClientEventHandler {
 	}
 
 	public static void renderName(EntityLivingBase entity, float height) {
-		if (MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) return;
+		if ((MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) && !ClientProxy.Names.isKeyDown()) return;
 
 		String name = null;
 

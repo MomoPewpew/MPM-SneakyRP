@@ -114,10 +114,11 @@ public class RenderEvent {
 
 				//Use this pitch and yaw to calculate the plate coordinates of the new distance
 				//Apply yaw
-				double Xmodified = (float) (Math.sin(yaw) * -newLength);
+				double Xyaw = (float) (Math.sin(yaw) * -newLength);
 				double Zyaw = (float) (Math.cos(yaw) * newLength);
 				//Apply pitch
-				double Ymodified = Math.sin(pitch) * Zyaw;
+				double Xmodified = Math.cos(pitch) * Xyaw;
+				double Ymodified = Math.sin(pitch) * Math.sqrt(Math.pow((Xyaw), 2) + Math.pow((Zyaw), 2));
 				double Zmodified = Math.cos(pitch) * Zyaw;
 
 				//Add these deltas to the camera coordinates to find the nameplate coordinate

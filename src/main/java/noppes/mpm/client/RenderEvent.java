@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -83,35 +84,71 @@ public class RenderEvent {
 		if (event.getEntity() instanceof AbstractClientPlayer && !event.isCanceled()) {
 			AbstractClientPlayer renderPlayer = (AbstractClientPlayer)event.getEntity();
 			ModelData data = ModelData.get(renderPlayer);
-			Long systemTime = System.currentTimeMillis();
 			float animTime = Animation.getPartialTickTime();
 
-			Entity rendewViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
-			EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-			double renderX = rendewViewEntity.lastTickPosX + (rendewViewEntity.posX - rendewViewEntity.lastTickPosX) * animTime;
-			double renderY = rendewViewEntity.lastTickPosY + (rendewViewEntity.posY - rendewViewEntity.lastTickPosY) * animTime;
-			double renderZ = rendewViewEntity.lastTickPosZ + (rendewViewEntity.posZ - rendewViewEntity.lastTickPosZ) * animTime;
-
-			double playerX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
-			double playerY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime;
-			double playerZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
-
-			Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
-
-			double xdist = (playerX - renderX);
-			double ydist = (playerY - renderY + meHeight);
-			double zdist = (playerZ - renderZ);
-
-
 			if (!data.meMessages.isEmpty()) {
-				for (Long l : data.meMessages.keySet()) {
-					for (String s : data.meMessages.get(l)) {
-						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
-						meHeight -= 0.25F;
-					}
+				Long systemTime = System.currentTimeMillis();
 
-					if (systemTime > l) data.meMessages.remove(l);
-				}
+				//calculate length of line between camera and entity
+				Entity renderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+				double camX = renderViewEntity.posX + ActiveRenderInfo.getCameraPosition().xCoord;
+				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord - renderViewEntity.getEyeHeight();
+				double camZ = renderViewEntity.posZ + ActiveRenderInfo.getCameraPosition().zCoord;
+
+				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
+
+				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
+				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
+				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
+
+				double newLength = Math.sqrt(((Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2))) + Math.pow((entityY - camY), 2)) - 0.5D;
+
+				//calculate yaw between pure north and entity
+				float yaw = (float) -Math.atan2((entityX - camX), (entityZ - camZ));
+				//Apply that yaw to create temporary Z coordinates
+				double tempZ = camZ * Math.cos(yaw);
+				//calculate the pitch between temp reference and entity
+				float pitch = (float) (Math.atan2((entityZ - tempZ), (entityY - camY)) - (Math.PI / 2));
+
+				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(pitch) + ", " + Double.toString(yaw)));
+
+				//Use this pitch and yaw to calculate the plate coordinates of the new distance
+				//Apply pitch
+				double Zpitch = (float) (Math.cos(pitch) * -newLength);
+				double Ymodified = (float) (Math.sin(pitch) * -newLength);
+				//Apply yaw
+				double Xmodified = (float) (Math.sin(yaw) * Zpitch);
+				double Zmodified = (float) (Math.cos(yaw) * -Zpitch);
+
+				//Add these deltas to the camera coordinates to find the nameplate coordinate
+				double nameplateX = camX + Xmodified;
+				double nameplateY = camY + Ymodified;
+				double nameplateZ = camZ + Zmodified;
+
+				renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(nameplateX) + ", " + Double.toString(nameplateY) + ", " + Double.toString(nameplateZ)));
+
+				//Calculate distance between renderviewentity and nameplate coordinates
+				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
+				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
+				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
+
+				double xdist = nameplateX - renderX;
+				double ydist = nameplateY - renderY;
+				double zdist = nameplateZ - renderZ;
+
+				//Render nameplates for /me's
+                try {
+    				for (Long l : data.meMessages.keySet()) {
+    					for (String s : data.meMessages.get(l)) {
+    						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
+    						meHeight -= 0.25F;
+    					}
+
+    					if (systemTime > l) data.meMessages.remove(l);
+    				}
+                }
+                catch (ConcurrentModificationException e) {
+                }
 			}
 
 			if (renderPlayer.isSpectator()) {

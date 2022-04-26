@@ -113,12 +113,12 @@ public class RenderEvent {
 				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(pitch) + ", " + Double.toString(yaw)));
 
 				//Use this pitch and yaw to calculate the plate coordinates of the new distance
-				//Apply pitch
-				double Zpitch = (float) (Math.cos(pitch) * -newLength);
-				double Ymodified = (float) (Math.sin(pitch) * -newLength);
 				//Apply yaw
-				double Xmodified = (float) (Math.sin(yaw) * Zpitch);
-				double Zmodified = (float) (Math.cos(yaw) * -Zpitch);
+				double Xmodified = (float) (Math.sin(yaw) * -newLength);
+				double Zyaw = (float) (Math.cos(yaw) * newLength);
+				//Apply pitch
+				double Ymodified = Math.sin(pitch) * Zyaw;
+				double Zmodified = Math.cos(pitch) * Zyaw;
 
 				//Add these deltas to the camera coordinates to find the nameplate coordinate
 				double nameplateX = camX + Xmodified;

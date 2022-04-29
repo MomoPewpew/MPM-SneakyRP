@@ -82,6 +82,7 @@ public class RenderEvent {
 	@SubscribeEvent
 	public void pre(Pre event) {
 		if (event.getEntity() instanceof AbstractClientPlayer && !event.isCanceled()) {
+			Minecraft mc = Minecraft.getMinecraft();
 			AbstractClientPlayer renderPlayer = (AbstractClientPlayer)event.getEntity();
 			ModelData data = ModelData.get(renderPlayer);
 			float animTime = Animation.getPartialTickTime();
@@ -90,36 +91,34 @@ public class RenderEvent {
 				Long systemTime = System.currentTimeMillis();
 
 				//calculate length of line between camera and entity
-				Entity renderViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+				Entity renderViewEntity = mc.getRenderViewEntity();
 				double camX = renderViewEntity.posX + ActiveRenderInfo.getCameraPosition().xCoord;
-				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord - renderViewEntity.getEyeHeight();
+				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
 				double camZ = renderViewEntity.posZ + ActiveRenderInfo.getCameraPosition().zCoord;
 
 				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 
 				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
-				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
+				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + renderPlayer.getDefaultEyeHeight() + data.getOffsetCamera(renderPlayer);
 				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
 
-				double newLength = Math.sqrt(((Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2))) + Math.pow((entityY - camY), 2)) - 0.5D;
+				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2));
 
-				//calculate yaw between pure north and entity
-				float yaw = (float) -Math.atan2((entityX - camX), (entityZ - camZ));
-				//Apply that yaw to create temporary Z coordinates
-				double tempZ = camZ * Math.cos(yaw);
-				//calculate the pitch between temp reference and entity
-				float pitch = (float) (Math.atan2((entityZ - tempZ), (entityY - camY)) - (Math.PI / 2));
+				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(newLength)));
+
+				//calculate yaw and pitch
+				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
+				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
 
 				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(pitch) + ", " + Double.toString(yaw)));
 
 				//Use this pitch and yaw to calculate the plate coordinates of the new distance
-				//Apply yaw
-				double Xyaw = (float) (Math.sin(yaw) * -newLength);
-				double Zyaw = (float) (Math.cos(yaw) * newLength);
 				//Apply pitch
-				double Xmodified = Math.cos(pitch) * Xyaw;
-				double Ymodified = Math.sin(pitch) * Math.sqrt(Math.pow((Xyaw), 2) + Math.pow((Zyaw), 2));
-				double Zmodified = Math.cos(pitch) * Zyaw;
+				double Zpitch = (Math.sin(pitch) * newLength);
+				double Ymodified = (Math.cos(pitch) * -newLength);
+				//Apply yaw
+				double Xmodified = (Math.cos(yaw) * Zpitch);
+				double Zmodified = (Math.sin(yaw) * Zpitch);
 
 				//Add these deltas to the camera coordinates to find the nameplate coordinate
 				double nameplateX = camX + Xmodified;
@@ -158,7 +157,6 @@ public class RenderEvent {
 				return;
 			}
 
-			Minecraft mc = Minecraft.getMinecraft();
 			GlStateManager.pushMatrix();
 			if (ClientEventHandler.camera.enabled && renderPlayer == mc.thePlayer) {
 				renderPlayer.rotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;

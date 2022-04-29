@@ -87,64 +87,6 @@ public class RenderEvent {
 			ModelData data = ModelData.get(renderPlayer);
 			float animTime = Animation.getPartialTickTime();
 
-			if (!data.meMessages.isEmpty()) {
-				Long systemTime = System.currentTimeMillis();
-
-				//calculate length of line between camera and entity
-				Entity renderViewEntity = mc.getRenderViewEntity();
-				double camX = renderViewEntity.posX + ActiveRenderInfo.getCameraPosition().xCoord;
-				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
-				double camZ = renderViewEntity.posZ + ActiveRenderInfo.getCameraPosition().zCoord;
-
-				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
-
-				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
-				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
-				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
-
-				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2)) - 1.0D;
-
-				//calculate yaw and pitch
-				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
-				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
-
-				//Use this pitch and yaw to calculate the plate coordinates of the new distance
-				//Apply pitch
-				double Zpitch = (Math.sin(pitch) * newLength);
-				double Ymodified = (Math.cos(pitch) * -newLength);
-				//Apply yaw
-				double Xmodified = (Math.cos(yaw) * Zpitch);
-				double Zmodified = (Math.sin(yaw) * Zpitch);
-
-				//Add these deltas to the camera coordinates to find the nameplate coordinate
-				double nameplateX = camX + Xmodified;
-				double nameplateY = camY + Ymodified;
-				double nameplateZ = camZ + Zmodified;
-
-				//Calculate distance between renderviewentity and nameplate coordinates
-				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
-				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
-				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
-
-				double xdist = nameplateX - renderX;
-				double ydist = nameplateY - renderY;
-				double zdist = nameplateZ - renderZ;
-
-				//Render nameplates for /me's
-                try {
-    				for (Long l : data.meMessages.keySet()) {
-    					for (String s : data.meMessages.get(l)) {
-    						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
-    						meHeight -= 0.25F;
-    					}
-
-    					if (systemTime > l) data.meMessages.remove(l);
-    				}
-                }
-                catch (ConcurrentModificationException e) {
-                }
-			}
-
 			if (renderPlayer.isSpectator()) {
 				float height = ((Entity)renderPlayer).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 				ClientEventHandler.renderName(renderPlayer, height);
@@ -264,6 +206,64 @@ public class RenderEvent {
 					}
 				}
 
+			}
+
+			// /me rendering
+			if (!data.meMessages.isEmpty()) {
+				Long systemTime = System.currentTimeMillis();
+
+				//calculate length of line between camera and entity
+				Entity renderViewEntity = mc.getRenderViewEntity();
+				double camX = renderViewEntity.posX + ActiveRenderInfo.getCameraPosition().xCoord;
+				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
+				double camZ = renderViewEntity.posZ + ActiveRenderInfo.getCameraPosition().zCoord;
+
+				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
+
+				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
+				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
+				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
+
+				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2)) - 1.5D;
+
+				//calculate yaw and pitch
+				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
+				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
+
+				//Use this pitch and yaw to calculate the plate coordinates of the new distance
+				//Apply pitch
+				double Zpitch = (Math.sin(pitch) * newLength);
+				double Ymodified = (Math.cos(pitch) * -newLength);
+				//Apply yaw
+				double Xmodified = (Math.cos(yaw) * Zpitch);
+				double Zmodified = (Math.sin(yaw) * Zpitch);
+
+				//Add these deltas to the camera coordinates to find the nameplate coordinate
+				double nameplateX = camX + Xmodified;
+				double nameplateY = camY + Ymodified;
+				double nameplateZ = camZ + Zmodified;
+
+				//Calculate distance between renderviewentity and nameplate coordinates
+				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
+				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
+				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
+
+				double xdist = nameplateX - renderX;
+				double ydist = nameplateY - renderY;
+				double zdist = nameplateZ - renderZ;
+
+				//Render nameplates for /me's
+                try {
+    				for (Long l : data.meMessages.keySet()) {
+    					for (String s : data.meMessages.get(l)) {
+    						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
+    					}
+
+    					if (systemTime > l) data.meMessages.remove(l);
+    				}
+                }
+                catch (ConcurrentModificationException e) {
+                }
 			}
 		}
 	}

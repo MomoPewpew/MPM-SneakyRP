@@ -78,6 +78,7 @@ public class MorePlayerModels {
 	public static int Version = 8;
 	public static File dir;
 	public static boolean HasServerSide = false;
+	public static boolean multiCharacterActive = false;
 	@ConfigProp(
 	info = "Enable different perspective heights for different model sizes"
 	)

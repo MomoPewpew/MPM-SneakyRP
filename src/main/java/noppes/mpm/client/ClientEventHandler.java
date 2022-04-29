@@ -256,13 +256,7 @@ public class ClientEventHandler {
 	public static void renderName(EntityLivingBase entity, float height) {
 		if ((MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) && !ClientProxy.Names.isKeyDown()) return;
 
-		String name = null;
-
-		if (Loader.isModLoaded("multicharacter")) {
-			name = ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]";
-		} else {
-			name = entity.getName();
-		}
+		String name = MorePlayerModels.multiCharacterActive ? ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]" : entity.getName();
 
 		Float animTime = Animation.getPartialTickTime();
 

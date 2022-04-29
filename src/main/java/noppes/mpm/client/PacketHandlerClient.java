@@ -16,6 +16,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import noppes.mpm.LogWriter;
@@ -467,6 +468,12 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				Long expiryTime = System.currentTimeMillis() + Math.max(5000, string.length() * 65L);
 				data.meMessages.put(expiryTime, messages);
+			} else if (type == EnumPackets.MULTICHARACTER_ACTIVE) {
+				int isActive = buffer.readInt();
+
+				player.addChatMessage(new TextComponentTranslation(Integer.toString(isActive)));
+
+				MorePlayerModels.multiCharacterActive = (isActive == 1) ? true : false;
 			}
 		}
 	}

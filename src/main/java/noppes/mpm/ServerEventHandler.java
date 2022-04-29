@@ -22,8 +22,9 @@ import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.NameFormat;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import noppes.mpm.constants.EnumPackets;
 
 public class ServerEventHandler {
@@ -37,6 +38,14 @@ public class ServerEventHandler {
 	private static final ResourceLocation goblin_hurt = new ResourceLocation("moreplayermodels:goblin.male.hurt");
 	private static final ResourceLocation goblin_attack = new ResourceLocation("moreplayermodels:goblin.male.attack");
 	private static final ResourceLocation key = new ResourceLocation("moreplayermodels", "modeldata");
+
+	@SubscribeEvent
+	public void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
+		int isLoaded = 0;
+		if (Loader.isModLoaded("multicharacter")) isLoaded = 1;
+
+		Server.sendData((EntityPlayerMP) event.player, EnumPackets.MULTICHARACTER_ACTIVE, isLoaded);
+	}
 
 	@SubscribeEvent
 	public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {

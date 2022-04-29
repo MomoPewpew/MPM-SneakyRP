@@ -467,6 +467,10 @@ public class PacketHandlerClient extends PacketHandlerServer {
 
 				Long expiryTime = System.currentTimeMillis() + Math.max(5000, string.length() * 65L);
 				data.meMessages.put(expiryTime, messages);
+			} else if (type == EnumPackets.MULTICHARACTER_ACTIVE) {
+				int isActive = buffer.readInt();
+
+				MorePlayerModels.multiCharacterActive = (isActive == 1) ? true : false;
 			}
 		}
 	}

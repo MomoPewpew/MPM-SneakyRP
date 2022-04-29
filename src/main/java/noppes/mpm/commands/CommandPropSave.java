@@ -90,8 +90,8 @@ public class CommandPropSave extends CommandBase {
 				Server.sendAssociatedData(player, EnumPackets.SEND_PLAYER_DATA, player.getUniqueID(), data.writeToNBT());
 			}
 
+			icommandsender.addChatMessage(new TextComponentTranslation("The prop " + args[0] + " was succesfully saved to the system"));
 			CompressedStreamTools.writeCompressed(propGroup.writeToNBT(), new FileOutputStream(file));
-
 		} catch (Exception var6) {
 			LogWriter.except(var6);
 			var6.printStackTrace();

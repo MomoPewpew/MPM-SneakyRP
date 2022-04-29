@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +19,7 @@ public class CommandSkinSave extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) return;
+		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
 		NBTTagCompound compound = ModelData.get((EntityPlayer) icommandsender).writeToNBT();
 
@@ -27,7 +28,7 @@ public class CommandSkinSave extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -36,7 +37,7 @@ public class CommandSkinSave extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -46,7 +47,37 @@ public class CommandSkinSave extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -59,6 +90,7 @@ public class CommandSkinSave extends CommandBase {
 				return;
 			}
 
+			icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was succesfully saved. If you would like it to be listed in the skinload menu, use '/listskin <name>'"));
 			CompressedStreamTools.writeCompressed(compound, new FileOutputStream(file));
 		} catch (Exception var6) {
 			LogWriter.except(var6);

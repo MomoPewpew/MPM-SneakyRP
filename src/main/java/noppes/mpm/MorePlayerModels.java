@@ -36,6 +36,7 @@ import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
 import noppes.mpm.commands.CommandEntityPropMult;
+import noppes.mpm.commands.CommandListSkin;
 import noppes.mpm.commands.CommandEGive;
 import noppes.mpm.commands.CommandENear;
 import noppes.mpm.commands.CommandEN;
@@ -49,6 +50,7 @@ import noppes.mpm.commands.CommandSkinDel;
 import noppes.mpm.commands.CommandSkinLoad;
 import noppes.mpm.commands.CommandSkinRestore;
 import noppes.mpm.commands.CommandSkinSave;
+import noppes.mpm.commands.CommandUnlistSkin;
 import noppes.mpm.config.ConfigLoader;
 import noppes.mpm.config.ConfigProp;
 import noppes.mpm.constants.EnumPackets;
@@ -78,6 +80,7 @@ public class MorePlayerModels {
 	public static int Version = 8;
 	public static File dir;
 	public static boolean HasServerSide = false;
+	public static boolean multiCharacterActive = false;
 	@ConfigProp(
 	info = "Enable different perspective heights for different model sizes"
 	)
@@ -208,6 +211,8 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandNames());
 		event.registerServerCommand(new CommandEntityPropMult());
 		event.registerServerCommand(new CommandMe());
+		event.registerServerCommand(new CommandListSkin());
+		event.registerServerCommand(new CommandUnlistSkin());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);
@@ -223,7 +228,7 @@ public class MorePlayerModels {
 
 	public static void syncSkinFileNames(EntityPlayerMP player) {
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
 
 		if (!dir.exists()) dir.mkdirs();
 
@@ -254,7 +259,7 @@ public class MorePlayerModels {
 		}
 
 		dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
+		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 
 		if (!dir.exists()) dir.mkdirs();
 
@@ -280,7 +285,7 @@ public class MorePlayerModels {
 
 		if (!playersEntityDenied.contains(player.getUniqueID())) {
 			dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 
 			if (!dir.exists()) dir.mkdirs();
 

@@ -1,18 +1,16 @@
 package noppes.mpm.commands;
 
 import java.io.File;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
-import noppes.mpm.ModelData;
 
-public class CommandPropRem extends CommandBase {
+public class CommandUnlistSkin extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
@@ -20,33 +18,43 @@ public class CommandPropRem extends CommandBase {
 		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
 
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
 			File file = new File(dir, filename);
 
 			if (!file.exists()) {
-				icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was not found on the server."));
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found on the server."));
 				return;
 			}
 
 			File dirnew = null;
-			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "archive");
+			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
 
 			if (!dirnew.exists()) {
 				dirnew.mkdirs();
 			}
 
-			String filenamenew = args[0].toLowerCase() + "-" + System.currentTimeMillis() + ".dat";
-			File filenew = new File(dirnew, filenamenew);
+			File filenew = new File(dirnew, filename);
 
 			file.renameTo(filenew);
-			icommandsender.addChatMessage(new TextComponentTranslation("The PropGroup " + args[0] + " was succesfully deleted."));
+			icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " is no longer listed in the skin load menu. Use '/listskin <name>' to list it again."));
 		} catch (Exception var6) {
 			LogWriter.except(var6);
 			var6.printStackTrace();
@@ -55,12 +63,12 @@ public class CommandPropRem extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "proprem";
+		return "unlistskin";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender arg0) {
-		return "/proprem <name>";
+		return "/unlistskin <name>";
 	}
 
 }

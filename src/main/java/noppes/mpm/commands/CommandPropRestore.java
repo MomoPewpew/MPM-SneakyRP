@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +27,7 @@ public class CommandPropRestore extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) return;
+		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
 		String filename = args[0].toLowerCase() + ".dat";
 		File file;

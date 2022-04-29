@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,44 +27,62 @@ public class CommandSkinRestore extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {
 
-		if (args.length == 0) return;
+		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
+		File dir = null;
 		String filename = args[0].toLowerCase() + ".dat";
-		File file;
 
 		try {
-			File dir = null;
-
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unrestricted");
-
+			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
 
-			file = new File(dir, filename);
+			File file = new File(dir, filename);
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
-
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
 
 				file = new File(dir, filename);
-
-				if (file.exists()) {
-					NBTTagCompound temp = CompressedStreamTools.readCompressed(new FileInputStream(file));
-
-					if (!temp.getString("EntityClass").equals("") && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID()))
-					return;
-				}
 			}
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "restricted");
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+
+				file = new File(dir, filename);
+			}
+
+			if (!file.exists()) {
+				dir = null;
+				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -99,10 +118,10 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (file.exists()) {
 				File dirnew = null;
-				dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins");
+				dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
 				File filenew = new File(dirnew, filename);
 				file.renameTo(filenew);
-				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was restored. If this was not the right skin, please contact a developer."));
+				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was restored. It is currently not listed in the skin load menu."));
 			} else {
 				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was not found in the archive. Please check the spelling or contact a developer."));
 			}

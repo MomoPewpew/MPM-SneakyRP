@@ -99,18 +99,14 @@ public class RenderEvent {
 				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 
 				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
-				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + renderPlayer.getDefaultEyeHeight() + data.getOffsetCamera(renderPlayer);
+				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
 				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
 
-				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2));
-
-				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(newLength)));
+				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2)) - 1.0D;
 
 				//calculate yaw and pitch
 				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
 				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
-
-				//renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(pitch) + ", " + Double.toString(yaw)));
 
 				//Use this pitch and yaw to calculate the plate coordinates of the new distance
 				//Apply pitch
@@ -124,8 +120,6 @@ public class RenderEvent {
 				double nameplateX = camX + Xmodified;
 				double nameplateY = camY + Ymodified;
 				double nameplateZ = camZ + Zmodified;
-
-				renderPlayer.addChatMessage(new TextComponentTranslation(Double.toString(nameplateX) + ", " + Double.toString(nameplateY) + ", " + Double.toString(nameplateZ)));
 
 				//Calculate distance between renderviewentity and nameplate coordinates
 				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;

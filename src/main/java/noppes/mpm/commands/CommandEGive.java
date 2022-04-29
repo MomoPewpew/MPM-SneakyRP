@@ -96,7 +96,7 @@ public class CommandEGive extends CommandBase {
 				sendBuffer.writeBytes(new FileInputStream(file), (int)file.length());
 				Emote emote = Emote.readEmote(sendBuffer);
 				if(emote != null) {
-					LogWriter.warn("DO COMMAND " + emote.toString());
+					LogWriter.info("DO COMMAND " + emote.toString());
 
 					data.updateEmote();
 					data.startEmote(emote, emoteSpeed, cancel_if_conflicting, outro_all_playing_first, override_instead_of_outro);
@@ -116,7 +116,7 @@ public class CommandEGive extends CommandBase {
 					sendBuffer.writeBoolean(override_instead_of_outro);
 
 					Server.sendAssociatedData(player, sendBuffer);
-					LogWriter.warn("DO COMMAND SENT ");
+					LogWriter.info("DO COMMAND SENT ");
 				} else {
 					icommandsender.addChatMessage(new TextComponentTranslation("The Emote " + emoteName + " is corrupted."));
 					sendBuffer.release();

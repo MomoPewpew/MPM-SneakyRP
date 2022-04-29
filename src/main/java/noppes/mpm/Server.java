@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.util.MPMScheduler;

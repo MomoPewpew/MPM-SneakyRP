@@ -3,12 +3,15 @@ package noppes.mpm.client;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import java.io.File;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.MPMRenderEntityUtil;
@@ -18,11 +21,13 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -37,6 +42,7 @@ import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.layer.LayerPreRender;
 import noppes.mpm.client.layer.LayerProp;
+import noppes.mpm.constants.EnumParts;
 import noppes.mpm.util.PixelmonHelper;
 
 public class RenderEvent {
@@ -76,32 +82,42 @@ public class RenderEvent {
 	@SubscribeEvent
 	public void pre(Pre event) {
 		if (event.getEntity() instanceof AbstractClientPlayer && !event.isCanceled()) {
-			AbstractClientPlayer player = (AbstractClientPlayer)event.getEntity();
 			Minecraft mc = Minecraft.getMinecraft();
-			GlStateManager.pushMatrix();
-			if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
-				player.rotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
-				player.prevRotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
-				mc.entityRenderer.getMouseOver(Animation.getPartialTickTime());
+			AbstractClientPlayer renderPlayer = (AbstractClientPlayer)event.getEntity();
+			ModelData data = ModelData.get(renderPlayer);
+			float animTime = Animation.getPartialTickTime();
+
+			if (renderPlayer.isSpectator()) {
+				float height = ((Entity)renderPlayer).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
+				ClientEventHandler.renderName(renderPlayer, height);
 			}
 
-			ModelData data = ModelData.get(player);
+			GlStateManager.pushMatrix();
+			if (ClientEventHandler.camera.enabled && renderPlayer == mc.thePlayer) {
+				renderPlayer.rotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
+				renderPlayer.prevRotationPitch -= ClientEventHandler.camera.cameraPitch + ClientEventHandler.camera.playerPitch;
+				mc.entityRenderer.getMouseOver(animTime);
+			}
 
 			GlStateManager.translate(0.0F, data.modelOffsetY, 0.0F);
 
-			float offset = data.getOffsetCamera(player);
-			player.eyeHeight = player.getDefaultEyeHeight() - offset;
+			float offset = data.getOffsetCamera(renderPlayer);
+			renderPlayer.eyeHeight = renderPlayer.getDefaultEyeHeight() - offset;
 			if (!data.resourceInit && lastSkinTick > 6L) {
-				this.loadPlayerResource(player, data);
+				this.loadPlayerResource(renderPlayer, data);
 				lastSkinTick = 0L;
 				data.resourceInit = true;
 			}
 
-			Entity entity = data.getEntity(player);
+            List<LayerRenderer<?>> layers = event.getRenderer().layerRenderers;
+            Iterator<LayerRenderer<?>> var8 = layers.iterator();
+            LayerRenderer layer = null;
+
+			Entity entity = data.getEntity(renderPlayer);
 			if (entity != null) {
-				if (ClientEventHandler.camera.enabled && player == mc.thePlayer) {
-					entity.rotationPitch = player.rotationPitch;
-					entity.prevRotationPitch = player.prevRotationPitch;
+				if (ClientEventHandler.camera.enabled && renderPlayer == mc.thePlayer) {
+					entity.rotationPitch = renderPlayer.rotationPitch;
+					entity.prevRotationPitch = renderPlayer.prevRotationPitch;
 				}
 
 				event.setCanceled(true);
@@ -110,7 +126,7 @@ public class RenderEvent {
 				}
 
 				if (entity instanceof EntityTameable) {
-					if (player.isSneaking()) {
+					if (renderPlayer.isSneaking()) {
 						((EntityTameable) entity).setSitting(true);
 					} else {
 						((EntityTameable) entity).setSitting(false);
@@ -134,9 +150,9 @@ public class RenderEvent {
 
 				Entity renderViewEntity = mc.getRenderViewEntity();
 
-	            Double x = (((player.posX - player.lastTickPosX) * Animation.getPartialTickTime() + player.lastTickPosX) - ((renderViewEntity.posX - renderViewEntity.lastTickPosX) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosX));
-	           	Double y = (((player.posY - player.lastTickPosY) * Animation.getPartialTickTime() + player.lastTickPosY) - ((renderViewEntity.posY - renderViewEntity.lastTickPosY) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosY));
-	           	Double z = (((player.posZ - player.lastTickPosZ) * Animation.getPartialTickTime() + player.lastTickPosZ) - ((renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * Animation.getPartialTickTime() + renderViewEntity.lastTickPosZ));
+	            Double x = (((renderPlayer.posX - renderPlayer.lastTickPosX) * animTime + renderPlayer.lastTickPosX) - ((renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime + renderViewEntity.lastTickPosX));
+	           	Double y = (((renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + renderPlayer.lastTickPosY) - ((renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime + renderViewEntity.lastTickPosY));
+	           	Double z = (((renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime + renderPlayer.lastTickPosZ) - ((renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime + renderViewEntity.lastTickPosZ));
 
 				GlStateManager.translate(
 						(x * (1.0F - data.entityScaleX)),
@@ -149,39 +165,110 @@ public class RenderEvent {
 				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleX);
 				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
-				mc.getRenderManager().renderEntityStatic(entity, Animation.getPartialTickTime(), false);
+				if (!renderPlayer.isSpectator()) {
+					mc.getRenderManager().renderEntityStatic(entity, animTime, false);
 
-				GlStateManager.popMatrix();
+					GlStateManager.popMatrix();
 
-                List layers = event.getRenderer().layerRenderers;
-                Iterator var8 = layers.iterator();
+					ClientEventHandler.renderName(renderPlayer, data.offsetY() + 2.8F);
 
-                while(var8.hasNext()) {
-                     LayerRenderer layer = (LayerRenderer)var8.next();
-                     if (layer instanceof LayerProp) {
-                    	 GlStateManager.translate(x, y, z);
-                         ((LayerProp) layer).doRenderLayer(player, 0, 0, 0, 0, 0, 0, 0);
-                         GlStateManager.translate(-x, -y, -z);
-                     }
-                }
+	                while(var8.hasNext()) {
+	                    try {
+	                    	layer = var8.next();
+	                    }
+	                    catch (ConcurrentModificationException e) {
+	                    	return;
+	                    }
+	                    if (layer instanceof LayerProp) {
+	                   	 GlStateManager.translate(x, y, z);
+	                        ((LayerProp) layer).doRenderLayer(renderPlayer, 0, 0, 0, 0, 0, 0, 0);
+	                        GlStateManager.translate(-x, -y, -z);
+	                    }
+	               }
+				} else {
+					GlStateManager.popMatrix();
+				}
 
 			} else {
 				offset = 0.0F;
-				if (!MorePlayerModels.DisableFlyingAnimation && player.capabilities.isFlying && player.worldObj.isAirBlock(player.getPosition())) {
-					offset = MathHelper.cos((float)player.ticksExisted * 0.1F) * -0.06F;
+				if (!MorePlayerModels.DisableFlyingAnimation && renderPlayer.capabilities.isFlying && renderPlayer.worldObj.isAirBlock(renderPlayer.getPosition())) {
+					offset = MathHelper.cos((float)renderPlayer.ticksExisted * 0.1F) * -0.06F;
 				}
 
 				GlStateManager.translate(0.0F, -offset, 0.0F);
-				List layers = event.getRenderer().layerRenderers;
-				Iterator var8 = layers.iterator();
 
 				while(var8.hasNext()) {
-					LayerRenderer layer = (LayerRenderer)var8.next();
+                    try {
+                    	layer = var8.next();
+                    }
+                    catch (ConcurrentModificationException e) {
+                    	return;
+                    }
 					if (layer instanceof LayerPreRender) {
-						((LayerPreRender)layer).preRender(player);
+						((LayerPreRender)layer).preRender(renderPlayer);
 					}
 				}
 
+			}
+
+			// /me rendering
+			if (!data.meMessages.isEmpty()) {
+				Long systemTime = System.currentTimeMillis();
+
+				//calculate length of line between camera and entity
+				Entity renderViewEntity = mc.getRenderViewEntity();
+				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
+				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
+				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
+
+				double camX = renderX + ActiveRenderInfo.getCameraPosition().xCoord;
+				double camY = renderY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
+				double camZ = renderZ + ActiveRenderInfo.getCameraPosition().zCoord;
+
+				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.5F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
+
+				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
+				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
+				double entityZ = renderPlayer.lastTickPosZ + (renderPlayer.posZ - renderPlayer.lastTickPosZ) * animTime;
+
+				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2)) - 1.5D;
+
+				int renderCount = 0;
+				//calculate yaw and pitch
+				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
+				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
+
+				//Render nameplates for /me's
+                try {
+    				for (Long l : data.meMessages.keySet()) {
+    					for (String s : data.meMessages.get(l)) {
+    						//Use this pitch and yaw to calculate the plate coordinates of the new distance
+    						//Apply pitch
+    						double Zpitch = (Math.sin(pitch + (renderCount * (0.22 / newLength))) * newLength);
+    						double Ymodified = (Math.cos(pitch + (renderCount * (0.22 / newLength))) * -newLength);
+    						//Apply yaw
+    						double Xmodified = (Math.cos(yaw) * Zpitch);
+    						double Zmodified = (Math.sin(yaw) * Zpitch);
+
+    						//Add these deltas to the camera coordinates to find the nameplate coordinate
+    						double nameplateX = camX + Xmodified;
+    						double nameplateY = camY + Ymodified;
+    						double nameplateZ = camZ + Zmodified;
+
+    						//Calculate distance between renderviewentity and nameplate coordinates
+    						double xdist = nameplateX - renderX;
+    						double ydist = nameplateY - renderY;
+    						double zdist = nameplateZ - renderZ;
+
+    						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
+    						renderCount += 1;
+    					}
+
+    					if (systemTime > l) data.meMessages.remove(l);
+    				}
+                }
+                catch (ConcurrentModificationException e) {
+                }
 			}
 		}
 	}

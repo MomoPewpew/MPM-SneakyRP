@@ -3,11 +3,8 @@ package noppes.mpm.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import noppes.mpm.ModelData;
 import noppes.mpm.client.Client;
 import noppes.mpm.constants.EnumPackets;
 
@@ -17,17 +14,14 @@ public class EntityScaleManagerClient extends EntityScaleManagerBase {
 		entityMap = new HashMap<String, Float>();
 	}
 
-	public static Float getScaleMult(EntityLivingBase entity) {
+	public static Float getScaleMult(ModelData data) {
 		Float mult;
-		String name = getName(entity);
-
-		Minecraft mc = Minecraft.getMinecraft();
-		ModelBase model = (((RenderLivingBase) mc.getRenderManager().getEntityRenderObject(entity)).getMainModel());
+		String name = getName(data);
 
 		if (entityMap.containsKey(name)) {
 			mult = entityMap.get(name);
 		} else {
-			if (model.isChild) {
+			if (isChild(data)) {
 				mult = 0.5F;
 			} else {
 				mult = 1.0F;

@@ -48,6 +48,7 @@ import noppes.mpm.client.model.ModelPlayerAlt;
 public class ClientProxy extends CommonProxy {
 	public static KeyBinding Screen;
 	public static KeyBinding Camera;
+	public static KeyBinding Names;
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -61,6 +62,7 @@ public class ClientProxy extends CommonProxy {
 		new PresetController(MorePlayerModels.dir);
 		ClientRegistry.registerKeyBinding(Screen = new KeyBinding("CharacterScreen", 88, "key.categories.gameplay"));
 		ClientRegistry.registerKeyBinding(Camera = new KeyBinding("MPM Camera", 71, "key.categories.gameplay"));
+		ClientRegistry.registerKeyBinding(Names = new KeyBinding("Show Names", 49, "key.categories.gameplay"));
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		if (MorePlayerModels.EnableUpdateChecker) {
 			VersionChecker checker = new VersionChecker();

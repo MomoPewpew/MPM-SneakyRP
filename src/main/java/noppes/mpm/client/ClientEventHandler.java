@@ -3,17 +3,16 @@ package noppes.mpm.client;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -22,20 +21,19 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent.Pre;
+import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.relauncher.Side;
 import noppes.mpm.ModelData;
 import noppes.mpm.ModelPartData;
 import noppes.mpm.MorePlayerModels;
-import noppes.mpm.ServerTickHandler;
 import noppes.mpm.client.fx.EntityEnderFX;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiMPM;
@@ -242,12 +240,57 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onRenderLiving(RenderLivingEvent.Specials.Pre event) {
-		if (event.getEntity() instanceof EntityPlayer) {
-			if (event.isCancelable()) {
-				if (MorePlayerModels.HidePlayerNames) {
-					event.setCanceled(true);
-				}
+		EntityLivingBase entity = event.getEntity();
+
+		if (event.isCancelable()) {
+			event.setCanceled(true);
+			Minecraft minecraft = Minecraft.getMinecraft();
+			if (entity instanceof EntityPlayer) {
+				ModelData data = ModelData.get((EntityPlayer) entity);
+				float height = ((Entity)entity).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - data.modelOffsetY - (entity.isSneaking() ? 0.25F : 0.0F);
+				renderName(entity, height);
 			}
 		}
+	}
+
+	public static void renderName(EntityLivingBase entity, float height) {
+		if ((MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) && !ClientProxy.Names.isKeyDown()) return;
+
+		String name = null;
+
+		if (Loader.isModLoaded("multicharacter")) {
+			name = ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]";
+		} else {
+			name = entity.getName();
+		}
+
+		Float animTime = Animation.getPartialTickTime();
+
+		Entity rendewViewEntity = Minecraft.getMinecraft().getRenderViewEntity();
+		double renderX = rendewViewEntity.lastTickPosX + (rendewViewEntity.posX - rendewViewEntity.lastTickPosX) * animTime;
+		double renderY = rendewViewEntity.lastTickPosY + (rendewViewEntity.posY - rendewViewEntity.lastTickPosY) * animTime;
+		double renderZ = rendewViewEntity.lastTickPosZ + (rendewViewEntity.posZ - rendewViewEntity.lastTickPosZ) * animTime;
+
+		double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * animTime;
+		double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * animTime;
+		double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * animTime;
+
+		renderLivingLabel(entity, name, x - renderX, (y - renderY + height), z - renderZ, 64);
+	}
+
+	public static void renderLivingLabel(EntityLivingBase entity, String name, double x, double height, double z, int maxDistance) {
+		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+
+		double distanceSq = entity.getDistanceSqToEntity(renderManager.renderViewEntity);
+
+		if (distanceSq > (maxDistance * maxDistance)) {
+			return;
+		}
+
+		float viewY = renderManager.playerViewY;
+		float viewX = renderManager.playerViewX;
+		boolean backwardsCam = (renderManager.options.thirdPersonView == 2);
+		int lvt_17_1_ = "deadmau5".equals(name) ? -10 : 0;
+		EntityRenderer.func_189692_a(renderManager.getFontRenderer(), name, (float)x, (float) height, (float)z, lvt_17_1_, viewY, viewX, backwardsCam, false);
 	}
 }

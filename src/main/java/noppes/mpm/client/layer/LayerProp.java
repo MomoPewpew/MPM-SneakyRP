@@ -118,8 +118,8 @@ public class LayerProp extends LayerInterface {
 				}
 
 				if (prop.propBodyPart != null) {
-					prop.partModifierX = (float) (-(((Math.cos(yRender) * prop.propBodyPart.rotationPointX) + (Math.sin(yRender) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-					prop.partModifierZ = (float) ((((Math.cos(-yRender) * prop.propBodyPart.rotationPointZ) + (Math.sin(-yRender) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+					prop.partModifierX = (float) (-(((Math.cos(yRender) * prop.propBodyPart.rotationPointX) + (Math.sin(yRender) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(this.playerdata);
+					prop.partModifierZ = (float) ((((Math.cos(-yRender) * prop.propBodyPart.rotationPointZ) + (Math.sin(-yRender) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(this.playerdata);
 				}
 			}
 
@@ -333,8 +333,8 @@ public class LayerProp extends LayerInterface {
 					Float yRender = (float) Math.toRadians(entity.prevRenderYawOffset + ((entity.renderYawOffset - entity.prevRenderYawOffset) * Animation.getPartialTickTime()));
 
 					if (prop.propBodyPart != null) {
-						partModifierXCorrected = (float) -((((Math.cos(yRender) * prop.propBodyPart.rotationPointX) + (Math.sin(yRender) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
-						partModifierZCorrected = (float) -((((Math.cos(-yRender) * prop.propBodyPart.rotationPointZ) + (Math.sin(-yRender) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(entity);
+						partModifierXCorrected = (float) -((((Math.cos(yRender) * prop.propBodyPart.rotationPointX) + (Math.sin(yRender) * prop.propBodyPart.rotationPointZ)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(this.playerdata);
+						partModifierZCorrected = (float) -((((Math.cos(-yRender) * prop.propBodyPart.rotationPointZ) + (Math.sin(-yRender) * prop.propBodyPart.rotationPointX)) / 16)) * this.playerdata.entityScaleX * EntityScaleManagerClient.getScaleMult(this.playerdata);
 					}
 				} else {
 					partModifierXCorrected = (float) (prop.partModifierX * Math.cos(Math.toRadians(-this.player.renderYawOffset)) + propOffsetZCorrected * Math.sin(Math.toRadians(-this.player.renderYawOffset)));

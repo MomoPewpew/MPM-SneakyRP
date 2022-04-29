@@ -269,18 +269,18 @@ public class GuiCustomScroll extends GuiScreen {
 					this.selected = this.hover;
 				}
 
-				this.hover = -1;
+				//this.hover = -1;
 			}
 
 			if (this.listener != null) {
 				long time = System.currentTimeMillis();
 				this.listener.scrollClicked(i, j, k, this);
-				if (this.selected >= 0 && this.selected == this.lastClickedItem && time - this.lastClickedTime < 500L) {
-					this.listener.scrollDoubleClicked((String)this.list.get(this.selected), this);
+				if (this.hover >= 0 && this.hover == this.lastClickedItem && time - this.lastClickedTime < 500L) {
+					this.listener.scrollDoubleClicked((String)this.list.get(this.hover), this);
 				}
 
 				this.lastClickedTime = time;
-				this.lastClickedItem = this.selected;
+				this.lastClickedItem = this.hover;
 			}
 
 		}

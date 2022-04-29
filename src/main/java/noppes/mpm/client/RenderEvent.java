@@ -225,7 +225,7 @@ public class RenderEvent {
 				double camY = renderY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
 				double camZ = renderZ + ActiveRenderInfo.getCameraPosition().zCoord;
 
-				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
+				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.5F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 
 				double entityX = renderPlayer.lastTickPosX + (renderPlayer.posX - renderPlayer.lastTickPosX) * animTime;
 				double entityY = renderPlayer.lastTickPosY + (renderPlayer.posY - renderPlayer.lastTickPosY) * animTime + meHeight;
@@ -233,33 +233,35 @@ public class RenderEvent {
 
 				double newLength = Math.sqrt(Math.pow((entityX - camX), 2) + Math.pow((entityZ - camZ), 2) + Math.pow((entityY - camY), 2)) - 1.5D;
 
+				int renderCount = 0;
 				//calculate yaw and pitch
 				double yaw = Math.atan2((entityZ - camZ), (entityX - camX)) + Math.PI;
 				double pitch = Math.atan2(Math.sqrt(Math.pow((entityZ - camZ), 2) + Math.pow((entityX - camX), 2)), (entityY - camY)) + Math.PI;
-
-				//Use this pitch and yaw to calculate the plate coordinates of the new distance
-				//Apply pitch
-				double Zpitch = (Math.sin(pitch) * newLength);
-				double Ymodified = (Math.cos(pitch) * -newLength);
-				//Apply yaw
-				double Xmodified = (Math.cos(yaw) * Zpitch);
-				double Zmodified = (Math.sin(yaw) * Zpitch);
-
-				//Add these deltas to the camera coordinates to find the nameplate coordinate
-				double nameplateX = camX + Xmodified;
-				double nameplateY = camY + Ymodified;
-				double nameplateZ = camZ + Zmodified;
-
-				//Calculate distance between renderviewentity and nameplate coordinates
-				double xdist = nameplateX - renderX;
-				double ydist = nameplateY - renderY;
-				double zdist = nameplateZ - renderZ;
 
 				//Render nameplates for /me's
                 try {
     				for (Long l : data.meMessages.keySet()) {
     					for (String s : data.meMessages.get(l)) {
+    						//Use this pitch and yaw to calculate the plate coordinates of the new distance
+    						//Apply pitch
+    						double Zpitch = (Math.sin(pitch + (renderCount * (0.22 / newLength))) * newLength);
+    						double Ymodified = (Math.cos(pitch + (renderCount * (0.22 / newLength))) * -newLength);
+    						//Apply yaw
+    						double Xmodified = (Math.cos(yaw) * Zpitch);
+    						double Zmodified = (Math.sin(yaw) * Zpitch);
+
+    						//Add these deltas to the camera coordinates to find the nameplate coordinate
+    						double nameplateX = camX + Xmodified;
+    						double nameplateY = camY + Ymodified;
+    						double nameplateZ = camZ + Zmodified;
+
+    						//Calculate distance between renderviewentity and nameplate coordinates
+    						double xdist = nameplateX - renderX;
+    						double ydist = nameplateY - renderY;
+    						double zdist = nameplateZ - renderZ;
+
     						ClientEventHandler.renderLivingLabel(renderPlayer, s, xdist, ydist, zdist, 64);
+    						renderCount += 1;
     					}
 
     					if (systemTime > l) data.meMessages.remove(l);

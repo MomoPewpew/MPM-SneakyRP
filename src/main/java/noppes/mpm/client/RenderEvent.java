@@ -90,7 +90,6 @@ public class RenderEvent {
 			if (renderPlayer.isSpectator()) {
 				float height = ((Entity)renderPlayer).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 				ClientEventHandler.renderName(renderPlayer, height);
-				return;
 			}
 
 			GlStateManager.pushMatrix();
@@ -166,25 +165,29 @@ public class RenderEvent {
 				GlStateManager.scale(data.entityScaleX, data.entityScaleY, data.entityScaleX);
 				//GlStateManager.rotate(-player.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
-				mc.getRenderManager().renderEntityStatic(entity, animTime, false);
+				if (!renderPlayer.isSpectator()) {
+					mc.getRenderManager().renderEntityStatic(entity, animTime, false);
 
-				GlStateManager.popMatrix();
+					GlStateManager.popMatrix();
 
-				ClientEventHandler.renderName(renderPlayer, data.offsetY() + 2.8F);
+					ClientEventHandler.renderName(renderPlayer, data.offsetY() + 2.8F);
 
-                while(var8.hasNext()) {
-                    try {
-                    	layer = var8.next();
-                    }
-                    catch (ConcurrentModificationException e) {
-                    	return;
-                    }
-                    if (layer instanceof LayerProp) {
-                   	 GlStateManager.translate(x, y, z);
-                        ((LayerProp) layer).doRenderLayer(renderPlayer, 0, 0, 0, 0, 0, 0, 0);
-                        GlStateManager.translate(-x, -y, -z);
-                    }
-               }
+	                while(var8.hasNext()) {
+	                    try {
+	                    	layer = var8.next();
+	                    }
+	                    catch (ConcurrentModificationException e) {
+	                    	return;
+	                    }
+	                    if (layer instanceof LayerProp) {
+	                   	 GlStateManager.translate(x, y, z);
+	                        ((LayerProp) layer).doRenderLayer(renderPlayer, 0, 0, 0, 0, 0, 0, 0);
+	                        GlStateManager.translate(-x, -y, -z);
+	                    }
+	               }
+				} else {
+					GlStateManager.popMatrix();
+				}
 
 			} else {
 				offset = 0.0F;
@@ -214,9 +217,13 @@ public class RenderEvent {
 
 				//calculate length of line between camera and entity
 				Entity renderViewEntity = mc.getRenderViewEntity();
-				double camX = renderViewEntity.posX + ActiveRenderInfo.getCameraPosition().xCoord;
-				double camY = renderViewEntity.posY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
-				double camZ = renderViewEntity.posZ + ActiveRenderInfo.getCameraPosition().zCoord;
+				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
+				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
+				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
+
+				double camX = renderX + ActiveRenderInfo.getCameraPosition().xCoord;
+				double camY = renderY + ActiveRenderInfo.getCameraPosition().yCoord + ModelData.get(mc.thePlayer).getOffsetCamera(renderPlayer);
+				double camZ = renderZ + ActiveRenderInfo.getCameraPosition().zCoord;
 
 				Float meHeight = ((Entity)renderPlayer).getEyeHeight() - 0.25F - data.modelOffsetY - (renderPlayer.isSneaking() ? 0.25F : 0.0F);
 
@@ -244,10 +251,6 @@ public class RenderEvent {
 				double nameplateZ = camZ + Zmodified;
 
 				//Calculate distance between renderviewentity and nameplate coordinates
-				double renderX = renderViewEntity.lastTickPosX + (renderViewEntity.posX - renderViewEntity.lastTickPosX) * animTime;
-				double renderY = renderViewEntity.lastTickPosY + (renderViewEntity.posY - renderViewEntity.lastTickPosY) * animTime;
-				double renderZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * animTime;
-
 				double xdist = nameplateX - renderX;
 				double ydist = nameplateY - renderY;
 				double zdist = nameplateZ - renderZ;

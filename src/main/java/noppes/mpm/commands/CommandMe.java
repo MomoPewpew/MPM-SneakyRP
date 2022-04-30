@@ -30,12 +30,12 @@ public class CommandMe extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "me";
+		return "mee";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return "/me <text>";
+		return "/mee <text>";
 	}
 
 }

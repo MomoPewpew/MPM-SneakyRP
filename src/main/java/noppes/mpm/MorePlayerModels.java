@@ -122,6 +122,8 @@ public class MorePlayerModels {
 	)
 	public static boolean Compatibility = false;
 
+	public static boolean autoWalk = false;
+
 	public static boolean hasEntityPermission;
 	public static List<UUID> playersEntityDenied;
 	public static List<String> fileNamesSkins;

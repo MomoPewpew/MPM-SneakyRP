@@ -78,6 +78,7 @@ public class ClientEventHandler {
 			}
 
 			if (mc.inGameHasFocus) {
+				if (ClientProxy.autoWalk.isPressed()) MorePlayerModels.autoWalk = !MorePlayerModels.autoWalk;
 
 				if (ClientProxy.Camera.isKeyDown() && mc.gameSettings.thirdPersonView == 1) {
 					long time = System.currentTimeMillis();

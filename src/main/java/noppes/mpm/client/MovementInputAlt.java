@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MovementInput;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.Camera;
 
 @SideOnly(Side.CLIENT)
@@ -22,6 +23,15 @@ public class MovementInputAlt extends MovementInput {
 	{
 		this.moveStrafe = 0.0F;
 		this.field_192832_b = 0.0F;
+
+		if (MorePlayerModels.autoWalk) {
+			if (this.gameSettings.keyBindForward.isKeyDown() ||
+					this.gameSettings.keyBindBack.isKeyDown()) {
+				MorePlayerModels.autoWalk  = false;
+			} else {
+				this.field_192832_b++;
+			}
+		}
 
 		if (this.camera.enabled) {
 			if (this.gameSettings.keyBindForward.isKeyDown() && !this.gameSettings.keyBindRight.isKeyDown()) {

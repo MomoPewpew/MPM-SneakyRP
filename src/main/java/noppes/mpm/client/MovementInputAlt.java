@@ -4,7 +4,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MovementInput;
-import net.minecraft.util.math.MathHelper;
 import noppes.mpm.client.Camera;
 
 @SideOnly(Side.CLIENT)
@@ -24,29 +23,56 @@ public class MovementInputAlt extends MovementInput {
 		this.moveStrafe = 0.0F;
 		this.field_192832_b = 0.0F;
 
-		if (this.gameSettings.keyBindForward.isKeyDown() && !this.gameSettings.keyBindRight.isKeyDown()) {
-			if (!this.gameSettings.keyBindLeft.isKeyDown()) {
-				move(0.0F);
-			} else {
-				move(315.0F);
+		if (this.camera.enabled) {
+			if (this.gameSettings.keyBindForward.isKeyDown() && !this.gameSettings.keyBindRight.isKeyDown()) {
+				if (!this.gameSettings.keyBindLeft.isKeyDown()) {
+					move(0.0F);
+				} else {
+					move(315.0F);
+				}
+			} else if (this.gameSettings.keyBindLeft.isKeyDown()) {
+				if (!this.gameSettings.keyBindBack.isKeyDown()) {
+					move(270.0F);
+				} else {
+					move(225.0F);
+				}
+			} else if (this.gameSettings.keyBindBack.isKeyDown()) {
+				if (!this.gameSettings.keyBindRight.isKeyDown()) {
+					move(180.0F);
+				} else {
+					move(135.0F);
+				}
+			} else if (this.gameSettings.keyBindRight.isKeyDown()) {
+				if (!this.gameSettings.keyBindForward.isKeyDown()) {
+					move(90.0F);
+				} else {
+					move(45.0F);
+				}
 			}
-		} else if (this.gameSettings.keyBindLeft.isKeyDown()) {
-			if (!this.gameSettings.keyBindBack.isKeyDown()) {
-				move(270.0F);
+		} else {
+			if (this.gameSettings.keyBindForward.isKeyDown()) {
+				this.field_192832_b++;
+				this.forwardKeyDown = true;
 			} else {
-				move(225.0F);
+				this.forwardKeyDown = false;
 			}
-		} else if (this.gameSettings.keyBindBack.isKeyDown()) {
-			if (!this.gameSettings.keyBindRight.isKeyDown()) {
-				move(180.0F);
+			if (this.gameSettings.keyBindBack.isKeyDown()) {
+				this.field_192832_b--;
+				this.backKeyDown = true;
 			} else {
-				move(135.0F);
+				this.backKeyDown = false;
 			}
-		} else if (this.gameSettings.keyBindRight.isKeyDown()) {
-			if (!this.gameSettings.keyBindForward.isKeyDown()) {
-				move(90.0F);
+			if (this.gameSettings.keyBindLeft.isKeyDown()) {
+				this.moveStrafe++;
+				this.leftKeyDown = true;
 			} else {
-				move(45.0F);
+				this.leftKeyDown = false;
+			}
+			if (this.gameSettings.keyBindRight.isKeyDown()) {
+				this.moveStrafe--;
+				this.rightKeyDown = true;
+			} else {
+				this.rightKeyDown = false;
 			}
 		}
 

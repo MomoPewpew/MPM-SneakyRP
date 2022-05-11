@@ -6,6 +6,7 @@ import com.google.common.base.Predicates;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,6 +24,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent.Pre;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -63,6 +65,8 @@ public class ClientEventHandler {
 	public void onKey(KeyInputEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc != null && mc.thePlayer != null) {
+			if (!(mc.thePlayer.movementInput instanceof MovementInputAlt)) mc.thePlayer.movementInput = new MovementInputAlt(mc.gameSettings, camera);
+
 			if (ClientProxy.Screen.isPressed()) {
 				if (mc.currentScreen == null) {
 					mc.displayGuiScreen(new GuiMPM());

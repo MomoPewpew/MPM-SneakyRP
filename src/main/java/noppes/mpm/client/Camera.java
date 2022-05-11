@@ -2,7 +2,6 @@ package noppes.mpm.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Mouse;
 
@@ -85,11 +84,6 @@ public class Camera {
 		this.playerYaw = 0.0F;
 		this.playerPitch = 0.0F;
 		this.cameraDistance = 4.0F;
-
-		Minecraft mc = Minecraft.getMinecraft();
-
-		if ((mc.thePlayer.movementInput instanceof MovementInputAlt))
-		mc.thePlayer.movementInput = new MovementInputFromOptions(mc.gameSettings);
 	}
 
 	public void enabled() {
@@ -101,11 +95,6 @@ public class Camera {
 		}
 
 		this.enabled = true;
-
-		Minecraft mc = Minecraft.getMinecraft();
-
-		if (!(mc.thePlayer.movementInput instanceof MovementInputAlt))
-		mc.thePlayer.movementInput = new MovementInputAlt(mc.gameSettings, this);
 	}
 
 	public void closeupenabled() {

@@ -1,10 +1,15 @@
 package noppes.mpm;
 
+import com.elytradev.architecture.common.shape.Shape;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -261,8 +266,284 @@ public class Prop {
 		}
 
 		if (propString.startsWith("particle:"))
-		return parseParticleString(propString.replace("particle:", ""));
+			return parseParticleString(propString.replace("particle:", ""));
 
+		ItemStack stack = null;
+
+		if (propString.startsWith("shape:")) {
+			Shape resultShape = null;
+
+			String[] split = propString.split(":");
+			if (split.length < 3) return false;
+
+			switch(split[1]) {
+				case "roof_tile":
+				resultShape = Shape.ROOF_TILE;
+				break;
+				case "roof_outer_corner":
+				resultShape = Shape.ROOF_OUTER_CORNER;
+				break;
+				case "roof_inner_corner":
+				resultShape = Shape.ROOF_INNER_CORNER;
+				break;
+				case "roof_ridge":
+				resultShape = Shape.ROOF_RIDGE;
+				break;
+				case "roof_smart_ridge":
+				resultShape = Shape.ROOF_SMART_RIDGE;
+				break;
+				case "roof_valley":
+				resultShape = Shape.ROOF_VALLEY;
+				break;
+				case "roof_smart_valley":
+				resultShape = Shape.ROOF_SMART_VALLEY;
+				break;
+				case "roof_overhang":
+				resultShape = Shape.ROOF_OVERHANG;
+				break;
+				case "roof_overhang_outer_corner":
+				resultShape = Shape.ROOF_OVERHANG_OUTER_CORNER;
+				break;
+				case "roof_overhang_inner_corner":
+				resultShape = Shape.ROOF_OVERHANG_INNER_CORNER;
+				break;
+				case "cylinder":
+				resultShape = Shape.CYLINDER;
+				break;
+				case "cylinder_half":
+				resultShape = Shape.CYLINDER_HALF;
+				break;
+				case "cylinder_quarter":
+				resultShape = Shape.CYLINDER_QUARTER;
+				break;
+				case "cylinder_large_quarter":
+				resultShape = Shape.CYLINDER_LARGE_QUARTER;
+				break;
+				case "anticylinder_large_quarter":
+				resultShape = Shape.ANTICYLINDER_LARGE_QUARTER;
+				break;
+				case "pillar":
+				resultShape = Shape.PILLAR;
+				break;
+				case "post":
+				resultShape = Shape.POST;
+				break;
+				case "pole":
+				resultShape = Shape.POLE;
+				break;
+				case "bevelled_outer_corner":
+				resultShape = Shape.BEVELLED_OUTER_CORNER;
+				break;
+				case "bevelled_inner_corner":
+				resultShape = Shape.BEVELLED_INNER_CORNER;
+				break;
+				case "pillar_base":
+				resultShape = Shape.PILLAR_BASE;
+				break;
+				case "doric_capital":
+				resultShape = Shape.DORIC_CAPITAL;
+				break;
+				case "ionic_capital":
+				resultShape = Shape.IONIC_CAPITAL;
+				break;
+				case "corinthian_capital":
+				resultShape = Shape.CORINTHIAN_CAPITAL;
+				break;
+				case "doric_triglyph":
+				resultShape = Shape.DORIC_TRIGLYPH;
+				break;
+				case "doric_triglyph_corner":
+				resultShape = Shape.DORIC_TRIGLYPH_CORNER;
+				break;
+				case "doric_metope":
+				resultShape = Shape.DORIC_METOPE;
+				break;
+				case "architrave":
+				resultShape = Shape.ARCHITRAVE;
+				break;
+				case "architrave_corner":
+				resultShape = Shape.ARCHITRAVE_CORNER;
+				break;
+				case "window_frame":
+				resultShape = Shape.WINDOW_FRAME;
+				break;
+				case "window_corner":
+				resultShape = Shape.WINDOW_CORNER;
+				break;
+				case "window_mullion":
+				resultShape = Shape.WINDOW_MULLION;
+				break;
+				case "sphere_full":
+				resultShape = Shape.SPHERE_FULL;
+				break;
+				case "sphere_half":
+				resultShape = Shape.SPHERE_HALF;
+				break;
+				case "sphere_quarter":
+				resultShape = Shape.SPHERE_QUARTER;
+				break;
+				case "sphere_eighth":
+				resultShape = Shape.SPHERE_EIGHTH;
+				break;
+				case "sphere_eighth_large":
+				resultShape = Shape.SPHERE_EIGHTH_LARGE;
+				break;
+				case "sphere_eighth_large_rev":
+				resultShape = Shape.SPHERE_EIGHTH_LARGE_REV;
+				break;
+				case "roof_overhang_gable_lh":
+				resultShape = Shape.ROOF_OVERHANG_GABLE_LH;
+				break;
+				case "roof_overhang_gable_rh":
+				resultShape = Shape.ROOF_OVERHANG_GABLE_RH;
+				break;
+				case "roof_overhang_gable_end_lh":
+				resultShape = Shape.ROOF_OVERHANG_GABLE_END_LH;
+				break;
+				case "roof_overhang_gable_end_rh":
+				resultShape = Shape.ROOF_OVERHANG_GABLE_END_RH;
+				break;
+				case "roof_overhang_ridge":
+				resultShape = Shape.ROOF_OVERHANG_RIDGE;
+				break;
+				case "roof_overhang_valley":
+				resultShape = Shape.ROOF_OVERHANG_VALLEY;
+				break;
+				case "cornice_lh":
+				resultShape = Shape.CORNICE_LH;
+				break;
+				case "cornice_rh":
+				resultShape = Shape.CORNICE_RH;
+				break;
+				case "cornice_end_lh":
+				resultShape = Shape.CORNICE_END_LH;
+				break;
+				case "cornice_end_rh":
+				resultShape = Shape.CORNICE_END_RH;
+				break;
+				case "cornice_ridge":
+				resultShape = Shape.CORNICE_RIDGE;
+				break;
+				case "cornice_valley":
+				resultShape = Shape.CORNICE_VALLEY;
+				break;
+				case "cornice_bottom":
+				resultShape = Shape.CORNICE_BOTTOM;
+				break;
+				case "cladding_sheet":
+				resultShape = Shape.CLADDING_SHEET;
+				break;
+				case "arch_d_1":
+				resultShape = Shape.ARCH_D_1;
+				break;
+				case "arch_d_2":
+				resultShape = Shape.ARCH_D_2;
+				break;
+				case "arch_d_3_a":
+				resultShape = Shape.ARCH_D_3_A;
+				break;
+				case "arch_d_3_b":
+				resultShape = Shape.ARCH_D_3_B;
+				break;
+				case "arch_d_3_c":
+				resultShape = Shape.ARCH_D_3_C;
+				break;
+				case "arch_d_4_a":
+				resultShape = Shape.ARCH_D_4_A;
+				break;
+				case "arch_d_4_b":
+				resultShape = Shape.ARCH_D_4_B;
+				break;
+				case "arch_d_4_c":
+				resultShape = Shape.ARCH_D_4_C;
+				break;
+				case "banister_plain_bottom":
+				resultShape = Shape.BANISTER_PLAIN_BOTTOM;
+				break;
+				case "banister_plain":
+				resultShape = Shape.BANISTER_PLAIN;
+				break;
+				case "banister_plain_top":
+				resultShape = Shape.BANISTER_PLAIN_TOP;
+				break;
+				case "balustrade_fancy":
+				resultShape = Shape.BALUSTRADE_FANCY;
+				break;
+				case "balustrade_fancy_corner":
+				resultShape = Shape.BALUSTRADE_FANCY_CORNER;
+				break;
+				case "balustrade_fancy_with_newel":
+				resultShape = Shape.BALUSTRADE_FANCY_WITH_NEWEL;
+				break;
+				case "balustrade_fancy_newel":
+				resultShape = Shape.BALUSTRADE_FANCY_NEWEL;
+				break;
+				case "balustrade_plain":
+				resultShape = Shape.BALUSTRADE_PLAIN;
+				break;
+				case "balustrade_plain_outer_corner":
+				resultShape = Shape.BALUSTRADE_PLAIN_OUTER_CORNER;
+				break;
+				case "balustrade_plain_with_newel":
+				resultShape = Shape.BALUSTRADE_PLAIN_WITH_NEWEL;
+				break;
+				case "banister_plain_end":
+				resultShape = Shape.BANISTER_PLAIN_END;
+				break;
+				case "banister_fancy_newel_tall":
+				resultShape = Shape.BANISTER_FANCY_NEWEL_TALL;
+				break;
+				case "balustrade_plain_inner_corner":
+				resultShape = Shape.BALUSTRADE_PLAIN_INNER_CORNER;
+				break;
+				case "balustrade_plain_end":
+				resultShape = Shape.BALUSTRADE_PLAIN_END;
+				break;
+				case "banister_fancy_bottom":
+				resultShape = Shape.BANISTER_FANCY_BOTTOM;
+				break;
+				case "banister_fancy":
+				resultShape = Shape.BANISTER_FANCY;
+				break;
+				case "banister_fancy_top":
+				resultShape = Shape.BANISTER_FANCY_TOP;
+				break;
+				case "banister_fancy_end":
+				resultShape = Shape.BANISTER_FANCY_END;
+				break;
+				case "banister_plain_inner_corner":
+				resultShape = Shape.BANISTER_PLAIN_INNER_CORNER;
+				break;
+				case "slab":
+				resultShape = Shape.SLAB;
+				break;
+				case "stairs":
+				resultShape = Shape.STAIRS;
+				break;
+				case "stairs_outer_corner":
+				resultShape = Shape.STAIRS_OUTER_CORNER;
+				break;
+				case "stairs_inner_corner":
+				resultShape = Shape.STAIRS_INNER_CORNER;
+				break;
+			}
+
+			stack = parseArchitectureString(resultShape, propString.replace("shape:" + split[1] + ":", ""));
+		} else {
+			stack = getStack(propString);
+		}
+
+		if (stack == null) {
+			return false;
+		} else {
+			this.itemStack = stack;
+			this.type = EnumType.ITEM;
+			this.particleType = null;
+			return true;
+		}
+	}
+
+	public static ItemStack getStack(String propString) {
 		String nameSpacedId = "";
 		short dataValue = 0;
 
@@ -286,12 +567,9 @@ public class Prop {
 		Item item = (Item)Item.REGISTRY.getObject(resourcelocation);
 
 		if (item == null) {
-			return false;
+			return null;
 		} else {
-			this.itemStack = new ItemStack(item, 1, dataValue);
-			this.type = EnumType.ITEM;
-			this.particleType = null;
-			return true;
+			return new ItemStack(item, 1, dataValue);
 		}
 	}
 
@@ -471,6 +749,32 @@ public class Prop {
 			return true;
 		}
 	}
+
+	public ItemStack parseArchitectureString(Shape resultShape, String propString) {
+        if (resultShape != null) {
+        	ItemStack materialStack = getStack(propString);
+        	if (materialStack != null) {
+        		Item materialItem = materialStack.getItem();
+        		if (materialItem instanceof ItemBlock) {
+        			Block materialBlock = Block.getBlockFromItem(materialItem);
+        			if (isAcceptableMaterial(materialBlock)) {
+        				return resultShape.kind.newStack(resultShape, materialBlock, materialStack.getItemDamage(), 1);
+        			}
+        		}
+        	}
+        }
+
+		return null;
+	}
+
+    protected static boolean isAcceptableMaterial(Block block) {
+        String name = ((ResourceLocation)Block.REGISTRY.getNameForObject(block)).toString();
+        if (block != Blocks.GLASS && block != Blocks.STAINED_GLASS && !(block instanceof BlockSlab) && !name.startsWith("chisel:glass")) {
+             return block.getDefaultState().isFullCube() && !block.hasTileEntity();
+        } else {
+             return true;
+        }
+   }
 
 	//This is backwards compatibility code. Bodyparts are no longer saved as strings, but we need to be able to load props from before this rework.
 	private static int switchBipedBodypart(String bodyPartName) {

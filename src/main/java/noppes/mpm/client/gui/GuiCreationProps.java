@@ -8,8 +8,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.codehaus.plexus.util.StringUtils;
+
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import noppes.mpm.ModelData;
 import noppes.mpm.Prop;
@@ -173,7 +178,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			y += 22;
 			if (!advanced) {
 				this.addLabel(new GuiNpcLabel(104, "gui.prop", guiOffsetX, y + 5, 16777215));
-				this.addTextField(new GuiNpcTextField(104, this, guiOffsetX + 33, y + 1, 145, 18, propString));
+				this.addTextField(new GuiNpcTextField(104, this, guiOffsetX + 33, y + 1, 102, 18, propString));
+				this.addButton(new GuiNpcButton(130, guiOffsetX + 138, y, 40, 20, "gui.shape"));
 				this.addButton(new GuiNpcButton(123, guiOffsetX + 180, y, 40, 20, "gui.picker"));
 				y += 22;
 				this.addLabel(new GuiNpcLabel(105, "gui.bodypart", guiOffsetX, y + 5, 16777215));
@@ -497,6 +503,28 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			this.initGui();
 		} else if (btn.id == 129) {
 			prop.lockrotation = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
+		} else if (btn.id == 130) {
+			String propStringOld = "minecraft:stained_glass:2";
+
+			Item materialItem = prop.itemStack.getItem();
+    		if (materialItem instanceof ItemBlock) {
+    			Block materialBlock = Block.getBlockFromItem(materialItem);
+    			if (Prop.isAcceptableMaterial(materialBlock)) {
+    				propStringOld = prop.propString;
+    			} else if (prop.propString.startsWith("shape:")) {
+    				String[] split = prop.propString.split(":");
+
+    				if (split.length >= 3) {
+    					propStringOld = "";
+    					for (int i = 2; i < split.length; i++) {
+    						propStringOld += split[i] + ":";
+    					}
+    					propStringOld = StringUtils.chop(propStringOld);
+    				}
+    			}
+    		}
+
+			this.openGui(new GuiCreationPropShapePicker(prop, propGroup, selected, propStringOld));
 		}
 	}
 

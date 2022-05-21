@@ -50,7 +50,7 @@ public class GuiCreationPropShapePicker extends GuiCreationScreenInterface {
 			itemStacks.add(Prop.parseItemStack(ent));
 		}
 
-		this.addButton(new GuiNpcButton(902, this.guiLeft + 182, this.guiTop + 210, 45, 20, "gui.confirm"));
+		this.addButton(new GuiNpcButton(902, this.guiLeft + 128, this.guiTop + 210, 50, 20, "gui.confirm"));
 
 		for (int row = 0; row < Integer.min(rowAmount, (int) Math.ceil((((double) itemStacks.size())) / columnAmount)); row++) {
 			for (int column = 0; column < Integer.min(columnAmount, (itemStacks.size() - row * columnAmount)); column++) {

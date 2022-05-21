@@ -960,6 +960,7 @@ public class Prop {
 
 	public void flip() {
 		this.offsetX = -this.offsetX;
+		this.ppOffsetX = -this.ppOffsetX;
 
 		switch (this.partIndex) {
 		case 0:

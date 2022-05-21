@@ -100,6 +100,7 @@ gui.flipx=Flip <->
 gui.advanced=Advanced
 gui.simple=Simple
 gui.postprocessingoffset=Post-processing offset
+gui.sheathProp=Sheath Prop
 
 animation.sleep=Sleep
 animation.crawl=Crawl

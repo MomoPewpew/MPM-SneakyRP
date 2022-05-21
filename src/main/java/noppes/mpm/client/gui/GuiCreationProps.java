@@ -326,7 +326,11 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 				this.addSlider(new GuiNpcSlider(this, 128, guiOffsetX, y, 152, 20, ((prop.ppOffsetZ + maxOffset) / (maxOffset * 2.0F))));
 				this.getSlider(128).displayString = "Z";
 
-				y += 66;
+				y += 22;
+				this.addLabel(new GuiNpcLabel(131, "gui.sheathProp", guiOffsetX, y + 5, 16777215));
+				this.addButton(new GuiNpcButton(131, guiOffsetX + 98, y, 55, 20, new String[]{"gui.false", "gui.true"}, prop.sheathProp ? 1 : 0));
+
+				y += 44;
 				this.addButton(new GuiNpcButton(124, guiOffsetX + 98, y, 55, 20, new String[]{"gui.advanced", "gui.simple"}, advanced ? 1 : 0));
 			}
 
@@ -396,7 +400,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 	protected void actionPerformed(GuiButton btn) {
 		super.actionPerformed(btn);
 		if (btn.id == 101) {
-			props.add(new Prop("minecraft:stained_glass:2", 0, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, true, false, "NONAME", 0.0F, 0.0F, 0.0F));
+			props.add(new Prop("minecraft:stained_glass:2", 0, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, true, false, "NONAME", 0.0F, 0.0F, 0.0F, false));
 			newProp = true;
 			advanced = false;
 			this.initGui();
@@ -526,6 +530,8 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
     		}
 
 			this.openGui(new GuiCreationPropShapePicker(prop, propGroup, selected, propStringOld));
+		} else if (btn.id == 131) {
+			prop.sheathProp = ((GuiNpcButton)btn).getValue() == 1 ? true : false;
 		}
 	}
 

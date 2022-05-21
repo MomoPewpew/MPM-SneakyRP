@@ -93,6 +93,7 @@ gui.usageflag.follows_head_rotation=Use head looking angle
 gui.usageflag.camera_follows_model_offset=Camera follows model offset
 
 gui.picker=Picker
+gui.shape=Shape
 gui.confirm=Confirm
 gui.motion=Motion
 gui.flipx=Flip <->

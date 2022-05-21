@@ -1,5 +1,8 @@
 package noppes.mpm.client.layer;
 
+import org.lwjgl.util.vector.Vector3f;
+
+import com.elytradev.architecture.client.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
@@ -210,8 +213,16 @@ public class LayerProp extends LayerInterface {
 			GlStateManager.rotate(prop.rotateZ, 0.0F, 0.0F, 1.0F);
 			propRenderer.postRender(par7);
 
-			IBakedModel iModel = minecraft.getRenderItem().getItemModelMesher().getItemModel(prop.itemStack);
-			ItemTransformVec3f transformVec = iModel.getItemCameraTransforms().thirdperson_right;
+			IBakedModel iModel = null;
+			ItemTransformVec3f transformVec;
+			if (prop.propString.startsWith("shape:")) {
+				iModel = ClientProxy.RENDERING_MANAGER.getItemBakedModel();
+				transformVec = new ItemTransformVec3f(new Vector3f(75.0F, -45.0F, 0.0F), new Vector3f(0.0F, 0.15625F, 0.0F), new Vector3f(0.375F, 0.375F, 0.375F));
+			} else {
+				iModel = minecraft.getRenderItem().getItemModelMesher().getItemModel(prop.itemStack);
+				transformVec = iModel.getItemCameraTransforms().thirdperson_right;
+			}
+
 			GlStateManager.scale((-prop.propScaleX * (transformVec.scale.x + ItemCameraTransforms.offsetScaleX)), (-prop.propScaleY * (transformVec.scale.y + ItemCameraTransforms.offsetScaleY)), (prop.propScaleZ * (transformVec.scale.z + ItemCameraTransforms.offsetScaleZ)));
 			minecraft.getItemRenderer().renderItem(this.player, prop.itemStack, TransformType.NONE);
 

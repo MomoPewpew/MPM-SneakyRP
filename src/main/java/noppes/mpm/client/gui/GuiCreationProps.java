@@ -97,6 +97,7 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
 			propGroup = this.playerdata.propBase;
 			props = propGroup.props;
 			selected = selectedArg;
+			propString = prop.propString;
 		} else {
 			this.active = -1;
 			this.xOffset = 140;

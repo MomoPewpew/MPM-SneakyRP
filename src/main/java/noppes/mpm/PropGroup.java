@@ -62,14 +62,16 @@ public class PropGroup {
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
 		Boolean propMatchScaling, Boolean hide, String name,
-		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
+		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ,
+		Boolean sheathProp
 	) {
 		Prop prop = new Prop(propString, bodyPartName,
 		propScaleX, propScaleY, propScaleZ,
 		propOffsetX, propOffsetY, propOffsetZ,
 		propRotateX, propRotateY, propRotateZ,
 		propMatchScaling, hide, name,
-		propPpOffsetX, propPpOffsetY, propPpOffsetZ);
+		propPpOffsetX, propPpOffsetY, propPpOffsetZ,
+		sheathProp);
 
 		Client.sendData(EnumPackets.PROP_ADD, prop.writeToNBT());
 	}
@@ -79,14 +81,16 @@ public class PropGroup {
 		Float propOffsetX, Float propOffsetY, Float propOffsetZ,
 		Float propRotateX, Float propRotateY, Float propRotateZ,
 		Boolean propMatchScaling, Boolean hide, String name,
-		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ
+		Float propPpOffsetX, Float propPpOffsetY, Float propPpOffsetZ,
+		Boolean sheathProp
 	) {
 		Prop prop = new Prop(propString, bodyPartName,
 		propScaleX, propScaleY, propScaleZ,
 		propOffsetX, propOffsetY, propOffsetZ,
 		propRotateX, propRotateY, propRotateZ,
 		propMatchScaling, hide, name,
-		propPpOffsetX, propPpOffsetY, propPpOffsetZ);
+		propPpOffsetX, propPpOffsetY, propPpOffsetZ,
+		sheathProp);
 
 		this.props.add(prop);
 		Server.sendAssociatedData(this.player, EnumPackets.PROP_ADD, this.player.getUniqueID(), prop.writeToNBT());

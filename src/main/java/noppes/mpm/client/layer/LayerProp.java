@@ -59,7 +59,7 @@ public class LayerProp extends LayerInterface {
 	}
 
 	private void renderItemProp(Prop prop, float par7) {
-		if (!prop.hide && prop.propBodyPart != null) {
+		if ((!prop.hide && prop.propBodyPart != null) &&!(prop.sheathProp && (prop.itemStack.getItem().equals(this.player.getHeldItemMainhand().getItem()) || prop.itemStack.getItem().equals(this.player.getHeldItemOffhand().getItem())))) {
 			ModelRenderer motherRenderer = null;
 			ModelRenderer propRenderer = null;
 

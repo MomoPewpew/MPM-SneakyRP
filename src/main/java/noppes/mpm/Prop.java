@@ -45,6 +45,7 @@ public class Prop {
 	public float ppOffsetY = 0.0F;
 	public float ppOffsetZ = 0.0F;
 	public boolean lockrotation = false;
+	public boolean sheathProp = false;
 
 	//These are cached variables that are inferred and then used directly in the renderer
 	public ItemStack itemStack = new ItemStack(Blocks.STAINED_GLASS, 1, 2);
@@ -79,7 +80,8 @@ public class Prop {
 		float offsetX, float offsetY, float offsetZ,
 		float rotateX, float rotateY, float rotateZ,
 		boolean matchScaling, boolean hide, String name,
-		float ppOffsetX, float ppOffsetY, float ppOffsetZ)
+		float ppOffsetX, float ppOffsetY, float ppOffsetZ,
+		boolean sheathProp)
 	{
 		this.propString = propString;
 		this.parsePropString(this.propString);
@@ -99,6 +101,7 @@ public class Prop {
 		this.ppOffsetX = ppOffsetX;
 		this.ppOffsetY = ppOffsetY;
 		this.ppOffsetZ = ppOffsetZ;
+		this.sheathProp = sheathProp;
 	}
 
 	public Prop(String propString, int partIndex,
@@ -130,7 +133,8 @@ public class Prop {
 		float offsetX, float offsetY, float offsetZ,
 		float rotateX, float rotateY, float rotateZ,
 		boolean matchScaling, boolean hide, String name,
-		float ppOffsetX, float ppOffsetY, float ppOffsetZ)
+		float ppOffsetX, float ppOffsetY, float ppOffsetZ,
+		boolean sheathProp)
 	{
 		this.propString = propString;
 		this.parsePropString(this.propString);
@@ -150,6 +154,7 @@ public class Prop {
 		this.ppOffsetX = ppOffsetX;
 		this.ppOffsetY = ppOffsetY;
 		this.ppOffsetZ = ppOffsetZ;
+		this.sheathProp = sheathProp;
 	}
 
 	//Backwards compatibility assurance
@@ -202,6 +207,7 @@ public class Prop {
 		compound.setFloat("ppOffsetY", this.ppOffsetY);
 		compound.setFloat("ppOffsetZ", this.ppOffsetZ);
 		compound.setBoolean("lockrotation", this.lockrotation);
+		compound.setBoolean("sheathProp", this.sheathProp);
 		return compound;
 	}
 
@@ -232,6 +238,7 @@ public class Prop {
 		this.ppOffsetY = compound.getFloat("ppOffsetY");
 		this.ppOffsetZ = compound.getFloat("ppOffsetZ");
 		this.lockrotation = compound.getBoolean("lockrotation");
+		this.sheathProp = compound.getBoolean("sheathProp");
 
 		if (!bodyPartName.equals("")) {
 			this.partIndex = switchBipedBodypart(bodyPartName);
@@ -247,7 +254,8 @@ public class Prop {
 			this.offsetX + " " + this.offsetY + " " + this.offsetZ + " " +
 			this.rotateX + " " + this.rotateY + " " + this.rotateZ + " " +
 			this.matchScaling + " " + this.hide + " " + this.name + " " +
-			this.ppOffsetX + " " + this.ppOffsetY + " " + this.ppOffsetZ;
+			this.ppOffsetX + " " + this.ppOffsetY + " " + this.ppOffsetZ + " " +
+			this.sheathProp;
 		} else if (this.type == EnumType.PARTICLE) {
 			command = "/prop " +
 			this.propString + " " + this.partIndex + " " +
@@ -952,6 +960,7 @@ public class Prop {
 
 	public void flip() {
 		this.offsetX = -this.offsetX;
+		this.ppOffsetX = -this.ppOffsetX;
 
 		switch (this.partIndex) {
 		case 0:

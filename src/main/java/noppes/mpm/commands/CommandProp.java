@@ -208,13 +208,15 @@ public class CommandProp extends MpmCommandInterface {
 			Float ppOffsetX = (args.length > 14) ? Float.valueOf(args[14]) : 0.0F;
 			Float ppOffsetY = (args.length > 15) ? Float.valueOf(args[15]) : 0.0F;
 			Float ppOffsetZ = (args.length > 16) ? Float.valueOf(args[16]) : 0.0F;
+			Boolean sheathProp = (args.length > 17) ? parseBoolean(args[17]) : false;
 
 			prop = new Prop(propString, bodyPartName,
 			propScaleX, propScaleY, propScaleZ,
 			propOffsetX, propOffsetY, propOffsetZ,
 			propRotateX, propRotateY, propRotateZ,
 			propMatchScaling, propHide, propName,
-			ppOffsetX, ppOffsetY, ppOffsetZ);
+			ppOffsetX, ppOffsetY, ppOffsetZ,
+			sheathProp);
 		} else {
 			String bodyPartName = bodyPartString;
 			Float propMotionScatter = (args.length > 2) ? Float.valueOf(args[2]) : 0.0F;

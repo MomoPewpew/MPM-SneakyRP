@@ -522,9 +522,10 @@ public class GuiCreationProps extends GuiCreationScreenInterface implements ISli
     				if (split.length >= 3) {
     					propStringOld = "";
     					for (int i = 2; i < split.length; i++) {
-    						propStringOld += split[i] + ":";
+    						propStringOld += split[i];
+
+    						if (i < split.length - 1) propStringOld += ":";
     					}
-    					propStringOld = StringUtils.chop(propStringOld);
     				}
     			}
     		}

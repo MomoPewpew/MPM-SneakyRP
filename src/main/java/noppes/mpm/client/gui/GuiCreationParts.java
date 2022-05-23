@@ -24,36 +24,64 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 	private static int selected = 0;
 
 	public GuiCreationParts() {
-		this.parts = new GuiCreationParts.GuiPart[]{(
-			new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
-			new GuiCreationParts.GuiPartHorns(),
-			new GuiCreationParts.GuiPartHair(),
-			(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
-			new GuiCreationParts.GuiPartSnout(),
-			new GuiCreationParts.GuiPartBeard(),
-			(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
-			(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
-			new GuiCreationParts.GuiPartWings(),
-			new GuiCreationParts.GuiPartClaws(),
-			(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
-			new GuiCreationParts.GuiPartLegs(),
-			new GuiCreationParts.GuiPartTail(),
-			new GuiCreationParts.GuiPartHalo(),
-			new GuiCreationParts.GuiPartEyes(),
-			//new GuiCreationParts.GuiPartParticles(),
-			new GuiCreationParts.GuiPartArmLeft(),
-			new GuiCreationParts.GuiPartArmRight(),
-			new GuiCreationParts.GuiPartLegLeft(),
-			new GuiCreationParts.GuiPartLegRight(),
-			new GuiCreationParts.GuiPartBody(),
-			new GuiCreationParts.GuiPartHead()};
-			this.active = 2;
-			Arrays.sort(this.parts, (o1, o2) -> {
-				String s1 = I18n.translateToLocal("part." + o1.part.name);
-				String s2 = I18n.translateToLocal("part." + o2.part.name);
-				return s1.compareToIgnoreCase(s2);
-			});
+		if (this.playerdata.eyesShared) {
+			this.parts = new GuiCreationParts.GuiPart[]{(
+					new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
+					new GuiCreationParts.GuiPartHorns(),
+					new GuiCreationParts.GuiPartHair(),
+					(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
+					new GuiCreationParts.GuiPartSnout(),
+					new GuiCreationParts.GuiPartBeard(),
+					(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
+					(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
+					new GuiCreationParts.GuiPartWings(),
+					new GuiCreationParts.GuiPartClaws(),
+					(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
+					new GuiCreationParts.GuiPartLegs(),
+					new GuiCreationParts.GuiPartTail(),
+					new GuiCreationParts.GuiPartHalo(),
+					new GuiCreationParts.GuiPartEyes(),
+					//new GuiCreationParts.GuiPartParticles(),
+					new GuiCreationParts.GuiPartArmLeft(),
+					new GuiCreationParts.GuiPartArmRight(),
+					new GuiCreationParts.GuiPartLegLeft(),
+					new GuiCreationParts.GuiPartLegRight(),
+					new GuiCreationParts.GuiPartBody(),
+					new GuiCreationParts.GuiPartHead()};
+		} else {
+			this.parts = new GuiCreationParts.GuiPart[]{(
+					new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
+					new GuiCreationParts.GuiPartHorns(),
+					new GuiCreationParts.GuiPartHair(),
+					(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
+					new GuiCreationParts.GuiPartSnout(),
+					new GuiCreationParts.GuiPartBeard(),
+					(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
+					(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
+					new GuiCreationParts.GuiPartWings(),
+					new GuiCreationParts.GuiPartClaws(),
+					(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
+					new GuiCreationParts.GuiPartLegs(),
+					new GuiCreationParts.GuiPartTail(),
+					new GuiCreationParts.GuiPartHalo(),
+					new GuiCreationParts.GuiPartEye1(),
+					new GuiCreationParts.GuiPartEye2(),
+					//new GuiCreationParts.GuiPartParticles(),
+					new GuiCreationParts.GuiPartArmLeft(),
+					new GuiCreationParts.GuiPartArmRight(),
+					new GuiCreationParts.GuiPartLegLeft(),
+					new GuiCreationParts.GuiPartLegRight(),
+					new GuiCreationParts.GuiPartBody(),
+					new GuiCreationParts.GuiPartHead()};
 		}
+
+		this.active = 2;
+		Arrays.sort(this.parts, (o1, o2) -> {
+			String s1 = I18n.translateToLocal("part." + o1.part.name);
+			String s2 = I18n.translateToLocal("part." + o2.part.name);
+			return s1.compareToIgnoreCase(s2);
+		});
+	}
 
 		@Override
 		public void initGui() {
@@ -382,10 +410,144 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 		}
 
 		class GuiPartEyes extends GuiCreationParts.GuiPart {
-			private ModelEyeData eyes;
+			private ModelEyeData eye1;
+			private ModelEyeData eye2;
 
 			public GuiPartEyes() {
-				super(EnumParts.EYES);
+				super(EnumParts.EYE1);
+				this.types = new String[]{"gui.none", "1", "2"};
+				this.noPlayerOptions();
+				this.canBeDeleted = false;
+				this.eye1 = (ModelEyeData)GuiCreationParts.this.playerdata.getPartData(EnumParts.EYE1);
+				this.eye2 = (ModelEyeData)GuiCreationParts.this.playerdata.getPartData(EnumParts.EYE2);
+			}
+
+			@Override
+			public int initGui() {
+				int y = super.initGui();
+				if (this.data != null && this.eye1.isEnabled()) {
+					int var10004 = GuiCreationParts.this.guiLeft + 145;
+					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(37, var10004, y, 100, 20, new String[]{I18n.translateToLocal("gui.down") + "x2", "gui.down", "gui.normal", "gui.up"}, this.eye1.eyePos + 1));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(37, "gui.position", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					var10004 = GuiCreationParts.this.guiLeft + 145;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiNpcButtonYesNo(34, var10004, y, this.eye1.glint));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(34, "eye.glint", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					var10004 = GuiCreationParts.this.guiLeft + 170;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiColorButton(35, var10004, y, this.eye1.browColor));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(35, "eye.brow", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(38, GuiCreationParts.this.guiLeft + 225, y, 50, 20, new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8"}, this.eye1.browThickness));
+					var10004 = GuiCreationParts.this.guiLeft + 170;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiColorButton(36, var10004, y, this.eye1.skinColor));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(36, "eye.lid", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiNpcButton(39, GuiCreationParts.this.guiLeft + 145, y, 50, 20, "gui.yes"));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(39, "scale.shared", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+				}
+
+				return y;
+			}
+
+			@Override
+			protected void actionPerformed(GuiButton btn) {
+				if (btn.id == 20) {
+					int i = ((GuiNpcButton)btn).getValue();
+					if (i == 0 && this.canBeDeleted) {
+						GuiCreationParts.this.playerdata.removePart(EnumParts.EYE1);
+						GuiCreationParts.this.playerdata.removePart(EnumParts.EYE2);
+					} else {
+						this.eye1.pattern = 0;
+						this.eye1.setType(i - 1);
+						this.eye2.pattern = 0;
+						this.eye2.setType(i - 1);
+					}
+
+					GuiCreationParts.this.initGui();
+				}
+
+				if (btn.id == 23) {
+					GuiCreationParts.this.setSubGui(new GuiModelColor(GuiCreationParts.this, this.data.color, (color) -> {
+						this.eye1.color = color;
+						this.eye2.color = color;
+					}));
+				}
+
+				if (btn.id == 34) {
+					this.eye1.glint = ((GuiNpcButtonYesNo)btn).getBoolean();
+					this.eye2.glint = ((GuiNpcButtonYesNo)btn).getBoolean();
+				}
+
+				if (btn.id == 35) {
+					GuiCreationParts.this.setSubGui(new GuiModelColor(GuiCreationParts.this, this.eye1.browColor, (color) -> {
+						this.eye1.browColor = color;
+						this.eye2.browColor = color;
+					}));
+				}
+
+				if (btn.id == 36) {
+					GuiCreationParts.this.setSubGui(new GuiModelColor(GuiCreationParts.this, this.eye1.skinColor, (color) -> {
+						this.eye1.skinColor = color;
+						this.eye2.skinColor = color;
+					}));
+				}
+
+				if (btn.id == 37) {
+					this.eye1.eyePos = ((GuiButtonBiDirectional)btn).getValue() - 1;
+					this.eye2.eyePos = ((GuiButtonBiDirectional)btn).getValue() - 1;
+				}
+
+				if (btn.id == 38) {
+					this.eye1.browThickness = ((GuiButtonBiDirectional)btn).getValue();
+					this.eye2.browThickness = ((GuiButtonBiDirectional)btn).getValue();
+				}
+
+				if (btn.id == 39) {
+					GuiCreationParts.this.playerdata.eyesShared = false;
+
+					GuiCreationParts.this.parts = new GuiCreationParts.GuiPart[]{(
+							new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
+							new GuiCreationParts.GuiPartHorns(),
+							new GuiCreationParts.GuiPartHair(),
+							(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartSnout(),
+							new GuiCreationParts.GuiPartBeard(),
+							(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
+							(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartWings(),
+							new GuiCreationParts.GuiPartClaws(),
+							(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
+							new GuiCreationParts.GuiPartLegs(),
+							new GuiCreationParts.GuiPartTail(),
+							new GuiCreationParts.GuiPartHalo(),
+							new GuiCreationParts.GuiPartEye1(),
+							new GuiCreationParts.GuiPartEye2(),
+							//new GuiCreationParts.GuiPartParticles(),
+							new GuiCreationParts.GuiPartArmLeft(),
+							new GuiCreationParts.GuiPartArmRight(),
+							new GuiCreationParts.GuiPartLegLeft(),
+							new GuiCreationParts.GuiPartLegRight(),
+							new GuiCreationParts.GuiPartBody(),
+							new GuiCreationParts.GuiPartHead()};
+
+					Arrays.sort(GuiCreationParts.this.parts, (o1, o2) -> {
+						String s1 = I18n.translateToLocal("part." + o1.part.name);
+						String s2 = I18n.translateToLocal("part." + o2.part.name);
+						return s1.compareToIgnoreCase(s2);
+					});
+
+					GuiCreationParts.this.scroll = null;
+					GuiCreationParts.this.initGui();
+				}
+			}
+		}
+
+		class GuiPartEye1 extends GuiCreationParts.GuiPart {
+			private ModelEyeData eyes;
+
+			public GuiPartEye1() {
+				super(EnumParts.EYE1);
 				this.types = new String[]{"gui.none", "1", "2"};
 				this.noPlayerOptions();
 				this.canBeDeleted = false;
@@ -396,10 +558,7 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 			public int initGui() {
 				int y = super.initGui();
 				if (this.data != null && this.eyes.isEnabled()) {
-					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(22, GuiCreationParts.this.guiLeft + 145, y, 100, 20, new String[]{"gui.both", "gui.left", "gui.right"}, this.data.pattern));
-					GuiCreationParts.this.addLabel(new GuiNpcLabel(22, "gui.draw", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
 					int var10004 = GuiCreationParts.this.guiLeft + 145;
-					y += 25;
 					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(37, var10004, y, 100, 20, new String[]{I18n.translateToLocal("gui.down") + "x2", "gui.down", "gui.normal", "gui.up"}, this.eyes.eyePos + 1));
 					GuiCreationParts.this.addLabel(new GuiNpcLabel(37, "gui.position", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
 					var10004 = GuiCreationParts.this.guiLeft + 145;
@@ -415,6 +574,9 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 					y += 25;
 					GuiCreationParts.this.addButton(new GuiColorButton(36, var10004, y, this.eyes.skinColor));
 					GuiCreationParts.this.addLabel(new GuiNpcLabel(36, "eye.lid", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiNpcButton(39, GuiCreationParts.this.guiLeft + 145, y, 50, 20, "gui.no"));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(39, "scale.shared", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
 				}
 
 				return y;
@@ -444,6 +606,151 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 
 				if (btn.id == 38) {
 					this.eyes.browThickness = ((GuiButtonBiDirectional)btn).getValue();
+				}
+
+				if (btn.id == 39) {
+					GuiCreationParts.this.playerdata.eyesShared = false;
+					GuiCreationParts.this.playerdata.eye2.clone(eyes);
+
+					GuiCreationParts.this.parts = new GuiCreationParts.GuiPart[]{(
+							new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
+							new GuiCreationParts.GuiPartHorns(),
+							new GuiCreationParts.GuiPartHair(),
+							(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartSnout(),
+							new GuiCreationParts.GuiPartBeard(),
+							(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
+							(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartWings(),
+							new GuiCreationParts.GuiPartClaws(),
+							(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
+							new GuiCreationParts.GuiPartLegs(),
+							new GuiCreationParts.GuiPartTail(),
+							new GuiCreationParts.GuiPartHalo(),
+							new GuiCreationParts.GuiPartEyes(),
+							//new GuiCreationParts.GuiPartParticles(),
+							new GuiCreationParts.GuiPartArmLeft(),
+							new GuiCreationParts.GuiPartArmRight(),
+							new GuiCreationParts.GuiPartLegLeft(),
+							new GuiCreationParts.GuiPartLegRight(),
+							new GuiCreationParts.GuiPartBody(),
+							new GuiCreationParts.GuiPartHead()};
+
+					Arrays.sort(GuiCreationParts.this.parts, (o1, o2) -> {
+						String s1 = I18n.translateToLocal("part." + o1.part.name);
+						String s2 = I18n.translateToLocal("part." + o2.part.name);
+						return s1.compareToIgnoreCase(s2);
+					});
+
+					GuiCreationParts.this.initGui();
+				}
+
+				GuiCreationParts.this.scroll = null;
+				super.actionPerformed(btn);
+			}
+		}
+
+		class GuiPartEye2 extends GuiCreationParts.GuiPart {
+			private ModelEyeData eyes;
+
+			public GuiPartEye2() {
+				super(EnumParts.EYE2);
+				this.types = new String[]{"gui.none", "1", "2"};
+				this.noPlayerOptions();
+				this.canBeDeleted = false;
+				this.eyes = (ModelEyeData)this.data;
+			}
+
+			@Override
+			public int initGui() {
+				int y = super.initGui();
+				if (this.data != null && this.eyes.isEnabled()) {
+					int var10004 = GuiCreationParts.this.guiLeft + 145;
+					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(37, var10004, y, 100, 20, new String[]{I18n.translateToLocal("gui.down") + "x2", "gui.down", "gui.normal", "gui.up"}, this.eyes.eyePos + 1));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(37, "gui.position", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					var10004 = GuiCreationParts.this.guiLeft + 145;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiNpcButtonYesNo(34, var10004, y, this.eyes.glint));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(34, "eye.glint", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					var10004 = GuiCreationParts.this.guiLeft + 170;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiColorButton(35, var10004, y, this.eyes.browColor));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(35, "eye.brow", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					GuiCreationParts.this.addButton(new GuiButtonBiDirectional(38, GuiCreationParts.this.guiLeft + 225, y, 50, 20, new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8"}, this.eyes.browThickness));
+					var10004 = GuiCreationParts.this.guiLeft + 170;
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiColorButton(36, var10004, y, this.eyes.skinColor));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(36, "eye.lid", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+					y += 25;
+					GuiCreationParts.this.addButton(new GuiNpcButton(39, GuiCreationParts.this.guiLeft + 145, y, 50, 20, "gui.no"));
+					GuiCreationParts.this.addLabel(new GuiNpcLabel(39, "scale.shared", GuiCreationParts.this.guiLeft + 102, y + 5, 16777215));
+				}
+
+				return y;
+			}
+
+			@Override
+			protected void actionPerformed(GuiButton btn) {
+				if (btn.id == 34) {
+					this.eyes.glint = ((GuiNpcButtonYesNo)btn).getBoolean();
+				}
+
+				if (btn.id == 35) {
+					GuiCreationParts.this.setSubGui(new GuiModelColor(GuiCreationParts.this, this.eyes.browColor, (color) -> {
+						this.eyes.browColor = color;
+					}));
+				}
+
+				if (btn.id == 36) {
+					GuiCreationParts.this.setSubGui(new GuiModelColor(GuiCreationParts.this, this.eyes.skinColor, (color) -> {
+						this.eyes.skinColor = color;
+					}));
+				}
+
+				if (btn.id == 37) {
+					this.eyes.eyePos = ((GuiButtonBiDirectional)btn).getValue() - 1;
+				}
+
+				if (btn.id == 38) {
+					this.eyes.browThickness = ((GuiButtonBiDirectional)btn).getValue();
+				}
+
+				if (btn.id == 39) {
+					GuiCreationParts.this.playerdata.eyesShared = false;
+					GuiCreationParts.this.playerdata.eye1.clone(eyes);
+
+					GuiCreationParts.this.parts = new GuiCreationParts.GuiPart[]{(
+							new GuiCreationParts.GuiPart(EnumParts.EARS)).setTypes(new String[]{"gui.none", "gui.normal", "ears.bunny"}),
+							new GuiCreationParts.GuiPartHorns(),
+							new GuiCreationParts.GuiPartHair(),
+							(new GuiCreationParts.GuiPart(EnumParts.MOHAWK)).setTypes(new String[]{"gui.none", "1", "2"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartSnout(),
+							new GuiCreationParts.GuiPartBeard(),
+							(new GuiCreationParts.GuiPart(EnumParts.FIN)).setTypes(new String[]{"gui.none", "fin.shark", "fin.reptile"}),
+							(new GuiCreationParts.GuiPart(EnumParts.BREASTS)).setTypes(new String[]{"gui.none", "1", "2", "3"}).noPlayerOptions(),
+							new GuiCreationParts.GuiPartWings(),
+							new GuiCreationParts.GuiPartClaws(),
+							(new GuiCreationParts.GuiPart(EnumParts.SKIRT)).setTypes(new String[]{"gui.none", "gui.normal"}),
+							new GuiCreationParts.GuiPartLegs(),
+							new GuiCreationParts.GuiPartTail(),
+							new GuiCreationParts.GuiPartHalo(),
+							new GuiCreationParts.GuiPartEyes(),
+							//new GuiCreationParts.GuiPartParticles(),
+							new GuiCreationParts.GuiPartArmLeft(),
+							new GuiCreationParts.GuiPartArmRight(),
+							new GuiCreationParts.GuiPartLegLeft(),
+							new GuiCreationParts.GuiPartLegRight(),
+							new GuiCreationParts.GuiPartBody(),
+							new GuiCreationParts.GuiPartHead()};
+
+					Arrays.sort(GuiCreationParts.this.parts, (o1, o2) -> {
+						String s1 = I18n.translateToLocal("part." + o1.part.name);
+						String s2 = I18n.translateToLocal("part." + o2.part.name);
+						return s1.compareToIgnoreCase(s2);
+					});
+
+					GuiCreationParts.this.scroll = null;
+					GuiCreationParts.this.initGui();
 				}
 
 				super.actionPerformed(btn);

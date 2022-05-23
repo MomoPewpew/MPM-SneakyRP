@@ -17,7 +17,8 @@ public class ModelDataShared {
 	public ModelPartConfig leg2 = new ModelPartConfig();
 	public ModelPartConfig head = new ModelPartConfig();
 	protected ModelPartData legParts = new ModelPartData("legs");
-	public ModelEyeData eyes = new ModelEyeData();
+	public ModelEyeData eye1 = new ModelEyeData();
+	public ModelEyeData eye2 = new ModelEyeData();
 	public Class entityClass;
 	protected EntityLivingBase entity;
 	public float entityScaleX = 1.0F;
@@ -33,6 +34,7 @@ public class ModelDataShared {
 	public boolean hidePants = false;
 	public boolean slim = false;
 	public float modelOffsetY = 0.0F;
+	public boolean eyesShared = true;
 
 	public NBTTagCompound writeToNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
@@ -47,8 +49,8 @@ public class ModelDataShared {
 		compound.setTag("LegsConfig", this.leg1.writeToNBT());
 		compound.setTag("HeadConfig", this.head.writeToNBT());
 		compound.setTag("LegParts", this.legParts.writeToNBT());
-		compound.setTag("Eyes", this.eyes.writeToNBT());
-		compound.setBoolean("EyesEnabled", this.eyes.isEnabled());
+		compound.setTag("Eye1", this.eye1.writeToNBT());
+		compound.setTag("Eye2", this.eye2.writeToNBT());
 		compound.setTag("ExtraData", this.extra);
 		compound.setInteger("WingMode", this.wingMode);
 		compound.setString("CustomSkinUrl", this.url);
@@ -84,10 +86,19 @@ public class ModelDataShared {
 		this.leg1.readFromNBT(compound.getCompoundTag("LegsConfig"));
 		this.head.readFromNBT(compound.getCompoundTag("HeadConfig"));
 		this.legParts.readFromNBT(compound.getCompoundTag("LegParts"));
-		if (compound.hasKey("Eyes")) {
-			this.eyes.readFromNBT(compound.getCompoundTag("Eyes"));
-		}
+		if (compound.hasKey("Eye1")) {
+			this.eye1.readFromNBT(compound.getCompoundTag("Eye1"));
+			this.eye2.readFromNBT(compound.getCompoundTag("Eye2"));
 
+			this.eyesShared = this.eye1.equals(this.eye2);
+		} else if (compound.hasKey("Eyes")) {
+			this.eye1.readFromNBT(compound.getCompoundTag("Eyes"));
+			this.eye2.readFromNBT(compound.getCompoundTag("Eyes"));
+
+			this.eyesShared = true;
+		} else {
+			this.eyesShared = true;
+		}
 		this.extra = compound.getCompoundTag("ExtraData");
 		this.wingMode = compound.getInteger("WingMode");
 		this.url = compound.getString("CustomSkinUrl");
@@ -203,7 +214,7 @@ public class ModelDataShared {
 		if (type == EnumParts.LEGS) {
 			return this.legParts;
 		} else {
-			return (ModelPartData)(type == EnumParts.EYES ? this.eyes : (ModelPartData)this.parts.get(type));
+			return (ModelPartData) (type == EnumParts.EYE1 ? this.eye1 : ((type == EnumParts.EYE2 ? this.eye2 : this.parts.get(type))));
 		}
 	}
 
@@ -228,8 +239,10 @@ public class ModelDataShared {
 	public ModelPartData getOrCreatePart(EnumParts type) {
 		if (type == null) {
 			return null;
-		} else if (type == EnumParts.EYES) {
-			return this.eyes;
+		} else if (type == EnumParts.EYE1) {
+			return this.eye1;
+		} else if (type == EnumParts.EYE2) {
+			return this.eye2;
 		} else {
 			ModelPartData part = this.getPartData(type);
 			if (part == null) {

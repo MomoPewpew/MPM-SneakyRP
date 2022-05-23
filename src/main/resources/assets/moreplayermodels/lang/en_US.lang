@@ -138,6 +138,8 @@ part.armright=Arm Right
 part.legleft=Leg Left
 part.legright=Leg Right
 part.eyes=Eyes
+part.eye1=Eye Left
+part.eye2=Eye Right
 part.particles=Particles
 part.arms=Arms
 

@@ -64,11 +64,12 @@ public class ModelEyeData extends ModelPartData {
 	}
 
 	public boolean equals(ModelEyeData eye2) {
-		return ((this.color == eye2.color) && (this.glint == eye2.glint) && (this.browThickness == eye2.browThickness) && (this.eyePos == eye2.eyePos) && (this.skinColor == eye2.skinColor) && (this.browColor == eye2.browColor));
+		return ((this.color == eye2.color) && (this.type == eye2.type) && (this.glint == eye2.glint) && (this.browThickness == eye2.browThickness) && (this.eyePos == eye2.eyePos) && (this.skinColor == eye2.skinColor) && (this.browColor == eye2.browColor));
 	}
 
 	public void clone(ModelEyeData eye2) {
 		this.color = eye2.color;
+		this.type = eye2.type;
 		this.glint = eye2.glint;
 		this.browThickness = eye2.browThickness;
 		this.eyePos = eye2.eyePos;

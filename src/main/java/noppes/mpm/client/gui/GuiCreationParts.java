@@ -642,10 +642,9 @@ public class GuiCreationParts extends GuiCreationScreenInterface implements ITex
 						return s1.compareToIgnoreCase(s2);
 					});
 
+					GuiCreationParts.this.scroll = null;
 					GuiCreationParts.this.initGui();
 				}
-
-				GuiCreationParts.this.scroll = null;
 				super.actionPerformed(btn);
 			}
 		}

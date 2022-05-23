@@ -81,7 +81,7 @@ public class PacketHandlerClient extends PacketHandlerServer {
 				}
 
 				ModelData data = ModelData.get(pl);
-				data.eyes.blinkStart = System.currentTimeMillis();
+				data.eye1.blinkStart = System.currentTimeMillis();
 			} else if (type == EnumPackets.SEND_PLAYER_DATA) {
 				UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
 				pl = player.worldObj.getPlayerEntityByUUID(uuid);

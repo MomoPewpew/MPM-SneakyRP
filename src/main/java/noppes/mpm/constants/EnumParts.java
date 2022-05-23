@@ -21,7 +21,8 @@ public enum EnumParts {
 	ARM_RIGHT("armright"),
 	LEG_LEFT("legleft"),
 	LEG_RIGHT("legright"),
-	EYES("eyes"),
+	EYE1("eye1"),
+	EYE2("eye2"),
 	HALO("halo"),
 	ARMS("arms");
 

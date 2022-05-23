@@ -31,7 +31,8 @@ public class ServerTickHandler {
 				data.backItem = item;
 			}
 
-			data.eyes.update(player);
+			data.eye1.update(player);
+			data.eye2.update(player);
 		}
 	}
 

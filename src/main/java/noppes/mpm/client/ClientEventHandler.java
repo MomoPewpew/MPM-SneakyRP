@@ -218,7 +218,8 @@ public class ClientEventHandler {
 				MPMEntityUtil.Copy(player, entity);
 			} else {
 				if (!MorePlayerModels.HasServerSide) {
-					data.eyes.update(player);
+					data.eye1.update(player);
+					data.eye2.update(player);
 				}
 
 				ModelPartData particles = data.getPartData(EnumParts.PARTICLES);

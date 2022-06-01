@@ -150,7 +150,7 @@ public class ClientProxy extends CommonProxy {
 		list.add(6, new LayerHeadwear(playerRender));
 		list.add(new LayerCapeMPM(playerRender));
 		list.add(new LayerChatbubble(playerRender));
-		list.add(new LayerBackItem(playerRender));
+		//list.add(new LayerBackItem(playerRender));
 		list.add(new LayerProp(playerRender));
 		list.add(new LayerBipedArmorAlt(playerRender));
 		list.add(new LayerHeldItemAlt(playerRender));

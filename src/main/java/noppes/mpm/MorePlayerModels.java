@@ -134,6 +134,7 @@ public class MorePlayerModels {
 	public static File emoteFolder;
 	public static File emoteArchiveFolder;
 	public static File emoteVaultFolder;
+	public static final String assetRootFolder = new String(".." + File.separator + "moreplayermodels");
 
 	public ConfigLoader configLoader;
 
@@ -180,7 +181,7 @@ public class MorePlayerModels {
 
 		{//init emote folders
 			dir = null;
-			emoteFolder = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "emotes");
+			emoteFolder = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "emotes");
 			emoteArchiveFolder = new File(emoteFolder, "archive");
 			emoteVaultFolder = new File(emoteFolder, "vault");
 		}
@@ -230,7 +231,7 @@ public class MorePlayerModels {
 
 	public static void syncSkinFileNames(EntityPlayerMP player) {
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+		dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 
 		if (!dir.exists()) dir.mkdirs();
 
@@ -261,7 +262,7 @@ public class MorePlayerModels {
 		}
 
 		dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
+		dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 
 		if (!dir.exists()) dir.mkdirs();
 
@@ -287,7 +288,7 @@ public class MorePlayerModels {
 
 		if (!playersEntityDenied.contains(player.getUniqueID())) {
 			dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 
 			if (!dir.exists()) dir.mkdirs();
 
@@ -309,7 +310,7 @@ public class MorePlayerModels {
 
 	public static void syncPropGroupFileNames(EntityPlayerMP player) {
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+		dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 
 		if (!dir.exists()) dir.mkdirs();
 
@@ -330,7 +331,7 @@ public class MorePlayerModels {
 
 		if (!playersEntityDenied.contains(player.getUniqueID())) {
 			dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "restricted");
 
 			if (!dir.exists()) dir.mkdirs();
 

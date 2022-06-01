@@ -38,7 +38,7 @@ public class CommandSkinLoad extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -47,7 +47,7 @@ public class CommandSkinLoad extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -57,7 +57,7 @@ public class CommandSkinLoad extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -67,7 +67,7 @@ public class CommandSkinLoad extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -77,7 +77,7 @@ public class CommandSkinLoad extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -87,7 +87,7 @@ public class CommandSkinLoad extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}

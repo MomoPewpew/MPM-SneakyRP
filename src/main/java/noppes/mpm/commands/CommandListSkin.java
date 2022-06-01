@@ -9,6 +9,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
+import noppes.mpm.MorePlayerModels;
 
 public class CommandListSkin extends CommandBase {
 
@@ -22,7 +23,7 @@ public class CommandListSkin extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -31,7 +32,7 @@ public class CommandListSkin extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -45,7 +46,7 @@ public class CommandListSkin extends CommandBase {
 			}
 
 			File dirnew = null;
-			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+			dirnew = new File(dirnew, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 
 			if (!dirnew.exists()) {
 				dirnew.mkdirs();

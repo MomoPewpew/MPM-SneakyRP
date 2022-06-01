@@ -35,7 +35,7 @@ public class CommandPropRestore extends CommandBase {
 		try {
 			File dir = null;
 
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -45,7 +45,7 @@ public class CommandPropRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "restricted");
 
 				if (!dir.exists()) {
 					dir.mkdirs();
@@ -60,7 +60,7 @@ public class CommandPropRestore extends CommandBase {
 			}
 
 			dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "archive");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "archive");
 
 			long timeStamp = 0;
 
@@ -82,7 +82,7 @@ public class CommandPropRestore extends CommandBase {
 
 			if (file.exists()) {
 				File dirnew = null;
-				dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+				dirnew = new File(dirnew, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 				File filenew = new File(dirnew, filename);
 				file.renameTo(filenew);
 				icommandsender.addChatMessage(new TextComponentTranslation("The prop " + args[0] + " was restored. If this was not the right prop, please contact a developer."));

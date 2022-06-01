@@ -19,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntitySelectors;
 import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Prop;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
@@ -162,7 +163,7 @@ public class CommandProp extends MpmCommandInterface {
 					File file;
 
 					File dir = null;
-					dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroups");
+					dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroups");
 
 					if (!dir.exists()) {
 						return;

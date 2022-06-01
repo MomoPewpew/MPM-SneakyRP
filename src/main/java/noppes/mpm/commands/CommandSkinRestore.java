@@ -33,7 +33,7 @@ public class CommandSkinRestore extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -42,7 +42,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -52,7 +52,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -62,7 +62,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -72,7 +72,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -82,7 +82,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -96,7 +96,7 @@ public class CommandSkinRestore extends CommandBase {
 			}
 
 			dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "archive");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "archive");
 
 			long timeStamp = 0;
 
@@ -118,7 +118,7 @@ public class CommandSkinRestore extends CommandBase {
 
 			if (file.exists()) {
 				File dirnew = null;
-				dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+				dirnew = new File(dirnew, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted");
 				File filenew = new File(dirnew, filename);
 				file.renameTo(filenew);
 				icommandsender.addChatMessage(new TextComponentTranslation("The skin " + args[0] + " was restored. It is currently not listed in the skin load menu."));

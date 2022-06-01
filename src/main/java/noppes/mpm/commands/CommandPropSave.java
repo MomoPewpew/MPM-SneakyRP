@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
@@ -61,7 +62,7 @@ public class CommandPropSave extends CommandBase {
 			}
 
 			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "restricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -70,7 +71,7 @@ public class CommandPropSave extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}

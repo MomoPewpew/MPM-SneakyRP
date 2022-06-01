@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 
 public class CommandPropRem extends CommandBase {
 
@@ -20,7 +21,7 @@ public class CommandPropRem extends CommandBase {
 		if (args.length == 0) throw new WrongUsageException(this.getCommandUsage(icommandsender));
 
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+		dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
@@ -36,7 +37,7 @@ public class CommandPropRem extends CommandBase {
 			}
 
 			File dirnew = null;
-			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "archive");
+			dirnew = new File(dirnew, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "archive");
 
 			if (!dirnew.exists()) {
 				dirnew.mkdirs();

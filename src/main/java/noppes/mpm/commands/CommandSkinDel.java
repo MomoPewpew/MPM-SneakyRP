@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
 import noppes.mpm.ModelData;
+import noppes.mpm.MorePlayerModels;
 
 public class CommandSkinDel extends CommandBase {
 
@@ -24,7 +25,7 @@ public class CommandSkinDel extends CommandBase {
 		String filename = args[0].toLowerCase() + ".dat";
 
 		try {
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "unrestricted");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
@@ -33,7 +34,7 @@ public class CommandSkinDel extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -43,7 +44,7 @@ public class CommandSkinDel extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "listed");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "listed");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -53,7 +54,7 @@ public class CommandSkinDel extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "unrestricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -63,7 +64,7 @@ public class CommandSkinDel extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted" + File.separator + "restricted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -73,7 +74,7 @@ public class CommandSkinDel extends CommandBase {
 
 			if (!file.exists()) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "unlisted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "unlisted");
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -87,7 +88,7 @@ public class CommandSkinDel extends CommandBase {
 			}
 
 			File dirnew = null;
-			dirnew = new File(dirnew, ".." + File.separator + "moreplayermodels" + File.separator + "skins" + File.separator + "archive");
+			dirnew = new File(dirnew, MorePlayerModels.assetRootFolder + File.separator + "skins" + File.separator + "archive");
 
 			if (!dirnew.exists()) {
 				dirnew.mkdirs();

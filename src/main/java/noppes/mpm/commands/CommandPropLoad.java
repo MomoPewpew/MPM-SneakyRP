@@ -40,7 +40,7 @@ public class CommandPropLoad extends CommandBase {
 			File file;
 
 			File dir = null;
-			dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed");
+			dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed");
 
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -50,7 +50,7 @@ public class CommandPropLoad extends CommandBase {
 
 			if (!file.exists() && MorePlayerModels.playersEntityDenied.contains(((EntityPlayer) icommandsender).getUniqueID())) {
 				dir = null;
-				dir = new File(dir, ".." + File.separator + "moreplayermodels" + File.separator + "propGroupsNamed" + File.separator + "restricted");
+				dir = new File(dir, MorePlayerModels.assetRootFolder + File.separator + "propGroupsNamed" + File.separator + "restricted");
 
 				if (!dir.exists()) {
 					dir.mkdirs();

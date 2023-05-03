@@ -14,5 +14,10 @@
 	<classpathentry kind="src" path="/SneakyEmotes"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/bukkit-1.9.4-R0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/architecturecraft-1.12-3.98.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ilike/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/97860965d6a0a6b98e7f569f3f966727b8db75/netty-all-4.1.9.Final.jar" sourcepath="C:/Users/ilike/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/69b921f5e296428c88c2ea4418e630443a699b06/netty-all-4.1.9.Final-sources.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

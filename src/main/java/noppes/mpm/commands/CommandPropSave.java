@@ -2,7 +2,6 @@ package noppes.mpm.commands;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -18,7 +17,7 @@ import noppes.mpm.PropGroup;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
-public class CommandPropSave extends CommandBase {
+public class CommandPropSave extends MpmCommandInterface {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {

@@ -1,7 +1,5 @@
 package noppes.mpm.commands;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,7 +8,7 @@ import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
 
-public class CommandNames extends CommandBase {
+public class CommandNames extends MpmCommandInterface {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {

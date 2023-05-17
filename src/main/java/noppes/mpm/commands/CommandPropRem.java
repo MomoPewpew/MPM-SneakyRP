@@ -1,19 +1,15 @@
 package noppes.mpm.commands;
 
 import java.io.File;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
-import noppes.mpm.ModelData;
 import noppes.mpm.MorePlayerModels;
 
-public class CommandPropRem extends CommandBase {
+public class CommandPropRem extends MpmCommandInterface {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {

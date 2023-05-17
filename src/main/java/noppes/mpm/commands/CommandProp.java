@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -28,49 +25,49 @@ import noppes.mpm.constants.EnumPackets;
 public class CommandProp extends MpmCommandInterface {
 
 	private final List<String> clearStrings = new ArrayList<String>(Arrays.asList(
-	"clear",
-	"reset",
-	"cl"
+		"clear",
+		"reset",
+		"cl"
 	));
 
 	private final List<String> deleteStrings = new ArrayList<String>(Arrays.asList(
-	"undo",
-	"remove",
-	"delete",
-	"del",
-	"rem"
+		"undo",
+		"remove",
+		"delete",
+		"del",
+		"rem"
 	));
 
 	private final List<String> guiStrings = new ArrayList<String>(Arrays.asList(
-	"gui",
-	"interface",
-	"ui",
-	"options"
+		"gui",
+		"interface",
+		"ui",
+		"options"
 	));
 
 	private final List<String> giveStrings = new ArrayList<String>(Arrays.asList(
-	"give"
+		"give"
 	));
 
 	private final List<String> nameStrings = new ArrayList<String>(Arrays.asList(
-	"label",
-	"name"
+		"label",
+		"name"
 	));
 
 	private final List<String> hideStrings = new ArrayList<String>(Arrays.asList(
-	"hide"
+		"hide"
 	));
 
 	private final List<String> showStrings = new ArrayList<String>(Arrays.asList(
-	"show"
+		"show"
 	));
 
 	private final List<String> toggleStrings = new ArrayList<String>(Arrays.asList(
-	"toggle"
+		"toggle"
 	));
 
 	private final List<String> groupStrings = new ArrayList<String>(Arrays.asList(
-	"group"
+		"group"
 	));
 
 	@Override

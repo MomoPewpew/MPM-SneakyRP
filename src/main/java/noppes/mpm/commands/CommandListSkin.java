@@ -2,7 +2,6 @@ package noppes.mpm.commands;
 
 import java.io.File;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -11,7 +10,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import noppes.mpm.LogWriter;
 import noppes.mpm.MorePlayerModels;
 
-public class CommandListSkin extends CommandBase {
+public class CommandListSkin extends MpmCommandInterface {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {

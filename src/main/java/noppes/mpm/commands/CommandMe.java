@@ -2,7 +2,6 @@ package noppes.mpm.commands;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -11,7 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
-public class CommandMe extends CommandBase {
+public class CommandMe extends MpmCommandInterface {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender icommandsender, String[] args) throws CommandException {

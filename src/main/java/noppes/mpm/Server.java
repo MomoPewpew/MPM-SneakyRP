@@ -68,15 +68,18 @@ public class Server {
 	}
 
 	public static void sendAssociatedData(Entity entity, ByteBuf buf) {
-		List list = entity.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D));
+		List<EntityPlayerMP> list = new ArrayList(entity.getServer().getPlayerList().getPlayerList());
 		if (!list.isEmpty()) {
 			MPMScheduler.runTack(() -> {
 				try {
 
-					Iterator var4 = list.iterator();
+					Iterator<EntityPlayerMP> var4 = list.iterator();
 
 					while(var4.hasNext()) {
-						EntityPlayerMP player = (EntityPlayerMP)var4.next();
+						EntityPlayerMP player = var4.next();
+
+						if (!player.getEntityBoundingBox().intersectsWith(entity.getEntityBoundingBox().expand(160.0D, 160.0D, 160.0D))) continue;
+
 						MorePlayerModels.Channel.sendTo(new FMLProxyPacket(new PacketBuffer(buf.copy()), "MorePlayerModels"), player);
 					}
 				} catch (Exception var6) {

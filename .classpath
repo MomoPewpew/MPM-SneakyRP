@@ -14,5 +14,6 @@
 	<classpathentry kind="src" path="/SneakyEmotes"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/bukkit-1.9.4-R0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="E:/Users/Marijn/workspace/MPM-SneakyRP/libs/architecturecraft-1.12-3.98.jar"/>
+	<classpathentry kind="src" path="/CNPCs-SneakyRP"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

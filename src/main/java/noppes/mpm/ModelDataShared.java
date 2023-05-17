@@ -127,6 +127,34 @@ public class ModelDataShared {
 		this.updateTransate();
 	}
 
+	public void readFromCNPCsNBT(NBTTagCompound compound) {
+		this.setEntityClass(compound.getString("EntityClass"));
+		this.arm1.readFromNBT(compound.getCompoundTag("ArmsConfig"));
+		this.body.readFromNBT(compound.getCompoundTag("BodyConfig"));
+		this.leg1.readFromNBT(compound.getCompoundTag("LegsConfig"));
+		this.head.readFromNBT(compound.getCompoundTag("HeadConfig"));
+		this.legParts.readFromNBT(compound.getCompoundTag("LegParts"));
+		this.eye1.readFromNBT(compound.getCompoundTag("Eyes"));
+		this.eye2.readFromNBT(compound.getCompoundTag("Eyes"));
+		this.extra = compound.getCompoundTag("ExtraData");
+		HashMap parts = new HashMap();
+		NBTTagList list = compound.getTagList("Parts", 10);
+
+		for (int i = 0; i < list.tagCount(); ++i) {
+			NBTTagCompound item = list.getCompoundTagAt(i);
+			String name = item.getString("PartName");
+			ModelPartData part = new ModelPartData(name);
+			part.readFromNBT(item);
+			EnumParts e = EnumParts.FromName(name);
+			if (e != null) {
+				parts.put(e, part);
+			}
+		}
+
+		this.parts = parts;
+		this.updateTransate();
+	}
+
 	private void updateTransate() {
 		EnumParts[] var1 = EnumParts.values();
 		int var2 = var1.length;

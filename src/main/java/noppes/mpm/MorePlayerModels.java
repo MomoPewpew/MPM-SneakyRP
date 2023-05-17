@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import noppes.mpm.commands.CommandMPM;
 import noppes.mpm.commands.CommandMe;
 import noppes.mpm.commands.CommandNames;
+import noppes.mpm.commands.CommandPossess;
 import noppes.mpm.commands.CommandProp;
 import noppes.mpm.commands.CommandPropLoad;
 import noppes.mpm.commands.CommandEmote;
@@ -216,6 +217,7 @@ public class MorePlayerModels {
 		event.registerServerCommand(new CommandMe());
 		event.registerServerCommand(new CommandListSkin());
 		event.registerServerCommand(new CommandUnlistSkin());
+		event.registerServerCommand(new CommandPossess());
 		GameRules rules = event.getServer().worldServerForDimension(0).getGameRules();
 		if (!rules.hasRule("mpmAllowEntityModels")) {
 			rules.addGameRule("mpmAllowEntityModels", "true", ValueType.BOOLEAN_VALUE);

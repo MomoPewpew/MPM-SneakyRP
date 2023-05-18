@@ -27,6 +27,9 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IS
 		y += 23;
 		this.addTextField(new GuiNpcTextField(52, this, var10005, y, 200, 20, this.playerdata.url));
 		this.addLabel(new GuiNpcLabel(52, "config.skinurl", this.guiLeft, y + 5, 16777215));
+		y += 23;
+		this.addTextField(new GuiNpcTextField(54, this, var10005, y, 200, 20, this.playerdata.displayName));
+		this.addLabel(new GuiNpcLabel(54, "gui.name", this.guiLeft, y + 5, 16777215));
 		//this.addButton(new GuiNpcButton(10, this.guiLeft + 262, y, 80, 20, "gui.select"));
 		y += 23;
 		this.addLabel(new GuiNpcLabel(11, "part.arms", this.guiLeft, y + 5, 16777215));
@@ -83,6 +86,8 @@ public class GuiCreationOptions extends GuiCreationScreenInterface implements IS
 			textField.setCursorPositionZero();
 			textField.setSelectionPos(0);
 			this.getSlider(textField.id).sliderValue = sliderValue;
+		} else if (textField.id == 54) {
+			this.playerdata.displayName = textField.getText();
 		}
 	}
 

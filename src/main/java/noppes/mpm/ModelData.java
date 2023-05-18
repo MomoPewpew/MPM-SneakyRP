@@ -215,6 +215,7 @@ public class ModelData extends ModelDataShared implements ICapabilityProvider {
 
 			if(this.entity != null) {
 				this.entity.setSilent(true);
+				this.entity.setCustomNameTag("EMPTY");
 			}
 
 			return this.entity;

@@ -51,17 +51,22 @@ public class CommandPossess extends MpmCommandInterface {
 			if (nearestEntity instanceof EntityNPCInterface) {
 				newData.readFromCNPCsNBT(((EntityCustomNpc) nearestEntity).modelData.writeToNBT());
 				newData.url = ((EntityNPCInterface) nearestEntity).display.getSkinUrl();
+				newData.displayName = ((EntityNPCInterface) nearestEntity).getName();
 			} else {
 				try {
 					Class<? extends EntityCreature> c = nearestEntity.getClass();
 					if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
 						newData.setEntityClass(c);
+						if (nearestEntity.getCustomNameTag() != null && !nearestEntity.getCustomNameTag().isEmpty()) {
+							newData.displayName = nearestEntity.getCustomNameTag();
+						}
 					}
 				} catch (SecurityException var5) {
 					var5.printStackTrace();
 				} catch (Exception var6) {
 				}
 			}
+
 			NBTTagCompound compound = newData.writeToNBT();
 			ModelData data = ModelData.get(player);
 			data.readFromNBT(compound);

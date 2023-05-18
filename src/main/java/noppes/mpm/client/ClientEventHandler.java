@@ -251,18 +251,49 @@ public class ClientEventHandler {
 		if (event.isCancelable()) {
 			event.setCanceled(true);
 			Minecraft minecraft = Minecraft.getMinecraft();
+
+			float height = ((Entity)entity).getEyeHeight() + 0.25F;
+
 			if (entity instanceof EntityPlayer) {
 				ModelData data = ModelData.get((EntityPlayer) entity);
-				float height = ((Entity)entity).getEyeHeight() + 0.25F + (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - data.modelOffsetY - (entity.isSneaking() ? 0.25F : 0.0F);
-				renderName(entity, height);
+
+				height -= data.modelOffsetY;
+
+				if (data.entityClass == null) {
+					height += (0.5F * data.getPartConfig(EnumParts.HEAD).scaleY) - (entity.isSneaking() ? 0.25F : 0.0F);
+				} else {
+					height += 0.5F;
+				}
+			} else {
+				height += 0.5F;
 			}
+			renderName(entity, height);
 		}
 	}
 
 	public static void renderName(EntityLivingBase entity, float height) {
 		if ((MorePlayerModels.HidePlayerNames || entity == Minecraft.getMinecraft().thePlayer) && !ClientProxy.Names.isKeyDown()) return;
 
-		String name = MorePlayerModels.multiCharacterActive ? ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]" : entity.getName();
+		//String name = MorePlayerModels.multiCharacterActive ? ((EntityPlayer) entity).getDisplayName().getFormattedText() + " [" + entity.getName() + "]" : entity.getName();
+		String name = null;
+
+		if (entity instanceof EntityPlayer) {
+			ModelData data = ModelData.get((EntityPlayer) entity);
+
+			if (data.displayName == null || data.displayName.isEmpty()) {
+				name = entity.getName();
+			} else {
+				name = data.displayName + " [" + entity.getName() + "]";
+			}
+		} else {
+			if (entity.hasCustomName()) {
+				name = entity.getCustomNameTag();
+			} else {
+				name = entity.getName();
+			}
+		}
+
+		if (name == null || name.isEmpty() || name.equals("EMPTY")) return;
 
 		Float animTime = Animation.getPartialTickTime();
 

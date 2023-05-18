@@ -47,16 +47,16 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 	@Override
 	public void initGui() {
 		super.initGui();
-		if (this.scroll == null) {
+/*		if (this.scroll == null) {
 			this.scroll = new GuiCustomScroll(this, 0);
 			this.scroll.setSize(80, 160);
-		}
+		}*/
 
 		Client.sendData(EnumPackets.SKIN_FILENAME_UPDATE);
 		Client.sendData(EnumPackets.PROPGROUPS_FILENAME_UPDATE);
 		Client.sendData(EnumPackets.EMOTE_FILENAME_UPDATE);
 
-		List list = new ArrayList();
+/*		List list = new ArrayList();
 		Iterator var2 = PresetController.instance.presets.values().iterator();
 
 		while(var2.hasNext()) {
@@ -84,7 +84,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 		//this.addButton(new GuiNpcButton(3, this.guiLeft + 110, this.guiTop + 176, 68, 20, "gui.config"));
 		this.addLabel(new GuiNpcLabel(1336, "This menu is scheduled for removal, so the + and - buttons", this.guiLeft - 50, this.guiTop - 25, 16711680));
 		this.addLabel(new GuiNpcLabel(1337, "have been disabled. Please stick to using one save slot,", this.guiLeft - 50, this.guiTop - 15, 16711680));
-		this.addLabel(new GuiNpcLabel(1338, "and save your skins to the server instead using /skinsave.", this.guiLeft - 50, this.guiTop - 5, 16711680));
+		this.addLabel(new GuiNpcLabel(1338, "and save your skins to the server instead using /skinsave.", this.guiLeft - 50, this.guiTop - 5, 16711680));*/
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 		this.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(resource);
-		this.drawTexturedModalRect(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
+		//this.drawTexturedModalRect(this.guiLeft, this.guiTop + 8, 0, 0, this.xSize, 192);
 		super.drawScreen(i, j, f);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiInventory.drawEntityOnScreen(this.guiLeft + 130, this.guiTop + 130, 40, (float)(this.guiLeft + 130 - i), (float)(this.guiTop + 60 - j), this.player);
@@ -162,11 +162,12 @@ public class GuiMPM extends GuiNPCInterface implements ICustomScrollListener, IS
 	@Override
 	public void subGuiClosed(GuiNPCInterface subgui) {
 		if (subgui instanceof GuiCreationScreenInterface) {
-			Preset p = PresetController.instance.getPreset(this.getScroll(0).getSelected());
+/*			Preset p = PresetController.instance.getPreset(this.getScroll(0).getSelected());
 			if (p != null) {
 				p.data = this.playerdata.copy();
 				PresetController.instance.save();
-			}
+			}*/
+			this.close();
 		}
 	}
 

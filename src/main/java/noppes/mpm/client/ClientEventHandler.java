@@ -39,6 +39,7 @@ import noppes.mpm.MorePlayerModels;
 import noppes.mpm.client.fx.EntityEnderFX;
 import noppes.mpm.client.gui.GuiCreationScreenInterface;
 import noppes.mpm.client.gui.GuiMPM;
+import noppes.mpm.client.gui.util.GuiNPCInterface;
 import noppes.mpm.commands.MpmCommandInterface;
 import noppes.mpm.constants.EnumPackets;
 import noppes.mpm.constants.EnumParts;
@@ -69,7 +70,13 @@ public class ClientEventHandler {
 
 			if (ClientProxy.Screen.isPressed()) {
 				if (mc.currentScreen == null) {
-					mc.displayGuiScreen(new GuiMPM());
+					GuiMPM guiMPM = new GuiMPM();
+					Minecraft.getMinecraft().displayGuiScreen(guiMPM);
+					try {
+						guiMPM.setSubGui((GuiNPCInterface)GuiCreationScreenInterface.Gui.getClass().newInstance());
+					} catch (IllegalAccessException | InstantiationException e) {
+
+					}
 				}
 			}
 

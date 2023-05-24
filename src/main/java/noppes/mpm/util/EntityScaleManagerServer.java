@@ -13,6 +13,7 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import noppes.mpm.MorePlayerModels;
 import noppes.mpm.Server;
 import noppes.mpm.constants.EnumPackets;
 
@@ -24,7 +25,7 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 
 	public static void buildMap() throws IOException {
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels");
+		dir = new File(dir, MorePlayerModels.assetRootFolder);
 
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -80,7 +81,7 @@ public class EntityScaleManagerServer extends EntityScaleManagerBase {
 		entityMap.put(name, mult);
 
 		File dir = null;
-		dir = new File(dir, ".." + File.separator + "moreplayermodels");
+		dir = new File(dir, MorePlayerModels.assetRootFolder);
 
 		if (!dir.exists()) {
 			dir.mkdirs();

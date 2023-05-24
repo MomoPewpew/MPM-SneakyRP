@@ -135,7 +135,7 @@ public class MorePlayerModels {
 	public static File emoteFolder;
 	public static File emoteArchiveFolder;
 	public static File emoteVaultFolder;
-	public static final String assetRootFolder = new String(".." + File.separator + "moreplayermodels");
+	public static final String assetRootFolder = new String("moreplayermodels_assets");
 
 	public ConfigLoader configLoader;
 

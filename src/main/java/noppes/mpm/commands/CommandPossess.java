@@ -2,8 +2,6 @@ package noppes.mpm.commands;
 
 import java.lang.reflect.Modifier;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityCreature;
@@ -55,7 +53,7 @@ public class CommandPossess extends MpmCommandInterface {
 			} else {
 				try {
 					Class<? extends EntityCreature> c = nearestEntity.getClass();
-					if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers()) && Minecraft.getMinecraft().getRenderManager().getEntityClassRenderObject(c) instanceof RenderLivingBase) {
+					if (EntityLiving.class.isAssignableFrom(c) && c.getConstructor(World.class) != null && !Modifier.isAbstract(c.getModifiers())) {
 						newData.setEntityClass(c);
 						if (nearestEntity.getCustomNameTag() != null && !nearestEntity.getCustomNameTag().isEmpty()) {
 							newData.displayName = nearestEntity.getCustomNameTag();
